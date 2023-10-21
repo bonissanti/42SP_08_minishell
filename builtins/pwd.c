@@ -10,18 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "env.h"
+#include <stdio.h>
 
-int	ft_pwd(char **args)
+
+void ft_pwd(void)
 {
-	char cwd[1024];
+	char *cwd;
 
-	if (!getcwd(cwd, sizeof(cwd)))
-		perror("");
+	cwd = getcwd(NULL, 0);
+	if (cwd == NULL)
+		perror("getcwd() error");
 	else
 	{
-		ft_putstr_fd(cwd, 1);
-		return (1);
+		printf("%s\n", cwd);
+		free(cwd);
 	}
-	return (0);
 }
+

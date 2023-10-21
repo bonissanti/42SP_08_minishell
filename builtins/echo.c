@@ -10,17 +10,25 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "env.h"
+#include <stdio.h>
 
 int ft_echo(char **args)
 {
 	int i;
 
-	i = 1;
+	i = 0;
 	while (args[i] != NULL)
 	{
-		ft_putstr_fd(args[i], 1);
+		printf("%s ", args[i]);
 		i++;
 	}
 	return (1);
+}
+
+int main(void)
+{
+	char *echo_args[] = {"echo", "hello", "world", NULL};
+	ft_echo(echo_args);
+	return 0;
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   builtins.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,17 +10,33 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#ifndef ENV_H
+# define ENV_H
 
 #include <stdlib.h>
 #include <unistd.h>
+#include "../libft/libft.h"
 
+// Hash table size is recommended to be a prime number
+# define HASHSIZE 101
 
-typedef enum e_bool
+typedef struct t_hash
 {
-	is_false,
-	is_true
-}			t_bool;
+	char *key;
+	char *value;
+	struct t_hash *next;
+}			t_hash;	
+
+typedef struct t_hashtable
+{
+	t_hash *buckets[101];
+}			t_hashtable;
+
+
+t_hashtable *create_hashtable(void);
+unsigned int hash(char *key);
+void insert(t_hashtable *hash_table, char *key, char *value);
+char *search(t_hashtable *hash_table, char *key);
+void    delete_hash(t_hashtable *hash_table, char *key);
 
 #endif
