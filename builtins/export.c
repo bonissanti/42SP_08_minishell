@@ -1,5 +1,78 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
+/*   Updated: 2023/10/24 19:34:23 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "env.h"
 #include <stdio.h>
+
+
+void	init_env(t_hashtable *hashtable, char **envp)
+{
+	char *key;
+	char *value;
+	char *equals_sign;
+	int i;
+
+	i = 0;
+	while (envp[i] != NULL)
+	{
+		equals_sign = ft_strchr(envp[i], '=');
+		key = envp[i];
+		value = equals_sign + 1;
+		*equals_sign = '\0';
+		insert(hashtable, key, value);
+	}
+}
+
+int get_num_keys(t_hashtable *hash_table)
+{
+    int i;
+    int num_keys;
+    t_hash *current;
+
+    i = -1;
+    num_keys = 0;
+    while (++i < HASHSIZE)
+    {
+        current = hash_table->buckets[i];
+        while (current != NULL)
+        {
+            num_keys++;
+            current = current->next;
+        }
+    }
+    return (num_keys);
+}
+
+char **get_all_keys(t_hashtable *hash_table)
+{
+    t_hash *current;
+    char **keys;
+    int num_keys;
+    int i;
+
+    i = -1;
+    num_keys = get_num_keys(hash_table);
+    keys = (char **)malloc(sizeof(char *) * num_keys);
+    while (++i < HASHSIZE)
+    {
+        current = hash_table->buckets[i];
+        while (current != NULL)
+        {
+            keys[i] = current->key;
+            current = current->next;
+        }
+    }
+    return (keys);
+}
 
 /**
  * Function: Export
