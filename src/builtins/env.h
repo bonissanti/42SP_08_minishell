@@ -15,7 +15,7 @@
 
 #include <stdlib.h>
 #include <unistd.h>
-#include "../libft/libft.h"
+#include "../../libft/libft.h"
 
 // Hash table size is recommended to be a prime number
 # define HASHSIZE 101
@@ -33,10 +33,25 @@ typedef struct t_hashtable
 }			t_hashtable;
 
 
+//############################### Hashtable ###################################
+
 t_hashtable *create_hashtable(void);
 unsigned int hash(char *key);
 void insert(t_hashtable *hash_table, char *key, char *value);
 char *search(t_hashtable *hash_table, char *key);
 void    delete_hash(t_hashtable *hash_table, char *key);
+
+//############################### Export ######################################
+
+void init_hash(t_hashtable *hash_table, char **envp);
+void	print_all_env(t_hashtable *hash_table);
+void	add_env(t_hashtable *hash_table, char **args);
+void	ft_export(t_hashtable *hash_table, char **args);
+
+//############################ Export Utils ###################################
+
+void	bubble_sort(char **array, int size);
+int	get_num_keys(t_hashtable *hash_table);
+char	**get_all_keys(t_hashtable *hash_table);
 
 #endif

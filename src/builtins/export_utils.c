@@ -1,5 +1,5 @@
 #include "env.h"
-#include <stdio.h>
+#include <string.h>
 
 void	bubble_sort(char **array, int size)
 {

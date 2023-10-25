@@ -13,12 +13,6 @@
 #include "env.h"
 #include <stdio.h>
 #include <string.h>
-#include "export_utils.c"
-#include "/home/bruno/Documents/42SP/07. Minishell/42SP_08_minishell/libft/ft_split.c"
-#include "/home/bruno/Documents/42SP/07. Minishell/42SP_08_minishell/libft/ft_strlcpy.c"
-#include "/home/bruno/Documents/42SP/07. Minishell/42SP_08_minishell/libft/ft_strlen.c"
-
-
 
 // void	init_hash(t_hashtable *hash_table, char **envp)
 // {
@@ -126,27 +120,3 @@ void	ft_export(t_hashtable *hash_table, char **args)
 		add_env(hash_table, args);
 }
 
-int	main(int argc, char **argv, char **envp)
-{
-	(void)argc;
-	(void)argv;
-	(void)envp;
-	t_hashtable *hash_table = create_hashtable();
-	init_hash(hash_table, envp);
-	char *input;
-
-	while (1)
-	{
-		printf("~$ \n");
-		input = get_next_line(0);
-		char *args[1024];
-		int num_args;
-
-		num_args = ft_split(input, ' ', args);
-		if (num_args > 0 && strcmp(args[0], "export") == 0)
-		{
-			ft_export(hash_table, args);
-		}
-		free(input);
-	}
-}
