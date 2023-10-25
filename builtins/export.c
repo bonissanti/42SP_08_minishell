@@ -12,66 +12,90 @@
 
 #include "env.h"
 #include <stdio.h>
+#include <string.h>
+#include "export_utils.c"
+#include "/home/bruno/Documents/42SP/07. Minishell/42SP_08_minishell/libft/ft_split.c"
+#include "/home/bruno/Documents/42SP/07. Minishell/42SP_08_minishell/libft/ft_strlcpy.c"
+#include "/home/bruno/Documents/42SP/07. Minishell/42SP_08_minishell/libft/ft_strlen.c"
 
 
-void	init_env(t_hashtable *hashtable, char **envp)
+
+// void	init_hash(t_hashtable *hash_table, char **envp)
+// {
+// 	int		i;
+// 	char	*key;
+// 	char	*value;
+// 	char	**split;
+
+// 	i = -1;
+// 	while (envp[++i] != NULL)
+// 	{
+// 		split = ft_split(envp[1], '=');
+// 		key = split[0];
+// 		value = split[1];
+// 		insert(hash_table, key, value);
+// 		free(split);
+// 	}
+// }
+
+void init_hash(t_hashtable *hash_table, char **envp)
 {
+	int i;
 	char *key;
 	char *value;
-	char *equals_sign;
-	int i;
 
-	i = 0;
-	while (envp[i] != NULL)
+	i = -1;
+	while (envp[++i] != NULL)
 	{
-		equals_sign = ft_strchr(envp[i], '=');
-		key = envp[i];
-		value = equals_sign + 1;
-		*equals_sign = '\0';
-		insert(hashtable, key, value);
+		key = strtok(envp[i], "=");
+		value = strtok(NULL, "=");
+		insert(hash_table, key, value);
 	}
 }
 
-int get_num_keys(t_hashtable *hash_table)
+void	print_all_env(t_hashtable *hash_table)
 {
-    int i;
-    int num_keys;
-    t_hash *current;
+	int		i;
+	char	**keys;
+	int		num_keys;
 
-    i = -1;
-    num_keys = 0;
-    while (++i < HASHSIZE)
-    {
-        current = hash_table->buckets[i];
-        while (current != NULL)
-        {
-            num_keys++;
-            current = current->next;
-        }
-    }
-    return (num_keys);
+	keys = get_all_keys(hash_table);
+	num_keys = get_num_keys(hash_table);
+	bubble_sort(keys, num_keys);
+	i = -1;
+	while (++i < num_keys)
+		printf("declare -x %s=\"%s\"\n", keys[i], search(hash_table, keys[i]));
+	free(keys);
 }
 
-char **get_all_keys(t_hashtable *hash_table)
+void	add_env(t_hashtable *hash_table, char **args)
 {
-    t_hash *current;
-    char **keys;
-    int num_keys;
-    int i;
+	int		i;
+	char	*key;
+	char	*value;
+	char	*equals_sign;
 
-    i = -1;
-    num_keys = get_num_keys(hash_table);
-    keys = (char **)malloc(sizeof(char *) * num_keys);
-    while (++i < HASHSIZE)
-    {
-        current = hash_table->buckets[i];
-        while (current != NULL)
-        {
-            keys[i] = current->key;
-            current = current->next;
-        }
-    }
-    return (keys);
+	i = 1;
+	while (args[i] != NULL)
+	{
+		equals_sign = strchr(args[i], '=');
+		if (equals_sign != NULL)
+		{
+			*equals_sign = '\0';
+			key = args[i];
+			value = "";
+			insert(hash_table, key, value);
+		}
+		else
+		{
+			key = args[i];
+			value = search(hash_table, key);
+			if (value == NULL)
+				value = "";
+			insert(hash_table, key, value);
+		}
+		i++;
+	}
 }
 
 /**
@@ -94,57 +118,35 @@ char **get_all_keys(t_hashtable *hash_table)
  *
  */
 
-int ft_export(t_hashtable *hash_table, char **args)
+void	ft_export(t_hashtable *hash_table, char **args)
 {
-    t_hash *hash;
-    char *name;
-    char *value;
-    int     i;
-
-    i = -1;
-    if (args[1] == NULL)
-    {
-        while (++i < HASHSIZE)
-        {
-            hash = hash_table->buckets[i];
-            while (hash != NULL)
-            {
-                printf("%s=%s\n", hash->key, hash->value);
-                hash = hash->next;
-            }
-        }
-    }
-    else
-    {
-        i = 1;
-        while (args[i] != NULL)
-        {
-            name = args[i];
-            value = args[i + 1];
-            if (value == NULL)
-                value = "";
-            insert(hash_table, name, value);
-            i += 2;
-        }
-    }
-    return (1);
+	if (args[1] == NULL)
+		print_all_env(hash_table);
+	else
+		add_env(hash_table, args);
 }
 
-int main(void)
+int	main(int argc, char **argv, char **envp)
 {
-    t_hashtable *hash_table = create_hashtable();
+	(void)argc;
+	(void)argv;
+	(void)envp;
+	t_hashtable *hash_table = create_hashtable();
+	init_hash(hash_table, envp);
+	char *input;
 
-    char *args[] = {"export", "PATH", "/usr/bin:bin", "HOME", "/home/user", "USER", "user", NULL};
-    ft_export(hash_table, args);
+	while (1)
+	{
+		printf("~$ \n");
+		input = get_next_line(0);
+		char *args[1024];
+		int num_args;
 
-    char *args2[] = {"export", NULL};
-    ft_export(hash_table, args2);
-
-    delete_hash(hash_table, "PATH");
-    delete_hash(hash_table, "HOME");
-    delete_hash(hash_table, "USER");
-
-    free(hash_table);
-
-    return (0);
+		num_args = ft_split(input, ' ', args);
+		if (num_args > 0 && strcmp(args[0], "export") == 0)
+		{
+			ft_export(hash_table, args);
+		}
+		free(input);
+	}
 }
