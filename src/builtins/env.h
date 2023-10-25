@@ -33,6 +33,15 @@ typedef struct t_hashtable
 	t_hash *buckets[101];
 }			t_hashtable;
 
+typedef struct t_env
+{
+	char *key;
+	char **env;
+	char *value;
+	int index;
+	int num_env;
+
+}			t_env;
 
 //############################### Hashtable ###################################
 

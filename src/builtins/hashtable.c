@@ -88,14 +88,11 @@ void insert(t_hashtable *hash_table, char *key, char *value)
     else
     {
         add_env = (t_hash *)malloc(sizeof(t_hash));
-    
         add_env->key = key_copy;
-        add_env->value = value; // if broken, try strdup for value
-
+        add_env->value = value;
         add_env->next = hash_table->buckets[index];
         hash_table->buckets[index] = add_env;
-    }
-    
+    }   
 }
 
 /**

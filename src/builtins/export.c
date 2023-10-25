@@ -69,6 +69,7 @@ void	add_env(t_hashtable *hash_table, char **args)
 	char	*value;
 	char	**equals_sign;
 	t_hash *hash;
+	// t_env *env;
 
 	i = 1;
 	while (args[i] != NULL)
