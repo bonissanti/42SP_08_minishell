@@ -1,23 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.c                                        :+:      :+:    :+:   */
+/*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/22 20:38:13 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/10/24 20:54:41 by aperis-p         ###   ########.fr       */
+/*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
+/*   Updated: 2023/10/24 20:52:28 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char **argv, char **envp)
+void prompt(void)
 {
-	(void)argc;
-	(void)argv;
-	(void)envp;
-	
-	prompt();
-	
+	char *cmd;
+
+	cmd = NULL;
+	ft_putstr_fd("$ ", 1);
+	cmd = readline("");
+	ft_printf("%s\n", cmd);
+	while(ft_strcmp(cmd, "exit") != 0)
+	{
+		ft_putstr_fd("$ ", 1);
+		cmd = readline("");
+		ft_printf("%s\n", cmd);
+	}
+	free(cmd);	
 }
