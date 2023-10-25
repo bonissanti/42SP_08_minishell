@@ -58,7 +58,7 @@ void	print_all_env(t_hashtable *hash_table)
 	bubble_sort(keys, num_keys);
 	i = -1;
 	while (++i < num_keys)
-		printf("declare -x %s=\"%s\"\n", keys[i], search(hash_table, keys[i]));
+		printf("declare -x %s=\"%s\"\n", keys[i], search(hash_table, keys[i])->value);
 	free(keys);
 }
 
@@ -67,25 +67,29 @@ void	add_env(t_hashtable *hash_table, char **args)
 	int		i;
 	char	*key;
 	char	*value;
-	char	*equals_sign;
+	char	**equals_sign;
+	t_hash *hash;
 
 	i = 1;
 	while (args[i] != NULL)
 	{
-		equals_sign = strchr(args[i], '=');
-		if (equals_sign != NULL)
+		equals_sign = ft_split(args[i], '=');
+		if (equals_sign[1] != NULL)
 		{
-			*equals_sign = '\0';
-			key = args[i];
-			value = "";
+			key = equals_sign[0];
+			value = ft_strtrim(equals_sign[1], "\"");
+			if (value == NULL)
+				value = "";
 			insert(hash_table, key, value);
 		}
 		else
 		{
-			key = args[i];
-			value = search(hash_table, key);
-			if (value == NULL)
+			key = equals_sign[0];
+			hash = search(hash_table, key);
+			if (hash == NULL)
 				value = "";
+			else
+				value = hash->value;
 			insert(hash_table, key, value);
 		}
 		i++;

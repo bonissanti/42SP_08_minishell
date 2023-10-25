@@ -34,7 +34,7 @@ OBJDIR 		= ./objs
 ################################# Compilate #################################
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -g 
 
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) --no-print-directory
 LIBFT_LIB = $(LIBFT)/libft.a
@@ -44,7 +44,7 @@ LIBFT_LIB = $(LIBFT)/libft.a
 all: $(NAME)
 
 $(NAME): $(LIBFT_LIB) $(OBJS:%=$(OBJDIR)/%)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS:%=$(OBJDIR)/%) -I $(HEADER) -L $(LIBFT) -lft 
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJS:%=$(OBJDIR)/%) -I $(HEADER) -L $(LIBFT) -lft -lreadline
 	@echo "$(GREEN)$(NAME) created$(RESET)"
 
 $(LIBFT_LIB):

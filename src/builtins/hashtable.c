@@ -73,15 +73,29 @@ void insert(t_hashtable *hash_table, char *key, char *value)
 {
     unsigned int index;
     t_hash *add_env;
+    t_hash *check_dup;
+    char *key_copy;
 
     index = hash(key);
-    add_env = (t_hash *)malloc(sizeof(t_hash));
+    key_copy = strdup(key);
+    check_dup = search(hash_table, key_copy);
+    if (check_dup != NULL)
+    {
+        free(check_dup->value);
+        check_dup->value = strdup(value);
+        return ;
+    }
+    else
+    {
+        add_env = (t_hash *)malloc(sizeof(t_hash));
     
-    add_env->key = key; // if broken, try strdup for key
-    add_env->value = value; // if broken, try strdup for value
+        add_env->key = key_copy;
+        add_env->value = value; // if broken, try strdup for value
 
-    add_env->next = hash_table->buckets[index];
-    hash_table->buckets[index] = add_env;
+        add_env->next = hash_table->buckets[index];
+        hash_table->buckets[index] = add_env;
+    }
+    
 }
 
 /**
@@ -103,7 +117,7 @@ void insert(t_hashtable *hash_table, char *key, char *value)
  *
  */
 
-char *search(t_hashtable *hash_table, char *key)
+t_hash *search(t_hashtable *hash_table, char *key)
 {
     unsigned int index;
     t_hash *search_env;
@@ -113,7 +127,7 @@ char *search(t_hashtable *hash_table, char *key)
     while (search_env != NULL)
     {
         if (strcmp(search_env->key, key) == 0)
-            return (search_env->value);
+            return (search_env);
         search_env = search_env->next;
     }
     return (NULL);
