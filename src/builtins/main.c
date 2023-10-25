@@ -3,6 +3,10 @@
 
 int	main(int argc, char **argv, char **envp)
 {
+	int i;
+	char **num_args;
+	
+	i = -1;
 	(void)argc;
 	(void)argv;
 	(void)envp;
@@ -14,7 +18,6 @@ int	main(int argc, char **argv, char **envp)
 	{
 		ft_putstr_fd("~$ ", 1);;
 		input = get_next_line(0);
-		char **num_args;
 
 		num_args = ft_split(input, ' ');
 		if (ft_strcmp(num_args[0], "export\n") == 0)
@@ -22,8 +25,7 @@ int	main(int argc, char **argv, char **envp)
         
 		free(input);
 
-		// Free num_args
-		for (int i = 0; num_args[i] != NULL; i++)
+		while (num_args[++i] != NULL)
 			free(num_args[i]);
 		free(num_args);
 	}
