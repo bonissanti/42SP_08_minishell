@@ -81,6 +81,8 @@ void insert(t_hashtable *hash_table, char *key, char *value)
     check_dup = search(hash_table, key_copy);
     if (check_dup != NULL)
     {
+        if (ft_strcmp(check_dup->value, "") == 0)
+            check_dup->value = strdup(value);
         free(check_dup->value);
         check_dup->value = strdup(value);
         return ;

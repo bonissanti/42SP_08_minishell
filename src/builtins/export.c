@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/10/24 19:34:23 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/10/26 17:55:26 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,14 @@
 void init_hash(t_hashtable *hash_table, char **envp)
 {
 	int i;
-	char *key;
-	char *value;
+	t_env env;
 
 	i = -1;
 	while (envp[++i] != NULL)
 	{
-		key = strtok(envp[i], "=");
-		value = strtok(NULL, "=");
-		insert(hash_table, key, value);
+		env.key = strtok(envp[i], "=");
+		env.value = strtok(NULL, "=");
+		insert(hash_table, env.key, env.value);
 	}
 }
 
@@ -65,33 +64,30 @@ void	print_all_env(t_hashtable *hash_table)
 void	add_env(t_hashtable *hash_table, char **args)
 {
 	int		i;
-	char	*key;
-	char	*value;
-	char	**equals_sign;
+	t_env 	env;
 	t_hash *hash;
-	// t_env *env;
 
 	i = 1;
 	while (args[i] != NULL)
 	{
-		equals_sign = ft_split(args[i], '=');
-		if (equals_sign[1] != NULL)
+		env.equals_sign = ft_split(args[i], '=');
+		if (env.equals_sign[1] != NULL)
 		{
-			key = equals_sign[0];
-			value = ft_strtrim(equals_sign[1], "\"");
-			if (value == NULL)
-				value = "";
-			insert(hash_table, key, value);
+			env.key = env.equals_sign[0];
+			env.value = ft_strtrim(env.equals_sign[1], "\"");
+			if (env.value == NULL)
+				env.value = "";
+			insert(hash_table, env.key, env.value);
 		}
 		else
 		{
-			key = equals_sign[0];
-			hash = search(hash_table, key);
+			env.key = env.equals_sign[0];
+			hash = search(hash_table, env.key);
 			if (hash == NULL)
-				value = "";
+				env.value = "";
 			else
-				value = hash->value;
-			insert(hash_table, key, value);
+				env.value = hash->value;
+			insert(hash_table, env.key, env.value);
 		}
 		i++;
 	}

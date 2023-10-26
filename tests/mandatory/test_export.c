@@ -47,7 +47,22 @@ char *read_line(char *filename)
 }
 
 
-MU_TEST(test_export_aaaaaaaaaaaaaaa)
+MU_TEST(test_export)
+{
+	system("export > outfile_shell");
+    system("/nfs/homes/brunrodr/09.MINISHELL/42SP_08_minishell/minishell");
+
+    send_command_and_write_to_file("export", "outfile_result");
+
+    char *minishell_output = read_line("outfile_result");
+    char *bash_output = read_line("outfile_shell");
+
+    mu_assert_string_eq(minishell_output, bash_output);
+    free(minishell_output);
+    free(bash_output);
+}
+
+MU_TEST(test_export_VAR=)
 {
 	system("export > outfile_shell");
     system("/nfs/homes/brunrodr/09.MINISHELL/42SP_08_minishell/minishell");
@@ -65,7 +80,10 @@ MU_TEST(test_export_aaaaaaaaaaaaaaa)
 
 MU_TEST_SUITE(test_suite)
 {
-    MU_RUN_TEST(test_export_aaaaaaaaaaaaaaa);
+    MU_RUN_TEST(test_export);
+    MU_RUN_TEST(test_export);
+    MU_RUN_TEST(test_export);
+    MU_RUN_TEST(test_export);
 }
 
 int main(void)
@@ -74,3 +92,32 @@ int main(void)
     MU_REPORT();
     return (0);
 }
+
+// echo aaaa > file | tr a C
+
+
+// Tokenização - split de todas a palavras e operadores ("", '', |, >, >>, >, <, <<);
+
+// Analise Lexica - transformar os tokens em WORD, PIPE, GREATER, DGREATER,) 
+
+// // enum {
+// //     AND 5
+// //     PIPE 4
+// // }
+
+// Analise Sintática - word word pipe word dgreater greater 
+
+// Separar os tokens em Commandos - Lista linkadas split pelos PIPES (stdin operação stdout)
+
+// Node {
+
+//     __REDIRECT
+
+//         arg1_execve
+//         arg2_execve;
+
+//         stdin
+//         stdout
+// }
+
+// Pipex

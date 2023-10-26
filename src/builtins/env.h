@@ -38,7 +38,7 @@ typedef struct t_env
 	char *key;
 	char **env;
 	char *value;
-	int index;
+	char **equals_sign;
 	int num_env;
 
 }			t_env;
