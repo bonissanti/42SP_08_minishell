@@ -1,0 +1,6 @@
+total 28
+drwxr-xr-x 2 brunrodr candidate  4096 Sep 13 18:05 bonus
+-rw-r--r-- 1 brunrodr candidate  2638 Oct 26 13:00 Makefile
+drwxr-xr-x 2 brunrodr candidate  4096 Oct 26 15:10 mandatory
+-rw-r--r-- 1 brunrodr candidate 13333 Sep  4 11:22 minunit.h
+-rw-r--r-- 1 brunrodr candidate     0 Oct 26 15:10 outfile_shell
