@@ -1,23 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/22 20:39:43 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/10/26 21:03:06 by aperis-p         ###   ########.fr       */
+/*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
+/*   Updated: 2023/10/26 21:38:59 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "./parser.h"
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include "./libft/libft.h"
+int	command_consistency(char *cmd)
+{
+	if(*cmd == PIPE || cmd[ft_strlen(cmd) - 1] == PIPE)
+		return (0);
+	
+}
 
-void	prompt(void);
-
-#endif
