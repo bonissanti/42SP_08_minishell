@@ -23,19 +23,25 @@ typedef enum
 	NODE_OPERATOR,
 	NODE_FILE,
 	NODE_REDIRECT,
-} t_node_type;
+} t_ast_type;
 
 typedef enum
 {
-	OP_PIPE,
-	OP_AND,
-	OP_OR,
-	OP_REDIRECT,
-	OP_BACKGROUND,
+	OP_REDIRECT = 4, 	// <, >, >> 
+	OP_PIPE = 3, 		// |
+	OP_LOGICAL = 2, 	// &&, ||
+	DEFAULT = 0,
 } t_operator;
 
+typedef struct s_ast
+{
 	
-
+	char *args;
+	t_operator op;
+	t_ast_type type;
+	struct s_ast *left;
+	struct s_ast *right;
+} t_ast;
 
 
 // typedef enum
@@ -50,15 +56,6 @@ typedef enum
 // 	HEREDOC = 5,
 // 	COMMAND = 0,
 // }	t_height;
-
-typedef struct s_node
-{
-	
-	char *args;
-	struct s_node *left;
-	struct s_node *right;
-	t_node_type type;
-} t_node;
 
 
 #endif
