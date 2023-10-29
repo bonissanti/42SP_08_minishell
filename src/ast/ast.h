@@ -27,9 +27,9 @@ typedef enum
 
 typedef enum
 {
-	OP_REDIRECT = 4, 	// <, >, >> 
+	OP_REDIRECT = 2, 	// <, >, >> 
 	OP_PIPE = 3, 		// |
-	OP_LOGICAL = 2, 	// &&, ||
+	OP_LOGICAL = 4, 	// &&, ||
 	DEFAULT = 0,
 } t_operator;
 

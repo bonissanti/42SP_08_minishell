@@ -80,15 +80,15 @@ void pre_order_traversal(t_ast *root)
 	}
 }
 
-// void post_order_traversal(t_ast *root)
-// {
-// 	if (root != NULL)
-// 	{
-// 		post_order_traversal(root->left);
-// 		post_order_traversal(root->right);
-// 		printf("%s\n", root->args);
-// 	}
-// }
+void post_order_traversal(t_ast *root)
+{
+	if (root != NULL)
+	{
+		post_order_traversal(root->left);
+		post_order_traversal(root->right);
+		printf("%s\n", root->args);
+	}
+}
 
 void print_tree(t_ast *root, int depth)
 {
@@ -103,36 +103,63 @@ void print_tree(t_ast *root, int depth)
 	}
 }
 
-//ls -l > outfile.txt < cat | wc -l
 int main(void)
 {
-	t_ast *root = create_node(NODE_COMMAND, "ls -l");
+    t_ast *root = NULL;
 
-	t_ast *node1 = create_node(NODE_OPERATOR, ">");
-	insert_ast(&root, node1, OP_REDIRECT);
+    t_ast *node1 = create_node(NODE_COMMAND, "ls -l");
+    insert_ast(&root, node1, DEFAULT);
 
-	t_ast *node2 = create_node(NODE_FILE, "outfile.txt1");
-	insert_ast(&root, node2, DEFAULT);
+    t_ast *node2 = create_node(NODE_OPERATOR, ">");
+    insert_ast(&root, node2, OP_REDIRECT);
 
-	t_ast *node3 = create_node(NODE_OPERATOR, "&&");
-	insert_ast(&root, node3, OP_LOGICAL);
+    t_ast *node3 = create_node(NODE_FILE, "error.txt");
+    insert_ast(&root, node3, DEFAULT);
 
-	t_ast *node4 = create_node(NODE_COMMAND, "cat");
-	insert_ast(&root, node4, DEFAULT);
+    t_ast *node4 = create_node(NODE_OPERATOR, "&&");
+    insert_ast(&root, node4, OP_LOGICAL);
 
-	t_ast *node5 = create_node(NODE_FILE, "outfile.txt2");
-	insert_ast(&root, node5, DEFAULT);
+    t_ast *node5 = create_node(NODE_COMMAND, "cat error.txt");
+    insert_ast(&root, node5, DEFAULT);
 
-	t_ast *node6 = create_node(NODE_OPERATOR, "|");
-	insert_ast(&root, node6, OP_PIPE);
+    t_ast *node6 = create_node(NODE_OPERATOR, "|");
+    insert_ast(&root, node6, OP_PIPE);
 
-	t_ast *node7 = create_node(NODE_COMMAND, "grep 42");
-	insert_ast(&root, node7, DEFAULT);
+    t_ast *node7 = create_node(NODE_COMMAND, "grep \"42\"");
+    insert_ast(&root, node7, DEFAULT);
 
-	pre_order_traversal(root);
-	// print_tree(root, 0);
-	return (0);
+    pre_order_traversal(root);
+    return (0);
 }
+
+
+//ls -l > outfile.txt < cat | wc -l
+// int main(void)
+// {
+// 	t_ast *root = create_node(NODE_COMMAND, "ls -l");
+
+// 	t_ast *node1 = create_node(NODE_OPERATOR, "|");
+// 	insert_ast(&root, node1, OP_PIPE);
+
+// 	t_ast *node2 = create_node(NODE_FILE, "grep .c");
+// 	insert_ast(&root, node2, DEFAULT);
+
+// 	t_ast *node3 = create_node(NODE_OPERATOR, "&&");
+// 	insert_ast(&root, node3, OP_LOGICAL);
+
+// 	t_ast *node4 = create_node(NODE_COMMAND, "wc -l");
+// 	insert_ast(&root, node4, DEFAULT);
+
+// 	t_ast *node5 = create_node(NODE_OPERATOR, ">");
+// 	insert_ast(&root, node5, OP_REDIRECT);
+
+// 	t_ast *node6 = create_node(NODE_FILE, "output.txt");
+// 	insert_ast(&root, node6, DEFAULT);
+
+// 	pre_order_traversal(root);
+// 	// print_tree(root, 0);
+// 	return (0);
+// }
 
 // int main(void)
 // {
