@@ -94,6 +94,7 @@ void insert(t_hashtable *hash_table, char *key, char *value)
         add_env->value = value;
         add_env->next = hash_table->buckets[index];
         hash_table->buckets[index] = add_env;
+        hash_table->num_keys++;
     }   
 }
 

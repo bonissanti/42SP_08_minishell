@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/10/30 17:25:02 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/10/30 18:33:03 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void init_hash(t_hashtable *hash_table, char **envp)
 		env.key = env.equals_sign[0];
 		env.value = env.equals_sign[1];
 		insert(hash_table, env.key, env.value);
-		hash_table->num_keys++;
+		// hash_table->num_keys++;
 	}
 }
 
@@ -128,22 +128,23 @@ void	add_env(t_hashtable *hash_table, char **args)
 	while (args[i] != NULL)
 	{
 		env.equals_sign = ft_split(args[i], '=');
+		env.key = env.equals_sign[0];
+		hash = search(hash_table, env.key);
 		if (env.equals_sign[1] != NULL)
 		{
-			env.key = env.equals_sign[0];
 			env.value = ft_strtrim(env.equals_sign[1], "\"");
 			if (env.value == NULL)
 				env.value = "";
 			insert(hash_table, env.key, env.value);
 		}
-		else
+		else if (hash == NULL)
 		{
-			env.key = env.equals_sign[0];
-			hash = search(hash_table, env.key);
-			if (hash == NULL)
-				env.value = "";
-			else
-				env.value = hash->value;
+			env.value = "";
+			insert(hash_table, env.key, env.value);	
+		}
+		else if (args[i][ft_strlen(args[i]) - 1] == '=')
+		{
+			env.value = "";
 			insert(hash_table, env.key, env.value);
 		}
 		i++;
