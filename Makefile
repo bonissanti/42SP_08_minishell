@@ -19,7 +19,7 @@ HEADER 		= ./mandatory/
 
 SUBDIRS 	= mandatory
 MAND_SRCS 	= builtins/export.c builtins/export_utils.c builtins/hashtable.c \
-				builtins/main.c
+				builtins/main.c builtins/echo.c
 			
 		
 SRCS 		= $(addprefix ./src/, $(MAND_SRCS))

@@ -27,6 +27,9 @@ int	main(int argc, char **argv, char **envp)
 		num_args = ft_split(trimmed_input, ' ');
 		if (ft_strcmp(num_args[0], "export") == 0)
             ft_export(hash_table, num_args);
+
+		if (ft_strcmp(num_args[0], "echo") == 0)
+			ft_echo(hash_table, num_args);
         
 		free(trimmed_input);
 
