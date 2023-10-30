@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/10/27 16:41:19 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/10/30 12:52:19 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # define AST_H
 
 
-typedef enum
+typedef enum 
 {
 	NODE_COMMAND,
 	NODE_OPERATOR,
@@ -25,6 +25,7 @@ typedef enum
 	NODE_REDIRECT,
 } t_ast_type;
 
+// Precedencia invertida
 typedef enum
 {
 	OP_REDIRECT = 2, 	// <, >, >> 
