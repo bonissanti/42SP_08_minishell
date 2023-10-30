@@ -41,15 +41,15 @@ t_hashtable *create_hashtable(void)
  *
  */
 
-unsigned int hash(char *key)
-{
-    unsigned int hash;
+    unsigned int hash(char *key)
+    {
+        unsigned int hash;
 
-    hash = 0;
-    while (*key)
-            hash = (hash << 5) + *key++;
-    return (hash % HASHSIZE);
-}
+        hash = 0;
+        while (*key)
+                hash = (hash << 5) + *key++;
+        return (hash % HASHSIZE);
+    }
 
 /**
  * Function: Insert

@@ -30,11 +30,13 @@ int	main(int argc, char **argv, char **envp)
         
 		free(trimmed_input);
 
+		if (ft_strcmp(num_args[0], "exit") == 0)
+			break;
+
 		for (int i = 0; num_args[i] != NULL; i++)
 			free(num_args[i]);
 
-		if (ft_strcmp(num_args[0], "exit") == 0)
-			break;
+		
 		free(num_args);
 	}
 }

@@ -30,6 +30,7 @@ typedef struct t_hash
 
 typedef struct t_hashtable
 {
+	int num_keys;
 	t_hash *buckets[101];
 }			t_hashtable;
 
@@ -62,6 +63,6 @@ void	ft_export(t_hashtable *hash_table, char **args);
 
 void	bubble_sort(char **array, int size);
 int	get_num_keys(t_hashtable *hash_table);
-char	**get_all_keys(t_hashtable *hash_table);
+char	**copy_all_keys(t_hashtable *hash_table);
 
 #endif

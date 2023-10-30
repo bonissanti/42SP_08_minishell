@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/10/30 15:29:01 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/10/30 15:54:55 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,14 +107,16 @@ void insert_ast(t_ast **root, t_ast *new_node)
  *
  */
 
-void delete_node(t_ast *node)
+void delete_node(t_ast *root)
 {
-	if (node != NULL)
+	if (root != NULL)
 	{
-		free(node->args);
-		free(node);
+		delete_node(root->left);
+		delete_node(root->right);
+		free(root);
 	}
 }
+
 
 // void in_order_traversal(t_ast *root)
 // {
@@ -161,7 +163,7 @@ void pre_order_traversal(t_ast *root)
 
 int main(void)
 {
-    t_ast *root = NULL;
+e    t_ast *root = NULL;
 
     t_ast *node1 = create_node(NODE_COMMAND, "ls -l", DEFAULT);
     insert_ast(&root, node1);
@@ -185,6 +187,8 @@ int main(void)
     insert_ast(&root, node7);
 
     pre_order_traversal(root);
+	delete_node(root);
+
     return (0);
 }
 
