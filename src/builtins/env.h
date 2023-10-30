@@ -65,4 +65,8 @@ void	bubble_sort(char **array, int size);
 int	get_num_keys(t_hashtable *hash_table);
 char	**copy_all_keys(t_hashtable *hash_table);
 
+//############################### Echo ########################################
+
+int ft_echo(t_hashtable *hash_table, char **args);
+
 #endif
