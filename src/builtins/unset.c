@@ -1,7 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   unset.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/31 12:53:13 by brunrodr          #+#    #+#             */
+/*   Updated: 2023/10/31 14:25:26 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include <stdio.h>
+#include "env.h"
 
-int ft_unset(char **args)
+int ft_unset(t_hashtable *hash_table ,char **args)
 {
     int i;
 
@@ -10,9 +23,9 @@ int ft_unset(char **args)
         ft_putstr_fd("expected argument to \"unset\"\n", 2);
     else
     {
-        while (!args[i++])
-            if (unsetenv(args[i]) != 0)
-                perror("unsetenv");
+        while (args[++i] != NULL)
+            delete_hash(hash_table, args[i]);
     }
     return (1);
 }
+

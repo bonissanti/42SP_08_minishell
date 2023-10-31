@@ -41,15 +41,14 @@ t_hashtable *create_hashtable(void)
  *
  */
 
-    unsigned int hash(char *key)
-    {
-        unsigned int hash;
-
-        hash = 0;
-        while (*key)
-                hash = (hash << 5) + *key++;
-        return (hash % HASHSIZE);
-    }
+unsigned int hash(char *key)
+{
+    unsigned int hash;
+    hash = 0;
+    while (*key)
+            hash = (hash << 5) + *key++;
+    return (hash % HASHSIZE);
+}
 
 /**
  * Function: Insert
@@ -165,13 +164,14 @@ void    delete_hash(t_hashtable *hash_table, char *key)
 
     while (delete_env != NULL)
     {
-        if (strcmp(delete_env->key, key) == 0)
+        if (ft_strcmp(delete_env->key, key) == 0)
         {
             if (prev_env == NULL)
                 hash_table->buckets[index] = delete_env->next;
             else
                 prev_env->next = delete_env->next;
             free(delete_env);
+            hash_table->num_keys--;
             return ;
         }
         prev_env = delete_env;

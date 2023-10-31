@@ -46,27 +46,40 @@ typedef struct t_env
 
 //############################### Hashtable ###################################
 
-t_hashtable *create_hashtable(void);
-unsigned int hash(char *key);
-void insert(t_hashtable *hash_table, char *key, char *value);
-t_hash *search(t_hashtable *hash_table, char *key);
-void    delete_hash(t_hashtable *hash_table, char *key);
+t_hashtable		*create_hashtable(void);
+unsigned int	hash(char *key);
+void			insert(t_hashtable *hash_table, char *key, char *value);
+t_hash			*search(t_hashtable *hash_table, char *key);
+void			delete_hash(t_hashtable *hash_table, char *key);
+
+//############################ Hash Utils ###################################
+
+void			bubble_sort(char **array, int size);
+int				get_num_keys(t_hashtable *hash_table);
+char			**copy_all_keys(t_hashtable *hash_table);
+char			*expand_variable(t_hashtable *hash_table, char *arg);
 
 //############################### Export ######################################
 
-void init_hash(t_hashtable *hash_table, char **envp);
-void	print_all_env(t_hashtable *hash_table);
-void	add_env(t_hashtable *hash_table, char **args);
-void	ft_export(t_hashtable *hash_table, char **args);
-
-//############################ Export Utils ###################################
-
-void	bubble_sort(char **array, int size);
-int	get_num_keys(t_hashtable *hash_table);
-char	**copy_all_keys(t_hashtable *hash_table);
+void			init_hash(t_hashtable *hash_table, char **envp);
+void			print_all_env(t_hashtable *hash_table);
+void			add_env(t_hashtable *hash_table, char **args);
+void			ft_export(t_hashtable *hash_table, char **args);
 
 //############################### Echo ########################################
 
-int ft_echo(t_hashtable *hash_table, char **args);
+int				ft_echo(t_hashtable *hash_table, char **args);
+
+//############################### Exit ########################################
+
+//############################### Cd ##########################################
+
+//############################### Pwd #########################################
+
+//############################### Export ######################################
+
+//############################### Unset ########################################
+
+int ft_unset(t_hashtable *hash_table ,char **args);
 
 #endif
