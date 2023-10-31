@@ -1,32 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   parser_list_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/22 20:39:43 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/10/30 19:36:37 by aperis-p         ###   ########.fr       */
+/*   Created: 2023/10/30 18:22:03 by aperis-p          #+#    #+#             */
+/*   Updated: 2023/10/30 18:38:30 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "parser.h"
 
-#include <stdio.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include "./libft/libft.h"
+t_tkn_list	*new_tkn_list(char *content, t_tkn_type type)
+{
+	t_tkn_list	*node;
 
-typedef struct s_global{
-	char *readline_input;
-	//
-	//
-	//
-} t_global;
-
-extern t_global global;
-
-void	prompt(void);
-
-#endif
+	node = (t_tkn_list *)malloc(sizeof(t_tkn_list));
+	if (!node)
+		return (NULL);
+	node->type = type;
+	if(type == IDENTIFIER)
+		node->content = NULL;
+	else
+		node->content = content;
+	node->next = NULL;
+	node->prev = NULL;
+	return (node);
+}
