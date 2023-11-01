@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 19:06:42 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/10/31 15:09:05 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/01 18:29:10 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int ft_echo(t_hashtable *hash_table, char **args)
 	{
 		if (args[i][0] == '-' && is_flag_n(args[i]))
 			continue ;
-		arg = expand_variable(hash_table, args[i]);
+		arg = handle_elements(hash_table, args[i]);
 		printf("%s ", arg);
 	}
 	printf("\n");

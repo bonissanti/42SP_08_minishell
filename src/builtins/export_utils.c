@@ -42,8 +42,7 @@ char	**copy_all_keys(t_hashtable *hash_table)
 		current = hash_table->buckets[i];
 		while (current != NULL)
 		{
-			keys[index] = current->key;
-			index++;
+			keys[index++] = current->key;
 			current = current->next;
 		}
 	}
