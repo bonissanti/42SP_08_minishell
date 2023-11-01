@@ -14,10 +14,9 @@ HEADER_PROJECT  	= ../src/builtins/env.h
 
 ############################# Test files ###################################
 
-TESTS           	= ./mandatory/test_export.c
+TESTS           	= ./export/test_export.c
 
-# TESTS_BONUS			= ./bonus/test_ls_grep_sort.c ./bonus/test_echo_grep_sort.c ./bonus/test_cat_sort_trAZ.c \
-# 					./bonus/test_read_makefile_grep_traz.c ./bonus/test_read_makefile_7_cmds.c
+
 
 PROGRAM_TEST    	= $(patsubst %.c, %, $(TESTS))
 # PROGRAM_TEST_BONUS 	= $(patsubst %.c, %, $(TESTS_BONUS))
@@ -77,8 +76,11 @@ clean: clean-minishell
 	@rm -f minishell minishell_bonus $(TEST_PROGRAMS) $(TEST_PROGRAMS_BONUS)
 	@echo "$(YELLOW)Cleaning done!$(RESET)"
 
-fclean: clean
+fdclean:
+	@rm -f *.txt
 
-re:	fclean all
+fclean: clean fdclean
+
+re:	fclean all fdclean
 
 .PHONY: all clean fclean re
