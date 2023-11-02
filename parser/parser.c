@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/01 22:15:08 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/02 14:46:14 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,51 +47,64 @@ void handle_token(t_global *global, char *str)
 		add_tkn_list(global, new_tkn_list(str, IDENTIFIER));
 }
 
+int crop_delimiter_tkn(char **cmd)
+{
+	int i;
+	
+	i = 0;
+	if(**cmd == '$')
+	{
+		i++;
+		(*cmd)++;
+		while(**cmd != ' ' && **cmd != '\0' && !isdelimiter(*cmd))
+		{
+			i++;
+			(*cmd)++;
+		}
+	}
+	else if(!ft_strncmp(*cmd, "||", 2) || !ft_strncmp(*cmd, "&&", 2)
+	|| !ft_strncmp(*cmd, "<<", 2) || !ft_strncmp(*cmd, ">>", 2))
+	{
+		i = 2;
+		(*cmd) += 2;
+	}
+	else
+	{
+		i++;
+		(*cmd)++;
+	}
+	return(i);
+}
+
+int crop_quote_tkn(char **cmd)
+{
+	int i;
+	char quote;
+	
+	quote = **cmd;
+	i = 1;
+	(*cmd)++;
+	while(**cmd != quote)
+	{
+		i++;
+		(*cmd)++;
+	}
+	i++;
+	(*cmd)++;
+	return(i);
+}
+
 char *crop_tkn(char **cmd)
 {
 	char *cropped;
 	int i;
-	char quote;
 	
 	cropped = *cmd;
 	i = 0;
 	if (**cmd == '\'' || **cmd == '"')
-	{
-		quote = **cmd;
-		i++;
-		(*cmd)++;
-		while(**cmd != quote)
-		{
-			i++;
-			(*cmd)++;
-		}
-		i++;
-		(*cmd)++;
-	}
+		i = crop_quote_tkn(cmd);
 	else if(isdelimiter(*cmd))
-	{
-		if(**cmd == '$')
-		{
-			i++;
-			(*cmd)++;
-			while(**cmd != ' ' && **cmd != '\0' && !isdelimiter(*cmd))
-			{
-				i++;
-				(*cmd)++;
-			}
-		}
-		else if(!ft_strncmp(*cmd, "||", 2) || !ft_strncmp(*cmd, "&&", 2)
-		|| !ft_strncmp(*cmd, "<<", 2) || !ft_strncmp(*cmd, ">>", 2))
-		{
-			i = 2;
-			(*cmd) += 2;
-		}
-		else
-		{
-			i++;
-			(*cmd)++;
-		}
-	}
+		i = crop_delimiter_tkn(cmd);
 	else
 	{
 		while(**cmd != ' ' && **cmd != '\0' && !isdelimiter(*cmd)) //here 
@@ -138,6 +151,6 @@ void tokenizer(t_global *global, char *cmd)
 // 	// tokenizer(&global, "<teste.txt cat>teste.txtcat");
 // 	// tokenizer(&global, "echo$PATH");
 // 	// tokenizer(&global, "echo $PATH>path.txt&&cat path.txt|echo $USER");
-// 	// tokenizer(&global, "echo $PATH>*.txt&&cat *.txt|echo $USER");
+// 	tokenizer(&global, "echo $PATH>*.txt&&cat *.txt|echo $USER");
 // 	print_tkn_list(global.tkn_list);
 // }
