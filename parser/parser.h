@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/10/31 23:33:18 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/01 18:59:08 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ typedef enum {
 	C_PARENTESIS,
 	AND,
 	OR,
-	NL,
+	EXPAND,
+	WILD
 } t_tkn_type;
 
 typedef struct s_tkn_list{
@@ -44,6 +45,5 @@ void		handle_token(t_global *global, char *str);
 void		add_tkn_list(t_global *global, t_tkn_list *new_list);
 void		print_tkn_list(t_tkn_list *tkn_list);   //DELETE THIS BEFORE DELIVERY 
 char		*tkn_type_string(t_tkn_type type);      //DELTE THIS BEFORE DELIVERY
-
 
 #endif

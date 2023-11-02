@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 18:22:03 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/10/31 22:27:20 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/01 22:09:16 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ t_tkn_list	*new_tkn_list(char *content, t_tkn_type type)
 	node->type = type;
 	if(type == IDENTIFIER)
 		node->content = content;
+	else if(type == EXPAND)
+		node->content = ft_substr(content, 1, ft_strlen(content) - 1);
 	else
 		node->content = NULL;
 	node->next = NULL;
@@ -53,7 +55,7 @@ t_tkn_list *last_tkn_list(t_tkn_list *tkn_list)
 
 void add_tkn_list(t_global *global, t_tkn_list *new_list)
 {
-	t_tkn_list *last; 
+	t_tkn_list *last;
 
 	if(!tkn_list_size(global->tkn_list))
 		global->tkn_list = new_list;
