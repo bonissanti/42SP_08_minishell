@@ -12,18 +12,7 @@
 
 #include "env.h"
 
-char *expand_variable(t_hashtable *hash_table, char *arg)
-{
-	t_hash *hash;
-	
-	if (arg[0] == '$')
-	{
-		hash = search(hash_table, arg + 1);
-		if (hash != NULL)
-			return (hash->value);
-	}
-	return (arg);
-}
+
 
 char *remove_quotes(char *arg, char quote)
 {

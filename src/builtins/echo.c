@@ -14,6 +14,7 @@
 #include <stdio.h>
 
 t_bool is_flag_n(char *arg);
+char *expand_variable(t_hashtable *hash_table, char *arg);
 
 int ft_echo(t_hashtable *hash_table, char **args)
 {
@@ -25,7 +26,7 @@ int ft_echo(t_hashtable *hash_table, char **args)
 	{
 		if (args[i][0] == '-' && is_flag_n(args[i]))
 			continue ;
-		arg = handle_elements(hash_table, args[i]);
+		arg = expand_variable(hash_table, args[i]);
 		printf("%s ", arg);
 	}
 	printf("\n");
@@ -43,6 +44,19 @@ t_bool is_flag_n(char *arg)
 			return (false);
 	}
 	return (true);
+}
+
+char *expand_variable(t_hashtable *hash_table, char *arg)
+{
+	t_hash *hash;
+	
+	if (arg[0] == '$')
+	{
+		hash = search(hash_table, arg + 1);
+		if (hash != NULL)
+			return (hash->value);
+	}
+	return (arg);
 }
 
 // int main(void)

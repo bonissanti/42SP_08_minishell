@@ -40,6 +40,8 @@ typedef struct s_ast
 	char *args;
 	t_operator op;
 	t_ast_type type;
+	// int stdin;
+	// int stdout;
 	struct s_ast *left;
 	struct s_ast *right;
 } t_ast;
