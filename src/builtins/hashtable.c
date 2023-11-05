@@ -68,7 +68,7 @@ unsigned int hash(char *key)
  *
  */
 
-void insert(t_hashtable *hash_table, char *key, char *value)
+void insert_hash(t_hashtable *hash_table, char *key, char *value)
 {
     unsigned int index;
     t_hash *add_env;

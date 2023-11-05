@@ -27,7 +27,7 @@
 // 		split = ft_split(envp[1], '=');
 // 		key = split[0];
 // 		value = split[1];
-// 		insert(hash_table, key, value);
+// 		insert_hash(hash_table, key, value);
 // 		free(split);
 // 	}
 // }
@@ -37,7 +37,7 @@
  * -----------------
  * This function is used to initialize the hashtable. It will iterate through
  * the environment variables, split them into key and value using the '='
- * character as a delimiter, and then insert them into the hashtable. This
+ * character as a delimiter, and then insert_hash them into the hashtable. This
  * function uses a counter to keep track of the number of environment variables,
  * this is used futurely to print the environment variables in alphabetical
  * order.
@@ -64,7 +64,7 @@ void init_hash(t_hashtable *hash_table, char **envp)
 		env.equals_sign = ft_split(envp[i], '=');
 		env.key = env.equals_sign[0];
 		env.value = env.equals_sign[1];
-		insert(hash_table, env.key, env.value);
+		insert_hash(hash_table, env.key, env.value);
 		// hash_table->num_keys++;
 	}
 }
@@ -105,7 +105,7 @@ void	print_all_env(t_hashtable *hash_table)
  * This function is used to add environment variables to the hashtable. First
  * we iterate through the arguments, then we split the arguments into key and
  * value using the '=' character as a delimiter. If the argument contains
- * a '=', we insert the key and value into the hashtable. If the argument
+ * a '=', we insert_hash the key and value into the hashtable. If the argument
  * does not contain a '=', we search for the key in the hashtable, and if
  * 
  *  
@@ -135,17 +135,17 @@ void	add_env(t_hashtable *hash_table, char **args)
 			env.value = ft_strtrim(env.equals_sign[1], "\"");
 			if (env.value == NULL)
 				env.value = "";
-			insert(hash_table, env.key, env.value);
+			insert_hash(hash_table, env.key, env.value);
 		}
 		else if (hash == NULL)
 		{
 			env.value = "";
-			insert(hash_table, env.key, env.value);	
+			insert_hash(hash_table, env.key, env.value);	
 		}
 		else if (args[i][ft_strlen(args[i]) - 1] == '=')
 		{
 			env.value = "";
-			insert(hash_table, env.key, env.value);
+			insert_hash(hash_table, env.key, env.value);
 		}
 		i++;
 	}

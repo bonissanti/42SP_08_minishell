@@ -19,10 +19,10 @@
 
 typedef enum 
 {
-	NODE_COMMAND,
-	NODE_OPERATOR,
-	NODE_FILE,
-	NODE_REDIRECT,
+	TYPE_COMMAND,
+	TYPE_OPERATOR,
+	TYPE_FILE,
+	TYPE_REDIRECT,
 } t_ast_type;
 
 // Precedencia invertida

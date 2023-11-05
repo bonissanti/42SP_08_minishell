@@ -48,7 +48,7 @@ typedef struct t_env
 
 t_hashtable		*create_hashtable(void);
 unsigned int	hash(char *key);
-void			insert(t_hashtable *hash_table, char *key, char *value);
+void			insert_hash(t_hashtable *hash_table, char *key, char *value);
 t_hash			*search(t_hashtable *hash_table, char *key);
 void			delete_hash(t_hashtable *hash_table, char *key);
 
