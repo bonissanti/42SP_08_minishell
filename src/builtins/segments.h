@@ -1,7 +1,7 @@
 #ifndef SEGMENTS_H
 #define SEGMENTS_H
 
-#include <string>
+// #include <string>
 #include <stdlib.h>
 
 typedef struct s_segments

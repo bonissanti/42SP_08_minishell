@@ -51,6 +51,7 @@ unsigned int	hash(char *key);
 void			insert(t_hashtable *hash_table, char *key, char *value);
 t_hash			*search(t_hashtable *hash_table, char *key);
 void			delete_hash(t_hashtable *hash_table, char *key);
+void 			destroy_hashtable(t_hashtable *hash_table);
 
 //############################ Hash Utils ###################################
 
@@ -73,6 +74,8 @@ int				ft_echo(t_hashtable *hash_table, char **args);
 
 //############################### Exit ########################################
 
+void ft_exit(char **args);
+
 //############################### Cd ##########################################
 
 //############################### Pwd #########################################
@@ -82,5 +85,10 @@ int				ft_echo(t_hashtable *hash_table, char **args);
 //############################### Unset ########################################
 
 int ft_unset(t_hashtable *hash_table ,char **args);
+
+//############################### Memory #######################################
+
+void safe_free(void **ptr);
+void free_split(char **split);
 
 #endif

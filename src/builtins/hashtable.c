@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+
+void safe_free(void **ptr);
+
 /**
  * Function: Create_hashtable
  * -----------------
@@ -76,25 +79,27 @@ void insert(t_hashtable *hash_table, char *key, char *value)
     char *key_copy;
 
     index = hash(key);
-    key_copy = strdup(key);
+    key_copy = ft_strdup(key);
     check_dup = search(hash_table, key_copy);
     if (check_dup != NULL)
     {
-        if (ft_strcmp(check_dup->value, "") == 0)
-            check_dup->value = strdup(value);
-        free(check_dup->value);
-        check_dup->value = strdup(value);
-        return ;
+        if (ft_strcmp(check_dup->value, value) != 0)
+        {
+            safe_free((void **)&check_dup->value);
+            check_dup->value = ft_strdup(value);
+        }
+        safe_free((void **)&key_copy);
+        check_dup->key = key_copy;
     }
     else
     {
         add_env = (t_hash *)malloc(sizeof(t_hash));
         add_env->key = key_copy;
-        add_env->value = value;
+        add_env->value = ft_strdup(value);
         add_env->next = hash_table->buckets[index];
         hash_table->buckets[index] = add_env;
         hash_table->num_keys++;
-    }   
+    }
 }
 
 /**
@@ -170,6 +175,8 @@ void    delete_hash(t_hashtable *hash_table, char *key)
                 hash_table->buckets[index] = delete_env->next;
             else
                 prev_env->next = delete_env->next;
+            free(delete_env->key);
+            free(delete_env->value);
             free(delete_env);
             hash_table->num_keys--;
             return ;
@@ -177,6 +184,38 @@ void    delete_hash(t_hashtable *hash_table, char *key)
         prev_env = delete_env;
         delete_env = delete_env->next;
     }
+}
+
+void safe_free(void **ptr)
+{
+    if (*ptr != NULL)
+    {
+        free(*ptr);
+        *ptr = NULL;
+    }
+}
+
+void destroy_hashtable(t_hashtable *hash_table)
+{
+    t_hash *temp;
+    t_hash *next;
+    size_t i;
+
+    i = -1;
+    while (++i < HASHSIZE)
+    {
+        temp = hash_table->buckets[i];
+        while (temp != NULL)
+        {
+            next = temp->next;
+            safe_free((void **)&temp->key);
+            safe_free((void **)&temp->value);
+            safe_free((void **)&temp);
+            temp = next;
+        }
+    }
+    safe_free((void **)&hash_table->buckets);
+    safe_free((void **)&hash_table);
 }
 
 // int main(void)

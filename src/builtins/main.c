@@ -34,15 +34,16 @@ int	main(int argc, char **argv, char **envp)
 		free(trimmed_input);
 
 		if (ft_strcmp(num_args[0], "exit") == 0)
-			break;
+			ft_exit(num_args);
 
 		if (ft_strcmp(num_args[0], "unset") == 0)
 			ft_unset(hash_table, num_args);
 
 		for (int i = 0; num_args[i] != NULL; i++)
 			free(num_args[i]);
-
-		
 		free(num_args);
+
 	}
+	destroy_hashtable(hash_table);
+	return (0);
 }

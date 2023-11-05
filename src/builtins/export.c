@@ -65,7 +65,7 @@ void init_hash(t_hashtable *hash_table, char **envp)
 		env.key = env.equals_sign[0];
 		env.value = env.equals_sign[1];
 		insert(hash_table, env.key, env.value);
-		// hash_table->num_keys++;
+		free_split(env.equals_sign);
 	}
 }
 
@@ -136,6 +136,7 @@ void	add_env(t_hashtable *hash_table, char **args)
 			if (env.value == NULL)
 				env.value = "";
 			insert(hash_table, env.key, env.value);
+			free_split(env.equals_sign);
 		}
 		else if (hash == NULL)
 		{
@@ -147,6 +148,7 @@ void	add_env(t_hashtable *hash_table, char **args)
 			env.value = "";
 			insert(hash_table, env.key, env.value);
 		}
+		free_split(env.equals_sign);
 		i++;
 	}
 }
@@ -170,6 +172,19 @@ void	add_env(t_hashtable *hash_table, char **args)
  * @return: Returns 1 if the function was successful.
  *
  */
+
+void free_split(char **split)
+{
+	int i;
+
+	i = 0;
+	while (split[i] != NULL)
+	{
+		safe_free((void **)&split[i]);
+		i++;
+	}
+	safe_free((void **)&split);
+}
 
 void	ft_export(t_hashtable *hash_table, char **args)
 {

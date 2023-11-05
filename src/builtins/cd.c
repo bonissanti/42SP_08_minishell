@@ -16,7 +16,7 @@
 int    ft_cd(char **args)
 {
 	if (args[1] == NULL)
-		printf("expected argument to \"cd\"\n");
+		ft_putstr_fd("cd: expected argument to \"cd\"\n", 2);
 	else
 	{
 		if (chdir(args[1]) != 0)
