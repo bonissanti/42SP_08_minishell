@@ -23,7 +23,7 @@ typedef enum
 	TYPE_OPERATOR,
 	TYPE_FILE,
 	TYPE_REDIRECT,
-} t_ast_type;
+} t_type;
 
 // Precedencia invertida
 typedef enum
@@ -39,7 +39,7 @@ typedef struct s_ast
 	
 	char *args;
 	t_operator op;
-	t_ast_type type;
+	t_type type;
 	// int stdin;
 	// int stdout;
 	struct s_ast *left;

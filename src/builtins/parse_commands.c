@@ -66,7 +66,22 @@ void add_segments(t_segment **head, char *str)
 	}
 }
 
+char *join_segments(t_segment *head)
+{
+	t_segment *current;
+ 	char *str;
+	char *ptr;
+	int len;
 
+	len = 0;
+	current = head;
+	while (current != NULL)
+	{
+		len += ft_strlen(current->str);
+		current = current->next;
+	}
+	str - 
+}
 
 int main(int argc, char **argv, char **envp)
 {

@@ -32,7 +32,7 @@
  *
  */
 
-t_ast *create_node(t_ast_type type, char *args, t_operator op)
+t_ast *create_node(t_type type, char *args, t_operator op)
 {
 	t_ast *new_node;
 
