@@ -66,9 +66,22 @@ void add_segments(t_segment **head, char *str)
 	}
 }
 
-char *join_segments(t_segments *head)
+char *join_segments(t_segment *head)
 {
-	
+	t_segment *current;
+	char *str;
+	char *ptr;
+	int len;
+
+	len = 0;
+	current = head;
+	while (current)
+	{
+		len += ft_strlen(current->str);
+		current = current->next;
+	}
+	str = (char *)malloc(sizeof(char) * len + 1);
+	ptr = str;
 }
 
 
