@@ -65,8 +65,13 @@ void init_hash(t_hashtable *hash_table, char **envp)
 		env.key = env.equals_sign[0];
 		env.value = env.equals_sign[1];
 		insert(hash_table, env.key, env.value);
-		free_split(env.equals_sign);
+		free(env.equals_sign[0]);
+		free(env.equals_sign[1]);
+		free(env.equals_sign);
 	}
+	
+	// free(env.value);
+	// free(env.key);
 }
 
 /**
@@ -86,17 +91,17 @@ void init_hash(t_hashtable *hash_table, char **envp)
  *
  */
 
-void	print_all_env(t_hashtable *hash_table)
+void print_all_env(t_hashtable *hash_table)
 {
-	int		i;
-	char	**keys;
+    int i;
+    char **keys;
 
-	keys = copy_all_keys(hash_table);
-	bubble_sort(keys, hash_table->num_keys);
-	i = -1;
-	while (++i < hash_table->num_keys)
-		printf("declare -x %s=\"%s\"\n", keys[i], search(hash_table, keys[i])->value);
-	free(keys);
+    keys = copy_all_keys(hash_table);
+    bubble_sort(keys, hash_table->num_keys);
+    i = -1;
+    while (++i < hash_table->num_keys)
+        printf("declare -x %s=\"%s\"\n", keys[i], search(hash_table, keys[i])->value);
+    free(keys);
 }
 
 /**
@@ -137,6 +142,7 @@ void	add_env(t_hashtable *hash_table, char **args)
 				env.value = "";
 			insert(hash_table, env.key, env.value);
 			free_split(env.equals_sign);
+			free(env.value); // Libera a memória alocada por ft_strtrim
 		}
 		else if (hash == NULL)
 		{
@@ -148,10 +154,10 @@ void	add_env(t_hashtable *hash_table, char **args)
 			env.value = "";
 			insert(hash_table, env.key, env.value);
 		}
-		free_split(env.equals_sign);
 		i++;
 	}
 }
+
 
 /**
  * Function: Export
@@ -178,12 +184,17 @@ void free_split(char **split)
 	int i;
 
 	i = 0;
+	if (split == NULL)
+		return ;
 	while (split[i] != NULL)
 	{
 		safe_free((void **)&split[i]);
+		split[i] = NULL;
 		i++;
 	}
 	safe_free((void **)&split);
+	split = NULL;
+	free(split);
 }
 
 void	ft_export(t_hashtable *hash_table, char **args)

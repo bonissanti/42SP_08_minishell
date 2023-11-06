@@ -73,34 +73,34 @@ unsigned int hash(char *key)
 
 void insert(t_hashtable *hash_table, char *key, char *value)
 {
-    unsigned int index;
-    t_hash *add_env;
-    t_hash *check_dup;
-    char *key_copy;
+   unsigned int index;
+   t_hash *add_env;
+   t_hash *check_dup;
+   char *key_copy;
+   char *value_copy;
 
-    index = hash(key);
-    key_copy = ft_strdup(key);
-    check_dup = search(hash_table, key_copy);
-    if (check_dup != NULL)
-    {
-        if (ft_strcmp(check_dup->value, value) != 0)
-        {
-            safe_free((void **)&check_dup->value);
-            check_dup->value = ft_strdup(value);
-        }
-        safe_free((void **)&key_copy);
-        check_dup->key = key_copy;
-    }
-    else
-    {
-        add_env = (t_hash *)malloc(sizeof(t_hash));
-        add_env->key = key_copy;
-        add_env->value = ft_strdup(value);
-        add_env->next = hash_table->buckets[index];
-        hash_table->buckets[index] = add_env;
-        hash_table->num_keys++;
-    }
+   index = hash(key);
+   key_copy = ft_strdup(key);
+   value_copy = ft_strdup(value);
+   check_dup = search(hash_table, key_copy);
+   if (check_dup != NULL)
+   {
+       if (ft_strcmp(check_dup->value, value) != 0)
+           check_dup->value = value_copy;
+   }
+   else
+   {
+       add_env = (t_hash *)malloc(sizeof(t_hash));
+       add_env->key = key_copy;
+       add_env->value = value_copy;
+       add_env->next = hash_table->buckets[index];
+       hash_table->buckets[index] = add_env;
+       hash_table->num_keys++;
+   }
+   free(key_copy);
+   free(value_copy);
 }
+
 
 /**
  * Function: Search

@@ -106,15 +106,15 @@ int get_quote_type(char *arg)
    	quote_type = 0;
    	while (arg[i] != '\0')
    	{
-		  if (arg[i] == '\'' && quote_type == 0)
+		if (arg[i] == '\'' && quote_type == 0)
 			 quote_type = 1;
-		  else if (arg[i] == '\"' && quote_type == 0)
+		else if (arg[i] == '\"' && quote_type == 0)
 			 quote_type = 2;
-		  else if (arg[i] == '\"' && quote_type == 1)
+		else if (arg[i] == '\"' && quote_type == 1)
 			 quote_type = 3;
-		  else if (arg[i] == '\'' && quote_type == 2)
+		else if (arg[i] == '\'' && quote_type == 2)
 			 quote_type = 4;
-		  i++;
+		i++;
    	}
    	return (quote_type);
 }
@@ -158,18 +158,7 @@ char *expand_variabledois(t_hashtable *env, char *segment)
 	return (value);
 }
 
-// char *expand_variable(t_hashtable *hash_table, char *arg)
-// {
-// 	t_hash *hash;
-	
-// 	if (arg[0] == '$')
-// 	{
-// 		hash = search(hash_table, arg + 1);
-// 		if (hash != NULL)
-// 			return (hash->value);
-// 	}
-// 	return (arg);
-// }
+
 
 char *process_arguments(t_hashtable *env, char *segment, int quote_type)
 {
@@ -186,44 +175,24 @@ char *process_arguments(t_hashtable *env, char *segment, int quote_type)
 	return result;
 }
 
-// void parse_quotes(t_hashtable *env, char **args)
-// {
-// 	int length;
-// 	char *ptr;
-// 	char *segment = NULL;
-// 	t_segment *head;
-// 	int quote_type;
 
-// 	length = 0;
-// 	head = NULL;
-// 	ptr = *args;
-// 	segment = (char *)malloc(sizeof(char) * ft_strlen(ptr) + 1);
-// 	quote_type = get_quote_type(ptr);	
+size_t is_even_quotes(char *str)
+{
+	size_t single_quotes;
+	size_t double_quotes;
 
-// 	while (*ptr)
-// 	{
-// 		if ((*ptr == '\'' || *ptr == '\"') && quote_type != 1 && quote_type != 2)
-// 		{
-// 			ptr++;
-// 		}
-// 		else if (*ptr == '$' && (quote_type == 2 || quote_type == 4))
-// 		{
-// 			segment[length] = '\0';
-// 			add_segments(&head, process_arguments(env, segment, quote_type));
-// 			length = 0;
-// 			ptr++;
-// 		}
-// 		else
-// 			segment[length++] = *ptr++;
-// 	}
-// 	segment[length] = '\0';
-// 	add_segments(&head, process_arguments(env, segment, quote_type));
-// 	free(segment);
-// 	*args = join_segments(head);
-// 	free_segments(head);
-// }
-
-
+	single_quotes = 0;
+	double_quotes = 0;
+	while (*str)
+	{
+		if (*str == '\'')
+			single_quotes++;
+		else if (*str == '\"')
+			double_quotes++;
+		str++;
+	}
+	return (single_quotes % 2 == 0 && double_quotes % 2 == 0);
+}
 
 
 void	parse_quotes(t_hashtable *env, char **args)
@@ -240,12 +209,24 @@ void	parse_quotes(t_hashtable *env, char **args)
 	length = 0;
 	head = NULL;
 	ptr = *args;
+
+	if (!is_even_quotes(ptr))
+	{
+		ft_putstr_fd("minishell: syntax error: unexpected EOF\n", 2);
+		exit(2);
+	}
+
 	segment = (char *)malloc(sizeof(char) * ft_strlen(ptr) + 1);
 	quote_type = get_quote_type(ptr);
 
 	while (*ptr)
 	{
-		if ((*ptr == '\'' || *ptr == '\"') && quote_type != 1 && quote_type != 3)
+		//handle quote_type == 5
+		if ((*ptr == '\'') && quote_type == 3)
+		{
+			ptr++;
+		}
+		else if ((*ptr == '\"') && quote_type == 4)
 		{
 			ptr++;
 		}
@@ -273,6 +254,53 @@ void	parse_quotes(t_hashtable *env, char **args)
 	free_segments(head);
 }
 
+
+// void	parse_quotes(t_hashtable *env, char **args)
+// {
+// 	int length;
+// 	char *ptr;
+// 	char *segment;
+// 	t_segment *head;
+// 	int quote_type;
+// 	t_hash *hash;
+// 	char *key;
+// 	int key_len;
+
+// 	length = 0;
+// 	head = NULL;
+// 	ptr = *args;
+// 	segment = (char *)malloc(sizeof(char) * ft_strlen(ptr) + 1);
+// 	quote_type = get_quote_type(ptr);
+
+// 	while (*ptr)
+// 	{
+// 		if ((*ptr == '\'' || *ptr == '\"') && quote_type != 1 && quote_type != 3)
+// 		{
+// 			ptr++;
+// 		}
+// 		else if (*ptr == '$' && (quote_type == 0 || quote_type == 2 || quote_type == 4))
+// 		{
+// 			segment[length] = '\0';
+// 			add_segments(&head, segment);
+// 			length = 0;
+// 			ptr++;
+// 			key_len = ft_strcspn(ptr, "\"", "'");
+// 			key = strndup(ptr, key_len);
+// 			hash = search(env, key);
+// 			if (hash != NULL)
+// 				add_segments(&head, hash->value);
+// 			free(key);
+// 			ptr += key_len;
+// 		}
+// 		else
+// 			segment[length++] = *ptr++;
+// 	}
+// 	segment[length] = '\0';
+// 	add_segments(&head, segment);
+// 	free(segment);
+// 	*args = join_segments(head);
+// 	free_segments(head);
+// }
 
 // void	parse_quotes(t_hashtable *env, char **args)
 // {
@@ -386,15 +414,20 @@ int main(int argc, char **argv, char **envp)
 	insert(env, "VAR1", "value1");
 	insert(env, "VAR2", "value2");
 
-	char *arg1 = ft_strdup("'\"\"\"\"\"$USER\"\"\"'");
+	// char *arg1 = ft_strdup("'\"\"\"\"\"$USER\"\"\"'");
 	// char *arg2 = ft_strdup("echo '$VAR2' \"$HOME\" '\"$HOME\"'");
 	// char *arg3 = ft_strdup("\"\"\"\"\"'$USER'\"\"\"");
 	// char *arg4 = ft_strdup("\"$USER\"");
+	// char *arg5 = ft_strdup("'$USER'");
+	// char *arg6 = ft_strdup("$USER'");
+	char *arg6 = ft_strdup("''\"$USER\"8-");
 
-	parse_quotes(env, &arg1);
-	printf("%s\n", arg1);
+
+
+	parse_quotes(env, &arg6);
+	printf("%s\n", arg6);
 	destroy_hashtable(env);
-	free(arg1);
+	free(arg6);
 	return (0);
 }
 
