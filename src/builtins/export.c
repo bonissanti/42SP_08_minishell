@@ -14,65 +14,6 @@
 #include <stdio.h>
 #include <string.h>
 
-// void	init_hash(t_hashtable *hash_table, char **envp)
-// {
-// 	int		i;
-// 	char	*key;
-// 	char	*value;
-// 	char	**split;
-
-// 	i = -1;
-// 	while (envp[++i] != NULL)
-// 	{
-// 		split = ft_split(envp[1], '=');
-// 		key = split[0];
-// 		value = split[1];
-// 		insert(hash_table, key, value);
-// 		free(split);
-// 	}
-// }
-
-/**
- * Function: Init_hash
- * -----------------
- * This function is used to initialize the hashtable. It will iterate through
- * the environment variables, split them into key and value using the '='
- * character as a delimiter, and then insert them into the hashtable. This
- * function uses a counter to keep track of the number of environment variables,
- * this is used futurely to print the environment variables in alphabetical
- * order.
- *  
- * @param: *hash_table: The pointer to the hashtable.
- * @param: **envp: The environment variables.
- * 
- * @var: i: The counter for the number of environment variables.
- * @var: env: The struct that contains the key and value of the environment
- * 
- * @return: Returns nothing.
- *
- */
-
-void init_hash(t_hashtable *hash_table, char **envp)
-{
-	int i;
-	t_env env;
-
-	i = -1;
-	hash_table->num_keys = 0;
-	while (envp[++i] != NULL)
-	{
-		env.equals_sign = ft_split(envp[i], '=');
-		env.key = env.equals_sign[0];
-		env.value = env.equals_sign[1];
-		insert(hash_table, env.key, env.value);
-		free(env.equals_sign[0]);
-		free(env.equals_sign[1]);
-		free(env.equals_sign);
-	}
-	
-	// free(env.value);
-	// free(env.key);
-}
 
 /**
  * Function: Print_all_env
@@ -141,19 +82,16 @@ void	add_env(t_hashtable *hash_table, char **args)
 			if (env.value == NULL)
 				env.value = "";
 			insert(hash_table, env.key, env.value);
-			free_split(env.equals_sign);
-			free(env.value); // Libera a memória alocada por ft_strtrim
+			free(env.value);
 		}
 		else if (hash == NULL)
-		{
-			env.value = "";
-			insert(hash_table, env.key, env.value);	
-		}
+			insert(hash_table, env.key, "");
 		else if (args[i][ft_strlen(args[i]) - 1] == '=')
 		{
 			env.value = "";
 			insert(hash_table, env.key, env.value);
 		}
+		free_split(env.equals_sign);
 		i++;
 	}
 }
@@ -184,17 +122,30 @@ void free_split(char **split)
 	int i;
 
 	i = 0;
-	if (split == NULL)
-		return ;
 	while (split[i] != NULL)
 	{
-		safe_free((void **)&split[i]);
-		split[i] = NULL;
+		if(split[i] != NULL)
+		{
+			free(split[i]);
+			split[i] = NULL;
+		}
 		i++;
 	}
-	safe_free((void **)&split);
-	split = NULL;
-	free(split);
+	if(split != NULL)
+	{
+		free(split);
+		split = NULL;
+	}
+}
+
+
+void	safe_free(void **ptr)
+{
+	if (*ptr != NULL)
+	{
+		free(*ptr);
+		*ptr = NULL;
+	}
 }
 
 void	ft_export(t_hashtable *hash_table, char **args)

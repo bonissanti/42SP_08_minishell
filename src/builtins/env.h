@@ -74,7 +74,7 @@ int				ft_echo(t_hashtable *hash_table, char **args);
 
 //############################### Exit ########################################
 
-void ft_exit(char **args);
+void	ft_exit(t_hashtable *hash_table, char **args);
 
 //############################### Cd ##########################################
 

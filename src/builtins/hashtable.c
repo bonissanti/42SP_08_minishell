@@ -3,8 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-void safe_free(void **ptr);
+void			safe_free(void **ptr);
 
 /**
  * Function: Create_hashtable
@@ -18,12 +17,49 @@ void safe_free(void **ptr);
  *
  */
 
-t_hashtable *create_hashtable(void)
+t_hashtable	*create_hashtable(void)
 {
-    t_hashtable *hash_table;
+	t_hashtable	*hash_table;
 
-    hash_table = (t_hashtable *)calloc(1, sizeof(t_hashtable));
-    return (hash_table);
+	hash_table = (t_hashtable *)calloc(1, sizeof(t_hashtable));
+	return (hash_table);
+}
+
+/**
+ * Function: Init_hash
+ * -----------------
+ * This function is used to initialize the hashtable. It will iterate through
+ * the environment variables, split them into key and value using the '='
+ * character as a delimiter, and then insert them into the hashtable. This
+ * function uses a counter to keep track of the number of environment variables,
+ * this is used futurely to print the environment variables in alphabetical
+ * order.
+ *  
+ * @param: *hash_table: The pointer to the hashtable.
+ * @param: **envp: The environment variables.
+ * 
+ * @var: i: The counter for the number of environment variables.
+ * @var: env: The struct that contains the key and value of the environment
+ * 
+ * @return: Returns nothing.
+ *
+ */
+
+void init_hash(t_hashtable *hash_table, char **envp)
+{
+	int i;
+	t_env env;
+
+	i = -1;
+	hash_table->num_keys = 0;
+	while (envp[++i] != NULL)
+	{
+		env.equals_sign = ft_split(envp[i], '=');
+		env.key = env.equals_sign[0];
+		env.value = env.equals_sign[1];
+		insert(hash_table, env.key, env.value);
+		free_split(env.equals_sign);
+	}
 }
 
 /**
@@ -44,14 +80,17 @@ t_hashtable *create_hashtable(void)
  *
  */
 
-unsigned int hash(char *key)
+unsigned int	hash(char *key)
 {
-    unsigned int hash;
-    hash = 0;
-    while (*key)
-            hash = (hash << 5) + *key++;
-    return (hash % HASHSIZE);
+	unsigned int	hash;
+
+	hash = 0;
+	while (*key)
+		hash = (hash << 5) + *key++;
+	return (hash % HASHSIZE);
 }
+
+
 
 /**
  * Function: Insert
@@ -71,36 +110,39 @@ unsigned int hash(char *key)
  *
  */
 
-void insert(t_hashtable *hash_table, char *key, char *value)
+void	insert(t_hashtable *hash_table, char *key, char *value)
 {
-   unsigned int index;
-   t_hash *add_env;
-   t_hash *check_dup;
-   char *key_copy;
-   char *value_copy;
+	unsigned int	index;
+	t_hash			*add_env;
+	t_hash			*check_dup;
+	char			*key_copy;
+	char			*value_copy;
 
-   index = hash(key);
-   key_copy = ft_strdup(key);
-   value_copy = ft_strdup(value);
-   check_dup = search(hash_table, key_copy);
-   if (check_dup != NULL)
-   {
-       if (ft_strcmp(check_dup->value, value) != 0)
-           check_dup->value = value_copy;
-   }
-   else
-   {
-       add_env = (t_hash *)malloc(sizeof(t_hash));
-       add_env->key = key_copy;
-       add_env->value = value_copy;
-       add_env->next = hash_table->buckets[index];
-       hash_table->buckets[index] = add_env;
-       hash_table->num_keys++;
-   }
-   free(key_copy);
-   free(value_copy);
+	index = hash(key);
+	key_copy = ft_strdup(key);
+	value_copy = ft_strdup(value);
+	check_dup = search(hash_table, key_copy);
+	if (check_dup != NULL)
+	{
+		if (ft_strcmp(check_dup->value, value) != 0)
+		{
+			safe_free((void **)&check_dup->value);
+			check_dup->value = value_copy;
+		}
+		else
+			safe_free((void **)&value_copy);
+		safe_free((void **)&key_copy);
+	}
+	else
+	{
+		add_env = (t_hash *)malloc(sizeof(t_hash));
+		add_env->key = key_copy;
+		add_env->value = value_copy;
+		add_env->next = hash_table->buckets[index];
+		hash_table->buckets[index] = add_env;
+		hash_table->num_keys++;		
+	}
 }
-
 
 /**
  * Function: Search
@@ -121,20 +163,20 @@ void insert(t_hashtable *hash_table, char *key, char *value)
  *
  */
 
-t_hash *search(t_hashtable *hash_table, char *key)
+t_hash	*search(t_hashtable *hash_table, char *key)
 {
-    unsigned int index;
-    t_hash *search_env;
+	unsigned int	index;
+	t_hash			*search_env;
 
-    index = hash(key);
-    search_env = hash_table->buckets[index];
-    while (search_env != NULL)
-    {
-        if (strcmp(search_env->key, key) == 0)
-            return (search_env);
-        search_env = search_env->next;
-    }
-    return (NULL);
+	index = hash(key);
+	search_env = hash_table->buckets[index];
+	while (search_env != NULL)
+	{
+		if (strcmp(search_env->key, key) == 0)
+			return (search_env);
+		search_env = search_env->next;
+	}
+	return (NULL);
 }
 
 /**
@@ -156,66 +198,56 @@ t_hash *search(t_hashtable *hash_table, char *key)
  *
  */
 
-
-void    delete_hash(t_hashtable *hash_table, char *key)
+void	delete_hash(t_hashtable *hash_table, char *key)
 {
-    unsigned int index;
-    t_hash *delete_env;
-    t_hash *prev_env;
+	unsigned int	index;
+	t_hash			*delete_env;
+	t_hash			*prev_env;
 
-    index = hash(key);
-    delete_env = hash_table->buckets[index];
-    prev_env = NULL;
-
-    while (delete_env != NULL)
-    {
-        if (ft_strcmp(delete_env->key, key) == 0)
-        {
-            if (prev_env == NULL)
-                hash_table->buckets[index] = delete_env->next;
-            else
-                prev_env->next = delete_env->next;
-            free(delete_env->key);
-            free(delete_env->value);
-            free(delete_env);
-            hash_table->num_keys--;
-            return ;
-        }
-        prev_env = delete_env;
-        delete_env = delete_env->next;
-    }
+	index = hash(key);
+	delete_env = hash_table->buckets[index];
+	prev_env = NULL;
+	while (delete_env != NULL)
+	{
+		if (ft_strcmp(delete_env->key, key) == 0)
+		{
+			if (prev_env == NULL)
+				hash_table->buckets[index] = delete_env->next;
+			else
+				prev_env->next = delete_env->next;
+			free(delete_env->key);
+			free(delete_env->value);
+			free(delete_env);
+			hash_table->num_keys--;
+			return ;
+		}
+		prev_env = delete_env;
+		delete_env = delete_env->next;
+	}
 }
 
-void safe_free(void **ptr)
-{
-    if (*ptr != NULL)
-    {
-        free(*ptr);
-        *ptr = NULL;
-    }
-}
 
-void destroy_hashtable(t_hashtable *hash_table)
-{
-    t_hash *temp;
-    t_hash *next;
-    size_t i;
 
-    i = -1;
-    while (++i < HASHSIZE)
-    {
-        temp = hash_table->buckets[i];
-        while (temp != NULL)
-        {
-            next = temp->next;
-            safe_free((void **)&temp->key);
-            safe_free((void **)&temp->value);
-            safe_free((void **)&temp);
-            temp = next;
-        }
-    }
-    safe_free((void **)&hash_table->buckets);
-    safe_free((void **)&hash_table);
+void	destroy_hashtable(t_hashtable *hash_table)
+{
+	t_hash	*temp;
+	t_hash	*next;
+	size_t	i;
+
+	i = -1;
+	while (++i < HASHSIZE)
+	{
+		temp = hash_table->buckets[i];
+		while (temp != NULL)
+		{
+			next = temp->next;
+			free(temp->key);
+			free(temp->value);
+			free(temp);
+			temp = next;
+		}
+	}
+	free(hash_table);
 }
 
 // int main(void)

@@ -9,7 +9,8 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	(void)envp;
-	t_hashtable *hash_table = create_hashtable();
+	t_hashtable *hash_table = create_hashtable();	
+	
 	init_hash(hash_table, envp);
 	char *input;
 	char *trimmed_input;
@@ -32,20 +33,20 @@ int	main(int argc, char **argv, char **envp)
 			ft_echo(hash_table, num_args);
        
 		if (ft_strcmp(num_args[0], "exit") == 0)
-			ft_exit(num_args);
+			ft_exit(hash_table, num_args);
 
 		if (ft_strcmp(num_args[0], "unset") == 0)
 			ft_unset(hash_table, num_args);
+		
+	
 
 		for (int i = 0; num_args[i] != NULL; i++)
 			free(num_args[i]);
 		free(num_args);
-		
-	}
 
+	}
 	destroy_hashtable(hash_table);
+	free(input);
 	free(hash_table);
-	// for (int i = 0; envp[i] != NULL; i++)
-	// 	delete_hash(hash_table, envp[i]);
 	return (0);
 }
