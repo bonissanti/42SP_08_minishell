@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 18:22:03 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/01 22:09:16 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/06 13:18:13 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,15 +53,15 @@ t_tkn_list *last_tkn_list(t_tkn_list *tkn_list)
 	return(tkn_list);
 }
 
-void add_tkn_list(t_global *global, t_tkn_list *new_list)
+void add_tkn_list(t_global *g_global, t_tkn_list *new_list)
 {
 	t_tkn_list *last;
 
-	if(!tkn_list_size(global->tkn_list))
-		global->tkn_list = new_list;
+	if(!tkn_list_size(g_global->tkn_list))
+		g_global->tkn_list = new_list;
 	else
 	{
-		last = last_tkn_list(global->tkn_list);
+		last = last_tkn_list(g_global->tkn_list);
 		last->next = new_list;
 	}
 }
