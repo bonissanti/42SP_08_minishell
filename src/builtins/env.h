@@ -96,4 +96,5 @@ int	ft_count_args(char **args);
 void safe_free(void **ptr);
 void free_split(char **split);
 
+
 #endif

@@ -1,6 +1,7 @@
 #include "env.h"
 #include <string.h>
 #include <stdio.h>
+#include "segments.h"
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -30,7 +31,7 @@ int	main(int argc, char **argv, char **envp)
            ft_export(hash_table, num_args);
 
 		if (ft_strcmp(num_args[0], "echo") == 0)
-			ft_echo(hash_table, num_args);
+			parse_quotes(hash_table, num_args + 1);
        
 		if (ft_strcmp(num_args[0], "exit") == 0)
 			ft_exit(hash_table, num_args);
@@ -41,7 +42,7 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strcmp(num_args[0], "env") == 0)
 			ft_env(hash_table, num_args);
 
-		for (int i = 0; num_args[i] != NULL; i++)
+		for (int i = 0; num_args[i]; i++)
 			free(num_args[i]);
 		free(num_args);
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_var.c                                       :+:      :+:    :+:   */
+/*   parse_commands.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 11:11:42 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/01 19:30:44 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/08 19:49:28 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,97 +82,14 @@ void	free_segments(t_segment *head)
 	}
 }
 
-size_t ft_strcspn(const char *str, char *delim1, char *delim2)
+char get_quote_type(char c)
 {
-	size_t i;
-
-	i = -1;
-	if (!str)
-		return (0);
-	while (str[++i] != '\0')
-	{
-		if (str[i] == *delim1 || str[i] == *delim2)
-			return (i);
-	}
-	return (i);
-}
-
-int get_quote_type(char *arg)
-{
-	int i;
-   	int quote_type;
-	
-   	i = 0;
-   	quote_type = 0;
-   	while (arg[i] != '\0')
-   	{
-		if (arg[i] == '\'' && quote_type == 0)
-			 quote_type = 1;
-		else if (arg[i] == '\"' && quote_type == 0)
-			 quote_type = 2;
-		else if (arg[i] == '\"' && quote_type == 1)
-			 quote_type = 3;
-		else if (arg[i] == '\'' && quote_type == 2)
-			 quote_type = 4;
-		i++;
-   	}
-   	return (quote_type);
-}
-
-
-char *remove_quotesdois(char *segment, int quote_type)
-{
-	char *start;
-	char *end;
-	char quote;
-
-	start = segment;
-	if (quote_type == 3)
-		quote = '\'';
-	else if (quote_type == 4)
-		quote = '\"';
-
-	while (*start != '\0' && *start == quote)
-		start++;
-
-	end = start + ft_strlen(start) - 1;
-	while (end > start && *end == quote)
-		end--;
-
-	return (strndup(start, end - start + 1));
-}
-
-char *expand_variabledois(t_hashtable *env, char *segment)
-{
-	char *key;
-	char *value;
-	int key_len;
-	t_hash *hash;
-
-	key_len = ft_strcspn(segment, "\"", "'");
-	key = strndup(segment, key_len);
-	hash = search(env, key);
-	if (hash != NULL)
-		value = hash->value;
-	free(key);
-	return (value);
-}
-
-
-
-char *process_arguments(t_hashtable *env, char *segment, int quote_type)
-{
-	char *result;
-
-	if (quote_type == 2 || quote_type == 4)
-		result = expand_variabledois(env, segment);
+	if (c == '\"')
+		return (1);
+	else if (c == '\'')
+		return (2);
 	else
-		result = remove_quotesdois(segment, quote_type);
-
-	if (result == NULL)
-		result = strdup("");
-
-	return result;
+		return (0);
 }
 
 
@@ -194,309 +111,171 @@ size_t is_even_quotes(char *str)
 	return (single_quotes % 2 == 0 && double_quotes % 2 == 0);
 }
 
-
-void	parse_quotes(t_hashtable *env, char **args)
+size_t ft_strcspn(const char *str, char *delim1, char *delim2)
 {
-	int length;
-	char *ptr;
-	char *segment;
-	t_segment *head;
-	int quote_type;
-	t_hash *hash;
-	char *key;
-	int key_len;
+	size_t i;
 
-	length = 0;
-	head = NULL;
-	ptr = *args;
+	i = -1;
+	if (!str)
+		return (0);
+	while (str[++i])
+		if (str[i] == *delim1 || str[i] == *delim2)
+			return (i);
+	return (i);
+}
 
-	if (!is_even_quotes(ptr))
-	{
-		ft_putstr_fd("minishell: syntax error: unexpected EOF\n", 2);
-		exit(2);
-	}
+void process_segment(t_quote *quote, t_segment *head, size_t len)
+{
+    if (len > 0)
+    {
+        quote->segment[len] = '\0';
+        add_segments(&head, quote->segment);
+    }
+}
 
-	segment = (char *)malloc(sizeof(char) * ft_strlen(ptr) + 1);
-	quote_type = get_quote_type(ptr);
+void parse_quotes(t_hashtable *env, char **args)
+{
+    t_quote quote;
+    t_segment *head;
+    size_t len;
+    char *key;
+    int key_len;
+    t_hash *hash;
 
-	while (*ptr)
-	{
-		//handle quote_type == 5
-		if ((*ptr == '\'') && quote_type == 3)
-		{
-			ptr++;
-		}
-		else if ((*ptr == '\"') && quote_type == 4)
-		{
-			ptr++;
-		}
-		else if (*ptr == '$' && (quote_type == 0 || quote_type == 2 || quote_type == 4))
-		{
-			segment[length] = '\0';
-			add_segments(&head, segment);
-			length = 0;
-			ptr++;
-			key_len = ft_strcspn(ptr, "\"", "'");
-			key = strndup(ptr, key_len);
-			hash = search(env, key);
-			if (hash != NULL)
-				add_segments(&head, hash->value);
-			free(key);
-			ptr += key_len;
-		}
-		else
-			segment[length++] = *ptr++;
-	}
-	segment[length] = '\0';
-	add_segments(&head, segment);
-	free(segment);
-	*args = join_segments(head);
-	free_segments(head);
+    len = 0;
+    head = NULL;
+    quote.ptr = *args;
+    quote.env = env;
+    quote.prev_type = 0;
+    quote.segment = (char *)malloc(sizeof(char) * ft_strlen(*args) + 1);
+
+    if (!is_even_quotes(*args))
+    {
+        ft_putstr_fd("minishell: syntax error: unexpected EOF\n", 2);
+        free(quote.segment);
+        exit(2);
+    }
+    while (*(quote.ptr))
+    {
+        quote.type = get_quote_type(*(quote.ptr));
+        if (quote.type && quote.prev_type == *(quote.ptr))
+        {
+            process_segment(&quote, &head, len);
+            len = -1;
+            quote.prev_type = 0;
+        }
+        else if (quote.type && quote.prev_type == 0)
+            quote.prev_type = *(quote.ptr);
+        else if (*quote.ptr == '$' && (quote.type == 0 || quote.type == 2))
+        {
+            quote.ptr++;
+            key_len = ft_strcspn(quote.ptr, "\"", "'");
+            key = strndup(quote.ptr, key_len);
+            hash = search(quote.env, key);
+            if (hash)
+                add_segments(&head, hash->value);
+            free(key);
+            quote.ptr += key_len - 1;
+        }
+        else
+            quote.segment[len++] = *(quote.ptr);
+        quote.ptr++;
+    }
+    process_segment(&quote, head, len);
+    free(quote.segment);
+    *args = join_segments(head);
+    free_segments(head);
 }
 
 
-// void	parse_quotes(t_hashtable *env, char **args)
+// void process_segment(t_quote *quote, t_segment *head, size_t len)
 // {
-// 	int length;
-// 	char *ptr;
-// 	char *segment;
-// 	t_segment *head;
-// 	int quote_type;
-// 	t_hash *hash;
 // 	char *key;
-// 	int key_len;
+// 	int	key_len;
+// 	t_hash *hash;
 
-// 	length = 0;
-// 	head = NULL;
-// 	ptr = *args;
-// 	segment = (char *)malloc(sizeof(char) * ft_strlen(ptr) + 1);
-// 	quote_type = get_quote_type(ptr);
-
-// 	while (*ptr)
+// 	if (len > 0)
 // 	{
-// 		if ((*ptr == '\'' || *ptr == '\"') && quote_type != 1 && quote_type != 3)
-// 		{
-// 			ptr++;
-// 		}
-// 		else if (*ptr == '$' && (quote_type == 0 || quote_type == 2 || quote_type == 4))
-// 		{
-// 			segment[length] = '\0';
-// 			add_segments(&head, segment);
-// 			length = 0;
-// 			ptr++;
-// 			key_len = ft_strcspn(ptr, "\"", "'");
-// 			key = strndup(ptr, key_len);
-// 			hash = search(env, key);
-// 			if (hash != NULL)
-// 				add_segments(&head, hash->value);
-// 			free(key);
-// 			ptr += key_len;
-// 		}
-// 		else
-// 			segment[length++] = *ptr++;
+// 		quote->segment[len] = '\0';
+// 		add_segments(&head, quote->segment);
 // 	}
-// 	segment[length] = '\0';
-// 	add_segments(&head, segment);
-// 	free(segment);
-// 	*args = join_segments(head);
-// 	free_segments(head);
+// 	if (*(quote->ptr) == '$' && (quote->type == 0 || quote->type == 2))
+// 	{
+// 		quote->ptr++;
+// 		key_len = ft_strcspn(quote->ptr, "\"", "'");
+// 		key = strndup(quote->ptr, key_len);
+// 		hash = search(quote->env, key);
+// 		if (!hash)
+// 			add_segments(&head, hash->value);
+// 		free(key);
+// 		quote->ptr += key_len;
+// 	}
 // }
 
 // void	parse_quotes(t_hashtable *env, char **args)
 // {
-// 	int length;
-// 	char *ptr;
-// 	char quote;
-// 	char *segment;
-// 	t_segment *head;
+// 	t_quote 	quote;
+// 	t_segment 	*head;
+// 	size_t 		len;
 
-// 	t_hash *hash;
-// 	char *key;
-// 	int key_len;
-
-// 	length = 0;
+// 	len = 0;
 // 	head = NULL;
-// 	ptr = *args;
-// 	quote = '\0';
-// 	segment = (char *)malloc(sizeof(char) * ft_strlen(ptr) + 1);
-// 	while (*ptr)
-// 	{
-// 		if (*ptr == '\'' || *ptr == '\"')
-// 		{
-// 			if (quote == '\0')
-// 			{
-// 				quote = *ptr;
-// 				ptr++;
-// 			}
-// 			else if (*ptr == quote)
-// 			{
-// 				quote = '\0';
-// 				ptr++;
-// 			}
-// 			else
-// 				segment[length++] = *ptr++;
-// 			while (quote && *ptr != quote)
-// 			{
-// 				if (*ptr == '$' && quote == '\"')
-// 				{
-// 					segment[length] = '\0';
-// 					add_segments(&head, segment);
-// 					length = 0;
-// 					ptr++;
-// 					key_len = ft_strcspn(ptr, "\"", "'");
-// 					key = strndup(ptr, key_len);
-// 					hash = search(env, key);
-// 					if (hash != NULL)
-// 						add_segments(&head, hash->value);
-// 					free(key);
-// 					ptr += key_len;
+// 	quote.ptr = *args;
+// 	quote.env = env;
+// 	quote.prev_type = 0;
+// 	quote.segment = (char *)malloc(sizeof(char) * ft_strlen(*args) + 1);
 
-// 				}
-// 				else
-// 					segment[length++] = *ptr++;
-// 			}
-// 			ptr++;
+// 	if (!is_even_quotes(*args))
+// 	{
+// 		ft_putstr_fd("minishell: syntax error: unexpected EOF\n", 2);
+// 		free(quote.segment);
+// 		exit(2);
+// 	}
+// 	while (*(quote.ptr))
+// 	{
+// 		quote.type = get_quote_type(*(quote.ptr));
+// 		if (quote.type && quote.prev_type == *(quote.ptr))
+// 		{
+// 			process_segment(&quote, head, len);
+// 			len = -1;
+// 			quote.prev_type = 0;
+// 		}
+// 		else if (quote.type && quote.prev_type == 0)
+// 			quote.prev_type = *(quote.ptr);
+// 		else
+// 			quote.segment[len++] = *(quote.ptr);
+// 		quote.ptr++;	
 		
-// 		}
-// 		else if (*ptr == '$')
-// 		{
-// 			segment[length] = '\0';
-// 			add_segments(&head, segment);
-// 			length = 0;
-// 			ptr++;
-// 			key_len = strcspn(ptr, " \""); //implementar o ft_strcspn com mensagem de erro se não encontrar o caractere
-// 			key = strndup(ptr, key_len);
-// 			hash = search(env, key);
-// 			if (hash != NULL)
-// 				add_segments(&head, hash->value);
-// 			free(key);
-// 			ptr += key_len;
-// 		}
-// 		else
-// 			segment[length++] = *ptr++;
 // 	}
-// 	segment[length] = '\0';
-// 	add_segments(&head, segment);
-// 	free(segment);
+// 	process_segment(&quote, head, len);
+// 	// free(quote.segment);
 // 	*args = join_segments(head);
-// 	free_segments(head);
+// 	free_segments(head);	
 // }
-
-// int main(int argc, char **argv, char **envp)
-// {
-// 	(void)argc;
-// 	(void)argv;
-// 	t_hashtable *env = create_hashtable();
-// 	init_hash(env, envp);
-// 	insert(env, "VAR1", "value1");
-// 	insert(env, "VAR2", "value2");
-
-// 	if (argc > 1)
-// 	{
-// 		for (int i = 1; i < argc; i++)
-// 		{
-// 			parse_quotes(env, &argv[i]);
-// 			printf("%s ", argv[i]);
-// 		}
-// 		printf("\n");
-// 	}
-
-// 	destroy_hashtable(env);
-// 	return (0);
-// }
-
-int main(int argc, char **argv, char **envp)
-{
-	(void)argc;
-	(void)argv;
-	t_hashtable *env = create_hashtable();
-	init_hash(env, envp);
-	insert(env, "VAR1", "value1");
-	insert(env, "VAR2", "value2");
-
-	// char *arg1 = ft_strdup("'\"\"\"\"\"$USER\"\"\"'");
-	// char *arg2 = ft_strdup("echo '$VAR2' \"$HOME\" '\"$HOME\"'");
-	// char *arg3 = ft_strdup("\"\"\"\"\"'$USER'\"\"\"");
-	// char *arg4 = ft_strdup("\"$USER\"");
-	// char *arg5 = ft_strdup("'$USER'");
-	// char *arg6 = ft_strdup("$USER'");
-	char *arg6 = ft_strdup("''\"$USER\"8-");
-
-
-
-	parse_quotes(env, &arg6);
-	printf("%s\n", arg6);
-	destroy_hashtable(env);
-	free(arg6);
-	return (0);
-}
 
 
 // int main(int argc, char **argv, char **envp)
 // {
 // 	(void)argc;
-// 	(void)argv;
 // 	t_hashtable *env = create_hashtable();
 // 	init_hash(env, envp);
 // 	insert(env, "VAR1", "value1");
 // 	insert(env, "VAR2", "value2");
 
-// 	char *arg1[] = {"echo", "\"\"'$USER'\"\"\"", "$VAR1", "$USER", "'$USER", "'''''\"$USER\"'''", NULL}; //tratar fechamento e quando passamos " '' "
-// 	char *arg2[] = {"echo", "$VAR2", "$HOME", "'$HOME'", "\"$HOME\"", NULL};
+// 	// char *arg1 = ft_strdup("'\"\"\"\"\"$USER\"\"\"'");
+// 	// char *arg2 = ft_strdup("echo '$VAR2' \"$HOME\" '\"$HOME\"'");
+// 	// char *arg3 = ft_strdup("\"\"\"\"\"'$USER'\"\"\"");
+// 	// char *arg4 = ft_strdup("\"$USER\"");
+// 	// char *arg5 = ft_strdup("'$USER'");
+// 	// char *arg6 = ft_strdup("$USER'");
+// 	char *arg6 = ft_strdup("'"$USER"'");
 
-// 	int i = 0;
-// 	while (arg1[i] != NULL)
-// 	{
-// 		parse_quotes(env, &arg1[i]);
-// 		i++;
-// 	}
 
-// 	i = 0;
-// 	while (arg2[i] != NULL)
-// 	{
-// 		parse_quotes(env, &arg2[i]);
-// 		i++;
-// 	}
 
-// 	i = 0;
-// 	while (arg1[i] != NULL)
-// 		printf("%s ", arg1[i++]);
-// 	printf("\n");
-
-// 	i = 0;
-// 	while (arg2[i] != NULL)
-// 		printf("%s ", arg2[i++]);
-// 	printf("\n");
-
+// 	parse_quotes(env, &arg6);
+// 	printf("%s\n", arg6);
 // 	destroy_hashtable(env);
+// 	free(arg6);
 // 	return (0);
 // }
 
-
-// while (*ptr != '\0')
-// 	{
-// 		if (*ptr == '\'' || *ptr == '\"')
-// 		{
-// 			quote = *ptr;
-// 			ptr++;
-// 			while (*ptr != quote)
-// 				ptr++;
-// 		}
-// 		else if (*ptr == '$')
-// 		{
-// 			ptr++;
-// 			key = ft_strndup(ptr, ft_strchr(ptr, ' ') - ptr);
-// 			value = search(env, key);
-// 			if (value != NULL)
-// 			{
-// 				ft_strcpy(ptr, value);
-// 				ptr += ft_strlen(value);
-// 			}
-// 			else
-// 				ptr += ft_strlen(key);
-// 		}
-// 		ptr++;
-// 	}
-
-	// char *arg1[] = {"echo '$USER", "$VAR1", "$USER", "'$USER", "'''''\"$USER\"'''", NULL}; //tratar fechamento e quando passamos " '' "
-//char *arg1[] = {"echo \"\"\"\"\"'$USER'\"\"\"", "$VAR1", "$USER", "'$USER", "'''''\"$USER\"'''", NULL};
