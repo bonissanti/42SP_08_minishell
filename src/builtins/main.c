@@ -38,7 +38,8 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strcmp(num_args[0], "unset") == 0)
 			ft_unset(hash_table, num_args);
 		
-	
+		if (ft_strcmp(num_args[0], "env") == 0)
+			ft_env(hash_table, num_args);
 
 		for (int i = 0; num_args[i] != NULL; i++)
 			free(num_args[i]);

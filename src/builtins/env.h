@@ -86,6 +86,11 @@ void	ft_exit(t_hashtable *hash_table, char **args);
 
 int ft_unset(t_hashtable *hash_table ,char **args);
 
+//############################### Env ##########################################
+
+void ft_env(t_hashtable *hash_table, char **args);
+int	ft_count_args(char **args);
+
 //############################### Memory #######################################
 
 void safe_free(void **ptr);

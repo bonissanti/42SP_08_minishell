@@ -36,12 +36,19 @@ void print_all_env(t_hashtable *hash_table)
 {
     int i;
     char **keys;
+	char *value;
 
     keys = copy_all_keys(hash_table);
     bubble_sort(keys, hash_table->num_keys);
     i = -1;
     while (++i < hash_table->num_keys)
-        printf("declare -x %s=\"%s\"\n", keys[i], search(hash_table, keys[i])->value);
+	{
+		value = search(hash_table, keys[i])->value;
+		if (value == NULL)
+			printf("declare -x %s\n", keys[i]);
+		else
+			printf("declare -x %s=\"%s\"\n", keys[i], value);
+	}
     free(keys);
 }
 
@@ -76,7 +83,12 @@ void	add_env(t_hashtable *hash_table, char **args)
 		env.equals_sign = ft_split(args[i], '=');
 		env.key = env.equals_sign[0];
 		hash = search(hash_table, env.key);
-		if (env.equals_sign[1] != NULL)
+		if (args[1][ft_strlen(args[i]) - 1] == '=')
+		{
+			env.value = "";
+			insert(hash_table, env.key, env.value);			
+		}
+		else if (env.equals_sign[1] != NULL)
 		{
 			env.value = ft_strtrim(env.equals_sign[1], "\"");
 			if (env.value == NULL)
@@ -85,12 +97,7 @@ void	add_env(t_hashtable *hash_table, char **args)
 			free(env.value);
 		}
 		else if (hash == NULL)
-			insert(hash_table, env.key, "");
-		else if (args[i][ft_strlen(args[i]) - 1] == '=')
-		{
-			env.value = "";
-			insert(hash_table, env.key, env.value);
-		}
+			insert(hash_table, env.key, NULL);
 		free_split(env.equals_sign);
 		i++;
 	}

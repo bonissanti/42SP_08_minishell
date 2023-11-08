@@ -120,11 +120,18 @@ void	insert(t_hashtable *hash_table, char *key, char *value)
 
 	index = hash(key);
 	key_copy = ft_strdup(key);
-	value_copy = ft_strdup(value);
 	check_dup = search(hash_table, key_copy);
+
+	if (value != NULL)
+		value_copy = ft_strdup(value);
+	else
+		value_copy = NULL;
+	
 	if (check_dup != NULL)
 	{
-		if (ft_strcmp(check_dup->value, value) != 0)
+		if (((check_dup->value == NULL && value != NULL)) || 
+			((check_dup->value != NULL && value == NULL)) ||
+			((check_dup->value != NULL && value != NULL) && (ft_strcmp(check_dup->value, value) != 0)))
 		{
 			safe_free((void **)&check_dup->value);
 			check_dup->value = value_copy;
