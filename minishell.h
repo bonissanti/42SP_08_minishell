@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:39:43 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/08 20:11:35 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/09 13:23:08 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "./libft/libft.h"
-#include "./parser/parser.h"
+// #include "./parser/parser.h"
 
-typedef struct s_global{
-	char		*readline_input;
-	t_tkn_list	*tkn_list;
-	t_cmd_list	*cmd_list;
-	//
-	//
-} t_global;
-
-extern t_global g_global;
-
-void	prompt(void);
+void		prompt(void);
 
 #endif

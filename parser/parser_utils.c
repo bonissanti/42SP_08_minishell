@@ -6,11 +6,11 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 16:39:50 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/01 19:26:27 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/09 13:20:16 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "./parser.h"
 
 void	skip_spaces(char **str)
 {
