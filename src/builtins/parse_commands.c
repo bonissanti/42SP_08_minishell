@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 11:11:42 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/08 19:49:28 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/09 19:42:47 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,16 +84,16 @@ void	free_segments(t_segment *head)
 
 char get_quote_type(char c)
 {
-	if (c == '\"')
+	if (c == '\'')
 		return (1);
-	else if (c == '\'')
+	else if (c == '\"')
 		return (2);
 	else
 		return (0);
 }
 
 
-size_t is_even_quotes(char *str)
+size_t is_even_quotes(char *str) // const char
 {
 	size_t single_quotes;
 	size_t double_quotes;
@@ -133,6 +133,30 @@ void process_segment(t_quote *quote, t_segment *head, size_t len)
     }
 }
 
+t_bool	is_whitespace(char c)
+{
+	if (c == ' ' || c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\0')
+		return (true);
+	return (false);
+}
+
+t_bool check_spaces_after_dollar(char *str)
+{
+	char *ptr;
+	
+	ptr = str;
+	while (*ptr)
+	{
+		if (*ptr == '$')
+		{
+			if (is_whitespace(*ptr))
+				return (false);
+		}
+		ptr++;
+	}
+	return (true);
+}
+
 void parse_quotes(t_hashtable *env, char **args)
 {
     t_quote quote;
@@ -146,6 +170,7 @@ void parse_quotes(t_hashtable *env, char **args)
     head = NULL;
     quote.ptr = *args;
     quote.env = env;
+	quote.type = 0;
     quote.prev_type = 0;
     quote.segment = (char *)malloc(sizeof(char) * ft_strlen(*args) + 1);
 
@@ -157,35 +182,48 @@ void parse_quotes(t_hashtable *env, char **args)
     }
     while (*(quote.ptr))
     {
-        quote.type = get_quote_type(*(quote.ptr));
+		if (*quote.ptr == '\'' || *quote.ptr == '\"')
+        	quote.type = get_quote_type(*(quote.ptr));
         if (quote.type && quote.prev_type == *(quote.ptr))
         {
-            process_segment(&quote, &head, len);
-            len = -1;
+			quote.segment[len] = '\0';
+            add_segments(&head, quote.segment);
+            len = 0;
             quote.prev_type = 0;
         }
         else if (quote.type && quote.prev_type == 0)
             quote.prev_type = *(quote.ptr);
         else if (*quote.ptr == '$' && (quote.type == 0 || quote.type == 2))
         {
-            quote.ptr++;
+			quote.ptr++;
             key_len = ft_strcspn(quote.ptr, "\"", "'");
             key = strndup(quote.ptr, key_len);
             hash = search(quote.env, key);
             if (hash)
                 add_segments(&head, hash->value);
             free(key);
-            quote.ptr += key_len - 1;
-        }
+            quote.ptr += key_len;
+		}
         else
             quote.segment[len++] = *(quote.ptr);
         quote.ptr++;
     }
+	
+	quote.segment[len] = '\0';
     process_segment(&quote, head, len);
     free(quote.segment);
     *args = join_segments(head);
+	for (int i = 0; args[i]; i++)
+		printf("%s ", args[i]);
+	printf("\n");
     free_segments(head);
 }
+
+	// if (quote.type != 0)
+	// {
+	// 	ft_putstr_fd("minishell: syntax error: unexpected EOF\n", 2);
+	// 	return ;
+	// }
 
 
 // void process_segment(t_quote *quote, t_segment *head, size_t len)

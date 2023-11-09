@@ -6,24 +6,38 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:32:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/10/19 19:06:36 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:04:09 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "env.h"
 #include <stdio.h>
+#include <stdlib.h>
 
-int    ft_cd(char **args)
+int    ft_cd(t_hashtable *hashtable, char **args)
 {
-	if (args[1] == NULL)
-		ft_putstr_fd("cd: expected argument to \"cd\"\n", 2);
-	else
+	size_t argc;
+	char *home;
+
+	argc = ft_count_args(args);
+	if (argc > 2)
 	{
-		if (chdir(args[1]) != 0)
-			perror("");
+		ft_putstr_fd("cd: too many arguments\n", 2);
+		return (1);
 	}
-	return (1);
+	else if (argc == 1)
+		home = search(hashtable, "HOME")->value;
+	else if (argc == 2)
+	{
+		
+	}
+	
 }
+
+
+
+
+
 
 int main()
 {
