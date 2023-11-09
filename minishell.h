@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:39:43 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/06 13:18:13 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/08 20:11:35 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 typedef struct s_global{
 	char		*readline_input;
 	t_tkn_list	*tkn_list;
-	t_tkn_list	*parsed_list;
+	t_cmd_list	*cmd_list;
 	//
 	//
 } t_global;

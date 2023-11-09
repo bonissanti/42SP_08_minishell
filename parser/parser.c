@@ -6,26 +6,11 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/07 23:18:20 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/08 22:05:16 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
-
-char *tkn_type_symbol(t_tkn_type type)
-{
-	if(type == PIPE)
-		return ("|");
-	else if(type == O_PARENTESIS)
-		return ("(");
-	else if(type == C_PARENTESIS)
-		return (")");
-	else if(type == AND)
-		return ("&&");
-	else if(type == OR)
-		return ("||");
-	return (NULL);
-}
 
 char *tkn_type_converter(t_tkn_type type)
 {
@@ -37,6 +22,10 @@ char *tkn_type_converter(t_tkn_type type)
 		return ("<<");
 	else if (type == APPEND)
 		return (">>");
+	else if(type == O_PARENTESIS)
+		return ("(");
+	else if(type == C_PARENTESIS)
+		return (")");
 	else if(type == AND)
 		return ("&&");
 	else if(type == OR)
@@ -55,13 +44,13 @@ int	command_consistency(t_tkn_list *tokenized)
 	if(head->type ==  OR || head->type == AND
 	|| head->type == PIPE || head->type == C_PARENTESIS)
 	{
-		ft_printf("syntax error near unexpected token `%s'\n", tkn_type_symbol(head->type));
+		ft_printf("syntax error near unexpected token `%s'\n", tkn_type_converter(head->type));
 		exit(2);
 	}
 	else if (tail->type == OR || tail->type == AND 
 	|| tail->type == PIPE || tail->type == O_PARENTESIS)
 	{
-		ft_printf("syntax error near unexpected token `%s'\n", tkn_type_symbol(tail->type));
+		ft_printf("syntax error near unexpected token `%s'\n", tkn_type_converter(tail->type));
 		exit(2);
 	}
 	return (1);
@@ -82,55 +71,100 @@ int is_redirect(t_tkn_type tkn)
 	return (false);
 }
 
+void new_cmd_file_node(t_global *g_global, t_tkn_list *current)
+{
+	if (is_redirect(current->prev))
+	{
+		add_cmd_list((t_cmd_list){
+			.type = TYPE_FILE,
+			.args = current->content,
+			.prec_weight = DEFAULT,
+			});
+		current = current->next;
+		join_args(current);
+	}
+	add_cmd_list((t_cmd_list){
+		.type = TYPE_COMMAND,
+		.args = current->content,
+		.prec_weight = DEFAULT,
+		});
+	while(current && current->type == IDENTIFIER)
+	{	
+		current = current->next;
+		g_global->cmd_list->args = gnl_strjoin(g_global->cmd_list->args, current->content);
+		if (current->next->type == REDIRECT || current->next->type == APPEND)
+			g_global->cmd_list->outfile == current->next->next->content;
+	}
+	join_args(current);
+}
+
+void	new_redirect_node(t_global *g_global, t_tkn_list *current)
+{
+	e_bool has_here_doc;
+		
+	if(current->type == HERE_DOC)
+		has_here_doc = true;
+	else
+		has_here_doc = false;		
+	add_cmd_list((t_cmd_list){
+		.type = TYPE_REDIRECT,
+		.args = tkn_type_converter(current->type),
+		.prec_weight = OP_REDIRECT,
+		.here_doc = has_here_doc,
+	});
+	current = current->next;
+	join_args(current);
+}
+void	new_subshell_node(t_global *g_global, t_tkn_list *current)
+{
+	add_cmd_list((t_cmd_list){
+		.type = TYPE_OPERATOR,
+		.args = tkn_type_converter(current->type),
+		.prec_weight = DEFAULT,
+	});	
+	while(current->type != C_PARENTESIS)
+	{
+		g_global->cmd_list->args = gnl_strjoin(g_global->cmd_list->args, current->content);
+		current = current->next;
+	}
+	g_global->cmd_list->args = gnl_strjoin(g_global->cmd_list->args, current->content);
+	current = current->next;
+	join_args(current);
+}
+
+void	new_operator_node(t_global *g_global, t_tkn_list *current)
+{
+	e_operator weight;
+	
+	if (current->type == PIPE)
+		weight = OP_PIPE;
+	else
+		weight = OP_LOGICAL;
+	add_cmd_list((t_cmd_list){
+		.type = TYPE_OPERATOR,
+		.args = tkn_type_converter(current->type),
+		.prec_weight = weight,
+	});	
+	current = current->next;
+	join_args(current);
+}
+
 t_cmd_list	*join_args(t_tkn_type *tkn_list)
 {
 	t_tkn_type	*current;
-	t_cmd_list	*cmd_list;
+	t_cmd_list	cmd_list;
 	
 	current = tkn_list;
 	while(current)
 	{
 		if(current->type == IDENTIFIER)
-		{
-			while(current && current->type == IDENTIFIER)
-			{
-				cmd_list->args = gnl_strjoin(cmd_list->args, current->content);
-				if(current->next->type == REDIRECT || current->next->type == APPEND)
-					cmd_list->outfile == current->next->type;
-				current = current->next;
-			}
-			join_args(current);
-		}
+			new_cmd_file_node(&g_global, current);
 		else if (is_redirect(current->type))
-		{
-			cmd_list->type = TYPE_REDIRECT;
-			cmd_list->prec_weight = OP_REDIRECT;
-			if(current->type == HERE_DOC)
-				cmd_list->here_doc = true;
-			if(current->next->type == IDENTIFIER)
-				cmd_list->args = gnl_strjoin(tkn_type_converter(current->type), current->next->content);
-			join_args(current);
-		}
+			new_redirect_node(&g_global, current);
 		else if (current->type == O_PARENTESIS)
-		{
-			cmd_list->args = ft_strdup("");
-			while(current->type != C_PARENTESIS)
-			{
-				cmd_list->args = gnl_strjoin(cmd_list->args, current->content);
-				current = current->next;
-			}
-			cmd_list->args = gnl_strjoin(cmd_list->args, current->content);
-			join_args(current);
-		}
+			new_subshell_node(&g_global, current);
 		else if (is_operator(current->type))
-		{
-			cmd_list->type = TYPE_OPERATOR;
-			cmd_list->args = tkn_type_converter(current->type);
-			if (current->type == PIPE)
-				cmd_list->prec_weight = OP_PIPE;
-			else
-				cmd_list->prec_weight = OP_LOGICAL;
-		}
+			new_operator_node(&g_global, current);
 		join_args(current);
 	}
 }
