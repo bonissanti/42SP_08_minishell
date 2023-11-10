@@ -28,5 +28,4 @@ void process_segment(t_quote *quote, t_segment *head, size_t len);
 size_t ft_strcspn(const char *str, char *delim1, char *delim2);
 size_t is_even_quotes(char *str);
 
-
 #endif

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 11:11:42 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/10 15:05:13 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/10 18:49:07 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char get_quote_type(char c)
 }
 
 
-size_t even_close_quotes(char *str)
+size_t even_close_quotes(char *str) // Testar '$ USER' e "$ USER" com o main do minishell
 {
 	size_t single_quotes;
 	size_t double_quotes;
@@ -144,22 +144,22 @@ t_bool	is_whitespace(char c)
 	return (false);
 }
 
-t_bool check_spaces_after_dollar(char *str)
-{
-	char *ptr;
+// t_bool check_spaces_after_dollar(char *str)
+// {
+// 	char *ptr;
 	
-	ptr = str;
-	while (*ptr)
-	{
-		if (*ptr == '$')
-		{
-			if (is_whitespace(*ptr))
-				return (false);
-		}
-		ptr++;
-	}
-	return (true);
-}
+// 	ptr = str;
+// 	while (*ptr)
+// 	{
+// 		if (*ptr == '$')
+// 		{
+// 			if (is_whitespace(*ptr))
+// 				return (false);
+// 		}
+// 		ptr++;
+// 	}
+// 	return (true);
+// }
 
 void parse_quotes(t_hashtable *env, char **args)
 {
@@ -180,7 +180,7 @@ void parse_quotes(t_hashtable *env, char **args)
 
     if (!even_close_quotes(*args))
     {
-        ft_putstr_fd("minishell: syntax error: unexpected EOF\n", 2);
+        ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
         free(quote.segment);
         return ;
     }
@@ -202,10 +202,7 @@ void parse_quotes(t_hashtable *env, char **args)
         {
 			quote.ptr++;
 			if (is_whitespace(*quote.ptr))
-			{
 				quote.segment[len++] = '$';
-				continue;
-			}
             key_len = ft_strcspn(quote.ptr, "\"", "'");
             key = strndup(quote.ptr, key_len); 
             hash = search(quote.env, key);
@@ -220,7 +217,7 @@ void parse_quotes(t_hashtable *env, char **args)
     }
 	if (quote.prev_type != 0)
 	{
-		ft_putstr_fd("minishell: syntax error: unexpected EOF\n", 2);
+		ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
 		free(quote.segment);
 		return ;
 	}
