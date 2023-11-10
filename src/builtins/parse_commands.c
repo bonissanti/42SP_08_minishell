@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 11:11:42 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/10 12:55:18 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/10 15:05:13 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,35 +93,48 @@ char get_quote_type(char c)
 }
 
 
-size_t is_even_quotes(char *str) // const char
+size_t even_close_quotes(char *str)
 {
 	size_t single_quotes;
 	size_t double_quotes;
+	t_bool is_squote_open;
+	t_bool is_dquote_open;
 
 	single_quotes = 0;
 	double_quotes = 0;
+	is_squote_open = false;
+	is_dquote_open = false;
 	while (*str)
 	{
-		if (*str == '\'')
+		if (*str == '\'' && !is_dquote_open)
+		{
 			single_quotes++;
-		else if (*str == '\"')
+			is_squote_open = !is_squote_open;
+		}
+		else if (*str == '\"' && !is_squote_open)
+		{
 			double_quotes++;
+			is_dquote_open = !is_dquote_open;
+		}
 		str++;
 	}
 	return (single_quotes % 2 == 0 && double_quotes % 2 == 0);
 }
 
+
 size_t ft_strcspn(const char *str, char *delim1, char *delim2)
 {
-	size_t i;
+	size_t length;
 
-	i = -1;
-	if (!str)
-		return (0);
-	while (str[++i])
-		if (str[i] == *delim1 || str[i] == *delim2)
-			return (i);
-	return (i);
+	length = 0;
+	while (*str)
+	{
+		if (*str == *delim1 || *str == *delim2)
+			return (length);
+		str++;
+		length++;
+	}
+	return (length);
 }
 
 t_bool	is_whitespace(char c)
@@ -165,7 +178,7 @@ void parse_quotes(t_hashtable *env, char **args)
     quote.prev_type = 0;
     quote.segment = (char *)malloc(sizeof(char) * ft_strlen(*args) + 1);
 
-    if (!is_even_quotes(*args))
+    if (!even_close_quotes(*args))
     {
         ft_putstr_fd("minishell: syntax error: unexpected EOF\n", 2);
         free(quote.segment);
