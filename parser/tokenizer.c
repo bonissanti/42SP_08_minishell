@@ -6,11 +6,13 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/07 13:53:11 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/09 19:38:52 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./parser.h"
+
+t_global g_global;
 
 void handle_token(t_global *g_global, char *str)
 {
@@ -100,7 +102,7 @@ char *crop_tkn(char **cmd)
 		i = crop_delimiter_tkn(cmd);
 	else
 	{
-		while(**cmd != ' ' && **cmd != '\0' && !isdelimiter(*cmd)) //here 
+		while(**cmd != ' ' && **cmd != '\0' && !isdelimiter(*cmd))
 		{
 			i++;
 			(*cmd)++;
@@ -138,7 +140,6 @@ void tokenizer(t_global *g_global, char *cmd)
 
 int main(void)
 {
-	t_global g_global;
 	
 	// tokenizer(&g_global, "echo -n \"test\"");
 	// tokenizer(&g_global, "<< qwerty > ./output| < ./infile wc -l > ./output &&echo \"test\" || (sort ./test)");
@@ -149,8 +150,9 @@ int main(void)
 	// tokenizer(&g_global, "< ./parser.h wc -l > ./outfile");
 	// tokenizer(&g_global, "<./parser.h wc -l>outfile");
 	// tokenizer(&g_global, "< ./parser.h wc -l>outfile (");
-	tokenizer(&g_global, "<< qwerty wc -l > ./output && echo \"test\" || (sort ./test)");
+	// tokenizer(&g_global, "<< qwerty wc -l > ./output && echo \"test\" || (sort ./test)");
+	tokenizer(&g_global, "wc -l > ./output && echo \"test\" || (sort ./test)");
 	// tokenizer(&g_global, "< ./parser.h wc -l>outfile (");
 	print_tkn_list(g_global.tkn_list);
-	parser(&g_global);
+	parser();
 }

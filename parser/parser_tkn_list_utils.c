@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 18:22:03 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/09 13:20:29 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/09 17:13:36 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void add_tkn_list(t_global *g_global, t_tkn_list *new_list)
 	{
 		last = last_tkn_list(g_global->tkn_list);
 		last->next = new_list;
+		last->next->prev = last;
 	}
 }
 

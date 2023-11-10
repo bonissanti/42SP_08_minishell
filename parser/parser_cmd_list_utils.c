@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 17:12:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/09 13:29:51 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/09 18:33:21 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,16 @@ t_cmd_list *last_cmd_list(t_cmd_list *cmd_list)
 	return(cmd_list);
 }
 
-void add_cmd_list(t_global *g_global, t_cmd_list new_list)
+void add_cmd_list(t_cmd_list new_list)
 {
 	t_cmd_list *last;
 
-	if(!cmd_list_size(g_global->cmd_list))
-		g_global->cmd_list = &new_list;
+	if(!cmd_list_size(g_global.cmd_list))
+		g_global.cmd_list = new_cmd_list(new_list);
 	else
 	{
-		last = last_cmd_list(g_global->cmd_list);
-		last->next = &new_list;
+		last = last_cmd_list(g_global.cmd_list);
+		last->next = new_cmd_list(new_list);
+		last->next->prev = last;
 	}
 }

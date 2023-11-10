@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/09 15:13:11 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/09 19:53:09 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct s_cmd_list
     char *outfile;
 	t_bool here_doc;
 	struct s_cmd_list	*next;
-	struct s_cmd_lsit	*prev;
+	struct s_cmd_list	*prev;
 } t_cmd_list;
 
 typedef struct s_tkn_list {
@@ -84,9 +84,11 @@ t_tkn_list	*last_tkn_list(t_tkn_list *tkn_list);
 void		add_tkn_list(t_global *g_global, t_tkn_list *new_list);
 void		print_tkn_list(t_tkn_list *tkn_list);   //DELETE THIS BEFORE DELIVERY 
 char		*tkn_type_string(t_tkn_type type);      //DELETE THIS BEFORE DELIVERY
-void		parser(t_global *g_global);
+void		parser(void);
 int			command_consistency(t_tkn_list *tokenized);
 void		join_args(t_tkn_list *tkn_list);
-void		add_cmd_list(t_global *g_global, t_cmd_list new_list);
+void		add_cmd_list(t_cmd_list new_list);
+t_cmd_list	*last_cmd_list(t_cmd_list *cmd_list);
+int			tkn_list_size(t_tkn_list *tkn_list);
 
 #endif

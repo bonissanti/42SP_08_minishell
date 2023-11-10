@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/09 16:06:34 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/10 01:29:21 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,82 +71,91 @@ int is_redirect(t_tkn_type tkn)
 	return (false);
 }
 
-void new_cmd_file_node(t_global *g_global, t_tkn_list *current)
+void new_cmd_file_node(t_tkn_list **current)
 {
-	if (is_redirect(current->prev->type))
+	if(tkn_list_size((*current)->prev) && is_redirect((*current)->prev->type))
 	{
-		add_cmd_list(g_global, (t_cmd_list){
+		add_cmd_list((t_cmd_list){
 			.type = TYPE_FILE,
-			.args = current->content,
+			.args = (*current)->content,
 			.prec_weight = DEFAULT,
 			});
-		current = current->next;
-		join_args(current);
+		*current = (*current)->next;
 	}
-	add_cmd_list(g_global, (t_cmd_list){
-		.type = TYPE_COMMAND,
-		.args = current->content,
-		.prec_weight = DEFAULT,
-		});
-	while(current && current->type == IDENTIFIER)
+	else
+	{
+		add_cmd_list((t_cmd_list){
+			.type = TYPE_COMMAND,
+			.args = (*current)->content,
+			.prec_weight = DEFAULT,
+			});		
+	}
+	while(*current && (*current)->type == IDENTIFIER)
 	{	
-		current = current->next;
-		g_global->cmd_list->args = gnl_strjoin(g_global->cmd_list->args, current->content);
-		if (current->next->type == REDIRECT || current->next->type == APPEND)
-			g_global->cmd_list->outfile = current->next->next->content;
+		*current = (*current)->next;
+		if (is_redirect((*current)->type))
+		{
+			if ((*current)->type == REDIRECT || (*current)->type == APPEND)
+				g_global.cmd_list->outfile = (*current)->next->content;
+		}
+		else if((*current)->type != IDENTIFIER)
+			break;	
+		else
+		{
+			g_global.cmd_list = last_cmd_list(g_global.cmd_list);
+			g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, (*current)->content);
+		}
 	}
-	join_args(current);
 }
 
-void	new_redirect_node(t_global *g_global, t_tkn_list *current)
+void	new_redirect_node(t_tkn_list **current)
 {
 	t_bool has_here_doc;
 		
-	if(current->type == HERE_DOC)
+	if((*current)->type == HERE_DOC)
 		has_here_doc = true;
 	else
 		has_here_doc = false;		
-	add_cmd_list(g_global, (t_cmd_list){
+	add_cmd_list((t_cmd_list){
 		.type = TYPE_REDIRECT,
-		.args = tkn_type_converter(current->type),
+		.args = tkn_type_converter((*current)->type),
 		.prec_weight = OP_REDIRECT,
 		.here_doc = has_here_doc,
 	});
-	current = current->next;
-	join_args(current);
+	*current = (*current)->next;
 }
-void	new_subshell_node(t_global *g_global, t_tkn_list *current)
+void	new_subshell_node(t_tkn_list **current)
 {
-	add_cmd_list(g_global, (t_cmd_list){
+	add_cmd_list((t_cmd_list){
 		.type = TYPE_OPERATOR,
-		.args = tkn_type_converter(current->type),
+		.args = tkn_type_converter((*current)->type),
 		.prec_weight = DEFAULT,
-	});	
-	while(current->type != C_PARENTESIS)
+	});
+	*current = (*current)->next;
+	while((*current)->type != C_PARENTESIS)
 	{
-		g_global->cmd_list->args = gnl_strjoin(g_global->cmd_list->args, current->content);
-		current = current->next;
+		g_global.cmd_list = last_cmd_list(g_global.cmd_list);
+		g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, (*current)->content);
+		*current = (*current)->next;
 	}
-	g_global->cmd_list->args = gnl_strjoin(g_global->cmd_list->args, current->content);
-	current = current->next;
-	join_args(current);
+	g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, tkn_type_converter((*current)->type));
+	*current = (*current)->next;
 }
 
-void	new_operator_node(t_global *g_global, t_tkn_list *current)
+void	new_operator_node(t_tkn_list **current)
 {
 	t_operator weight;
 	
-	if (current->type == PIPE)
+	if ((*current)->type == PIPE)
 		weight = OP_PIPE;
 	else
 		weight = OP_LOGICAL;
-	add_cmd_list(g_global, (t_cmd_list){
+	add_cmd_list((t_cmd_list){
 		.type = TYPE_OPERATOR,
-		.args = tkn_type_converter(current->type),
+		.args = tkn_type_converter((*current)->type),
 		.prec_weight = weight,
 	});	
-	current = current->next;
-	join_args(current);
+	*current = (*current)->next;
 }
 
 void	join_args(t_tkn_list *tkn_list)
@@ -157,21 +166,20 @@ void	join_args(t_tkn_list *tkn_list)
 	while(current)
 	{
 		if(current->type == IDENTIFIER)
-			new_cmd_file_node(&g_global, current);
-		else if (is_redirect(current->type))
-			new_redirect_node(&g_global, current);
-		else if (current->type == O_PARENTESIS)
-			new_subshell_node(&g_global, current);
-		else if (is_operator(current->type))
-			new_operator_node(&g_global, current);
-		join_args(current);
+			new_cmd_file_node(&current);
+		if (current && is_redirect(current->type))
+			new_redirect_node(&current);
+		if (current->type == O_PARENTESIS)
+			new_subshell_node(&current);
+		if (current && is_operator(current->type))
+			new_operator_node(&current);
 	}
 }
 
-void parser(t_global *g_global)
+void parser(void)
 {
-	command_consistency(g_global->tkn_list);
-	join_args(g_global->tkn_list);
+	command_consistency(g_global.tkn_list);
+	join_args(g_global.tkn_list);
 }
 
 /*
