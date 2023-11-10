@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/09 19:38:52 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/10 02:05:36 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,8 +151,8 @@ int main(void)
 	// tokenizer(&g_global, "<./parser.h wc -l>outfile");
 	// tokenizer(&g_global, "< ./parser.h wc -l>outfile (");
 	// tokenizer(&g_global, "<< qwerty wc -l > ./output && echo \"test\" || (sort ./test)");
-	tokenizer(&g_global, "wc -l > ./output && echo \"test\" || (sort ./test)");
-	// tokenizer(&g_global, "< ./parser.h wc -l>outfile (");
+	// tokenizer(&g_global, "wc -l > ./output && echo \"test\" || (sort ./test)");
+	tokenizer(&g_global, "< ./parser.h wc -l>outfile");
 	print_tkn_list(g_global.tkn_list);
 	parser();
 }

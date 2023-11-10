@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/10 01:29:21 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/10 03:02:13 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,38 @@ int is_redirect(t_tkn_type tkn)
 		return (true);
 	return (false);
 }
+t_cmd_list *rewind_list(t_cmd_list **cmd_list)
+{
+	if((*cmd_list)->prev == NULL)
+		return (*cmd_list);
+	else
+	{
+		while((*cmd_list)->prev != NULL)
+			*cmd_list = (*cmd_list)->prev;
+	}
+	return(*cmd_list);
+}
+
+void set_io(t_cmd_list **cmd_list)
+{
+	t_cmd_list *head;
+
+	head = rewind_list(cmd_list);
+	while(head->next)
+	{
+		if (head->type == REDIRECT && (ft_strncmp(head->args, "<<")
+		|| head->args == '<'))
+		{
+			head->next->next->infile == head->	
+		}
+		else if (head->type == REDIRECT && (ft_strncmp(head->args, ">>")
+		|| head->args == '>'))
+		{
+			
+		}
+	head = head->next;		
+	}
+}
 
 void new_cmd_file_node(t_tkn_list **current)
 {
@@ -81,6 +113,7 @@ void new_cmd_file_node(t_tkn_list **current)
 			.prec_weight = DEFAULT,
 			});
 		*current = (*current)->next;
+		return ;
 	}
 	else
 	{
@@ -93,16 +126,17 @@ void new_cmd_file_node(t_tkn_list **current)
 	while(*current && (*current)->type == IDENTIFIER)
 	{	
 		*current = (*current)->next;
-		if (is_redirect((*current)->type))
-		{
-			if ((*current)->type == REDIRECT || (*current)->type == APPEND)
-				g_global.cmd_list->outfile = (*current)->next->content;
-		}
-		else if((*current)->type != IDENTIFIER)
-			break;	
+		// if (is_redirect((*current)->type))
+		// {
+		// 	if ((*current)->type == REDIRECT || (*current)->type == APPEND)
+		// 		g_global.cmd_list->outfile = (*current)->next->content;
+		// }
+		if((*current)->type != IDENTIFIER)
+			return ;	
 		else
 		{
 			g_global.cmd_list = last_cmd_list(g_global.cmd_list);
+			g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, " ");
 			g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, (*current)->content);
 		}
 	}
@@ -136,6 +170,8 @@ void	new_subshell_node(t_tkn_list **current)
 	{
 		g_global.cmd_list = last_cmd_list(g_global.cmd_list);
 		g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, (*current)->content);
+		if((*current)->next->type != C_PARENTESIS)
+			g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, " ");
 		*current = (*current)->next;
 	}
 	g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, tkn_type_converter((*current)->type));
@@ -165,11 +201,11 @@ void	join_args(t_tkn_list *tkn_list)
 	current = tkn_list;
 	while(current)
 	{
-		if(current->type == IDENTIFIER)
+		if (current && current->type == IDENTIFIER)
 			new_cmd_file_node(&current);
 		if (current && is_redirect(current->type))
 			new_redirect_node(&current);
-		if (current->type == O_PARENTESIS)
+		if (current && current->type == O_PARENTESIS)
 			new_subshell_node(&current);
 		if (current && is_operator(current->type))
 			new_operator_node(&current);
