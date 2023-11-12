@@ -42,6 +42,12 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strcmp(num_args[0], "env") == 0)
 			ft_env(hash_table, num_args);
 
+		if (ft_strcmp(num_args[0], "cd") == 0)
+			ft_cd(hash_table, num_args);
+
+		if (ft_strcmp(num_args[0], "pwd") == 0)
+			ft_pwd();
+
 		for (int i = 0; num_args[i]; i++)
 			free(num_args[i]);
 		free(num_args);
