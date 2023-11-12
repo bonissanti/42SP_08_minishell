@@ -12,8 +12,6 @@
 
 #include "env.h"
 
-
-
 char *remove_quotes(char *arg, char quote)
 {
 	char result[4096];

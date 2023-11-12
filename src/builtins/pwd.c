@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
-#include <errno.h>
+#include "builtins.h"
 
 void	ft_pwd(void)
 {

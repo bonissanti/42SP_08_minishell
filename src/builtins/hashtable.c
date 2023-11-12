@@ -1,9 +1,6 @@
 #include "env.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "builtins.h"
 
-void			safe_free(void **ptr);
 
 /**
  * Function: Create_hashtable

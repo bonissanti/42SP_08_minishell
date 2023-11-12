@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
-#include <stdio.h>
+#include "builtins.h"
 
 t_bool is_flag_n(char *arg);
 char *expand_variable(t_hashtable *hash_table, char *arg);

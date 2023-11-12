@@ -1,4 +1,4 @@
-#include "env.h"
+#include "builtins.h"
 
 void	free_for_exit(t_hashtable *hash_table, char **args, int argc);
 
@@ -28,7 +28,7 @@ void	ft_exit(t_hashtable *hash_table, char **args)
 	else if (argc == 2)
 	{
 		if (!ft_isdigit(args[1][0]))
-			ft_putstr_fd("exit: numeric argument required\n", 2);
+			ft_fprintf(2, "exit: %s: numeric argument required\n", args[1]);
 		exit_code = ft_atol(args[1]);
 		destroy_hashtable(hash_table);
 		free_split(args);

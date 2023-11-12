@@ -10,10 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
-#include <stdio.h>
-#include <string.h>
-
+#include "builtins.h"
 
 /**
  * Function: Print_all_env
@@ -45,9 +42,9 @@ void print_all_env(t_hashtable *hash_table)
 	{
 		value = search(hash_table, keys[i])->value;
 		if (value == NULL)
-			printf("declare -x %s\n", keys[i]);
+			ft_printf("declare -x %s\n", keys[i]);
 		else
-			printf("declare -x %s=\"%s\"\n", keys[i], value);
+			ft_printf("declare -x %s=\"%s\"\n", keys[i], value);
 	}
     free(keys);
 }

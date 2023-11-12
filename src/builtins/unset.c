@@ -10,9 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
 #include "env.h"
+#include <builtins.h>
 
 int ft_unset(t_hashtable *hash_table ,char **args)
 {
@@ -20,7 +19,7 @@ int ft_unset(t_hashtable *hash_table ,char **args)
 
     i = 0;
     if (args[1] == NULL)
-        ft_putstr_fd("expected argument to \"unset\"\n", 2);
+        ft_fprintf(2, "unset: not enough arguments\n");
     else
     {
         while (args[++i] != NULL)
