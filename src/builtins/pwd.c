@@ -11,20 +11,13 @@
 /* ************************************************************************** */
 
 #include "env.h"
-#include <stdio.h>
+#include <errno.h>
 
-
-void ft_pwd(void)
+void	ft_pwd(void)
 {
 	char *cwd;
 
 	cwd = getcwd(NULL, 0);
-	if (cwd == NULL)
-		perror("getcwd() error");
-	else
-	{
-		printf("%s\n", cwd);
-		free(cwd);
-	}
+	ft_printf("%s\n", cwd);
+	free(cwd);
 }
-

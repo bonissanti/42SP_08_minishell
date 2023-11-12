@@ -11,32 +11,35 @@
 /* ************************************************************************** */
 
 #include "env.h"
-#include <stdio.h>
+#include <errno.h>
 
-int    ft_cd(char **args)
+int	ft_cd(t_hashtable *hashtable, char **args)
 {
-	if (args[1] == NULL)
-		ft_putstr_fd("cd: expected argument to \"cd\"\n", 2);
-	else
+	size_t	argc;
+	char	*home;
+
+	argc = ft_count_args(args);
+	if (argc > 2)
 	{
-		if (chdir(args[1]) != 0)
-			perror("");
+		ft_putstr_fd("cd: too many arguments\n", 2);
+		return (1);
 	}
-	return (1);
-}
-
-int main()
-{
-	char *cd_args[] = {"cd", "../libft", NULL};
-	ft_cd(cd_args);
-
-	char *cd_args2[] = {"cd", NULL};
-	ft_cd(cd_args2);
-
-	char *cd_args3[] = {"cd", "/path/to/directory/", "with", "extra", "arguments", NULL};
-	ft_cd(cd_args3);
-
-	char *cd_args4[] = {"cd", "/path/to/directory/with/no/permissions", NULL};
-	ft_cd(cd_args4);
+	else if (argc == 1)
+	{
+		home = search(hashtable, "HOME")->value;
+		if (chdir(home) == -1)
+		{
+			ft_fprintf(2, "cd: %s: %s\n", home, strerror(errno));
+			return (1);
+		}
+	}
+	else if (argc == 2)
+	{
+		if (chdir(args[1]) == -1)
+		{
+			ft_fprintf(2, "cd: %s: No such file or directory\n", args[1]);
+			return (1);
+		}
+	}
 	return (0);
 }
