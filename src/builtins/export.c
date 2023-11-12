@@ -121,37 +121,6 @@ void	add_env(t_hashtable *hash_table, char **args)
  *
  */
 
-void free_split(char **split)
-{
-	int i;
-
-	i = 0;
-	while (split[i] != NULL)
-	{
-		if(split[i] != NULL)
-		{
-			free(split[i]);
-			split[i] = NULL;
-		}
-		i++;
-	}
-	if(split != NULL)
-	{
-		free(split);
-		split = NULL;
-	}
-}
-
-
-void	safe_free(void **ptr)
-{
-	if (*ptr != NULL)
-	{
-		free(*ptr);
-		*ptr = NULL;
-	}
-}
-
 void	ft_export(t_hashtable *hash_table, char **args)
 {
 	if (args[1] == NULL)

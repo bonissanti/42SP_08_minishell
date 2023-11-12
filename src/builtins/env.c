@@ -1,29 +1,26 @@
-#include <stdlib.h>
-#include <stdio.h>
 #include "env.h"
+#include "builtins.h"
 
-void ft_env(t_hashtable *hash_table, char **args)
+void	ft_env(t_hashtable *hashtable, char **args)
 {
-    int i;
-    char **keys;
-    char *value;
-    int argc;
+	int i;
+	int	argc;
+	char **keys;
+	char *value;
 
-    i = -1;
-    argc = ft_count_args(args);
-    keys = copy_all_keys(hash_table);
-    if (argc > 1) //refatorar criando ft_fprintf
-    {
-        ft_putstr_fd("env: ", 2);
-        ft_putstr_fd(args[1], 2);
-        ft_putstr_fd(": No such file or directory\n", 2);
-        exit(127);
-    }
-    while (++i < hash_table->num_keys)
-    {
-        value = search(hash_table, keys[i])->value;
-        if (value != NULL)
-            printf("%s=%s\n", keys[i], value);
-    }
-    free(keys);
+	i = 0;
+	argc = ft_count_args(args);
+	keys = copy_all_keys(hashtable);
+	if (argc > 1)
+	{
+		ft_fprintf(2, "env: %s: No such file or directory\n", args[1]);
+		exit (127);
+	}
+	while (++i < hashtable->num_keys)
+	{
+		value = search(hashtable, keys[i])->value;
+		if (value != NULL)
+			ft_fprintf(1, "%s=%s\n", keys[i], value);
+	}
+	free(keys);
 }

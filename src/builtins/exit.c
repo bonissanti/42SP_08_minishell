@@ -2,16 +2,6 @@
 
 void	free_for_exit(t_hashtable *hash_table, char **args, int argc);
 
-int	ft_count_args(char **args)
-{
-	int	count;
-
-	count = 0;
-	while (args[count] != NULL)
-		count++;
-	return (count);
-}
-
 void	ft_exit(t_hashtable *hash_table, char **args)
 {
 	long int exit_code;

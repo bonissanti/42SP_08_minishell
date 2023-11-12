@@ -1,6 +1,5 @@
 #include "env.h"
-#include <string.h>
-#include <stdio.h>
+#include "builtins.h"
 
 int	main(int argc, char **argv, char **envp)
 {
