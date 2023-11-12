@@ -1,7 +1,7 @@
 #include "env.h"
 #include <string.h>
 #include <stdio.h>
-#include "segments.h"
+#include "../handle_segments/segments.h"
 
 int	main(int argc, char **argv, char **envp)
 {

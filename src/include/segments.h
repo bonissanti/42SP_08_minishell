@@ -3,7 +3,7 @@
 
 // #include <string>
 #include <stdlib.h>
-#include "env.h"
+#include "../builtins/env.h"
 
 typedef struct s_segments
 {
@@ -20,12 +20,22 @@ typedef struct s_quote
     t_hashtable *env;
 }   t_quote;
 
-//############################### CREATE ###################################
+//############################### LIST ###################################
 
 t_segment *new_segments(char *str);
+void add_segments(t_segment **head, char *str);
+char *join_segments(t_segment *head);
+void	free_segments(t_segment *head);
+
+//############################### QUOTES ###################################
+
+char get_quote_type(char c);
+size_t even_close_quotes(char *str);
 void parse_quotes(t_hashtable *env, char **args);
-void process_segment(t_quote *quote, t_segment *head, size_t len);
+
+//############################### UTILS ###################################
+
 size_t ft_strcspn(const char *str, char *delim1, char *delim2);
-size_t is_even_quotes(char *str);
+t_bool	is_whitespace(char c);
 
 #endif
