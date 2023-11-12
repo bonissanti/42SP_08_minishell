@@ -11,6 +11,12 @@ typedef struct s_segments
     struct s_segments *next;
 }   t_segment; 
 
+typedef struct s_quote_state
+{
+    t_bool is_single_open;
+    t_bool is_double_open;
+}   t_quote_state;
+
 typedef struct s_quote
 {
     char        *ptr;
@@ -32,6 +38,7 @@ void	free_segments(t_segment *head);
 char get_quote_type(char c);
 size_t even_close_quotes(char *str);
 void parse_quotes(t_hashtable *env, char **args);
+
 
 //############################### UTILS ###################################
 

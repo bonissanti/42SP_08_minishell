@@ -22,7 +22,7 @@ size_t even_close_quotes(char *str) // Testar '$ USER' e "$ USER" com o main do 
 	double_quotes = 0;
 	is_squote_open = false;
 	is_dquote_open = false;
-	while (*str)
+    	while (*str)
 	{
 		if (*str == '\'' && !is_dquote_open)
 		{
@@ -39,6 +39,9 @@ size_t even_close_quotes(char *str) // Testar '$ USER' e "$ USER" com o main do 
 	return (single_quotes % 2 == 0 && double_quotes % 2 == 0);
 }
 
+// void segment_to_list
+
+
 void parse_quotes(t_hashtable *env, char **args)
 {
     t_quote quote;
@@ -47,14 +50,16 @@ void parse_quotes(t_hashtable *env, char **args)
     char *key;
     int key_len;
     t_hash *hash;
+    t_bool is_squote_open;
+    t_bool is_dquote_open;
 
     len = 0;
     head = NULL;
     quote.ptr = *args;
     quote.env = env;
-	quote.type = 0;
-    quote.prev_type = 0;
     quote.segment = (char *)malloc(sizeof(char) * ft_strlen(*args) + 1);
+    is_squote_open = false;
+    is_dquote_open = false;
 
     if (!even_close_quotes(*args))
     {
@@ -64,20 +69,17 @@ void parse_quotes(t_hashtable *env, char **args)
     }
     while (*(quote.ptr))
     {
-		if (*quote.ptr == '\'' || *quote.ptr == '\"') // Define open quote
-        	quote.type = get_quote_type(*(quote.ptr));
-        if (quote.type && quote.prev_type == *(quote.ptr)) // Add segment to list when ptr is in close quote
+		if (*quote.ptr == '\'' && !is_dquote_open)
+			is_squote_open = !is_squote_open;
+
+		else if (*quote.ptr == '\"' && !is_squote_open)
+			is_dquote_open = !is_dquote_open;
+
+        else if (*quote.ptr == '$' && (is_dquote_open || (!is_squote_open && !is_dquote_open))) // Expand variable
         {
-			quote.segment[len] = '\0';
+            quote.segment[len] = '\0';
             add_segments(&head, quote.segment);
             len = 0;
-            quote.prev_type = 0;
-			quote.type = 0;
-        }
-        else if (quote.type && quote.prev_type == 0) // Define close quote
-            quote.prev_type = *(quote.ptr);
-        else if (*quote.ptr == '$' && (quote.type == 0 || quote.type == 2)) // Expand variable
-        {
 			quote.ptr++;
 			if (is_whitespace(*quote.ptr))
 				quote.segment[len++] = '$';
@@ -89,11 +91,22 @@ void parse_quotes(t_hashtable *env, char **args)
             free(key);
             quote.ptr += key_len - 1;
 		}
-        else
+        else if (!is_squote_open && !is_dquote_open)
             quote.segment[len++] = *(quote.ptr); // Add char to segment
+
+        else if (is_squote_open || is_dquote_open)
+        {
+            quote.segment[len++] = *(quote.ptr); // Add char to segment
+            if (*(quote.ptr + 1) == '\'' || *(quote.ptr + 1) == '\"')
+            {
+                quote.segment[len] = '\0';
+                add_segments(&head, quote.segment);
+                len = 0;
+            }
+        }
         quote.ptr++;
     }
-	if (quote.prev_type != 0)
+	if (is_squote_open || is_dquote_open)
 	{
 		ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
 		free(quote.segment);
@@ -108,3 +121,4 @@ void parse_quotes(t_hashtable *env, char **args)
 	printf("\n");
     free_segments(head);
 }
+
