@@ -7,14 +7,11 @@ t_quote *init_quote(t_hashtable *env, char *arg)
 
     quote = (t_quote *)malloc(sizeof(t_quote));
     quote->ptr = arg;
-    quote->segment = (char *)malloc(sizeof(char) * ft_strlen(arg) + 1);
-    quote->segment[0] = '\0';
-    quote->type = 0;
-    quote->prev_type = 0;
-    quote->env = env;
-    quote->state.double_open = false;
-    quote->state.single_open = false;
-    return (quote);
+	quote->segment = (char *)malloc(sizeof(char) * ft_strlen(arg) + 1);
+	quote->type = 0;
+	quote->prev_type = 0;
+	quote->env = env;
+	return (quote);
 }
 
 t_segment *new_segments(char *str)
