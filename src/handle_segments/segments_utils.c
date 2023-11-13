@@ -88,7 +88,7 @@ size_t ft_strcspn(const char *str, char *delim1, char *delim2)
 	length = 0;
 	while (*str)
 	{
-		if (*str == *delim1 || *str == *delim2)
+		if (*str == *delim1 || *str == *delim2 || *str == '\\')
 			return (length);
 		str++;
 		length++;

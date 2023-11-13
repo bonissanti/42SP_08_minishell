@@ -11,20 +11,26 @@ char get_quote_type(char c)
 		return (0);
 }
 
-size_t even_close_quotes(char *str) // Testar '$ USER' e "$ USER" com o main do minishell
+size_t even_close_quotes(char *str) 
 {
 	size_t single_quotes;
 	size_t double_quotes;
 	t_bool is_squote_open;
 	t_bool is_dquote_open;
+	t_bool is_escape_next;
 
 	single_quotes = 0;
 	double_quotes = 0;
 	is_squote_open = false;
 	is_dquote_open = false;
-    while (*str)
+	is_escape_next = false;
+   	while (*str)
 	{
-		if (*str == '\'' && !is_dquote_open)
+		if (*str == '\\' && !is_escape_next)
+			is_escape_next = true;
+		else if (is_escape_next)
+			is_escape_next = false;
+		else if (*str == '\'' && !is_dquote_open)
 		{
 			single_quotes++;
 			is_squote_open = !is_squote_open;
@@ -47,19 +53,19 @@ static void    handle_quotes(t_quote *quote, t_bool *is_squote_open, t_bool *is_
 		*is_dquote_open = !*is_dquote_open;
 }
 
-void	expand_variable(t_quote *quote, t_segment **head, size_t len)
+void	expand_variable(t_quote *quote, t_segment **head, size_t *len)
 {
 	char *key;
 	int key_len;
 	t_hash *hash;
 
-	quote->segment[len] = '\0';
+	quote->segment[*len] = '\0';
 	add_segments(head, quote->segment);
-	len = 0;
+	*len = 0;
 	quote->ptr++;
 	if (is_whitespace(*quote->ptr))
 	{
-		quote->segment[len++] = '$';
+		quote->segment[*len++] = '$';
 	}
 	key_len = ft_strcspn(quote->ptr, "\"", "'");
 	key = strndup(quote->ptr, key_len); 
@@ -89,6 +95,24 @@ static void	error_close_quotes(t_quote *quote)
 	return ;
 }
 
+static void handle_escape(t_quote *quote, t_bool *is_escape_next, size_t *len)
+{
+	if (*quote->ptr == '\\')
+	{
+		*is_escape_next = true;
+		quote->ptr++;
+		quote->segment[*len] = *(quote->ptr);
+		(*len)++;
+		*is_escape_next = false;
+		// add_segments(head, quote->segment);
+	}
+	else
+	{
+		quote->segment[*len] = *(quote->ptr);
+		(*len)++;
+	}
+}
+
 void parse_quotes(t_hashtable *env, char **args)
 {
     t_quote *quote;
@@ -103,6 +127,7 @@ void parse_quotes(t_hashtable *env, char **args)
     quote = init_quote(env, *args);
     is_dquote_open = false;
 	is_squote_open = false;
+	is_escape_next = false;
 
     if (!even_close_quotes(*args))
     {
@@ -112,22 +137,22 @@ void parse_quotes(t_hashtable *env, char **args)
     }
     while (*(quote->ptr))
     {
-		if ((*quote->ptr == '\'' && !is_dquote_open) || (*quote->ptr == '\"' && !is_squote_open))
+		if ((*quote->ptr == '\'' && !is_dquote_open && !is_escape_next) || (*quote->ptr == '\"' && !is_squote_open && !is_escape_next))
 			handle_quotes(quote, &is_squote_open, &is_dquote_open);
         else if (*quote->ptr == '$' && (is_dquote_open || (!is_squote_open && !is_dquote_open)))
-            expand_variable(quote, &head, len);
+            expand_variable(quote, &head, &len);
         else if (is_squote_open || is_dquote_open)
 			add_char_to_segment(quote, &head, &len);
         else
-            quote->segment[len++] = *(quote->ptr);
+            handle_escape(quote, &is_escape_next, &len);
         quote->ptr++;
     }
 	if (is_squote_open || is_dquote_open)
 		error_close_quotes(quote);
 	quote->segment[len] = '\0';
-    add_segments(&head, quote->segment);
-    free(quote->segment);
-    *args = join_segments(head);
+	add_segments(&head, quote->segment);
+	free(quote->segment);
+	*args = join_segments(head);
 	for (int i = 0; args[i]; i++)
 		printf("%s ", args[i]);
 	printf("\n");

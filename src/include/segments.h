@@ -57,7 +57,7 @@ size_t					even_close_quotes(char *str);
 // void   					add_char_to_segment(t_parse *parse, t_segment **head, t_quote_state *status, size_t *len);
 // void                    expand_variable(t_parse *parse, t_segment **head, size_t *len);
 void					parse_quotes(t_hashtable *env, char **args);
-void	expand_variable(t_quote *quote, t_segment **head, size_t len);
+void	expand_variable(t_quote *quote, t_segment **head, size_t *len);
 t_quote *init_quote(t_hashtable *env, char *arg);
 
 //############################### UTILS ###################################
