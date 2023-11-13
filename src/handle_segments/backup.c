@@ -6,7 +6,7 @@
 //         status->double_open = !status->double_open;
 // }
 
-// void    add_char_to_segment(t_parse *parse, t_segment **head, t_quote_state *status, size_t *len)
+// void    char_between_quotes(t_parse *parse, t_segment **head, t_quote_state *status, size_t *len)
 // {
 //     if (status->single_open || status->double_open)
 //         parse->segment[*len] = *(parse->ptr);
@@ -46,7 +46,7 @@
 //         else if (!status.single_open && !status.double_open)
 //             parse->segment[len++] = *(parse->ptr);
 //         else if (status.single_open || status.double_open)
-//             add_char_to_segment(parse, &head, &status, &len);
+//             char_between_quotes(parse, &head, &status, &len);
 //         parse->ptr++;
 //     }
 //     if (status.single_open || status.double_open)

@@ -11,7 +11,18 @@ t_quote *init_quote(t_hashtable *env, char *arg)
 	quote->type = 0;
 	quote->prev_type = 0;
 	quote->env = env;
+	quote->state = init_quote_state();
 	return (quote);
+}
+
+t_quote_state init_quote_state(void)
+{
+	t_quote_state state;
+
+	state.single_open = false;
+	state.double_open = false;
+	state.escape_next = false;
+	return (state);
 }
 
 t_segment *new_segments(char *str)
