@@ -20,7 +20,7 @@ HEADER 		= ./mandatory/
 SUBDIRS 	= mandatory
 MAND_SRCS 	= 	builtins/export.c builtins/export_utils.c builtins/hashtable.c \
 				builtins/exit.c builtins/env.c builtins/cd.c builtins/pwd.c \
-				builtins/main.c builtins/echo.c builtins/expand_var.c builtins/unset.c \
+				builtins/main.c builtins/echo.c builtins/unset.c \
 				handle_segments/handle_quotes.c handle_segments/segments_utils.c \
 			
 		
