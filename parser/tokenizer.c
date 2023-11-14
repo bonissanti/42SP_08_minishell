@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/10 02:05:36 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/14 00:02:11 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,18 +141,18 @@ void tokenizer(t_global *g_global, char *cmd)
 int main(void)
 {
 	
-	// tokenizer(&g_global, "echo -n \"test\"");
+	// tokenizer(&g_global, "echo -n \"test\""); //segfault
 	// tokenizer(&g_global, "<< qwerty > ./output| < ./infile wc -l > ./output &&echo \"test\" || (sort ./test)");
 	// tokenizer(&g_global, "<teste.txt cat>teste.txtcat");
-	// tokenizer(&g_global, "echo$PATH");
-	// tokenizer(&g_global, "echo $PATH>path.txt&&cat path.txt|echo $USER");
-	// tokenizer(&g_global, "echo $PATH>*.txt&&cat *.txt|echo $USER");
+	tokenizer(&g_global, "echo$PATH"); //infinite loop
+	// tokenizer(&g_global, "echo $PATH>path.txt&&cat path.txt|echo $USER"); // infinite loop
+	// tokenizer(&g_global, "echo $PATH>*.txt&&cat *.txt|echo $USER"); // infinite loop
 	// tokenizer(&g_global, "< ./parser.h wc -l > ./outfile");
 	// tokenizer(&g_global, "<./parser.h wc -l>outfile");
 	// tokenizer(&g_global, "< ./parser.h wc -l>outfile (");
 	// tokenizer(&g_global, "<< qwerty wc -l > ./output && echo \"test\" || (sort ./test)");
 	// tokenizer(&g_global, "wc -l > ./output && echo \"test\" || (sort ./test)");
-	tokenizer(&g_global, "< ./parser.h wc -l>outfile");
+	// tokenizer(&g_global, "< ./parser.h wc -l>outfile");
 	print_tkn_list(g_global.tkn_list);
 	parser();
 }

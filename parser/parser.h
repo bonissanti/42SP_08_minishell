@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/09 19:53:09 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/12 23:46:18 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void		handle_token(t_global *g_global, char *str);
 t_tkn_list	*last_tkn_list(t_tkn_list *tkn_list);
 void		add_tkn_list(t_global *g_global, t_tkn_list *new_list);
 void		print_tkn_list(t_tkn_list *tkn_list);   //DELETE THIS BEFORE DELIVERY 
+void		print_cmd_list(t_cmd_list *cmd_list);	//DELETE THIS BEFORE DELIVERY
 char		*tkn_type_string(t_tkn_type type);      //DELETE THIS BEFORE DELIVERY
 void		parser(void);
 int			command_consistency(t_tkn_list *tokenized);

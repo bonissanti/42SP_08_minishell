@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/10 03:02:13 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/14 00:01:36 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,16 +89,11 @@ void set_io(t_cmd_list **cmd_list)
 	head = rewind_list(cmd_list);
 	while(head->next)
 	{
-		if (head->type == REDIRECT && (ft_strncmp(head->args, "<<")
-		|| head->args == '<'))
-		{
-			head->next->next->infile == head->	
-		}
-		else if (head->type == REDIRECT && (ft_strncmp(head->args, ">>")
-		|| head->args == '>'))
-		{
-			
-		}
+		if (head->type == TYPE_REDIRECT && *(*head).args == '<')
+			head->next->next->infile = head->next->args;
+		else if (head->type == TYPE_REDIRECT && (ft_strncmp(head->args, ">>", 2)
+		|| *(*head).args == '>'))
+			head->prev->outfile = head->next->args;
 	head = head->next;		
 	}
 }
@@ -126,11 +121,8 @@ void new_cmd_file_node(t_tkn_list **current)
 	while(*current && (*current)->type == IDENTIFIER)
 	{	
 		*current = (*current)->next;
-		// if (is_redirect((*current)->type))
-		// {
-		// 	if ((*current)->type == REDIRECT || (*current)->type == APPEND)
-		// 		g_global.cmd_list->outfile = (*current)->next->content;
-		// }
+		if(!*current)
+			return ;
 		if((*current)->type != IDENTIFIER)
 			return ;	
 		else
@@ -210,12 +202,15 @@ void	join_args(t_tkn_list *tkn_list)
 		if (current && is_operator(current->type))
 			new_operator_node(&current);
 	}
+	set_io(&(g_global).cmd_list);
+	rewind_list(&(g_global).cmd_list);
 }
 
 void parser(void)
 {
 	command_consistency(g_global.tkn_list);
 	join_args(g_global.tkn_list);
+	print_cmd_list(g_global.cmd_list);
 }
 
 /*
