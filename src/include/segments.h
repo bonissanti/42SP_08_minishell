@@ -2,7 +2,7 @@
 # define SEGMENTS_H
 
 // #include <string>
-# include "../builtins/env.h"
+# include "env.h"
 # include <stdlib.h>
 
 typedef struct s_segments
@@ -45,11 +45,15 @@ void					expand_variable(t_quote *quote, t_segment **head,
 t_quote					*init_quote(t_hashtable *env, char *arg);
 t_quote_state			init_quote_state(void);
 
+//############################### TILDE ###################################
+
+char *expand_tilde(t_hashtable *hashtable, char *str);
+
 //############################### UTILS ###################################
 
 size_t 					even_close_quotes(char *str);
 void					error_close_quotes(t_quote *quote);
-void					check_handle_error(t_quote *quote, char **args, int i);
+t_bool					check_handle_error(t_quote *quote, char **args, int i);
 size_t					ft_strcspn(const char *str, char *delim1, char *delim2);
 t_bool					is_whitespace(char c);
 

@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "env.h"
+#include "../include/env.h"
 
 void ft_env(t_hashtable *hash_table, char **args)
 {

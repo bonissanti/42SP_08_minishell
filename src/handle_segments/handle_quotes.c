@@ -1,4 +1,4 @@
-#include "../builtins/env.h"
+#include "../include/env.h"
 #include "../include/segments.h"
 
 static void	handle_quotes(t_quote *quote);
@@ -16,13 +16,14 @@ void	parse_quotes(t_hashtable *env, char **args)
 	len = 0;
 	head = NULL;
 	quote = init_quote(env, *args);
-	if (!even_close_quotes(*args))
-	{
-		ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
-		free(quote->segment);
+	// if (!even_close_quotes(*args))
+	// {
+	// 	ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
+	// 	free(quote->segment);
+	// 	return ;
+	// }
+	if (check_handle_error(quote, args, 0))
 		return ;
-	}
-	// check_handle_error(quote, args, 0);
 	while (*(quote->ptr))
 	{
 		if ((*quote->ptr == '\'' && !quote->state.double_open)
@@ -37,9 +38,12 @@ void	parse_quotes(t_hashtable *env, char **args)
 			literal_string(quote, &len);
 		quote->ptr++;
 	}
-	// check_handle_error(quote, args, 1);
-	if (quote->state.single_open || quote->state.double_open)
-		error_close_quotes(quote);
+	check_handle_error(quote, args, 1);
+	// if (!even_close_quotes(*args))
+	// {
+	// 	ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
+	// 	free(quote->segment);
+	// }
 	final_process(quote, &head, args, &len);
 }
 
@@ -86,8 +90,9 @@ static void	final_process(t_quote *quote, t_segment **head, char **args,
 	quote->segment[*len] = '\0';
 	add_segments(head, quote->segment);
 	free(quote->segment);
+	free(quote);
 	*args = join_segments(*head);
-	for (int i = 0; args[i]; i++)
+	for (int i = 0; args[i]; i++) //retirar depois
 		printf("%s ", args[i]);
 	printf("\n");
 	free_segments(*head);

@@ -32,6 +32,7 @@ typedef struct t_hashtable
 {
 	int num_keys;
 	t_hash *buckets[101];
+	t_hash *home;
 }			t_hashtable;
 
 typedef struct t_env

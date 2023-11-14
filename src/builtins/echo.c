@@ -6,11 +6,11 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 19:06:42 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/01 18:29:10 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/14 13:51:41 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
+#include "../include/env.h"
 #include <stdio.h>
 
 t_bool is_flag_n(char *arg);

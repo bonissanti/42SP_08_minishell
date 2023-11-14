@@ -1,4 +1,4 @@
-#include "env.h"
+#include "../include/env.h"
 #include <string.h>
 #include <stdio.h>
 #include "../include/segments.h"
@@ -31,7 +31,7 @@ int	main(int argc, char **argv, char **envp)
            ft_export(hash_table, num_args);
 
 		if (ft_strcmp(num_args[0], "echo") == 0)
-			parse_quotes(hash_table, num_args + 1);
+			parse_quotes(hash_table, num_args);
        
 		if (ft_strcmp(num_args[0], "exit") == 0)
 			ft_exit(hash_table, num_args);
@@ -48,9 +48,13 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strcmp(num_args[0], "pwd") == 0)
 			ft_pwd();
 
-		for (int i = 0; num_args[i]; i++)
-			free(num_args[i]);
-		free(num_args);
+		if (ft_strcmp(num_args[0], "expand") == 0)
+		{
+			char *str = expand_tilde(hash_table, num_args[1]);
+			printf("%s\n", str);
+		}
+
+		free_split(num_args);
 
 	}
 	destroy_hashtable(hash_table);

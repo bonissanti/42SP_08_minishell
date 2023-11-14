@@ -1,4 +1,4 @@
-#include "../builtins/env.h"
+#include "../include/env.h"
 #include "../include/segments.h"
 
 void	expand_variable(t_quote *quote, t_segment **head, size_t *len)
@@ -16,7 +16,7 @@ void	expand_variable(t_quote *quote, t_segment **head, size_t *len)
 		quote->segment[*len++] = '$';
 	}
 	key_len = ft_strcspn(quote->ptr, "\"", "'");
-	key = strndup(quote->ptr, key_len); 
+	key = ft_strndup(quote->ptr, key_len); 
 	hash = search(quote->env, key);
 	if (hash)
 		add_segments(head, hash->value);

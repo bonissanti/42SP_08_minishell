@@ -1,4 +1,4 @@
-#include "../builtins/env.h"
+#include "../include/env.h"
 #include "../include/segments.h"
 
 size_t even_close_quotes(char *str) 
@@ -42,7 +42,7 @@ void	error_close_quotes(t_quote *quote)
 	return ;
 }
 
-void	check_handle_error(t_quote *quote, char **args, int i)
+t_bool	check_handle_error(t_quote *quote, char **args, int i)
 {
 	if (i == 0)
 	{
@@ -50,7 +50,8 @@ void	check_handle_error(t_quote *quote, char **args, int i)
 		{
 			ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
 			free(quote->segment);
-			return ;
+			free(quote);
+			return (true);
 		}
 	}
 	else if (i == 1)
@@ -58,4 +59,5 @@ void	check_handle_error(t_quote *quote, char **args, int i)
 		if (quote->state.single_open || quote->state.double_open)
 			error_close_quotes(quote);
 	}
+	return (false);
 }

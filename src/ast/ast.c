@@ -6,11 +6,11 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/10/30 15:54:55 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/14 13:52:15 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ast.h"
+#include "../include/ast.h"
 
 /**
  * Function: Create_node
