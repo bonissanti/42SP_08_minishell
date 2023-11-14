@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 13:39:58 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/14 15:01:25 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/14 15:23:35 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char *expand_tilde(t_hashtable *hashtable, char *str)
 	char 	*expanded;
 	size_t	len;
 
-	if (str[0] != '~')
+	if (str[0] != '~' || str[1] != '/' || str[1] != '\0')
 		return (str);
 
 	len = ft_strlen(hashtable->home->value) + ft_strlen(str);
@@ -28,6 +28,5 @@ char *expand_tilde(t_hashtable *hashtable, char *str)
 
 	ft_strlcpy(expanded, hashtable->home->value, len + 1);
 	ft_strlcat(expanded, str + 1, len + 1);
-	// free(str);
 	return (expanded);	
 }
