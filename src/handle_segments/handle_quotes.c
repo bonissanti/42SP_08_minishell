@@ -37,7 +37,7 @@ void	parse_quotes(t_hashtable *env, char **args)
 			literal_string(quote, &len);
 		quote->ptr++;
 	}
-	check_handle_error(quote, args, 1);
+	// check_handle_error(quote, args, 1);
 	if (quote->state.single_open || quote->state.double_open)
 		error_close_quotes(quote);
 	final_process(quote, &head, args, &len);
