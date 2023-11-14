@@ -31,7 +31,7 @@ int	main(int argc, char **argv, char **envp)
            ft_export(hash_table, num_args);
 
 		if (ft_strcmp(num_args[0], "echo") == 0)
-			parse_quotes(hash_table, num_args);
+			is_quotes(hash_table, num_args);
        
 		if (ft_strcmp(num_args[0], "exit") == 0)
 			ft_exit(hash_table, num_args);

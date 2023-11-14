@@ -39,7 +39,7 @@ void					free_segments(t_segment *head);
 
 char					get_quote_type(char c);
 size_t					even_close_quotes(char *str);
-void					parse_quotes(t_hashtable *env, char **args);
+void					is_quotes(t_hashtable *env, char **args);
 void					expand_variable(t_quote *quote, t_segment **head,
 							size_t *len);
 t_quote					*init_quote(t_hashtable *env, char *arg);
@@ -54,6 +54,7 @@ char *expand_tilde(t_hashtable *hashtable, char *str);
 size_t 					even_close_quotes(char *str);
 void					error_close_quotes(t_quote *quote);
 t_bool					check_handle_error(t_quote *quote, char **args, int i);
+char					*ft_strndup(const char *str, size_t num);
 size_t					ft_strcspn(const char *str, char *delim1, char *delim2);
 t_bool					is_whitespace(char c);
 

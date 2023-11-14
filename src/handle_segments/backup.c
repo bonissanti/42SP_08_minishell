@@ -19,7 +19,7 @@
 //     }
 // }
 
-// void    parse_quotes(t_hashtable *env, char **args)
+// void    is_quotes(t_hashtable *env, char **args)
 // {
 //     t_parse         *parse;
 //     t_segment       *head;
@@ -32,7 +32,7 @@
 //     status.double_open = false;
 //     status.single_open = false;
 
-//     if (!even_close_quotes(*args)) //colocar essa função antes da chamada do parse_quotes
+//     if (!even_close_quotes(*args)) //colocar essa função antes da chamada do is_quotes
 //     {
 //         ft_putstr_fd("minishell: syntax error: unexpected EOF\n", 2);
 //         free(parse->segment);
@@ -90,7 +90,7 @@
 
 //############################### FUNCIONA   ###################################
 
-// void parse_quotes(t_hashtable *env, char **args)
+// void is_quotes(t_hashtable *env, char **args)
 // {
 //     t_quote quote;
 //     t_segment *head;

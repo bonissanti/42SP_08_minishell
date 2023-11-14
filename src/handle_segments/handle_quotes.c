@@ -7,7 +7,7 @@ static void	literal_string(t_quote *quote, size_t *len);
 static void	final_process(t_quote *quote, t_segment **head, char **args,
 				size_t *len);
 
-void	parse_quotes(t_hashtable *env, char **args)
+void	is_quotes(t_hashtable *env, char **args)
 {
 	t_quote		*quote;
 	t_segment	*head;
