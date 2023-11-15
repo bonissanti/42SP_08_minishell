@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/14 00:01:36 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/14 23:55:31 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,20 +110,28 @@ void new_cmd_file_node(t_tkn_list **current)
 		*current = (*current)->next;
 		return ;
 	}
+	else if((*current)->type == EXPAND || (*current)->type == WILD)
+	{
+		add_cmd_list((t_cmd_list){
+			.type = TYPE_COMMAND,
+			.args = (*current)->content,
+			.prec_weight = DEFAULT,
+		});
+	}
 	else
 	{
 		add_cmd_list((t_cmd_list){
 			.type = TYPE_COMMAND,
 			.args = (*current)->content,
 			.prec_weight = DEFAULT,
-			});		
+		});
 	}
-	while(*current && (*current)->type == IDENTIFIER)
+	while(*current && ((*current)->type == IDENTIFIER || (*current)->type == EXPAND || (*current)->type == WILD))
 	{	
 		*current = (*current)->next;
 		if(!*current)
 			return ;
-		if((*current)->type != IDENTIFIER)
+		if((*current)->type != IDENTIFIER && (*current)->type != EXPAND && (*current)->type != WILD)
 			return ;	
 		else
 		{
@@ -132,6 +140,7 @@ void new_cmd_file_node(t_tkn_list **current)
 			g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, (*current)->content);
 		}
 	}
+	*current = (*current)->next;
 }
 
 void	new_redirect_node(t_tkn_list **current)
@@ -193,7 +202,8 @@ void	join_args(t_tkn_list *tkn_list)
 	current = tkn_list;
 	while(current)
 	{
-		if (current && current->type == IDENTIFIER)
+		if (current && (current->type == IDENTIFIER
+		|| current->type == EXPAND || current->type == WILD))
 			new_cmd_file_node(&current);
 		if (current && is_redirect(current->type))
 			new_redirect_node(&current);
@@ -206,10 +216,18 @@ void	join_args(t_tkn_list *tkn_list)
 	rewind_list(&(g_global).cmd_list);
 }
 
-void parser(void)
+void parser(t_hashtable *env)
 {
+	(void)env;
 	command_consistency(g_global.tkn_list);
 	join_args(g_global.tkn_list);
+	while(g_global.cmd_list->next)
+	{
+		is_quotes(env, &g_global.cmd_list->args);
+		g_global.cmd_list = g_global.cmd_list->next;
+	}
+	is_quotes(env, &g_global.cmd_list->args);
+	rewind_list(&(g_global).cmd_list);
 	print_cmd_list(g_global.cmd_list);
 }
 

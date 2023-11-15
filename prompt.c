@@ -6,13 +6,13 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/06 15:39:32 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/14 23:03:24 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void prompt(void)
+void prompt(t_hashtable *env)
 {
 	char *cmd;
 
@@ -21,7 +21,7 @@ void prompt(void)
 	cmd = readline("");
 	g_global.readline_input = cmd;
 	
-	tokenizer(&g_global, g_global.readline_input);
+	tokenizer(&g_global, g_global.readline_input, env);
 	parser(&g_global);
 	ft_printf("%s\n", cmd);
 	while(ft_strcmp(cmd, "exit") != 0)

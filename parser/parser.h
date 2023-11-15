@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/12 23:46:18 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/14 23:05:06 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define PARSER_H
 
 #include "../minishell.h"
+#include "env.h"
+#include "segments.h"
 
 typedef enum {
 	IDENTIFIER,
@@ -75,7 +77,7 @@ typedef struct s_global{
 
 extern t_global g_global;
 
-void		tokenizer(t_global *g_global, char *cmd);
+void		tokenizer(t_global *g_global, char *cmd, t_hashtable *env);
 void 		skip_spaces(char **str);
 int			isdelimiter(char *cmd);
 t_tkn_list	*new_tkn_list(char *content, t_tkn_type type);
@@ -85,11 +87,14 @@ void		add_tkn_list(t_global *g_global, t_tkn_list *new_list);
 void		print_tkn_list(t_tkn_list *tkn_list);   //DELETE THIS BEFORE DELIVERY 
 void		print_cmd_list(t_cmd_list *cmd_list);	//DELETE THIS BEFORE DELIVERY
 char		*tkn_type_string(t_tkn_type type);      //DELETE THIS BEFORE DELIVERY
-void		parser(void);
+void		parser(t_hashtable *env);
 int			command_consistency(t_tkn_list *tokenized);
 void		join_args(t_tkn_list *tkn_list);
 void		add_cmd_list(t_cmd_list new_list);
 t_cmd_list	*last_cmd_list(t_cmd_list *cmd_list);
 int			tkn_list_size(t_tkn_list *tkn_list);
+char		*cmd_type_string(t_type type);
+void		print_cmd_list(t_cmd_list *cmd_list);
+void		print_tkn_list(t_tkn_list *tkn_list);
 
 #endif

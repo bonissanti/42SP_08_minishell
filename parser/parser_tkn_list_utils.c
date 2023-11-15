@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 18:22:03 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/09 17:13:36 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/14 16:40:38 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,8 @@ t_tkn_list	*new_tkn_list(char *content, t_tkn_type type)
 	if (!node)
 		return (NULL);
 	node->type = type;
-	if(type == IDENTIFIER)
+	if(type == IDENTIFIER || type == WILD || type == EXPAND)
 		node->content = content;
-	else if(type == EXPAND)
-		node->content = ft_substr(content, 1, ft_strlen(content) - 1);
 	else
 		node->content = NULL;
 	node->next = NULL;
