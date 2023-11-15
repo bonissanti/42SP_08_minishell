@@ -6,11 +6,11 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 11:11:42 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/01 19:30:44 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/14 13:51:41 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
+#include "../include/env.h"
 
 char *remove_quotes(char *arg, char quote)
 {

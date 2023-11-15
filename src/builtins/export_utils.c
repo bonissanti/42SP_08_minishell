@@ -1,4 +1,4 @@
-#include "env.h"
+#include "../include/env.h"
 
 void	bubble_sort(char **array, int size)
 {

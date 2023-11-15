@@ -6,11 +6,14 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/10/30 18:33:03 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/14 13:51:41 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "../include/env.h"
+#include <stdio.h>
+#include <string.h>
+
 
 /**
  * Function: Print_all_env

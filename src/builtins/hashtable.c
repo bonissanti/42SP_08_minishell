@@ -1,5 +1,5 @@
-#include "env.h"
-#include "builtins.h"
+#include "../include/env.h"
+#include "../include/builtins.h"
 
 
 /**
@@ -49,12 +49,15 @@ void init_hash(t_hashtable *hash_table, char **envp)
 
 	i = -1;
 	hash_table->num_keys = 0;
+	hash_table->home = NULL;
 	while (envp[++i] != NULL)
 	{
 		env.equals_sign = ft_split(envp[i], '=');
 		env.key = env.equals_sign[0];
 		env.value = env.equals_sign[1];
 		insert(hash_table, env.key, env.value);
+		if (strcmp(env.key, "HOME") == 0)
+			hash_table->home = search(hash_table, env.key);
 		free_split(env.equals_sign);
 	}
 }

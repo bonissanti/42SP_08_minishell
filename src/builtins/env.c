@@ -1,5 +1,5 @@
-#include "env.h"
-#include "builtins.h"
+#include "../include/env.h"
+#include "../include/builtins.h"
 
 void	ft_env(t_hashtable *hashtable, char **args)
 {

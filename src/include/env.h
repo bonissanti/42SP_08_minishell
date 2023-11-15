@@ -32,6 +32,7 @@ typedef struct t_hashtable
 {
 	int num_keys;
 	t_hash *buckets[101];
+	t_hash *home;
 }			t_hashtable;
 
 
@@ -53,6 +54,7 @@ char			**copy_all_keys(t_hashtable *hash_table);
 char			*expand_variable(t_hashtable *hash_table, char *arg);
 char 			*handle_elements(t_hashtable *hash_table, char *arg);
 void			init_hash(t_hashtable *hash_table, char **envp);
+
 
 
 #endif

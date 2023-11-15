@@ -6,11 +6,12 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 19:06:42 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/01 18:29:10 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/14 13:51:41 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtins.h"
+#include "../include/builtins.h"
+#include "../include/env.h"
 
 t_bool is_flag_n(char *arg);
 char *expand_variable(t_hashtable *hash_table, char *arg);
@@ -45,18 +46,18 @@ t_bool is_flag_n(char *arg)
 	return (true);
 }
 
-char *expand_variable(t_hashtable *hash_table, char *arg)
-{
-	t_hash *hash;
+// char *expand_variable(t_hashtable *hash_table, char *arg)
+// {
+// 	t_hash *hash;
 	
-	if (arg[0] == '$')
-	{
-		hash = search(hash_table, arg + 1);
-		if (hash != NULL)
-			return (hash->value);
-	}
-	return (arg);
-}
+// 	if (arg[0] == '$')
+// 	{
+// 		hash = search(hash_table, arg + 1);
+// 		if (hash != NULL)
+// 			return (hash->value);
+// 	}
+// 	return (arg);
+// }
 
 // int main(void)
 // {
