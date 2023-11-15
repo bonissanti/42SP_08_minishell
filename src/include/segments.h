@@ -15,7 +15,7 @@ typedef struct s_quote_state
 {
 	t_bool				single_open;
 	t_bool				double_open;
-	t_bool				escape_next;
+	t_bool				space_dollar;
 }						t_quote_state;
 
 typedef struct s_quote
@@ -44,6 +44,8 @@ void					expand_variable(t_quote *quote, t_segment **head,
 							size_t *len);
 t_quote					*init_quote(t_hashtable *env, char *arg);
 t_quote_state			init_quote_state(void);
+void	final_process(t_quote *quote, t_segment **head, char **args,
+		size_t *len);
 
 //############################### TILDE ###################################
 
@@ -53,6 +55,7 @@ char *expand_tilde(t_hashtable *hashtable, char *str);
 
 size_t 					even_close_quotes(char *str);
 void					error_close_quotes(t_quote *quote);
+t_bool					check_dollar_space(char *str);
 t_bool					check_handle_error(t_quote *quote, char **args, int i);
 char					*ft_strndup(const char *str, size_t num);
 size_t					ft_strcspn(const char *str, char *delim1, char *delim2);

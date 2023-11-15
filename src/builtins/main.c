@@ -24,14 +24,14 @@ int	main(int argc, char **argv, char **envp)
 		trimmed_input = ft_strtrim(input, "\n");
 		free(input);
 
-		num_args = ft_split(trimmed_input, ' ');
+		num_args = ft_split(trimmed_input, '\"');
 		free(trimmed_input);
 		
 		if (ft_strcmp(num_args[0], "export") == 0)
            ft_export(hash_table, num_args);
 
-		if (ft_strcmp(num_args[0], "echo") == 0)
-			is_quotes(hash_table, num_args);
+		if (ft_strcmp(num_args[0], "echo ") == 0)
+			is_quotes(hash_table, num_args + 1);
        
 		if (ft_strcmp(num_args[0], "exit") == 0)
 			ft_exit(hash_table, num_args);

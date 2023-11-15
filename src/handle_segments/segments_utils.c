@@ -21,7 +21,7 @@ t_quote_state init_quote_state(void)
 
 	state.single_open = false;
 	state.double_open = false;
-	state.escape_next = false;
+	state.space_dollar = false;
 	return (state);
 }
 

@@ -1,6 +1,29 @@
 #include "../include/env.h"
 #include "../include/segments.h"
 
+size_t even_close_quotes(char *str);
+void	error_close_quotes(t_quote *quote);
+
+t_bool	check_handle_error(t_quote *quote, char **args, int i)
+{
+	if (i == 0)
+	{
+		if (!even_close_quotes(*args))
+		{
+			ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
+			free(quote->segment);
+			free(quote);
+			return (true);
+		}
+	}
+	else if (i == 1)
+	{
+		if (quote->state.single_open || quote->state.double_open)
+			error_close_quotes(quote);
+	}
+	return (false);
+}
+
 size_t even_close_quotes(char *str) 
 {
 	size_t single_quotes;
@@ -42,22 +65,16 @@ void	error_close_quotes(t_quote *quote)
 	return ;
 }
 
-t_bool	check_handle_error(t_quote *quote, char **args, int i)
+t_bool	check_dollar_space(char *str)
 {
-	if (i == 0)
+	while (*str)
 	{
-		if (!even_close_quotes(*args))
+		if (*str == '$')
 		{
-			ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
-			free(quote->segment);
-			free(quote);
-			return (true);
+			if (is_whitespace(*(str + 1)))
+				return (true);
 		}
-	}
-	else if (i == 1)
-	{
-		if (quote->state.single_open || quote->state.double_open)
-			error_close_quotes(quote);
+		str++;
 	}
 	return (false);
 }

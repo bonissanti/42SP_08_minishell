@@ -4,7 +4,7 @@
 static void	handle_quotes(t_quote *quote);
 static void	char_between_quotes(t_quote *quote, t_segment **head, size_t *len);
 static void	literal_string(t_quote *quote, size_t *len);
-static void	final_process(t_quote *quote, t_segment **head, char **args,
+void	final_process(t_quote *quote, t_segment **head, char **args,
 				size_t *len);
 
 void	is_quotes(t_hashtable *env, char **args)
@@ -16,12 +16,7 @@ void	is_quotes(t_hashtable *env, char **args)
 	len = 0;
 	head = NULL;
 	quote = init_quote(env, *args);
-	// if (!even_close_quotes(*args))
-	// {
-	// 	ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
-	// 	free(quote->segment);
-	// 	return ;
-	// }
+	quote->state.space_dollar = check_dollar_space(*args);
 	if (check_handle_error(quote, args, 0))
 		return ;
 	while (*(quote->ptr))
@@ -39,11 +34,6 @@ void	is_quotes(t_hashtable *env, char **args)
 		quote->ptr++;
 	}
 	check_handle_error(quote, args, 1);
-	// if (!even_close_quotes(*args))
-	// {
-	// 	ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
-	// 	free(quote->segment);
-	// }
 	final_process(quote, &head, args, &len);
 }
 
@@ -71,11 +61,9 @@ static void	literal_string(t_quote *quote, size_t *len)
 {
 	if (*quote->ptr == '\\')
 	{
-		quote->state.escape_next = true;
 		quote->ptr++;
 		quote->segment[*len] = *(quote->ptr);
 		(*len)++;
-		quote->state.escape_next = false;
 	}
 	else
 	{
@@ -84,7 +72,7 @@ static void	literal_string(t_quote *quote, size_t *len)
 	}
 }
 
-static void	final_process(t_quote *quote, t_segment **head, char **args,
+void	final_process(t_quote *quote, t_segment **head, char **args,
 		size_t *len)
 {
 	quote->segment[*len] = '\0';
@@ -92,7 +80,7 @@ static void	final_process(t_quote *quote, t_segment **head, char **args,
 	free(quote->segment);
 	free(quote);
 	*args = join_segments(*head);
-	for (int i = 0; args[i]; i++) //retirar depois
+	for (int i = 0; args[i]; i++)
 		printf("%s ", args[i]);
 	printf("\n");
 	free_segments(*head);
