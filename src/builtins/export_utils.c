@@ -1,4 +1,5 @@
 #include "../include/env.h"
+#include "../include/segments.h"
 
 void	bubble_sort(char **array, int size)
 {
@@ -47,3 +48,4 @@ char	**copy_all_keys(t_hashtable *hash_table)
 	}
 	return (keys);
 }
+

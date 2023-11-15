@@ -12,6 +12,7 @@ t_quote *init_quote(t_hashtable *env, char *arg)
 	quote->prev_type = 0;
 	quote->env = env;
 	quote->state = init_quote_state();
+	quote->dollar = init_expand_dollar();
 	return (quote);
 }
 
@@ -23,6 +24,14 @@ t_quote_state init_quote_state(void)
 	state.double_open = false;
 	state.space_dollar = false;
 	return (state);
+}
+
+t_expand init_expand_dollar(void)
+{
+	t_expand dollar;
+
+	dollar.has_dollar = false;
+	return (dollar);
 }
 
 t_segment *new_segments(char *str)

@@ -1,5 +1,5 @@
-#include "builtins/builtins.h"
-#include "builtins/env.h"
+#include "./include/builtins.h"
+#include "./include/env.h"
 
 int	ft_count_args(char **args)
 {

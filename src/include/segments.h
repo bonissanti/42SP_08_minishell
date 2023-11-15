@@ -18,6 +18,11 @@ typedef struct s_quote_state
 	t_bool				space_dollar;
 }						t_quote_state;
 
+typedef struct s_dollar
+{
+	t_bool				has_dollar;
+}						t_expand;
+
 typedef struct s_quote
 {
 	char				*ptr;
@@ -26,6 +31,7 @@ typedef struct s_quote
 	int					prev_type;
 	t_hashtable			*env;
 	t_quote_state		state;
+	t_expand			dollar;
 }						t_quote;
 
 //############################### LIST ###################################
@@ -35,25 +41,27 @@ void					add_segments(t_segment **head, char *str);
 char					*join_segments(t_segment *head);
 void					free_segments(t_segment *head);
 
-//############################ PARSE/QOUTES ###############################
+//############################### QUOTES ###################################
 
-char					get_quote_type(char c);
-size_t					even_close_quotes(char *str);
-void					is_quotes(t_hashtable *env, char **args);
-void					expand_variable(t_quote *quote, t_segment **head,
-							size_t *len);
 t_quote					*init_quote(t_hashtable *env, char *arg);
 t_quote_state			init_quote_state(void);
-void	final_process(t_quote *quote, t_segment **head, char **args,
-		size_t *len);
+size_t					even_close_quotes(char *str);
+void					is_quotes(t_hashtable *env, char **args);
+void					final_process(t_quote *quote, t_segment **head,
+							char **args, size_t *len);
+
+//############################### DOLLAR ###################################
+
+void					expand_variable(t_quote *quote, t_segment **head,
+							size_t *len);
+t_expand				init_expand_dollar(void);
 
 //############################### TILDE ###################################
 
-char *expand_tilde(t_hashtable *hashtable, char *str);
+char					*expand_tilde(t_hashtable *hashtable, char *str);
 
 //############################### UTILS ###################################
 
-size_t 					even_close_quotes(char *str);
 void					error_close_quotes(t_quote *quote);
 t_bool					check_dollar_space(char *str);
 t_bool					check_handle_error(t_quote *quote, char **args, int i);

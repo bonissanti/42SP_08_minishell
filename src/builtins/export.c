@@ -11,9 +11,8 @@
 /* ************************************************************************** */
 
 #include "../include/env.h"
-#include <stdio.h>
-#include <string.h>
-
+#include "../include/segments.h"
+#include "../include/builtins.h"
 
 /**
  * Function: Print_all_env
@@ -76,8 +75,12 @@ void	add_env(t_hashtable *hash_table, char **args)
 	int		i;
 	t_env 	env;
 	t_hash *hash;
+	t_quote *quote;
+	t_segment *head;
+	size_t len;
 
 	i = 1;
+	len = 0;
 	while (args[i] != NULL)
 	{
 		env.equals_sign = ft_split(args[i], '=');
@@ -90,11 +93,31 @@ void	add_env(t_hashtable *hash_table, char **args)
 		}
 		else if (env.equals_sign[1] != NULL)
 		{
-			env.value = ft_strtrim(env.equals_sign[1], "\"");
-			if (env.value == NULL)
-				env.value = "";
-			insert(hash_table, env.key, env.value);
-			free(env.value);
+			if (env.equals_sign[1][0] == '$')
+			{
+				quote = init_quote(hash_table, env.equals_sign[1]);
+				head = NULL;
+				expand_variable(quote, &head, &len);
+				env.value = join_segments(head);
+				insert(hash_table, env.key, env.value);
+			}
+			else
+			{
+				env.value = ft_strtrim(env.equals_sign[1], "\"");
+				if (env.value == NULL)
+					env.value = "";
+				else if (env.value[0] == '$')
+				{
+					quote = init_quote(hash_table, env.value);
+					head = NULL;
+					expand_variable(quote, &head, &len);
+					env.value = join_segments(head);
+					insert(hash_table, env.key, env.value);
+				}
+				insert(hash_table, env.key, env.value);
+				free(env.value);
+			}
+			
 		}
 		else if (hash == NULL)
 			insert(hash_table, env.key, NULL);
@@ -103,6 +126,10 @@ void	add_env(t_hashtable *hash_table, char **args)
 	}
 }
 
+void	env_with_equals(t_hashtable *hashtable, char **args, int i)
+{
+	char *
+}
 
 /**
  * Function: Export
