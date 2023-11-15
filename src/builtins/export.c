@@ -75,50 +75,19 @@ void	add_env(t_hashtable *hash_table, char **args)
 	int		i;
 	t_env 	env;
 	t_hash *hash;
-	t_quote *quote;
-	t_segment *head;
-	size_t len;
+	size_t	len;
 
 	i = 1;
-	len = 0;
 	while (args[i] != NULL)
 	{
+		len = 0;
 		env.equals_sign = ft_split(args[i], '=');
 		env.key = env.equals_sign[0];
 		hash = search(hash_table, env.key);
 		if (args[1][ft_strlen(args[i]) - 1] == '=')
-		{
-			env.value = "";
-			insert(hash_table, env.key, env.value);			
-		}
+			env_with_equals(hash_table, args, i);
 		else if (env.equals_sign[1] != NULL)
-		{
-			if (env.equals_sign[1][0] == '$')
-			{
-				quote = init_quote(hash_table, env.equals_sign[1]);
-				head = NULL;
-				expand_variable(quote, &head, &len);
-				env.value = join_segments(head);
-				insert(hash_table, env.key, env.value);
-			}
-			else
-			{
-				env.value = ft_strtrim(env.equals_sign[1], "\"");
-				if (env.value == NULL)
-					env.value = "";
-				else if (env.value[0] == '$')
-				{
-					quote = init_quote(hash_table, env.value);
-					head = NULL;
-					expand_variable(quote, &head, &len);
-					env.value = join_segments(head);
-					insert(hash_table, env.key, env.value);
-				}
-				insert(hash_table, env.key, env.value);
-				free(env.value);
-			}
-			
-		}
+			env_with_value(hash_table, args, i, len);			
 		else if (hash == NULL)
 			insert(hash_table, env.key, NULL);
 		free_split(env.equals_sign);
@@ -126,10 +95,6 @@ void	add_env(t_hashtable *hash_table, char **args)
 	}
 }
 
-void	env_with_equals(t_hashtable *hashtable, char **args, int i)
-{
-	char *
-}
 
 /**
  * Function: Export

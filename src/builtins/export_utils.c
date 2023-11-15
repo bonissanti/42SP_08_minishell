@@ -1,5 +1,6 @@
 #include "../include/env.h"
 #include "../include/segments.h"
+#include "../include/builtins.h"
 
 void	bubble_sort(char **array, int size)
 {
@@ -49,3 +50,48 @@ char	**copy_all_keys(t_hashtable *hash_table)
 	return (keys);
 }
 
+void	env_with_equals(t_hashtable *hashtable, char **args, int i)
+{
+	char **equals_sign;
+	char *key;
+	char *value;
+
+	equals_sign = ft_split(args[i], '=');
+	key = equals_sign[0];
+	value = "";
+	insert(hashtable, key, value);
+	free_split(equals_sign);
+
+}
+
+void	env_with_value(t_hashtable *hashtable, char **args, int i, size_t len)
+{
+	char **equals_sign;
+	char *key;
+	char *value;
+	t_quote *quote;
+	t_segment *head;
+
+	equals_sign = ft_split(args[i], '=');
+	key = equals_sign[0];
+	value = ft_strtrim(equals_sign[1], "\"");
+	if (value == NULL)
+		value = "";
+	else if (value[0] == '$')
+	{
+		quote = init_quote(hashtable, value);
+		head = NULL;
+		expand_variable(quote, &head, &len);
+		value = join_segments(head);
+		insert(hashtable, key, value);
+		free_segments(head);
+		safe_free((void **)&value);
+
+		
+	}
+	insert(hashtable, key, value);
+	free_split(equals_sign);
+	safe_free((void **)&quote->segment);
+	safe_free((void **)&quote);
+
+}
