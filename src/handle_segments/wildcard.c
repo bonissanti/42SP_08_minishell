@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:51:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/14 17:27:01 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/16 16:01:37 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ bool wildcard_match(char *str, char *pattern)
 }
 
 int main() {
-    char str[] = "fucker";
-    char pattern[] = "*cker";
+    char str[] = "cker.c";
+    char pattern[] = "*cker.c";
     if (wildcard_match(str, pattern))
         printf("Yes\n");
     else
