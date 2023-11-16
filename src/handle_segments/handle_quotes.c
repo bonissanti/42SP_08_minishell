@@ -1,21 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_quotes.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/16 15:32:57 by brunrodr          #+#    #+#             */
+/*   Updated: 2023/11/16 15:33:00 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/env.h"
 #include "../include/segments.h"
 
-static void	handle_quotes(t_quote *quote);
-static void	char_between_quotes(t_quote *quote, t_segment **head, size_t *len);
-static void	literal_string(t_quote *quote, size_t *len);
-void	final_process(t_quote *quote, t_segment **head, char **args,
+static void	handle_quotes(t_lex *quote);
+static void	char_between_quotes(t_lex *quote, t_segment **head, size_t *len);
+static void	literal_string(t_lex *quote, size_t *len);
+void	final_process(t_lex *quote, t_segment **head, char **args,
 				size_t *len);
 
 void	is_quotes(t_hashtable *env, char **args)
 {
-	t_quote		*quote;
+	t_lex		*quote;
 	t_segment	*head;
 	size_t		len;
 
 	len = 0;
 	head = NULL;
-	quote = init_quote(env, *args);
+	quote = init_lex(env, *args);
 	quote->state.space_dollar = check_dollar_space(*args);
 	if (check_handle_error(quote, args, 0))
 		return ;
@@ -37,7 +49,7 @@ void	is_quotes(t_hashtable *env, char **args)
 	final_process(quote, &head, args, &len);
 }
 
-static void	handle_quotes(t_quote *quote)
+static void	handle_quotes(t_lex *quote)
 {
 	if (*quote->ptr == '\'' && !quote->state.double_open)
 		quote->state.single_open = !quote->state.single_open;
@@ -45,7 +57,7 @@ static void	handle_quotes(t_quote *quote)
 		quote->state.double_open = !quote->state.double_open;
 }
 
-static void	char_between_quotes(t_quote *quote, t_segment **head, size_t *len)
+static void	char_between_quotes(t_lex *quote, t_segment **head, size_t *len)
 {
 	quote->segment[*len] = *(quote->ptr); // Add char to segment
 	(*len)++;
@@ -57,7 +69,7 @@ static void	char_between_quotes(t_quote *quote, t_segment **head, size_t *len)
 	}
 }
 
-static void	literal_string(t_quote *quote, size_t *len)
+static void	literal_string(t_lex *quote, size_t *len)
 {
 	if (*quote->ptr == '\\')
 	{
@@ -72,7 +84,7 @@ static void	literal_string(t_quote *quote, size_t *len)
 	}
 }
 
-void	final_process(t_quote *quote, t_segment **head, char **args,
+void	final_process(t_lex *quote, t_segment **head, char **args,
 		size_t *len)
 {
 	quote->segment[*len] = '\0';

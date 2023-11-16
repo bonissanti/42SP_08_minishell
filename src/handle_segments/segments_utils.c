@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   segments_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/16 15:32:06 by brunrodr          #+#    #+#             */
+/*   Updated: 2023/11/16 15:32:08 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/segments.h"
 
 
-t_quote *init_quote(t_hashtable *env, char *arg)
+t_lex *init_lex(t_hashtable *env, char *arg)
 {
-    t_quote *quote;
+    t_lex *quote;
 
-    quote = (t_quote *)malloc(sizeof(t_quote));
+    quote = (t_lex *)malloc(sizeof(t_lex));
     quote->ptr = arg;
 	quote->segment = (char *)malloc(sizeof(char) * ft_strlen(arg) + 1);
 	quote->type = 0;
@@ -59,7 +71,7 @@ void add_segments(t_segment **head, char *str)
 	}
 }
 
-char *join_segments(t_segment *head)
+char *join_segments(t_segment *head) // Merece uma atenção ao dar free, precisa ser fora da função
 {
 	t_segment *current;
 	char *str;

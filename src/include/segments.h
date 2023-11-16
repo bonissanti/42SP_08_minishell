@@ -23,7 +23,7 @@ typedef struct s_dollar
 	t_bool				has_dollar;
 }						t_expand;
 
-typedef struct s_quote
+typedef struct s_lex
 {
 	char				*ptr;
 	char				*segment;
@@ -32,7 +32,7 @@ typedef struct s_quote
 	t_hashtable			*env;
 	t_quote_state		state;
 	t_expand			dollar;
-}						t_quote;
+}						t_lex;
 
 //############################### LIST ###################################
 
@@ -43,16 +43,16 @@ void					free_segments(t_segment *head);
 
 //############################### QUOTES ###################################
 
-t_quote					*init_quote(t_hashtable *env, char *arg);
+t_lex					*init_lex(t_hashtable *env, char *arg);
 t_quote_state			init_quote_state(void);
 size_t					even_close_quotes(char *str);
 void					is_quotes(t_hashtable *env, char **args);
-void					final_process(t_quote *quote, t_segment **head,
+void					final_process(t_lex *quote, t_segment **head,
 							char **args, size_t *len);
 
 //############################### DOLLAR ###################################
 
-void					expand_variable(t_quote *quote, t_segment **head,
+void					expand_variable(t_lex *quote, t_segment **head,
 							size_t *len);
 t_expand				init_expand_dollar(void);
 
@@ -62,9 +62,9 @@ char					*expand_tilde(t_hashtable *hashtable, char *str);
 
 //############################### UTILS ###################################
 
-void					error_close_quotes(t_quote *quote);
+void					error_close_quotes(t_lex *quote);
 t_bool					check_dollar_space(char *str);
-t_bool					check_handle_error(t_quote *quote, char **args, int i);
+t_bool					check_handle_error(t_lex *quote, char **args, int i);
 char					*ft_strndup(const char *str, size_t num);
 size_t					ft_strcspn(const char *str, char *delim1, char *delim2);
 t_bool					is_whitespace(char c);

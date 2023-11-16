@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validate_quotes.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/16 15:32:29 by brunrodr          #+#    #+#             */
+/*   Updated: 2023/11/16 15:32:33 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/env.h"
 #include "../include/segments.h"
 
 size_t even_close_quotes(char *str);
-void	error_close_quotes(t_quote *quote);
+void	error_close_quotes(t_lex *quote);
 
-t_bool	check_handle_error(t_quote *quote, char **args, int i)
+t_bool	check_handle_error(t_lex *quote, char **args, int i)
 {
 	if (i == 0)
 	{
@@ -58,7 +70,7 @@ size_t even_close_quotes(char *str)
 	return (single_quotes % 2 == 0 && double_quotes % 2 == 0);
 }
 
-void	error_close_quotes(t_quote *quote)
+void	error_close_quotes(t_lex *quote)
 {
 	ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
 	free(quote->segment);

@@ -64,34 +64,36 @@ void	env_with_equals(t_hashtable *hashtable, char **args, int i)
 
 }
 
+
 void	env_with_value(t_hashtable *hashtable, char **args, int i, size_t len)
 {
 	char **equals_sign;
 	char *key;
 	char *value;
-	t_quote *quote;
+	t_lex *dollar;
 	t_segment *head;
 
+	dollar = NULL;
 	equals_sign = ft_split(args[i], '=');
 	key = equals_sign[0];
 	value = ft_strtrim(equals_sign[1], "\"");
 	if (value == NULL)
 		value = "";
-	else if (value[0] == '$')
+	else if (*value == '$') // jogar para uma função auxiliar
 	{
-		quote = init_quote(hashtable, value);
+		dollar = init_lex(hashtable, value);
 		head = NULL;
-		expand_variable(quote, &head, &len);
+		expand_variable(dollar, &head, &len);
+		safe_free((void **)&value); // gambiarra para não sobrepor o valor
 		value = join_segments(head);
 		insert(hashtable, key, value);
 		free_segments(head);
-		safe_free((void **)&value);
-
-		
 	}
 	insert(hashtable, key, value);
 	free_split(equals_sign);
-	safe_free((void **)&quote->segment);
-	safe_free((void **)&quote);
+	safe_free((void **)&value);
+	safe_free((void **)&dollar->segment);
+	safe_free((void **)&dollar);
+	free(value);
 
 }
