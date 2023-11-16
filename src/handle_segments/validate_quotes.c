@@ -6,12 +6,13 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:29 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/16 16:19:35 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/16 16:48:59 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/env.h"
 #include "../include/segments.h"
+#include "../include/builtins.h"
 
 size_t even_close_quotes(char *str);
 void	error_close_quotes(t_lex *quote);
@@ -23,8 +24,8 @@ t_bool	check_handle_error(t_lex *quote, char **args, int i)
 		if (!even_close_quotes(*args))
 		{
 			ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
-			free(quote->segment);
-			free(quote);
+			safe_free((void **)&quote->segment);
+			safe_free((void **)&quote);
 			return (true);
 		}
 	}
@@ -51,7 +52,7 @@ size_t even_close_quotes(char *str)
 	is_escape_next = false;
    	while (*str)
 	{
-		if (*str == '\\' && !is_escape_next)
+		if (*str == '\\' && !is_escape_next && !is_squote_open)
 			is_escape_next = true;
 		else if (is_escape_next)
 			is_escape_next = false;
@@ -60,7 +61,7 @@ size_t even_close_quotes(char *str)
 			single_quotes++;
 			is_squote_open = !is_squote_open;
 		}
-		else if (*str == '\"' && !is_squote_open)
+		else if ((*str == '\"' && !is_squote_open) && (!is_escape_next || is_escape_next))
 		{
 			double_quotes++;
 			is_dquote_open = !is_dquote_open;
@@ -74,6 +75,7 @@ void	error_close_quotes(t_lex *quote)
 {
 	ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
 	free(quote->segment);
+	free(quote);
 	return ;
 }
 

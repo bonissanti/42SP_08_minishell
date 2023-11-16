@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:57 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/16 16:20:07 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/16 16:32:50 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,14 @@ void	is_quotes(t_hashtable *env, char **args)
 	head = NULL;
 	quote = init_lex(env, *args);
 	quote->state.space_dollar = check_dollar_space(*args);
-	if (check_handle_error(quote, args, 0))
+	
+	if (!even_close_quotes(*args))
+	{
+		ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
+		free(quote->segment);
+		free(quote);
 		return ;
+	}
 	while (*(quote->ptr))
 	{
 		if ((*quote->ptr == '\'' && !quote->state.double_open)
