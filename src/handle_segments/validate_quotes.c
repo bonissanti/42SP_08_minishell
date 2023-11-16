@@ -6,11 +6,11 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:29 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/16 15:32:33 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/16 17:00:55 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/env.h"
+#include "../include/hash.h"
 #include "../include/segments.h"
 
 size_t even_close_quotes(char *str);

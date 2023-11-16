@@ -1,5 +1,5 @@
 #include "../include/builtins.h"
-#include "../include/env.h"
+#include "../include/hash.h"
 
 void	free_for_exit(t_hashtable *hash_table, char **args, int argc);
 

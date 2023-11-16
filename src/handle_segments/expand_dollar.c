@@ -6,11 +6,11 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:33:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/16 15:33:17 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/16 17:00:55 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/env.h"
+#include "../include/hash.h"
 #include "../include/segments.h"
 
 void	expand_variable(t_lex *quote, t_segment **head, size_t *len)
