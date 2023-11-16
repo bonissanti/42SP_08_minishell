@@ -6,12 +6,12 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 13:39:58 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/14 15:23:35 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/16 17:04:40 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/segments.h"
-#include "../include/env.h"
+#include "../include/hash.h"
 
 char *expand_tilde(t_hashtable *hashtable, char *str)
 {

@@ -6,12 +6,12 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 19:06:42 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/14 13:51:41 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/16 17:04:40 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/builtins.h"
-#include "../include/env.h"
+#include "../include/hash.h"
 
 t_bool is_flag_n(char *arg);
 char *expand_variable(t_hashtable *hash_table, char *arg);
