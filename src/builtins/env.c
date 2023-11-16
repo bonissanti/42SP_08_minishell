@@ -1,4 +1,4 @@
-#include "../include/env.h"
+#include "../include/hash.h"
 #include "../include/builtins.h"
 
 void	ft_env(t_hashtable *hashtable, char **args)

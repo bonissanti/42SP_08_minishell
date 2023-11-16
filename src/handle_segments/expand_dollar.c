@@ -1,4 +1,4 @@
-#include "../include/env.h"
+#include "../include/hash.h"
 #include "../include/segments.h"
 
 void	expand_variable(t_lex *quote, t_segment **head, size_t *len)

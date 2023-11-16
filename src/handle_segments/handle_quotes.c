@@ -1,4 +1,4 @@
-#include "../include/env.h"
+#include "../include/hash.h"
 #include "../include/segments.h"
 
 static void	handle_quotes(t_lex *quote);

@@ -1,4 +1,4 @@
-#include "../include/env.h"
+#include "../include/hash.h"
 #include "../include/segments.h"
 
 size_t even_close_quotes(char *str);

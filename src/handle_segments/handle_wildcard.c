@@ -6,12 +6,12 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:51:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/16 15:21:23 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/16 17:03:11 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/segments.h"
-#include "../include/env.h"
+#include "../include/hash.h"
 
 t_bool  check_wildcard(char *str)
 {

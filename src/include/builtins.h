@@ -4,16 +4,6 @@
 # include "../include/env.h"
 # include <errno.h>
 
-typedef struct t_env
-{
-	char	*key;
-	char	**env;
-	char	*value;
-	char	**equals_sign;
-	int		num_env;
-
-}			t_env;
-
 //############################### Export ######################################
 
 void		ft_export(t_hashtable *hash_table, char **args);
