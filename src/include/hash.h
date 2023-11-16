@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_H
-# define ENV_H
+#ifndef HASH_H
+# define HASH_H
 
 #include <stdlib.h>
 #include <unistd.h>
