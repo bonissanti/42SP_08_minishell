@@ -2,7 +2,7 @@
 # define SEGMENTS_H
 
 // #include <string>
-# include "env.h"
+# include "hash.h"
 # include <stdlib.h>
 
 typedef struct s_segments

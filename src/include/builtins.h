@@ -1,7 +1,7 @@
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-# include "../include/env.h"
+# include "../include/hash.h"
 # include <errno.h>
 
 //############################### Export ######################################
