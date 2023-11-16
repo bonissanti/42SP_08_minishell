@@ -1,18 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wildcard.c                                         :+:      :+:    :+:   */
+/*   handle_wildcard.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:51:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/14 17:27:01 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/16 15:21:23 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdbool.h>
-#include <string.h>
-#include <stdio.h>
+#include "../include/segments.h"
+#include "../include/env.h"
+
+t_bool  check_wildcard(char *str)
+{
+    while (*str)
+    {
+        if (*str == '*')
+            return (true);
+        str++;
+    }
+    return (false);
+}
+
+// char    
 
 bool wildcard_match(char *str, char *pattern)
 {

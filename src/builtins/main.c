@@ -52,7 +52,6 @@ int	main(int argc, char **argv, char **envp)
 			char *str = expand_tilde(hash_table, num_args[1]);
 			printf("%s\n", str);
 		}
-
 		free_split(num_args);
 
 	}

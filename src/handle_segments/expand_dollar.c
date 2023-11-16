@@ -1,7 +1,7 @@
 #include "../include/env.h"
 #include "../include/segments.h"
 
-void	expand_variable(t_quote *quote, t_segment **head, size_t *len)
+void	expand_variable(t_lex *quote, t_segment **head, size_t *len)
 {
 	char *key;
 	int key_len;

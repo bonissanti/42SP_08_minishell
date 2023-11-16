@@ -20,7 +20,7 @@ void		ft_export(t_hashtable *hash_table, char **args);
 void		print_all_env(t_hashtable *hash_table);
 void		add_env(t_hashtable *hash_table, char **args);
 void	    env_with_equals(t_hashtable *hashtable, char **args, int i);
-void	env_with_value(t_hashtable *hashtable, char **args, int i, size_t len);
+void		env_with_value(t_hashtable *hashtable, char **args, int i, size_t len);
 
 //############################### Echo ########################################
 
