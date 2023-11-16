@@ -1,5 +1,5 @@
 #include "./include/builtins.h"
-#include "./include/env.h"
+#include "./include/hash.h"
 
 int	ft_count_args(char **args)
 {
