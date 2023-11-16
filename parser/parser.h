@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/14 23:05:06 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/15 23:43:21 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,5 +96,15 @@ int			tkn_list_size(t_tkn_list *tkn_list);
 char		*cmd_type_string(t_type type);
 void		print_cmd_list(t_cmd_list *cmd_list);
 void		print_tkn_list(t_tkn_list *tkn_list);
+int			is_redirect(t_tkn_type tkn);
+char		*tkn_type_converter(t_tkn_type type);
+void		new_cmd_file_node(t_tkn_list **current);
+void		new_redirect_node(t_tkn_list **current);
+void		new_subshell_node(t_tkn_list **current);
+void		new_operator_node(t_tkn_list **current);
+int			is_expander(char x);
+char		*append_expanded(char *cmd, char **exp, t_hashtable *env, int index);
+int			is_operator(t_tkn_type tkn);
+int			crop_delimiter_tkn(char **cmd);
 
 #endif

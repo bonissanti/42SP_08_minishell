@@ -6,33 +6,11 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/14 23:55:31 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/15 23:24:55 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./parser.h"
-
-char *tkn_type_converter(t_tkn_type type)
-{
-	if(type == INFILE)
-		return ("<");
-	else if(type == REDIRECT)
-		return (">");
-	else if(type == HERE_DOC)
-		return ("<<");
-	else if (type == APPEND)
-		return (">>");
-	else if(type == O_PARENTESIS)
-		return ("(");
-	else if(type == C_PARENTESIS)
-		return (")");
-	else if(type == AND)
-		return ("&&");
-	else if(type == OR)
-		return ("||");
-	else
-		return ("|");
-}
+#include "parser.h"
 
 int	command_consistency(t_tkn_list *tokenized)
 {
@@ -56,20 +34,6 @@ int	command_consistency(t_tkn_list *tokenized)
 	return (1);
 }
 
-int is_operator(t_tkn_type tkn)
-{
-	if(tkn == PIPE || tkn == AND || tkn == OR)
-		return (true);
-	return (false);
-}
-
-int is_redirect(t_tkn_type tkn)
-{
-	if(tkn == INFILE || tkn == REDIRECT
-	|| tkn == HERE_DOC || tkn == APPEND)
-		return (true);
-	return (false);
-}
 t_cmd_list *rewind_list(t_cmd_list **cmd_list)
 {
 	if((*cmd_list)->prev == NULL)
@@ -96,103 +60,6 @@ void set_io(t_cmd_list **cmd_list)
 			head->prev->outfile = head->next->args;
 	head = head->next;		
 	}
-}
-
-void new_cmd_file_node(t_tkn_list **current)
-{
-	if(tkn_list_size((*current)->prev) && is_redirect((*current)->prev->type))
-	{
-		add_cmd_list((t_cmd_list){
-			.type = TYPE_FILE,
-			.args = (*current)->content,
-			.prec_weight = DEFAULT,
-			});
-		*current = (*current)->next;
-		return ;
-	}
-	else if((*current)->type == EXPAND || (*current)->type == WILD)
-	{
-		add_cmd_list((t_cmd_list){
-			.type = TYPE_COMMAND,
-			.args = (*current)->content,
-			.prec_weight = DEFAULT,
-		});
-	}
-	else
-	{
-		add_cmd_list((t_cmd_list){
-			.type = TYPE_COMMAND,
-			.args = (*current)->content,
-			.prec_weight = DEFAULT,
-		});
-	}
-	while(*current && ((*current)->type == IDENTIFIER || (*current)->type == EXPAND || (*current)->type == WILD))
-	{	
-		*current = (*current)->next;
-		if(!*current)
-			return ;
-		if((*current)->type != IDENTIFIER && (*current)->type != EXPAND && (*current)->type != WILD)
-			return ;	
-		else
-		{
-			g_global.cmd_list = last_cmd_list(g_global.cmd_list);
-			g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, " ");
-			g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, (*current)->content);
-		}
-	}
-	*current = (*current)->next;
-}
-
-void	new_redirect_node(t_tkn_list **current)
-{
-	t_bool has_here_doc;
-		
-	if((*current)->type == HERE_DOC)
-		has_here_doc = true;
-	else
-		has_here_doc = false;		
-	add_cmd_list((t_cmd_list){
-		.type = TYPE_REDIRECT,
-		.args = tkn_type_converter((*current)->type),
-		.prec_weight = OP_REDIRECT,
-		.here_doc = has_here_doc,
-	});
-	*current = (*current)->next;
-}
-void	new_subshell_node(t_tkn_list **current)
-{
-	add_cmd_list((t_cmd_list){
-		.type = TYPE_OPERATOR,
-		.args = tkn_type_converter((*current)->type),
-		.prec_weight = DEFAULT,
-	});
-	*current = (*current)->next;
-	while((*current)->type != C_PARENTESIS)
-	{
-		g_global.cmd_list = last_cmd_list(g_global.cmd_list);
-		g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, (*current)->content);
-		if((*current)->next->type != C_PARENTESIS)
-			g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, " ");
-		*current = (*current)->next;
-	}
-	g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, tkn_type_converter((*current)->type));
-	*current = (*current)->next;
-}
-
-void	new_operator_node(t_tkn_list **current)
-{
-	t_operator weight;
-	
-	if ((*current)->type == PIPE)
-		weight = OP_PIPE;
-	else
-		weight = OP_LOGICAL;
-	add_cmd_list((t_cmd_list){
-		.type = TYPE_OPERATOR,
-		.args = tkn_type_converter((*current)->type),
-		.prec_weight = weight,
-	});	
-	*current = (*current)->next;
 }
 
 void	join_args(t_tkn_list *tkn_list)
@@ -230,35 +97,3 @@ void parser(t_hashtable *env)
 	rewind_list(&(g_global).cmd_list);
 	print_cmd_list(g_global.cmd_list);
 }
-
-/*
-Simple command 
-echo -n \"test\"
-indentifier + identifier + identifier
-*/
-
-/*
-Compound command
-<< qwerty wc -l > ./output && echo \"test\" || (sort ./test)
-here_doc + identifier + redirect + identifier + AND + identifier + identifier OR subshell identifier + identifier subshell
-*/
-
-/*
-Compound command
-< teste.txt cat > teste.txt"
-*/
-
-/*
-simple command
-echo $PATH
-*/
-
-/*
-Compound command
-echo $PATH > path.txt && cat path.txt | tr [a-A] | cat -e path.txt
-*/
-
-/*
-Precedence test
-<< qwerty wc -l > ./outputteste && echo \"testzzzzzzzzzzzzz\" && (<< sort sort > ./otherfile)
-*/

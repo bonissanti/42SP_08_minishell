@@ -6,12 +6,11 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/15 00:05:18 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/15 23:25:46 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./parser.h"
-#include "./env.h"
+#include "parser.h"
 
 t_global g_global;
 
@@ -93,13 +92,11 @@ int crop_quote_tkn(char **cmd)
 char *crop_tkn(char **cmd, t_hashtable *env)
 {
 	char *cropped;
-	char *to_expand;
-	int i;
 	
+	int i;	
 	cropped = *cmd;
-	to_expand = NULL;
 	i = 0;
-	if (**cmd == '\'' || **cmd == '"') // need include '\\' and test arguments like \"test\"
+	if (**cmd == '\'' || **cmd == '"')
 		i = crop_quote_tkn(cmd);
 	else if(isdelimiter(*cmd))
 		i = crop_delimiter_tkn(cmd);
@@ -110,14 +107,8 @@ char *crop_tkn(char **cmd, t_hashtable *env)
 			i++;
 			(*cmd)++;
 		}
-		if((isdelimiter(*cmd) && **cmd == '$')
-		|| (isdelimiter(*cmd) && **cmd == '*')
-		|| (isdelimiter(*cmd) && **cmd == '~'))
-		{
-			to_expand = ft_substr(*cmd, 0, crop_delimiter_tkn(cmd));
-			is_quotes(env, &to_expand);
-			return(gnl_strjoin(ft_substr(cropped, 0, i), to_expand));
-		}
+		if(is_expander(**cmd))
+			return(append_expanded(cropped, cmd, env, i));
 	}
 	return(ft_substr(cropped, 0, i));
 } 
@@ -138,17 +129,6 @@ void tokenizer(t_global *g_global, char *cmd, t_hashtable *env)
 	}
 }
 
-//crop_tkn test:
-
-// int main (void)
-// {	
-// 	char *command = ft_strdup("echo \"teste\"");
-// 	ft_printf("%s\n", crop_tkn(&command));
-// 	ft_printf("%s\n", command);
-// 	skip_spaces(&command);
-// 	ft_printf("%s\n", crop_tkn(&command));
-// }
-
 int main(int argc, char **argv, char** envp)
 {
 	(void)argc;
@@ -156,19 +136,23 @@ int main(int argc, char **argv, char** envp)
 
 	t_hashtable *hash = create_hashtable();
 	init_hash(hash, envp);
+	prompt(hash);
+}
 	// tokenizer(&g_global, "echo -n \"test\"", hash);
+	// tokenizer(&g_global, "echo$USER", hash);
+	// tokenizer(&g_global, "echo -n ""test""teste $USER", hash);
+	// tokenizer(&g_global, "echo \"\'\"\'\"$USER\"\'\"\'\""", hash);
+	// tokenizer(&g_global, "echo "'"'"$USER"'"'"", hash);
 	// tokenizer(&g_global, "<< qwerty > ./output| < ./infile wc -l > ./output &&echo \"test\" || (sort ./test)", hash);
 	// tokenizer(&g_global, "<teste.txt cat>teste.txtcat", hash);
 	// tokenizer(&g_global, "echo$PATH", hash);
 	// tokenizer(&g_global, "echo $ PATH", hash);
 	// tokenizer(&g_global, "echo $PATH>path.txt&&cat path.txt|echo $USER", hash);
 	// tokenizer(&g_global, "echo $PATH>*.txt&&cat ~/output.txt|echo $USER", hash);
-	tokenizer(&g_global, "< ./parser.h wc -l > ./outfile", hash);
+	// tokenizer(&g_global, "< ./parser.h wc -l > ./outfile", hash);
 	// tokenizer(&g_global, "<./parser.h wc -l>outfile", hash);
 	// tokenizer(&g_global, "< ./parser.h wc -l>outfile (", hash);
 	// tokenizer(&g_global, "<< qwerty wc -l > ./output && echo \"test\" || (sort ./test)", hash); // need to fix the \"test\" behavior and also add the subshel treatment
 	// tokenizer(&g_global, "wc -l > ./output && echo \"test\" || (sort ./test)", hash);
 	// tokenizer(&g_global, "< ./parser.h wc -l>outfile", hash);
-	print_tkn_list(g_global.tkn_list);
-	parser(hash);
-}
+	// print_tkn_list(g_global.tkn_list);

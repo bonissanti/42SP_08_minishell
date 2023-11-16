@@ -6,11 +6,11 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 17:12:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/09 18:33:21 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/15 23:23:59 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./parser.h"
+#include "parser.h"
 
 int cmd_list_size(t_cmd_list *cmd_list)
 {

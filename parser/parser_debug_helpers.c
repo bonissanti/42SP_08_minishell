@@ -6,11 +6,11 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 22:27:30 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/15 00:04:50 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/15 23:24:07 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./parser.h"
+#include "parser.h"
 
 char *tkn_type_string(t_tkn_type type)
 {
@@ -71,16 +71,16 @@ void print_cmd_list(t_cmd_list *cmd_list)
 	{
 		ft_printf("Type: %s\nArgs: %s\n Prec_weight: %d\n ----------\n", 
 		cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->prec_weight);
-		if(cmd_list->infile)
-			ft_printf("Infile: %s\n", cmd_list->infile);
-		if(cmd_list->outfile)
-			ft_printf("Outfile: %s\n", cmd_list->outfile);
+		// if(cmd_list->infile)
+		// 	ft_printf("Infile: %s\n", cmd_list->infile);
+		// if(cmd_list->outfile)
+		// 	ft_printf("Outfile: %s\n", cmd_list->outfile);
 		cmd_list = cmd_list->next;
 	}
 	ft_printf("Type: %s\nArgs: %s\n Prec_weight: %d\n ----------\n", 
 	cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->prec_weight);
-	if(cmd_list->infile)
-		ft_printf("Infile: %s\n", cmd_list->infile);
-	if(cmd_list->outfile)
-		ft_printf("Outfile: %s\n", cmd_list->outfile);
+	// if(cmd_list->infile)
+	// 	ft_printf("Infile: %s\n", cmd_list->infile);
+	// if(cmd_list->outfile)
+	// 	ft_printf("Outfile: %s\n", cmd_list->outfile);
 }

@@ -6,11 +6,11 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 18:22:03 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/14 16:40:38 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/15 23:24:16 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./parser.h"
+#include "parser.h"
 
 int tkn_list_size(t_tkn_list *tkn_list)
 {
