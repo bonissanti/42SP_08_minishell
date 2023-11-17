@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/15 23:25:46 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/17 00:30:39 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,22 @@ int crop_quote_tkn(char **cmd)
 	(*cmd)++;
 	while(**cmd != quote)
 	{
+		while(**cmd != quote)
+		{
+			i++;
+			(*cmd)++;
+		}
 		i++;
 		(*cmd)++;
+		if(**cmd == '\'' || **cmd == '"')		
+			quote = **cmd;
+		else
+			return(i);
+		i++;
+		(*cmd)++;		
 	}
 	i++;
-	(*cmd)++;
+	(*cmd)++;		
 	return(i);
 }
 
@@ -138,7 +149,7 @@ int main(int argc, char **argv, char** envp)
 	init_hash(hash, envp);
 	prompt(hash);
 }
-	// tokenizer(&g_global, "echo -n \"test\"", hash);
+	// tokenizer(&g_global, "echo -n \"test\"", hash); // should not expand at cmd_list
 	// tokenizer(&g_global, "echo$USER", hash);
 	// tokenizer(&g_global, "echo -n ""test""teste $USER", hash);
 	// tokenizer(&g_global, "echo \"\'\"\'\"$USER\"\'\"\'\""", hash);
@@ -156,3 +167,4 @@ int main(int argc, char **argv, char** envp)
 	// tokenizer(&g_global, "wc -l > ./output && echo \"test\" || (sort ./test)", hash);
 	// tokenizer(&g_global, "< ./parser.h wc -l>outfile", hash);
 	// print_tkn_list(g_global.tkn_list);
+	//./any.txt grep "'"'"any"'"'"

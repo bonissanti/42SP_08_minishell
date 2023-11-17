@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 18:22:03 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/15 23:24:16 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/16 23:22:59 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,17 @@ void add_tkn_list(t_global *g_global, t_tkn_list *new_list)
 	}
 }
 
-// int main(void)
-// {
-// 	t_tkn_list	*node;
+void free_tkn_list(t_tkn_list *tkn_list)
+{
+	t_tkn_list *head;
+	t_tkn_list *temp;
 
-// 	node = NULL;
-// 	node = new_tkn_list("ls", IDENTIFIER);
-// 	ft_printf("list size: %d\n", tkn_list_size(node));
-// }
+	head = tkn_list;
+	while(head)
+	{
+		temp = head->next;
+		ft_safe_free((void **)&head->content);
+		ft_safe_free((void **)&head);
+		head = temp;
+	}
+}

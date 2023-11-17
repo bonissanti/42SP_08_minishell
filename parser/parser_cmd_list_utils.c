@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 17:12:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/15 23:23:59 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/16 23:22:56 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,20 @@ void add_cmd_list(t_cmd_list new_list)
 		last = last_cmd_list(g_global.cmd_list);
 		last->next = new_cmd_list(new_list);
 		last->next->prev = last;
+	}
+}
+
+void free_cmd_list(t_cmd_list *cmd_list)
+{
+	t_cmd_list *head;
+	t_cmd_list *temp;
+
+	head = cmd_list;
+	while(head)
+	{
+		temp = head->next;
+		ft_safe_free((void **)&head->args);
+		ft_safe_free((void **)&head);
+		head = temp;
 	}
 }

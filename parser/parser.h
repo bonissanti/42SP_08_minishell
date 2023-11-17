@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/15 23:43:21 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/16 22:54:46 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,7 @@ int			is_expander(char x);
 char		*append_expanded(char *cmd, char **exp, t_hashtable *env, int index);
 int			is_operator(t_tkn_type tkn);
 int			crop_delimiter_tkn(char **cmd);
+void		free_tkn_list(t_tkn_list *tkn_list);
+void		free_cmd_list(t_cmd_list *cmd_list);
 
 #endif

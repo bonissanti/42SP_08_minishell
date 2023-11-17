@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/15 23:24:55 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/16 23:42:19 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ t_cmd_list *rewind_list(t_cmd_list **cmd_list)
 	else
 	{
 		while((*cmd_list)->prev != NULL)
-			*cmd_list = (*cmd_list)->prev;
+			*cmd_list = (*cmd_list)->prev; // infinite loop here
 	}
 	return(*cmd_list);
 }
@@ -88,12 +88,12 @@ void parser(t_hashtable *env)
 	(void)env;
 	command_consistency(g_global.tkn_list);
 	join_args(g_global.tkn_list);
-	while(g_global.cmd_list->next)
-	{
-		is_quotes(env, &g_global.cmd_list->args);
-		g_global.cmd_list = g_global.cmd_list->next;
-	}
-	is_quotes(env, &g_global.cmd_list->args);
-	rewind_list(&(g_global).cmd_list);
+	// while(g_global.cmd_list->next)
+	// {
+	// 	is_quotes(env, &g_global.cmd_list->args);
+	// 	g_global.cmd_list = g_global.cmd_list->next;
+	// }
+	// is_quotes(env, &g_global.cmd_list->args);
+	// rewind_list(&(g_global).cmd_list);
 	print_cmd_list(g_global.cmd_list);
 }
