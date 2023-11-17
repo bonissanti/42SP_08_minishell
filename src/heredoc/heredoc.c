@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/16 19:10:54 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:41:46 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,39 +19,104 @@
 	
 // }
 
-
-void	check_expansion(t_exec *exec, t_hashtable *env, char **line)
-{
-	t_lex *dollar;
-	t_segment *head;
-	size_t len;
-
-	dollar = init_lex(env, *line);
-	head = NULL;
-	len = 0;
+// t_exec *init_exec(t_exec *exec)
+// {
+// 	t_exec *exec;
 	
+// 	exec->in_fd = 0;
+// 	exec->out_fd = 1;
+// 	exec->fd_heredoc = 0;
+// 	exec->cmd_count = 0;
+// 	exec->cmd = NULL;
+// 	exec->delim = NULL;
+// 	return (exec);
+// }	
+
+// t_line *init_list(t_line *list)
+// {
+// 	t_line *line;
+
+// 	line = (t_line *)malloc(sizeof(t_line));
 	
+// 	line->content = NULL;
+// 	line->next = NULL;
+// 	return (line);
+// }
+
+void print_pipe_contents(int pipefd[2]) {
+    char buffer[1024];
+    int bytes;
+
+    // Close the write end of the pipe
+    close(pipefd[1]);
+
+    // Read from the pipe
+    while ((bytes = read(pipefd[0], buffer, sizeof(buffer) - 1)) > 0) {
+        buffer[bytes] = '\0';  // Null-terminate the string
+        ft_fprintf(1, "%s", buffer);
+    }
+
+    // Close the read end of the pipe
+    close(pipefd[0]);
 }
 
-t_bool	start_heredoc(t_exec *exec, t_hashtable *env, char *delim)
-{
-	char	*line;
-	int		fd;
 
-	fd = open(delim, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (fd == -1)
-		return (false);
+void	handle_heredoc(t_hashtable *env, char *delim);
+
+char *check_expansion(t_hashtable *env, char **line, size_t *len)
+{
+	t_lex *quote;
+	t_segment *head;
+	char *expanded;
+	
+	quote = init_lex(env, *line);
+	head = NULL;
+	expanded = NULL;
+	while (*quote->ptr)
+	{
+		if (*quote->ptr == '$')
+			expand_variable(quote, &head, len);
+		else
+		{
+			quote->segment[*len] = *quote->ptr;
+			(*len)++;
+		}
+		quote->ptr++;
+	}
+	quote->segment[*len] = '\0';
+	add_segments(&head, quote->segment);
+	expanded = join_segments(head);
+	free_segments(head);
+	free(quote->segment);
+	free(quote);
+	return (expanded);
+}
+
+void	handle_heredoc(t_hashtable *env, char *delim)
+{
+	int		pipefd[2];
+	// int		fd;
+	char	*line;
+	size_t 	len;
+
+	// fd = open(delim, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	// if (fd == -1)
+	// 	return ;
+	
+	pipe(pipefd);
 	while (1)
 	{
+		len = 0;
 		line = readline("> ");
-		if (!ft_strcmp(line, delim))
+		if (!ft_strncmp(line, delim, ft_strlen(delim)))
 		{
 			free(line);
 			break ;
 		}
-		// function to check for expansion
-		// check_expansion(exec, env, &line);
-		// free(line);
-		// line = NULL;
+		line = check_expansion(env, &line, &len);
+		ft_putendl_fd(line, pipefd[1]);
+		free(line);
 	}
+	close(pipefd[1]);
+	print_pipe_contents(pipefd);
 }

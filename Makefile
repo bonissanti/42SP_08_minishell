@@ -24,6 +24,7 @@ MAND_SRCS 	= 	builtins/export.c builtins/export_utils.c builtins/hashtable.c \
 				handle_segments/handle_quotes.c handle_segments/segments_utils.c \
 				handle_segments/expand_dollar.c handle_segments/validate_quotes.c \
 				handle_segments/handle_tilde.c \
+				heredoc/heredoc.c \
 				minishell_utils.c
 		
 SRCS 		= $(addprefix ./src/, $(MAND_SRCS))

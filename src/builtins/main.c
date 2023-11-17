@@ -1,6 +1,7 @@
 #include "../include/hash.h"
 #include "../include/builtins.h"
 #include "../include/segments.h"
+#include "../include/temp.h"
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -46,6 +47,9 @@ int	main(int argc, char **argv, char **envp)
 
 		if (ft_strcmp(num_args[0], "pwd") == 0)
 			ft_pwd();
+
+		if (ft_strcmp(num_args[0], "<<") == 0)
+			handle_heredoc(hash_table, num_args[1]);
 
 		if (ft_strcmp(num_args[0], "expand") == 0)
 		{

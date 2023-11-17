@@ -88,12 +88,11 @@ void	env_with_value(t_hashtable *hashtable, char **args, int i, size_t len)
 		value = join_segments(head);
 		insert(hashtable, key, value);
 		free_segments(head);
+		safe_free((void **)&dollar->segment);
+		safe_free((void **)&dollar);
 	}
 	insert(hashtable, key, value);
 	free_split(equals_sign);
-	safe_free((void **)&value);
-	safe_free((void **)&dollar->segment);
-	safe_free((void **)&dollar);
 	free(value);
 
 }
