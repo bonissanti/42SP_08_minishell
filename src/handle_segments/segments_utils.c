@@ -8,8 +8,6 @@ t_lex *init_lex(t_hashtable *env, char *arg)
     quote = (t_lex *)malloc(sizeof(t_lex));
     quote->ptr = arg;
 	quote->segment = (char *)malloc(sizeof(char) * ft_strlen(arg) + 1);
-	quote->type = 0;
-	quote->prev_type = 0;
 	quote->env = env;
 	quote->state = init_quote_state();
 	quote->dollar = init_expand_dollar();
