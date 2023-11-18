@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:32:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/16 21:17:46 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/18 00:47:45 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void new_cmd_file_node(t_tkn_list **current)
 			.args = (*current)->content,
 			.prec_weight = DEFAULT,
 			});
+			g_global.cmd_list->infile = NULL;
+			g_global.cmd_list->outfile = NULL;
 		*current = (*current)->next;
 		return ;
 	}
@@ -49,11 +51,13 @@ void new_cmd_file_node(t_tkn_list **current)
 			.args = (*current)->content,
 			.prec_weight = DEFAULT,
 		});
+		g_global.cmd_list->infile = NULL;
+		g_global.cmd_list->outfile = NULL;
 	}
 	append_expand(current);
 		if(!(*current))
 			return ;
-	*current = (*current)->next;
+	// *current = (*current)->next;
 }
 
 void	new_redirect_node(t_tkn_list **current)
@@ -70,6 +74,8 @@ void	new_redirect_node(t_tkn_list **current)
 		.prec_weight = OP_REDIRECT,
 		.here_doc = has_here_doc,
 	});
+	g_global.cmd_list->infile = NULL;
+	g_global.cmd_list->outfile = NULL;
 	*current = (*current)->next;
 }
 
@@ -80,6 +86,8 @@ void	new_subshell_node(t_tkn_list **current)
 		.args = tkn_type_converter((*current)->type),
 		.prec_weight = DEFAULT,
 	});
+	g_global.cmd_list->infile = NULL;
+	g_global.cmd_list->outfile = NULL;
 	*current = (*current)->next;
 	while((*current)->type != C_PARENTESIS)
 	{
@@ -105,6 +113,8 @@ void	new_operator_node(t_tkn_list **current)
 		.type = TYPE_OPERATOR,
 		.args = tkn_type_converter((*current)->type),
 		.prec_weight = weight,
-	});	
+	});
+	g_global.cmd_list->infile = NULL;
+	g_global.cmd_list->outfile = NULL;
 	*current = (*current)->next;
 }

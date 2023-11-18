@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/16 22:54:46 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/17 21:49:36 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ typedef struct s_cmd_list
     t_operator	prec_weight;
     char *infile;
     char *outfile;
+	int	here_doc_fd;
 	t_bool here_doc;
 	struct s_cmd_list	*next;
 	struct s_cmd_list	*prev;
