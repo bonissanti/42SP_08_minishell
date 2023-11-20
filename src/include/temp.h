@@ -22,18 +22,7 @@ typedef struct t_line
 	struct t_line *next;
 }	t_line;
 
-/**
- * Data structure: t_files
- * -----------------
- * Is a linked list used to store the files that are found by the wildcard
- * expansion. Basically in file have the name of the file and the next pointer
- * points to the next file. In function 'handle_wildcard' the files are added
- * to the linked list and checked if files and patterns match.
- * 
- * @param: *file: The name of the file.
- * @param: *next: The pointer to the next file.
- * 
- */
+
 
 // typedef struct s_files
 // {
@@ -65,5 +54,6 @@ char *check_expansion(t_hashtable *env, char **line, size_t *len);
 // void    open_directory(char *pattern);
 // t_files *create_file(char *name);
 // void add_file(t_files **head, char *name);
+size_t	ft_strcspn(const char *str, char *delim1);
 
 #endif

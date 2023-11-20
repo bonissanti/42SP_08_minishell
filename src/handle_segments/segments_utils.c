@@ -112,8 +112,7 @@ void	free_segments(t_segment *head)
 		current = next;
 	}
 }
-
-size_t ft_strcspn(const char *str, char *delim1) // Retirar os delim como parametro e trocar por '\'' e '\"'
+size_t custom_strcspn(const char *str, char *delim1)
 {
 	size_t length;
 

@@ -2,37 +2,46 @@
 #include "../include/temp.h"
 #include "../include/segments.h"
 
-
 void init_structs(void *structs, size_t struct_size)
 {
 	memset(structs, 0, sizeof(struct_size));
 }
 
-// t_files *create_file(char *name)
-// {
-//     t_files *new_file;
+size_t	ft_strcspn(const char *str, char *delim1)
+{
+	size_t	length;
 
-//     new_file = malloc(sizeof(t_files));
+	length = 0;
+	while (*str)
+	{
+		if (*str == *delim1)
+			return (length);
+		str++;
+		length++;
+	}
+	return (length);
+}
 
-// 	new_file->content = ft_strdup(name);
-// 	new_file->next = NULL;
-// 	free(name);
-// 	return (new_file);
-// }
+char *ft_strtok(char *str, const char *delim)
+{
+	static char *input;
+	char *token;
 
-// void add_file(t_files **head, char *name)
-// {
-// 	t_files *new_file;
-// 	t_files *current;
-
-// 	new_file = create_file(name);
-// 	if (*head == NULL)
-// 		*head = new_file;
-// 	else
-// 	{
-// 		current = *head;
-// 		while (current->next)
-// 			current = current->next;
-// 		current->next = new_file;
-// 	}
-// }
+	if (str)
+		input = str;
+	if (!input)
+		return (NULL);
+	token = input;
+	while (*input)
+	{
+		if (ft_strchr(delim, *input))
+		{
+			*input++ = '\0';
+			return (token);
+		}
+		input++;
+	}
+	if (*token == '\0')
+		return (NULL);
+	return (token);
+}
