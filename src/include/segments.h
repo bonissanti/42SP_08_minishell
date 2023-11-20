@@ -4,12 +4,21 @@
 // #include <string>
 # include "hash.h"
 # include <stdlib.h>
+#include <dirent.h>
+#include <sys/stat.h>
 
 typedef struct s_segments
 {
 	char				*str;
 	struct s_segments	*next;
 }						t_segment;
+
+typedef struct s_file
+{
+	DIR				*dir;
+	struct dirent	*entry;
+	struct stat		entry_stat;
+}					t_file;
 
 typedef struct s_quote_state
 {
@@ -66,7 +75,12 @@ void					error_close_quotes(t_lex *quote);
 t_bool					check_dollar_space(char *str);
 t_bool					check_handle_error(t_lex *quote, char **args, int i);
 char					*ft_strndup(const char *str, size_t num);
-size_t					ft_strcspn(const char *str, char *delim1, char *delim2);
+size_t					ft_strcspn(const char *str, char *delim1);
 t_bool					is_whitespace(char c);
+
+//############################### WILDCARD ###################################
+
+void init_structs(void *structs, size_t struct_size);
+void	handle_wildcard(char *pattern);
 
 #endif

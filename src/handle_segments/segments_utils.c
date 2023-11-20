@@ -113,14 +113,14 @@ void	free_segments(t_segment *head)
 	}
 }
 
-size_t ft_strcspn(const char *str, char *delim1, char *delim2) // Retirar os delim como parametro e trocar por '\'' e '\"'
+size_t ft_strcspn(const char *str, char *delim1) // Retirar os delim como parametro e trocar por '\'' e '\"'
 {
 	size_t length;
 
 	length = 0;
 	while (*str)
 	{
-		if (*str == *delim1 || *str == *delim2 || *str == '\\' || *str == ' ')
+		if (*str == *delim1 || *str == '\"' || *str == '\\' || *str == ' ')
 			return (length);
 		str++;
 		length++;

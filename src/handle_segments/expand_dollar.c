@@ -25,7 +25,7 @@ void	expand_variable(t_lex *quote, t_segment **head, size_t *len)
 	quote->ptr++;
 	if (!quote->state.space_dollar)
 	{
-		key_len = ft_strcspn(quote->ptr, "\"", "'");
+		key_len = ft_strcspn(quote->ptr, "'");
 		key = ft_strndup(quote->ptr, key_len); 
 		hash = search(quote->env, key);
 		if (hash)
