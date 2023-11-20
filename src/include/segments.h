@@ -1,7 +1,6 @@
 #ifndef SEGMENTS_H
 # define SEGMENTS_H
 
-// #include <string>
 # include "hash.h"
 # include <stdlib.h>
 
@@ -15,8 +14,9 @@ typedef struct s_quote_state
 {
 	t_bool				single_open;
 	t_bool				double_open;
+	t_bool				escape_next;
 	t_bool				space_dollar;
-}						t_quote_state;
+}						t_quote_bool;
 
 typedef struct s_dollar
 {
@@ -27,12 +27,14 @@ typedef struct s_lex
 {
 	char				*ptr;
 	char				*segment;
-	int					type;
-	int					prev_type;
 	t_hashtable			*env;
-	t_quote_state		state;
+	t_quote_bool		state;
 	t_expand			dollar;
 }						t_lex;
+
+//############################### INIT ###################################
+
+void init_structs(void *structs, int type, size_t struct_size);
 
 //############################### LIST ###################################
 
@@ -44,9 +46,10 @@ void					free_segments(t_segment *head);
 //############################### QUOTES ###################################
 
 t_lex					*init_lex(t_hashtable *env, char *arg);
-t_quote_state			init_quote_state(void);
+t_quote_bool			init_quote_bool(void);
 size_t					even_close_quotes(char *str);
-void					is_quotes(t_hashtable *env, char **args);
+void					analyzing_quotes(t_hashtable *env, char **args);
+void					handle_quotes(t_hashtable *env, t_segment *head, char **args);
 void					final_process(t_lex *quote, t_segment **head,
 							char **args, size_t *len);
 
