@@ -2,7 +2,7 @@
 #include "../include/segments.h"
 #include "../include/builtins.h"
 
-t_bool	check_handle_error(t_lex *quote, char **args, int i)
+t_bool	check_handle_error(t_lex *quote, int i)
 {
 	if (i == 1)
 	{

@@ -18,9 +18,6 @@ char *expand_tilde(t_hashtable *hashtable, char *str)
 	char 	*expanded;
 	size_t	len;
 
-	if (str[0] != '~' || str[1] != '/' || str[1] != '\0')
-		return (str);
-
 	len = ft_strlen(hashtable->home->value) + ft_strlen(str);
 	expanded = malloc(sizeof(char) * (len + 1));
 	if (!expanded)

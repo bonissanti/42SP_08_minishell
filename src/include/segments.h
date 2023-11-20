@@ -67,7 +67,7 @@ char					*expand_tilde(t_hashtable *hashtable, char *str);
 
 void					error_close_quotes(t_lex *quote);
 t_bool					check_dollar_space(char *str);
-t_bool					check_handle_error(t_lex *quote, char **args, int i);
+t_bool					check_handle_error(t_lex *quote, int i);
 char					*ft_strndup(const char *str, size_t num);
 size_t					ft_strcspn(const char *str, char *delim1, char *delim2);
 t_bool					is_whitespace(char c);

@@ -92,7 +92,7 @@ void	handle_quotes(t_hashtable *env, t_segment *head, char **args)
 			literal_string(quote, &len);
 		quote->ptr++;
 	}
-	check_handle_error(quote, args, 1); // talvez dê para remover, tem que testar se algo cai aqui
+	check_handle_error(quote, 1); // talvez dê para remover, tem que testar se algo cai aqui
 	final_process(quote, &head, args, &len);
 }
 
