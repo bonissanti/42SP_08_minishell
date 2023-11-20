@@ -6,27 +6,40 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:32:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/18 00:47:45 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/20 14:18:57 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
+t_cmd_list *find_command(t_cmd_list *cmd_list)
+{
+	while(cmd_list && cmd_list->type != TYPE_COMMAND)
+		cmd_list = cmd_list->next;
+	if(!cmd_list)
+		return(NULL);
+	else if (cmd_list->type == TYPE_COMMAND)
+		return(cmd_list);
+	else
+		return(NULL);
+}
+
 void append_expand(t_tkn_list **current)
 {
 	while(*current && ((*current)->type == IDENTIFIER || (*current)->type == EXPAND || (*current)->type == WILD))
-	{	
-		*current = (*current)->next;
+	{			
 		if(!*current)
 			return ;
 		if((*current)->type != IDENTIFIER && (*current)->type != EXPAND && (*current)->type != WILD)
 			return ;	
 		else
 		{
-			g_global.cmd_list = last_cmd_list(g_global.cmd_list);
+			// g_global.cmd_list = last_cmd_list(g_global.cmd_list);
+			g_global.cmd_list = find_command(g_global.cmd_list);
 			g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, " ");
 			g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, (*current)->content);
 		}
+		*current = (*current)->next;
 	}
 }
 
@@ -39,25 +52,24 @@ void new_cmd_file_node(t_tkn_list **current)
 			.args = (*current)->content,
 			.prec_weight = DEFAULT,
 			});
-			g_global.cmd_list->infile = NULL;
-			g_global.cmd_list->outfile = NULL;
 		*current = (*current)->next;
 		return ;
 	}
-	else
+	else if(find_command(g_global.cmd_list))
 	{
+		append_expand(current);
+			if(!(*current))
+				return ;
+	}
+	else
+	{			
 		add_cmd_list((t_cmd_list){
 			.type = TYPE_COMMAND,
 			.args = (*current)->content,
 			.prec_weight = DEFAULT,
 		});
-		g_global.cmd_list->infile = NULL;
-		g_global.cmd_list->outfile = NULL;
+		*current = (*current)->next;
 	}
-	append_expand(current);
-		if(!(*current))
-			return ;
-	// *current = (*current)->next;
 }
 
 void	new_redirect_node(t_tkn_list **current)
@@ -74,8 +86,6 @@ void	new_redirect_node(t_tkn_list **current)
 		.prec_weight = OP_REDIRECT,
 		.here_doc = has_here_doc,
 	});
-	g_global.cmd_list->infile = NULL;
-	g_global.cmd_list->outfile = NULL;
 	*current = (*current)->next;
 }
 
@@ -86,8 +96,6 @@ void	new_subshell_node(t_tkn_list **current)
 		.args = tkn_type_converter((*current)->type),
 		.prec_weight = DEFAULT,
 	});
-	g_global.cmd_list->infile = NULL;
-	g_global.cmd_list->outfile = NULL;
 	*current = (*current)->next;
 	while((*current)->type != C_PARENTESIS)
 	{
@@ -114,7 +122,5 @@ void	new_operator_node(t_tkn_list **current)
 		.args = tkn_type_converter((*current)->type),
 		.prec_weight = weight,
 	});
-	g_global.cmd_list->infile = NULL;
-	g_global.cmd_list->outfile = NULL;
 	*current = (*current)->next;
 }
