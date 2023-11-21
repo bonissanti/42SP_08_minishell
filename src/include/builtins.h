@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:56:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/21 14:27:17 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:19:42 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ typedef struct t_env
 	int		num_env;
 }			t_env;
 
-typedef struct s_builtins
-{
-	void	(*builtins[7])(void);
-	int		(*func)(t_hashtable *hashtable, char **args);
-}		t_builtins;
+// typedef struct s_builtins
+// {
+// 	int		index;
+// 	void	(*builtins[7])(char **args);
+// }		t_builtins;
 
 
 //############################### Builtins ####################################
@@ -44,14 +44,14 @@ void		ft_env(t_hashtable *hash_table, char **args);
 
 //############################### Vector ######################################
 
-void		vector_builtins(t_hashtable *hash_table, char **args);
-void		is_cd(t_hashtable *hash_table, char **args);
-void		is_pwd(t_hashtable *hash_table, char **args);
-void		is_echo(t_hashtable *hash_table, char **args);
-void		is_export(t_hashtable *hash_table, char **args);
-void		is_unset(t_hashtable *hash_table, char **args);
-void		is_env(t_hashtable *hash_table, char **args);
-void		is_exit(t_hashtable *hash_table, char **args);
+// void		execute_builtins(t_pointer *builtins, t_hashtable *hash_table, char **args);
+void		is_cd(void);
+void		is_pwd(void);
+void		is_echo(void);
+void		is_export(void);
+void		is_unset(void);
+void		is_env(void);
+void		is_exit(void);
 
 //############################### Utils ########################################
 

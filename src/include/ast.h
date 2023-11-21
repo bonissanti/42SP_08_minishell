@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/21 12:20:01 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:44:21 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,28 @@
 
 typedef enum 
 {
-	NODE_COMMAND,
-	NODE_OPERATOR,
-	NODE_FILE,
-	NODE_REDIRECT,
-} t_ast_type;
+	TYPE_COMMAND,
+	TYPE_OPERATOR,
+	TYPE_FILE,
+	TYPE_REDIRECT,
+} t_type;
 
+// Executa de baixo pra cima, da menor precedencia ao de maior precedencia
 typedef enum
 {
-	OP_REDIRECT = 2,
-	OP_PIPE = 3,
-	OP_LOGICAL = 4,
+	OP_REDIRECT = 2, 	// <, >, >> 
+	OP_PIPE = 3, 		// |
+	OP_LOGICAL = 3, 	// &&, ||
 	DEFAULT = 0,
 } t_operator;
 
 typedef struct s_ast
 {
+	
 	char *args;
 	char **path;
 	t_operator op;
-	t_ast_type type;
+	t_type type;
 	struct s_ast *left;
 	struct s_ast *right;
 } t_ast;
