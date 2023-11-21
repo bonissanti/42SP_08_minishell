@@ -45,7 +45,7 @@ int	main(int argc, char **argv, char **envp)
 			ft_cd(hash_table, num_args);
 
 		if (ft_strcmp(num_args[0], "pwd") == 0)
-			ft_pwd();
+			ft_pwd(hash_table, num_args);
 
 		if (ft_strcmp(num_args[0], "expand") == 0)
 		{

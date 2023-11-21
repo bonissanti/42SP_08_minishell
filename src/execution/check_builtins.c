@@ -1,26 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   check_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/19 19:12:58 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/21 14:15:31 by brunrodr         ###   ########.fr       */
+/*   Created: 2023/11/21 12:00:37 by brunrodr          #+#    #+#             */
+/*   Updated: 2023/11/21 14:39:37 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/ast.h"
 #include "../include/builtins.h"
+#include "../include/hash.h"
 
-void	ft_pwd(t_hashtable *hashtable, char **args)
+void	is_cd(t_hashtable *hash_table, char **args)
 {
-	char *cwd;
-	// char *old_pwd;
-
-	(void)hashtable;
-	(void)args;
-	// old_pwd = getenv("OLDPWD");	
-	cwd = getcwd(NULL, 0);
-	ft_printf("%s\n", cwd);
-	free(cwd);
+	if (ft_strcmp(args[0], "cd") == 0)
+		ft_cd(hash_table, args);
 }
+
+void	is_pwd(t_hashtable *hash_table, char **args)
+{
+	if (ft_strcmp(args[0], "pwd") == 0)
+		ft_pwd(hash_table, args);
+}
+
