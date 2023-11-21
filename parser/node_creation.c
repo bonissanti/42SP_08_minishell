@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:32:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/20 14:18:57 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/20 22:51:06 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,18 @@
 
 t_cmd_list *find_command(t_cmd_list *cmd_list)
 {
-	while(cmd_list && cmd_list->type != TYPE_COMMAND)
+	t_cmd_list *current_command;
+	
+	current_command = NULL;
+	while(cmd_list)
+	{
+		if(cmd_list->type == TYPE_COMMAND)
+			current_command = cmd_list;
+		else if(cmd_list->type == TYPE_OPERATOR)
+			current_command = NULL;
 		cmd_list = cmd_list->next;
-	if(!cmd_list)
-		return(NULL);
-	else if (cmd_list->type == TYPE_COMMAND)
-		return(cmd_list);
-	else
-		return(NULL);
+	}
+	return(current_command);
 }
 
 void append_expand(t_tkn_list **current)
@@ -34,7 +38,6 @@ void append_expand(t_tkn_list **current)
 			return ;	
 		else
 		{
-			// g_global.cmd_list = last_cmd_list(g_global.cmd_list);
 			g_global.cmd_list = find_command(g_global.cmd_list);
 			g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, " ");
 			g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, (*current)->content);

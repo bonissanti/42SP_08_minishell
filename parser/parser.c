@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/18 01:20:47 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/21 00:39:44 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,9 @@ void set_io(t_cmd_list **cmd_list)
 			set_command_input(cmd_list, head);
 		else if (head->type == TYPE_REDIRECT && (!ft_strncmp(head->args, ">>", 2) || *(*head).args == '>'))
 			set_command_output(cmd_list, head);
-		head = temp;		
+		head = temp;
+		if(head && head->type == TYPE_OPERATOR)
+			*cmd_list = head;
 	}
 }
 
