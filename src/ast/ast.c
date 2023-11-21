@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/14 13:52:15 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/21 11:43:34 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@
  * Each node will have a type, a value and a pointer to the left and right
  * nodes. 
  *  
- * @param: type: The type of the node, it can be NODE_COMMAND, NODE_FILE,
- * NODE_REDIRECT or NODE_OPERATOR.
+ * @param: type: The type of the node, it can be TYPE_COMMAND, TYPE_FILE,
+ * TYPE_REDIRECT or TYPE_OPERATOR.
  * @param: *args: The value of the node, it can be the command, the file,
  * the redirect or the operator name.
  * @param: op: The operator of the node, it can be OP_REDIRECT, OP_PIPE,
@@ -32,12 +32,13 @@
  *
  */
 
-t_ast *create_node(t_ast_type type, char *args, t_operator op)
+t_ast *create_node(t_type type, char *args, t_operator op)
 {
 	t_ast *new_node;
 
 	new_node = (t_ast *)malloc(sizeof(t_ast));
 	new_node->type = type;
+	new_node->path = NULL;
 	new_node->args = args;
 	new_node->left = NULL;
 	new_node->right = NULL;
@@ -163,27 +164,27 @@ void pre_order_traversal(t_ast *root)
 
 int main(void)
 {
-e    t_ast *root = NULL;
+    t_ast *root = NULL;
 
-    t_ast *node1 = create_node(NODE_COMMAND, "ls -l", DEFAULT);
+    t_ast *node1 = create_node(TYPE_COMMAND, "ls -l", DEFAULT);
     insert_ast(&root, node1);
 
-    t_ast *node2 = create_node(NODE_OPERATOR, ">", OP_REDIRECT);
+    t_ast *node2 = create_node(TYPE_OPERATOR, ">", OP_REDIRECT);
     insert_ast(&root, node2);
 
-    t_ast *node3 = create_node(NODE_FILE, "error.txt", DEFAULT);
+    t_ast *node3 = create_node(TYPE_FILE, "error.txt", DEFAULT);
     insert_ast(&root, node3);
 
-    t_ast *node4 = create_node(NODE_OPERATOR, "&&", OP_LOGICAL);
+    t_ast *node4 = create_node(TYPE_OPERATOR, "&&", OP_LOGICAL);
     insert_ast(&root, node4);
 
-    t_ast *node5 = create_node(NODE_COMMAND, "cat error.txt", DEFAULT);
+    t_ast *node5 = create_node(TYPE_COMMAND, "cat error.txt", DEFAULT);
     insert_ast(&root, node5);
 
-    t_ast *node6 = create_node(NODE_OPERATOR, "|", OP_PIPE);
+    t_ast *node6 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
     insert_ast(&root, node6);
 
-    t_ast *node7 = create_node(NODE_COMMAND, "grep \"42\"", DEFAULT);
+    t_ast *node7 = create_node(TYPE_COMMAND, "grep \"42\"", DEFAULT);
     insert_ast(&root, node7);
 
     pre_order_traversal(root);
@@ -191,6 +192,35 @@ e    t_ast *root = NULL;
 
     return (0);
 }
+
+
+//ls -l > outfile.txt < cat | wc -l
+// int main(void)
+// {
+// 	t_ast *root = create_node(TYPE_COMMAND, "ls -l");
+
+// 	t_ast *node1 = create_node(TYPE_OPERATOR, "|");
+// 	insert_ast(&root, node1, OP_PIPE);
+
+// 	t_ast *node2 = create_node(TYPE_FILE, "grep .c");
+// 	insert_ast(&root, node2, DEFAULT);
+
+// 	t_ast *node3 = create_node(TYPE_OPERATOR, "&&");
+// 	insert_ast(&root, node3, OP_LOGICAL);
+
+// 	t_ast *node4 = create_node(TYPE_COMMAND, "wc -l");
+// 	insert_ast(&root, node4, DEFAULT);
+
+// 	t_ast *node5 = create_node(TYPE_OPERATOR, ">");
+// 	insert_ast(&root, node5, OP_REDIRECT);
+
+// 	t_ast *node6 = create_node(TYPE_FILE, "output.txt");
+// 	insert_ast(&root, node6, DEFAULT);
+
+// 	pre_order_traversal(root);
+// 	// print_tree(root, 0);
+// 	return (0);
+// }
 
 
 //ls -l > outfile.txt < cat | wc -l
