@@ -12,7 +12,6 @@
 
 #include "../include/segments.h"
 
-
 t_lex *init_lex(t_hashtable *env, char *arg)
 {
     t_lex *quote;
@@ -20,30 +19,10 @@ t_lex *init_lex(t_hashtable *env, char *arg)
     quote = (t_lex *)malloc(sizeof(t_lex));
     quote->ptr = arg;
 	quote->segment = (char *)malloc(sizeof(char) * ft_strlen(arg) + 1);
-	quote->type = 0;
-	quote->prev_type = 0;
 	quote->env = env;
-	quote->state = init_quote_state();
-	quote->dollar = init_expand_dollar();
+	init_structs(&quote->state, false, sizeof(t_quote_bool));
+	init_structs(&quote->dollar, false, sizeof(t_expand));
 	return (quote);
-}
-
-t_quote_state init_quote_state(void)
-{
-	t_quote_state state;
-
-	state.single_open = false;
-	state.double_open = false;
-	state.space_dollar = false;
-	return (state);
-}
-
-t_expand init_expand_dollar(void)
-{
-	t_expand dollar;
-
-	dollar.has_dollar = false;
-	return (dollar);
 }
 
 t_segment *new_segments(char *str)

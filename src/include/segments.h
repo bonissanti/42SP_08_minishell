@@ -1,7 +1,6 @@
 #ifndef SEGMENTS_H
 # define SEGMENTS_H
 
-// #include <string>
 # include "hash.h"
 # include <stdlib.h>
 
@@ -15,8 +14,9 @@ typedef struct s_quote_state
 {
 	t_bool				single_open;
 	t_bool				double_open;
+	t_bool				escape_next;
 	t_bool				space_dollar;
-}						t_quote_state;
+}						t_quote_bool;
 
 typedef struct s_dollar
 {
@@ -27,12 +27,14 @@ typedef struct s_lex
 {
 	char				*ptr;
 	char				*segment;
-	int					type;
-	int					prev_type;
 	t_hashtable			*env;
-	t_quote_state		state;
+	t_quote_bool		state;
 	t_expand			dollar;
 }						t_lex;
+
+//############################### INIT ###################################
+
+void init_structs(void *structs, int type, size_t struct_size);
 
 //############################### LIST ###################################
 
@@ -44,9 +46,10 @@ void					free_segments(t_segment *head);
 //############################### QUOTES ###################################
 
 t_lex					*init_lex(t_hashtable *env, char *arg);
-t_quote_state			init_quote_state(void);
+t_quote_bool			init_quote_bool(void);
 size_t					even_close_quotes(char *str);
-void					is_quotes(t_hashtable *env, char **args);
+void					analyzing_quotes(t_hashtable *env, char **args);
+void					handle_quotes(t_hashtable *env, t_segment *head, char **args);
 void					final_process(t_lex *quote, t_segment **head,
 							char **args, size_t *len);
 
@@ -64,7 +67,7 @@ char					*expand_tilde(t_hashtable *hashtable, char *str);
 
 void					error_close_quotes(t_lex *quote);
 t_bool					check_dollar_space(char *str);
-t_bool					check_handle_error(t_lex *quote, char **args, int i);
+t_bool					check_handle_error(t_lex *quote, int i);
 char					*ft_strndup(const char *str, size_t num);
 size_t					ft_strcspn(const char *str, char *delim1, char *delim2);
 t_bool					is_whitespace(char c);
