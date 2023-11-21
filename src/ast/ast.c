@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/10/30 15:54:55 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/21 11:33:28 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ t_ast *create_node(t_type type, char *args, t_operator op)
 
 	new_node = (t_ast *)malloc(sizeof(t_ast));
 	new_node->type = type;
+	new_node->path = NULL;
 	new_node->args = args;
 	new_node->left = NULL;
 	new_node->right = NULL;

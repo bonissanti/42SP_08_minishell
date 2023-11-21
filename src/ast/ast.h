@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/10/30 12:52:19 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/21 11:33:14 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,9 @@ typedef struct s_ast
 {
 	
 	char *args;
+	char **path;
 	t_operator op;
 	t_type type;
-	// int stdin;
-	// int stdout;
 	struct s_ast *left;
 	struct s_ast *right;
 } t_ast;
