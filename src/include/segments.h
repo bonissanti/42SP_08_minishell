@@ -85,7 +85,7 @@ t_expand				init_expand_dollar(void);
 
 //############################### TILDE ###################################
 
-char					*expand_tilde(t_hashtable *hashtable, char *str);
+void					expand_tilde(t_hashtable *hashtable, char *str);
 
 //############################### UTILS ###################################
 

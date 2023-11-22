@@ -21,10 +21,10 @@ SUBDIRS 	= mandatory
 MAND_SRCS 	= 	builtins/export.c builtins/export_utils.c builtins/hashtable.c \
 				builtins/exit.c builtins/env.c builtins/cd.c builtins/pwd.c \
 				builtins/main.c builtins/echo.c builtins/unset.c \
-				handle_segments/quotes_handle.c handle_segments/segments_utils.c \
-				handle_segments/expand_dollar.c handle_segments/quotes_validate.c \
-				handle_segments/quotes_error.c handle_segments/tilde_handle.c \
-				handle_segments/wildcard_handle.c handle_segments/wildcard_utils.c \
+				handle_segments/quotes_handler.c handle_segments/segments_utils.c \
+				handle_segments/expand_dollar.c handle_segments/quotes_validater.c \
+				handle_segments/quotes_error.c handle_segments/tilde_handler.c \
+				handle_segments/wildcard_handler.c handle_segments/wildcard_utils.c \
 				redirects/redirects.c redirects/heredoc.c \
 				minishell_utils.c
 		

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:06 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/17 15:39:46 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/22 16:43:57 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ void	free_segments(t_segment *head)
 		current = next;
 	}
 }
+
 size_t custom_strcspn(const char *str, char *delim1)
 {
 	size_t length;
