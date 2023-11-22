@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/21 11:43:34 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/21 19:12:35 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,17 @@
  *
  */
 
-t_ast *create_node(t_type type, char *args, t_operator op)
+t_ast *create_node(t_type type, char *args, t_operator op) // terceiro parametro t_cmd_list
 {
 	t_ast *new_node;
 
 	new_node = (t_ast *)malloc(sizeof(t_ast));
-	new_node->type = type;
-	new_node->path = NULL;
-	new_node->args = args;
-	new_node->left = NULL;
+	new_node->type = type; // type do cmd_list
+	new_node->path = NULL; 
+	new_node->args = args; // args do cmd_list
+	new_node->left = NULL; 
 	new_node->right = NULL;
-	new_node->op = op;
+	new_node->op = op; // op do cmd_list
 	return (new_node);
 }
 
