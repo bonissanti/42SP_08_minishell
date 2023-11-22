@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:06 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/16 15:32:08 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:39:46 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,14 @@ void	free_segments(t_segment *head)
 	}
 }
 
-size_t ft_strcspn(const char *str, char *delim1, char *delim2)
+size_t ft_strcspn(const char *str, char *delim1, char *delim2) // Retirar os delim como parametro e trocar por '\'' e '\"'
 {
 	size_t length;
 
 	length = 0;
 	while (*str)
 	{
-		if (*str == *delim1 || *str == *delim2 || *str == '\\')
+		if (*str == *delim1 || *str == *delim2 || *str == '\\' || *str == ' ')
 			return (length);
 		str++;
 		length++;

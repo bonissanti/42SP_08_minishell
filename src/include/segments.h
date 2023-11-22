@@ -1,6 +1,7 @@
 #ifndef SEGMENTS_H
 # define SEGMENTS_H
 
+// #include <string>
 # include "hash.h"
 # include <stdlib.h>
 

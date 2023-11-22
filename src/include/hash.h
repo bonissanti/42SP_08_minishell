@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_H
-# define ENV_H
+#ifndef HASH_H
+# define HASH_H
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -35,7 +35,15 @@ typedef struct t_hashtable
 	t_hash *home;
 }			t_hashtable;
 
+typedef struct t_env
+{
+	char	*key;
+	char	**env;
+	char	*value;
+	char	**equals_sign;
+	int		num_env;
 
+}			t_env;
 
 //############################### Hashtable ###################################
 
