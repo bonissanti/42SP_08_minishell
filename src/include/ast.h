@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/21 18:44:21 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:18:24 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef enum
 	TYPE_REDIRECT,
 } t_type;
 
-// Executa de baixo pra cima, da menor precedencia ao de maior precedencia
+// Inverted order of precedence
 typedef enum
 {
 	OP_REDIRECT = 2, 	// <, >, >> 
