@@ -6,14 +6,13 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:56:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 12:35:29 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:06:39 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-# include "../include/hash.h"
 # include "../include/hash.h"
 # include <errno.h>
 

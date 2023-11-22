@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/17 15:41:46 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/22 13:04:28 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,11 +98,6 @@ void	handle_heredoc(t_hashtable *env, char *delim)
 	// int		fd;
 	char	*line;
 	size_t 	len;
-
-	// fd = open(delim, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	// if (fd == -1)
-	// 	return ;
-	
 	pipe(pipefd);
 	while (1)
 	{

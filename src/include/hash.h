@@ -35,16 +35,6 @@ typedef struct t_hashtable
 	t_hash *home;
 }			t_hashtable;
 
-typedef struct t_env
-{
-	char	*key;
-	char	**env;
-	char	*value;
-	char	**equals_sign;
-	int		num_env;
-
-}			t_env;
-
 //############################### Hashtable ###################################
 
 t_hashtable		*create_hashtable(void);
