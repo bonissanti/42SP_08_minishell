@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/17 21:49:36 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/21 16:01:42 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,9 @@ int			is_operator(t_tkn_type tkn);
 int			crop_delimiter_tkn(char **cmd);
 void		free_tkn_list(t_tkn_list *tkn_list);
 void		free_cmd_list(t_cmd_list *cmd_list);
+t_cmd_list	*rewind_list(t_cmd_list **cmd_list);
+void		set_io(t_cmd_list **cmd_list);
+void		set_command_output(t_cmd_list **cmd_list, t_cmd_list *head);
+void		set_command_input(t_cmd_list **cmd_list, t_cmd_list *head);
 
 #endif

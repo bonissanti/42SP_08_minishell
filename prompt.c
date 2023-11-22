@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/21 11:59:29 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:00:43 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ int prompt_validation(char *readline_input)
 
 void prompt(t_hashtable *env)
 {
+	(void)env;
 	while(!prompt_validation(g_global.readline_input))
 		g_global.readline_input = readline("$ ");
-	free(g_global.readline_input);
-	add_history(g_global.cmd_list);		
+	add_history(g_global.readline_input);
 	tokenizer(&g_global, g_global.readline_input, env);
 	print_tkn_list(g_global.tkn_list);
 	parser(env);
@@ -38,8 +38,9 @@ void prompt(t_hashtable *env)
 	{
 		free(g_global.readline_input);
 		g_global.readline_input = NULL;
-		while(!ft_strlen(g_global.readline_input))
+		while(!prompt_validation(g_global.readline_input))
 			g_global.readline_input = readline("$ ");
+		add_history(g_global.readline_input);		
 		tokenizer(&g_global, g_global.readline_input, env);
 		print_tkn_list(g_global.tkn_list);
 		parser(env);
@@ -49,4 +50,3 @@ void prompt(t_hashtable *env)
 		g_global.cmd_list = NULL;
 	}
 }
-

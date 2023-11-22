@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 22:27:30 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/20 17:13:28 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/21 18:57:48 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,23 @@ void print_cmd_list(t_cmd_list *cmd_list)
 	ft_printf("---CMD_LIST---\n");
 	while(cmd_list->next != NULL)
 	{
-		ft_printf("Type: %s\nArgs: %s\nPrec_weight: %d\n",
+		if(cmd_list->type == TYPE_COMMAND)
+		{
+			ft_printf("Type: %s\nArgs: %s\nPrec_weight: %d\n",
+			cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->prec_weight);
+			if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->infile)
+				ft_printf("Infile: %s\n", cmd_list->infile);
+			if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->outfile)
+				ft_printf("Outfile: %s\n", cmd_list->outfile);
+			if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->here_doc_fd)
+				ft_printf("Here_doc: %d\n", cmd_list->here_doc_fd);
+			ft_printf("----------\n");
+		}
+			cmd_list = cmd_list->next;			
+	}
+	if(cmd_list->type == TYPE_COMMAND)
+	{
+		ft_printf("Type: %s\nArgs: %s\nPrec_weight: %d\n", 
 		cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->prec_weight);
 		if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->infile)
 			ft_printf("Infile: %s\n", cmd_list->infile);
@@ -77,16 +93,6 @@ void print_cmd_list(t_cmd_list *cmd_list)
 			ft_printf("Outfile: %s\n", cmd_list->outfile);
 		if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->here_doc_fd)
 			ft_printf("Here_doc: %d\n", cmd_list->here_doc_fd);
-		ft_printf("----------\n");
-		cmd_list = cmd_list->next;
+		ft_printf("----------\n");		
 	}
-	ft_printf("Type: %s\nArgs: %s\nPrec_weight: %d\n", 
-	cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->prec_weight);
-	if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->infile)
-		ft_printf("Infile: %s\n", cmd_list->infile);
-	if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->outfile)
-		ft_printf("Outfile: %s\n", cmd_list->outfile);
-	if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->here_doc_fd)
-		ft_printf("Here_doc: %d\n", cmd_list->here_doc_fd);
-	ft_printf("----------\n");
 }

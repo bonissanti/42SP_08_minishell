@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/21 00:39:44 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/21 19:53:42 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,51 +41,9 @@ t_cmd_list *rewind_list(t_cmd_list **cmd_list)
 	else
 	{
 		while((*cmd_list)->prev != NULL)
-			*cmd_list = (*cmd_list)->prev; // infinite loop here
+			*cmd_list = (*cmd_list)->prev;
 	}
 	return(*cmd_list);
-}
-
-void set_command_input(t_cmd_list **cmd_list, t_cmd_list *head)
-{
-	while((*cmd_list)->type != TYPE_COMMAND)
-		*cmd_list = (*cmd_list)->next;
-	if (!head->here_doc && head->next->type == TYPE_FILE)
-	{
-		(*cmd_list)->infile = head->next->args;
-		(*cmd_list)->here_doc_fd = 0;
-	}
-	else if	(head->here_doc)
-	{
-		(*cmd_list)->infile = NULL;
-		(*cmd_list)->here_doc_fd = 42;
-	}
-}
-
-void set_command_output(t_cmd_list **cmd_list, t_cmd_list *head)
-{
-	while((*cmd_list)->type != TYPE_COMMAND)
-		*cmd_list = (*cmd_list)->next;
-	(*cmd_list)->outfile = head->next->args;
-}
-
-void set_io(t_cmd_list **cmd_list)
-{
-	t_cmd_list *head;
-	t_cmd_list *temp;
-
-	head = rewind_list(cmd_list);
-	while(head)
-	{
-		temp = head->next;
-		if (head->type == TYPE_REDIRECT && (!ft_strncmp(head->args, "<<", 2) || *(*head).args == '<'))
-			set_command_input(cmd_list, head);
-		else if (head->type == TYPE_REDIRECT && (!ft_strncmp(head->args, ">>", 2) || *(*head).args == '>'))
-			set_command_output(cmd_list, head);
-		head = temp;
-		if(head && head->type == TYPE_OPERATOR)
-			*cmd_list = head;
-	}
 }
 
 void	join_args(t_tkn_list *tkn_list)
@@ -114,12 +72,5 @@ void parser(t_hashtable *env)
 	(void)env;
 	command_consistency(g_global.tkn_list);
 	join_args(g_global.tkn_list);
-	// while(g_global.cmd_list->next)
-	// {
-	// 	is_quotes(env, &g_global.cmd_list->args);
-	// 	g_global.cmd_list = g_global.cmd_list->next;
-	// }
-	// is_quotes(env, &g_global.cmd_list->args);
-	// rewind_list(&(g_global).cmd_list);
 	print_cmd_list(g_global.cmd_list);
 }
