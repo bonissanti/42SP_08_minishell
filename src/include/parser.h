@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/22 15:30:18 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/22 17:43:09 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ typedef struct s_cmd_list
 {    
     t_type 	type;
     char *args;
-    t_operator	prec_weight;
+    t_operator	weight;
     char *infile;
     char *outfile;
 	int	here_doc_fd;

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 16:54:37 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/22 17:43:41 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,7 @@ typedef struct s_ast
 t_ast				*create_node(t_type type, char *args, t_operator op);
 void				insert_ast(t_ast **root, t_ast *new_node);
 void				delete_node(t_ast *root);
-void				pre_order_traversal(t_ast *root);
+void				pre_order_traversal(t_ast *root); // Remover depois
+
+
 #endif

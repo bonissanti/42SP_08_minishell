@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_debug_helpers.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 22:27:30 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/18 01:15:49 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/22 17:43:09 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ void print_cmd_list(t_cmd_list *cmd_list)
 	ft_printf("---CMD_LIST---\n");
 	while(cmd_list->next != NULL)
 	{
-		ft_printf("Type: %s\nArgs: %s\nPrec_weight: %d\n",
-		cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->prec_weight);
+		ft_printf("Type: %s\nArgs: %s\nweight: %d\n",
+		cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->weight);
 		if(cmd_list->infile)
 			ft_printf("Infile: %s\n", cmd_list->infile);
 		if(cmd_list->outfile)
@@ -80,8 +80,8 @@ void print_cmd_list(t_cmd_list *cmd_list)
 		ft_printf("----------\n");
 		cmd_list = cmd_list->next;
 	}
-	ft_printf("Type: %s\nArgs: %s\nPrec_weight: %d\n", 
-	cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->prec_weight);
+	ft_printf("Type: %s\nArgs: %s\nweight: %d\n", 
+	cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->weight);
 	if(cmd_list->infile)
 		ft_printf("Infile: %s\n", cmd_list->infile);
 	if(cmd_list->outfile)

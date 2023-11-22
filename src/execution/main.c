@@ -1,17 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prepare_exec.c                                     :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 18:28:39 by brunrodr         ###   ########.fr       */
+/*   Created: 2023/11/22 17:04:20 by brunrodr          #+#    #+#             */
+/*   Updated: 2023/11/22 18:05:42 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ast.h"
-#include "../include/builtins.h"
-#include "../include/hash.h"
+#include "../include/temp_ast.h"
 
-// void 
+int main(void)
+{
+	t_temp_ast *root = NULL;
+
+	t_temp_ast *node1 = create_node(TYPE_COMMAND, "ls", OP_REDIRECT);
+	insert_temp_ast(&root, node1);
+
+	t_temp_ast *node2 = create_node(TYPE_OPERATOR, ">", OP_REDIRECT);
+	insert_temp_ast(&root, node2);
+
+	t_temp_ast *node3 = create_node(TYPE_FILE, "outfile.txt", DEFAULT);
+	insert_temp_ast(&root, node3);
+}

@@ -77,8 +77,8 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strcmp(num_args[0], "<<") == 0)
 			handle_heredoc(hash_table, num_args[1]);
 
-		// if (ft_strcmp(argv[1], "*") == 0)
-		// 	expand_wildcard_and_store(argv[1]);
+		if (ft_strcmp(argv[1], "*.c") == 0)
+			handle_wildcard(argv[1]);
 
 		if (ft_strcmp(num_args[0], "expand") == 0)
 			expand_tilde(hash_table, num_args[1]);
