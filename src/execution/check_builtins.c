@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:00:37 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 11:48:22 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:33:29 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,6 @@
 #include "../include/hash.h"
 
 
-typedef struct s_command
-{
-	char	*name;
-	void	(*function)(char *args);
-}		t_command;
 
 void	echo(char *args)
 {

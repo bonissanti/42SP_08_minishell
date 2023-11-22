@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:56:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/21 18:19:42 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/22 12:33:34 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,11 @@ typedef struct t_env
 	int		num_env;
 }			t_env;
 
-// typedef struct s_builtins
-// {
-// 	int		index;
-// 	void	(*builtins[7])(char **args);
-// }		t_builtins;
-
+typedef struct s_command
+{
+	char	*name;
+	void	(*function)(char *args);
+}		t_command;
 
 //############################### Builtins ####################################
 
