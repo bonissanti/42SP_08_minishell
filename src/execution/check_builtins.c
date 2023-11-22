@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:00:37 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 11:36:13 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/22 11:48:22 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	init_builtins(t_command *cmd)
 
 void	execute_builtins(t_command *builtins, char *cmd, char *args)
 {
-	size_t i;
+	size_t 	i;
 
 	i = -1;
 	while (++i < 2)
