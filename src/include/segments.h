@@ -1,15 +1,38 @@
 #ifndef SEGMENTS_H
 # define SEGMENTS_H
 
-// #include <string>
 # include "hash.h"
+# include <dirent.h>
 # include <stdlib.h>
+# include <sys/stat.h>
 
 typedef struct s_segments
 {
 	char				*str;
 	struct s_segments	*next;
 }						t_segment;
+
+/**
+ * Data structure: t_files
+ * -----------------
+ * Is a linked list used to store the files that are found by the wildcard
+ * expansion. Basically in file have the name of the file and the next pointer
+ * points to the next file. In function 'handle_wildcard' the files are added
+ * to the linked list and checked if files and patterns match.
+ * 
+ * @param: *file: The name of the file.
+ * @param: *next: The pointer to the next file.
+ * 
+ */
+
+typedef struct s_file
+{
+	char				*token;
+	char				*directory;
+	DIR					*dir;
+	struct dirent		*entry;
+	struct stat			entry_stat;
+}						t_file;
 
 typedef struct s_quote_state
 {
@@ -70,7 +93,14 @@ void					error_close_quotes(t_lex *quote);
 t_bool					check_dollar_space(char *str);
 t_bool					check_handle_error(t_lex *quote, int i);
 char					*ft_strndup(const char *str, size_t num);
-size_t					ft_strcspn(const char *str, char *delim1, char *delim2);
+size_t					custom_strcspn(const char *str, char *delim1);
 t_bool					is_whitespace(char c);
+
+//############################### WILDCARD ###################################
+
+void					init_structs(void *structs, size_t struct_size);
+void					handle_wildcard(char *pattern);
+char					*ft_strtok(char *str, const char *delim);
+void 					finish_wildcard(t_segment *head, t_file *file);
 
 #endif
