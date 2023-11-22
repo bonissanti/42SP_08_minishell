@@ -6,7 +6,6 @@ void init_structs(void *structs, int type, size_t struct_size)
 	ft_memset(structs, type, struct_size);
 }
 
-
 int	ft_count_args(char **args)
 {
 	int	count;

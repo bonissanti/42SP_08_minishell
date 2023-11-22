@@ -20,7 +20,7 @@ int main(int argc, char **argv)
 			free(trimmed_input);
 			exit(0);
 		}
-		else if (ft_strcmp(trimmed_input, "*.c") == 0)
+		else if (ft_strcmp(trimmed_input, "/nfs/homes/brunrodr/09.MINISHELL/V atual/42SP_08_minishell/src/execution/*.c") == 0)
 		{
 			handle_wildcard(trimmed_input);
 			free(trimmed_input);

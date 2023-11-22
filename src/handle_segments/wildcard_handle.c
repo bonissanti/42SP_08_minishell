@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wildcard.c                                         :+:      :+:    :+:   */
+/*   wildcard_handle.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:51:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/14 17:27:01 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/22 14:58:33 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	handle_wildcard(char *pattern)
 
 	head = NULL;
 	file = malloc(sizeof(t_file));
-	init_structs(file, sizeof(t_file));
+	init_structs(file, 0, sizeof(t_file));
 	get_dir_and_token(file, pattern);
 	file->dir = opendir(file->directory);
 	if (!file->dir)

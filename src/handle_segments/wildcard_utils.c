@@ -2,11 +2,6 @@
 #include "../include/temp.h"
 #include "../include/segments.h"
 
-void init_structs(void *structs, size_t struct_size)
-{
-	memset(structs, 0, sizeof(struct_size));
-}
-
 size_t	ft_strcspn(const char *str, char *delim1)
 {
 	size_t	length;
