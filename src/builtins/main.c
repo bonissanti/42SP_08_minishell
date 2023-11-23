@@ -2,31 +2,91 @@
 #include "../include/builtins.h"
 #include "../include/segments.h"
 #include "../include/temp.h"
+#include "../include/ast.h"
+#include "../include/exec.h"
 
+void	print_ast(t_ast *node)
+{
+	if (node)
+	{
+		size_t i = -1;
 
-int main(int argc, char **argv)
+		printf("node->cmds: %s\n", node->cmds);
+		while (node->args[++i])
+			printf("node->args[%zu]: %s\n", i, node->args[i]);
+		printf("node->path: %s\n", node->path);
+		printf("node->in_fd: %d\n", node->in_fd);
+		printf("node->out_fd: %d\n", node->out_fd);
+		printf("node->delim: %s\n", node->delim);
+		printf("node->weight: %d\n", node->weight);
+		printf("node->type: %d\n", node->type);
+		// print_ast(node->left);
+		// print_ast(node->right);
+	}
+}
+
+int main(int argc, char **argv, char **envp)
 {
 	(void)argc;
 	(void)argv;
-	while (1)
-	{
-		ft_putstr_fd("~$ ", 1);
-		char *input = get_next_line(0);
-		char *trimmed_input = ft_strtrim(input, "\n");
-		free(input);
 
-		if (ft_strcmp(trimmed_input, "exit") == 0)
-		{
-			free(trimmed_input);
-			exit(0);
-		}
-		else if (ft_strcmp(trimmed_input, "/nfs/homes/brunrodr/09.MINISHELL/V_atual/42SP_08_minishell/src/execution/*.c") == 0)
-		{
-			handle_wildcard(trimmed_input);
-			free(trimmed_input);
-		}
-	}
+	t_hashtable *hashtable = create_hashtable();
+	t_command cmd[1];
+
+	init_hash(hashtable, envp);
+	init_builtins(cmd);
+
+
+	t_ast *root = NULL;
+
+	t_ast *node1 = create_node(TYPE_COMMAND, "echo", DEFAULT, NULL);
+	insert_ast(&root, node1);
+	// print_ast(root);
+
+	puts( "---------------------" );
+	t_ast *node2 = create_node(TYPE_REDIRECT, ">", OP_REDIRECT, NULL);
+	insert_ast(&root, node2);
+	// print_ast(node1);
+
+	puts( "---------------------" );
+	t_ast *node3 = create_node(TYPE_FILE, "file.txt", DEFAULT, NULL);
+	insert_ast(&root, node3);
+	// print_ast(node2);
+
+	puts( "---------------------" );
+	// pre_order_traversal(root);
+
+	analyzing_cmd(hashtable, root);
+	is_builtins(cmd, hashtable, root->left);
+
+	delete_node(root);
+	destroy_hashtable(hashtable);
 }
+
+
+// int main(int argc, char **argv)
+// {
+// 	(void)argc;
+// 	(void)argv;
+// 	while (1)
+// 	{
+// 		ft_putstr_fd("~$ ", 1);
+// 		char *input = get_next_line(0);
+// 		char *trimmed_input = ft_strtrim(input, "\n");
+// 		free(input);
+
+// 		if (ft_strcmp(trimmed_input, "exit") == 0)
+// 		{
+// 			free(trimmed_input);
+// 			exit(0);
+// 		}
+// 		else if (ft_strcmp(trimmed_input, "/nfs/homes/brunrodr/09.MINISHELL/V_atual/42SP_08_minishell/src/execution/*.c") == 0)
+// 		{
+// 			handle_wildcard(trimmed_input);
+// 			free(trimmed_input);
+// 		}
+// 	}
+// }
 
 // int	main(int argc, char **argv, char **envp)
 // {

@@ -111,7 +111,7 @@ void	new_subshell_node(t_tkn_list **current)
 
 void	new_operator_node(t_tkn_list **current)
 {
-	t_operator weight;
+	t_op weight;
 	
 	if ((*current)->type == PIPE)
 		weight = OP_PIPE;

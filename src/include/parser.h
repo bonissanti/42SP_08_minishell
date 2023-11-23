@@ -46,13 +46,13 @@ typedef enum
 	OP_PIPE = 3, 		// |
 	OP_LOGICAL = 4, 	// &&, ||
 	DEFAULT = 0,
-} t_operator;
+} t_op;
 
 typedef struct s_cmd_list
 {    
     t_type 	type;
     char *args;
-    t_operator	weight;
+    t_op	weight;
     char *infile;
     char *outfile;
 	int	here_doc_fd;

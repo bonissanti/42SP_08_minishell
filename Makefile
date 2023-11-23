@@ -18,14 +18,17 @@ HEADER 		= ./mandatory/
 ################################ Sources ####################################
 
 SUBDIRS 	= mandatory
-MAND_SRCS 	= 	builtins/export.c builtins/export_utils.c builtins/hashtable.c \
+MAND_SRCS 	= 	ast/ast.c ast/ast_split.c \
+				builtins/export.c builtins/export_utils.c builtins/hashtable.c \
 				builtins/exit.c builtins/env.c builtins/cd.c builtins/pwd.c \
 				builtins/main.c builtins/echo.c builtins/unset.c \
 				handle_segments/quotes_handler.c handle_segments/segments_utils.c \
 				handle_segments/expand_dollar.c handle_segments/quotes_validater.c \
 				handle_segments/quotes_error.c handle_segments/tilde_handler.c \
 				handle_segments/wildcard_handler.c handle_segments/wildcard_utils.c \
-				redirects/redirects.c redirects/heredoc.c \
+				execution/find_path.c execution/prepare_exec.c \
+				execution/execute_builtins.c redirects/redirects.c \
+				redirects/heredoc.c redirects/verify_permissions.c \
 				minishell_utils.c
 		
 SRCS 		= $(addprefix ./src/, $(MAND_SRCS))

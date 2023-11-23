@@ -13,7 +13,7 @@
 #include "../include/hash.h"
 #include "../include/builtins.h"
 
-int ft_unset(t_hashtable *hash_table ,char **args)
+void ft_unset(t_hashtable *hash_table ,char **args)
 {
     int i;
 
@@ -25,6 +25,6 @@ int ft_unset(t_hashtable *hash_table ,char **args)
         while (args[++i] != NULL)
             delete_hash(hash_table, args[i]);
     }
-    return (1);
+    return ;
 }
 

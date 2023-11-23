@@ -14,7 +14,9 @@
 # define BUILTINS_H
 
 # include "../include/hash.h"
+# include "../include/ast.h"
 # include <errno.h>
+#include "../../libft/libft.h"
 
 typedef struct t_env
 {
@@ -28,29 +30,20 @@ typedef struct t_env
 typedef struct s_command
 {
 	char	*name;
-	void	(*function)(char *args);
+	void	(*function)(t_hashtable *hash_table, char **args);
 }		t_command;
 
 //############################### Builtins ####################################
 
-void		ft_export(t_hashtable *hash_table, char **args);
-int			ft_echo(t_hashtable *hash_table, char **args);
-void		ft_exit(t_hashtable *hash_table, char **args);
-int			ft_cd(t_hashtable *hashtable, char **args);
-void		ft_pwd(t_hashtable *hashtable, char **args);
-int			ft_unset(t_hashtable *hash_table, char **args);
-void		ft_env(t_hashtable *hash_table, char **args);
-
-//############################### Vector ######################################
-
-// void		execute_builtins(t_pointer *builtins, t_hashtable *hash_table, char **args);
-void		is_cd(void);
-void		is_pwd(void);
-void		is_echo(void);
-void		is_export(void);
-void		is_unset(void);
-void		is_env(void);
-void		is_exit(void);
+void		init_builtins(t_command *cmd);
+void		is_builtins(t_command *builtins, t_hashtable *hashtable, t_ast *node);
+// void		ft_export(t_hashtable *hashtable, char **args);
+void 		ft_echo(t_hashtable *hashtable, char **args);
+// void		ft_exit(t_hashtable *hashtable, char **args);
+// void		ft_cd(t_hashtable *hashtable, char **args);
+// void		ft_pwd(t_hashtable *hashtable, char **args);
+// void 		ft_unset(t_hashtable *hashtable ,char **args);
+// void		ft_env(t_hashtable *hashtable, char **args);
 
 //############################### Utils ########################################
 

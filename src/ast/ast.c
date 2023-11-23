@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../include/ast.h"
+#include "../include/builtins.h"
+
 
 /**
  * Function: Create_node
@@ -32,17 +34,23 @@
  *
  */
 
-t_ast *create_node(t_type type, char *args, t_operator op)
+t_ast *create_node(t_type type, char *cmds, t_op weight, char *delim)
 {
 	t_ast *new_node;
+	char **splitted;
 
+	splitted = ast_split(cmds, ' ');
 	new_node = (t_ast *)malloc(sizeof(t_ast));
-	new_node->type = type;
+	new_node->cmds = splitted[0];
+	new_node->args = splitted + 1;
 	new_node->path = NULL;
-	new_node->args = args;
+	new_node->in_fd = 0;
+	new_node->out_fd = 0;
+	new_node->delim = delim;
+	new_node->weight = weight;
+	new_node->type = type;
 	new_node->left = NULL;
 	new_node->right = NULL;
-	new_node->op = op;
 	return (new_node);
 }
 
@@ -81,7 +89,7 @@ void insert_ast(t_ast **root, t_ast *new_node)
 
 	if (*root == NULL)
 		*root = new_node;
-	else if (new_node->op > (*root)->op)
+	else if (new_node->weight > (*root)->weight)
 	{
 		new_node->left = *root;
 		*root = new_node;
@@ -89,7 +97,8 @@ void insert_ast(t_ast **root, t_ast *new_node)
 	else
 	{
 		current = *root;
-		while (current->right != NULL && current->right->op >= new_node->op)
+		while (current->right != NULL && current->right->weight 
+			>= new_node->weight)
 			current = current->right;
 		new_node->left = current->right;
 		current->right = new_node;
@@ -114,6 +123,8 @@ void delete_node(t_ast *root)
 	{
 		delete_node(root->left);
 		delete_node(root->right);
+		safe_free((void **)&root->path);
+		safe_free((void **)&root->cmds);
 		free(root);
 	}
 }
@@ -133,7 +144,7 @@ void pre_order_traversal(t_ast *root)
 {
 	if (root != NULL)
 	{
-		printf("%s\n", root->args);
+		printf("%s\n", root->cmds);
 		pre_order_traversal(root->left);
 		pre_order_traversal(root->right);
 	}
@@ -162,36 +173,36 @@ void pre_order_traversal(t_ast *root)
 // 	}
 // }
 
-int main(void)
-{
-    t_ast *root = NULL;
+// int main(void)
+// {
+//     t_ast *root = NULL;
 
-    t_ast *node1 = create_node(TYPE_COMMAND, "ls -l", DEFAULT);
-    insert_ast(&root, node1);
+//     t_ast *node1 = create_node(TYPE_COMMAND, "ls -l", DEFAULT);
+//     insert_ast(&root, node1);
 
-    t_ast *node2 = create_node(TYPE_OPERATOR, ">", OP_REDIRECT);
-    insert_ast(&root, node2);
+//     t_ast *node2 = create_node(TYPE_OPERATOR, ">", OP_REDIRECT);
+//     insert_ast(&root, node2);
 
-    t_ast *node3 = create_node(TYPE_FILE, "error.txt", DEFAULT);
-    insert_ast(&root, node3);
+//     t_ast *node3 = create_node(TYPE_FILE, "error.txt", DEFAULT);
+//     insert_ast(&root, node3);
 
-    t_ast *node4 = create_node(TYPE_OPERATOR, "&&", OP_LOGICAL);
-    insert_ast(&root, node4);
+//     t_ast *node4 = create_node(TYPE_OPERATOR, "&&", OP_LOGICAL);
+//     insert_ast(&root, node4);
 
-    t_ast *node5 = create_node(TYPE_COMMAND, "cat error.txt", DEFAULT);
-    insert_ast(&root, node5);
+//     t_ast *node5 = create_node(TYPE_COMMAND, "cat error.txt", DEFAULT);
+//     insert_ast(&root, node5);
 
-    t_ast *node6 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-    insert_ast(&root, node6);
+//     t_ast *node6 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+//     insert_ast(&root, node6);
 
-    t_ast *node7 = create_node(TYPE_COMMAND, "grep \"42\"", DEFAULT);
-    insert_ast(&root, node7);
+//     t_ast *node7 = create_node(TYPE_COMMAND, "grep \"42\"", DEFAULT);
+//     insert_ast(&root, node7);
 
-    pre_order_traversal(root);
-	delete_node(root);
+//     pre_order_traversal(root);
+// 	delete_node(root);
 
-    return (0);
-}
+//     return (0);
+// }
 
 
 //ls -l > outfile.txt < cat | wc -l

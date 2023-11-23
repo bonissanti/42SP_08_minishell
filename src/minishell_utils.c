@@ -45,3 +45,4 @@ void	safe_free(void **ptr)
 		*ptr = NULL;
 	}
 }
+

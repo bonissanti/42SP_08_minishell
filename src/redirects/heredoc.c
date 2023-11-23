@@ -14,34 +14,6 @@
 #include "../include/hash.h"
 #include "../include/segments.h"
 
-// t_bool check_heredoc(char *in_fd)
-// {
-	
-// }
-
-// t_exec *init_exec(t_exec *exec)
-// {
-// 	t_exec *exec;
-	
-// 	exec->in_fd = 0;
-// 	exec->out_fd = 1;
-// 	exec->fd_heredoc = 0;
-// 	exec->cmd_count = 0;
-// 	exec->cmd = NULL;
-// 	exec->delim = NULL;
-// 	return (exec);
-// }	
-
-// t_line *init_list(t_line *list)
-// {
-// 	t_line *line;
-
-// 	line = (t_line *)malloc(sizeof(t_line));
-	
-// 	line->content = NULL;
-// 	line->next = NULL;
-// 	return (line);
-// }
 
 void print_pipe_contents(int pipefd[2]) {
     char buffer[1024];
@@ -59,9 +31,6 @@ void print_pipe_contents(int pipefd[2]) {
     // Close the read end of the pipe
     close(pipefd[0]);
 }
-
-
-void	handle_heredoc(t_hashtable *env, char *delim);
 
 char *check_expansion(t_hashtable *env, char **line, size_t *len)
 {

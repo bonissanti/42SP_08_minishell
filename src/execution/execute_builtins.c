@@ -14,45 +14,34 @@
 #include "../include/builtins.h"
 #include "../include/hash.h"
 
-
-
-void	echo(char *args)
-{
-	printf("echo function called, %s\n", args);
-}
-
-void	export(char *args)
-{
-	printf("export function called, %s\n", args);
-}
-
 void	init_builtins(t_command *cmd)
 {
 	cmd[0].name = "echo";
-	cmd[0].function = echo;
-	cmd[1].name = "export";
-	cmd[1].function = export;
+	cmd[0].function = ft_echo;
 }
 
-void	execute_builtins(t_command *builtins, char *cmd, char *args)
-{
-	size_t 	i;
+// cmd[1].name = "export";
+	// cmd[1].function = ft_export;
+	// cmd[2].name = "cd";
+	// cmd[2].function = ft_cd;
+	// cmd[3].name = "unset";
+	// cmd[3].function = ft_unset;
+	// cmd[4].name = "env";
+	// cmd[4].function = ft_env;
+	// cmd[5].name = "exit";
+	// cmd[5].function = ft_exit;
+	// cmd[6].name = "pwd";
+	// cmd[6].function = ft_pwd;
 
-	i = -1;
-	while (++i < 2)
+void	is_builtins(t_command *builtins, t_hashtable *hashtable, t_ast *node)
+{
+	while (builtins->name)
 	{
-		if (strcmp(cmd, builtins[i].name) == 0)
+		if (ft_strcmp(node->cmds, builtins->name) == 0)
 		{
-			builtins[i].function(args);
-			return ;
+			builtins->function(hashtable, node->args);
+			break ;
 		}
+		builtins++;
 	}
-}
-
-int main(void)
-{
-	char *args[] = {"echo", "otario"};
-	t_command builtins[2];
-	init_builtins(builtins);
-	execute_builtins(builtins, args[0], args[1]);
 }

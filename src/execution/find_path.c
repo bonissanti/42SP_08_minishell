@@ -10,10 +10,27 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/temp_ast.h"
+#include "../include/ast.h"
 #include "../include/hash.h"
+#include "../include/exec.h"
+#include "../include/segments.h"
 
-char *get_path(t_hashtable *hashtable, t_temp_ast *node)
+char *build_cmd_path(t_ast *node, char *path)
 {
-	
+    char    *temp = NULL;
+    char    *full_path;
+    char    *slash;
+
+    temp = ft_strtok(path, ":");
+    while (temp)
+    {
+        slash = ft_strjoin(temp, "/");
+        full_path = ft_strjoin(slash, node->cmds);
+        free(slash);
+        if (access(full_path, F_OK) == 0)
+            return (full_path);
+        temp = ft_strtok(NULL, ":");
+        free(full_path);
+    }
+    return (NULL);
 }

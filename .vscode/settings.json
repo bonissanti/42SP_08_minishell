@@ -5,6 +5,8 @@
 		"env.h": "c",
 		"ast.h": "c",
 		"segments.h": "c",
-		"hash.h": "c"
+		"hash.h": "c",
+		"exec.h": "c",
+		"stdlib.h": "c"
 	}
 }

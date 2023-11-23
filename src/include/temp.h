@@ -45,8 +45,6 @@ typedef struct s_exec
 
 t_exec *init_exec(t_exec *exec);
 t_line *init_list(t_line *list);
-void	handle_heredoc(t_hashtable *env, char *delim);
-char *check_expansion(t_hashtable *env, char **line, size_t *len);
 
 // //################################ Wildcard ###################################
 
