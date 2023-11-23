@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   wildcard_handle.c                                  :+:      :+:    :+:   */
+/*   wildcard_handler.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:51:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 16:10:09 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/23 17:44:46 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,43 @@
 static void		get_dir_and_token(t_file *file, char *pattern);
 static t_bool	wildcard_match(char *str, char *pattern);
 inline void		finish_wildcard(t_segment *head, t_file *file);
+
+/**
+ * Function: generate_results
+ * -----------------
+ * This function generates a char *string concatenating every segment 
+ * of the linked list and returns it to the tokenizer be able to set
+ * the expanded content of '*' to it's content field, and calls the
+ * finish_wild function in order to free the segments list.
+ * 
+ * @param: *segments: The head of the linked list.
+ * @param: *file: The structure that contains the directory, token, etc.
+ * @var: *result: The string that will be returned.
+ * 
+ * @return: char *.
+ * 
+*/
+
+
+char *generate_results(t_segment *segments, t_file *file)
+{
+	char *result;
+
+	result = NULL;
+	while(segments)
+	{
+		if(!ft_strlen(result))
+			result = gnl_strjoin(result, segments->str);
+		else
+		{
+			result = gnl_strjoin(result, " ");
+			result = gnl_strjoin(result, segments->str);
+		}
+		segments = segments->next;
+	}
+	finish_wildcard(segments, file);
+	return(result);
+}
 
 /**
  * Function: handle_wildcard
@@ -42,7 +79,7 @@ inline void		finish_wildcard(t_segment *head, t_file *file);
  * 
  */
 
-void	handle_wildcard(char *pattern)
+char	*handle_wildcard(char *pattern)
 {
 	t_file		*file;
 	t_segment	*head;
@@ -55,7 +92,7 @@ void	handle_wildcard(char *pattern)
 	if (!file->dir)
 	{
 		printf("Error: %s\n", strerror(errno));
-		return ;
+		return (NULL);
 	}
 	file->entry = readdir(file->dir);
 	while (file->entry)
@@ -67,7 +104,7 @@ void	handle_wildcard(char *pattern)
 			add_segments(&head, file->entry->d_name);
 		file->entry = readdir(file->dir);
 	}
-	finish_wildcard(head, file);
+	return(generate_results(head, file));
 }
 
 /**
@@ -185,8 +222,7 @@ inline void	finish_wildcard(t_segment *head, t_file *file)
 		tmp = tmp->next;
 	}
 	free_segments(head);
-	safe_free((void **)&file->directory);
+	ft_safe_free((void **)&file->directory);
 	closedir(file->dir);
-	safe_free((void **)&file);
+	ft_safe_free((void **)&file);
 }
-
