@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/24 17:11:57 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/24 18:55:27 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	analyzing_cmd(t_hashtable *hashtable, t_ast *node)
 	{
 		if (node->type == TYPE_COMMAND)
 		{
-			if (ft_strchr(node->cmds, '/') != NULL && result == 0)
+			if (ft_strchr(node->cmds, '/') != NULL && result == 0) // tratamento para caminho absoluto'
 			{
 				if (result == 126) // tacar isso numa função para printar erro de permissão
 					ft_fprintf(2, "minishell: %s: command not found\n", node->cmds);

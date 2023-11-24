@@ -58,6 +58,7 @@ int main(int argc, char **argv, char **envp)
 
 	analyzing_cmd(hashtable, root);
 	is_builtins(builtins, hashtable, root->left);
+	execve(root->left->path, root->left->args, NULL);
 
 	delete_node(root);
 	destroy_hashtable(hashtable);
