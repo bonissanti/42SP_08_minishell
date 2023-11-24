@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 17:43:41 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/24 11:24:57 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,21 +35,17 @@ typedef enum
 	DEFAULT = 0,
 }	t_op;
 
-typedef struct s_cmd_list
-{
-	char *args;
-	char *infile;
-	char *outfile;
-	t_bool here_doc;
-	struct s_cmd_list *next;
-	struct s_cmd_list *prev;
-}	t_cmd_list;
+// typedef struct s_temp
+// {
+// 	char **split;
+// }	t_temp;
 
 typedef struct s_ast
 {
 	
 	char *cmds;
 	char **args;
+	char **split;
 	char *path;
 	int in_fd;
 	int out_fd;
@@ -72,7 +68,7 @@ typedef struct s_ast
 
 //############################### AST #########################################
 
-t_ast 				*create_node(t_type type, char *args, t_op weight, char *delim);
+t_ast 				*create_node(t_type type, char *cmds, t_op weight, char *delim);
 void				insert_ast(t_ast **root, t_ast *new_node);
 void				delete_node(t_ast *root);
 void				pre_order_traversal(t_ast *root); // Remover depois

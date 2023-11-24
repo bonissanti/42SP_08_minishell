@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 17:43:48 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/24 11:24:47 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,11 @@
 t_ast *create_node(t_type type, char *cmds, t_op weight, char *delim)
 {
 	t_ast *new_node;
-	char **splitted;
-
-	splitted = ast_split(cmds, ' ');
+	
 	new_node = (t_ast *)malloc(sizeof(t_ast));
-	new_node->cmds = splitted[0];
-	new_node->args = splitted + 1;
+	new_node->split = ast_split(cmds, ' ');
+	new_node->cmds = new_node->split[0];
+	new_node->args = new_node->split + 1;
 	new_node->path = NULL;
 	new_node->in_fd = 0;
 	new_node->out_fd = 0;
@@ -123,6 +122,7 @@ void delete_node(t_ast *root)
 	{
 		delete_node(root->left);
 		delete_node(root->right);
+		safe_free((void **)&root->split);
 		safe_free((void **)&root->path);
 		safe_free((void **)&root->cmds);
 		free(root);
