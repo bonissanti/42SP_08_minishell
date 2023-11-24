@@ -56,7 +56,7 @@ int main(int argc, char **argv, char **envp)
 	// puts( "---------------------" );
 	// pre_order_traversal(root);
 
-	analyzing_cmd(hashtable, root);
+	analyzing_cmd(hashtable, root->left);
 	is_builtins(builtins, hashtable, root->left);
 	execve(root->left->path, root->left->args, NULL);
 
