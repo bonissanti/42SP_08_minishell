@@ -6,12 +6,12 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/21 18:00:43 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/22 16:19:38 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "./parser/env.h"
+#include "./parser/hash.h"
 #include "./parser/parser.h"
 
 int prompt_validation(char *readline_input)

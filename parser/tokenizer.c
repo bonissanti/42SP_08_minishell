@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/21 23:34:43 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/24 18:44:56 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,21 @@
 
 t_global g_global;
 
-void handle_token(t_global *g_global, char *str)
-{
-	if(*str == '(')
-		add_tkn_list(g_global, new_tkn_list(str, O_PARENTESIS));
-	else if(*str == ')')
-		add_tkn_list(g_global, new_tkn_list(str, C_PARENTESIS));
-	else if(!ft_strncmp(str, ">>", 2))
-		add_tkn_list(g_global, new_tkn_list(str, APPEND));
-	else if(*str == '>')
-		add_tkn_list(g_global, new_tkn_list(str, REDIRECT));
-	else if(!ft_strncmp(str, "<<", 2))
-		add_tkn_list(g_global, new_tkn_list(str, HERE_DOC));
-	else if(*str == '<')
-		add_tkn_list(g_global, new_tkn_list(str, INFILE));
-	else if(!ft_strncmp(str, "||", 2))
-		add_tkn_list(g_global, new_tkn_list(str, OR));
-	else if(*str == '|')
-		add_tkn_list(g_global, new_tkn_list(str, PIPE));
-	else if(!ft_strncmp(str, "&&", 2))
-		add_tkn_list(g_global, new_tkn_list(str, AND));
-	else if(*str == '$')
-		add_tkn_list(g_global, new_tkn_list(str, EXPAND));
-	else if(*str == '*' || *str == '~')
-		add_tkn_list(g_global, new_tkn_list(str, WILD));
-	else
-		add_tkn_list(g_global, new_tkn_list(str, IDENTIFIER));
-}
+/**
+ * Function: crop_delimiter_tkn
+ * -----------------
+ * The crop_delimiter_tkn function iterates
+ * through the string until it finds a delimiter
+ * and at the same time counts the number of chars
+ * that were passed until the delimiter was reached
+ * so it can be returned and used by other functions.
+ * 
+ * @param: **cmd: A pointer to the string.
+ * @var: i: The number of chars that were passed until the delimiter was reached.
+ * 
+ * @return: int.
+ * 
+*/
 
 int crop_delimiter_tkn(char **cmd)
 {
@@ -71,6 +59,60 @@ int crop_delimiter_tkn(char **cmd)
 	return(i);
 }
 
+/**
+ * Function: crop_quote_tkn_validator
+ * -----------------
+ * This is auxiliary function for the crop_quote_tkn function,
+ * it helps keep the code clean and organized as it
+ * increments i and also modify the string that is being 
+ * parsed by the function.
+ * 
+ * @param: *i: A pointer to the number of chars that were passed until the delimiter was reached.
+ * @param: **cmd: A pointer to the string.
+ * @var: quote: The current quote.
+ * 
+ * @return: int.
+*/
+
+int crop_quote_tkn_validator(int *i, char **cmd)
+{
+	char quote;
+	
+	quote = **cmd;
+	if (**cmd == '\'' || **cmd == '"')
+		quote = **cmd;
+	else if (!isdelimiter(*cmd) && **cmd && **cmd != 32)
+	{
+		while (**cmd && **cmd != 32)
+		{
+			(*i)++;
+			(*cmd)++;
+		}
+	}
+	else
+		return (false);
+	(*i)++;
+	(*cmd)++;
+	return (true);
+}
+
+/**
+ * Function: crop_quote_tkn
+ * -----------------
+ * The crop_quote_tkn function iterates
+ * through the string until it finds a delimiter
+ * and at the same time counts the number of chars
+ * that were passed until the delimiter was reached
+ * so it can be returned and used by other functions.
+ * 
+ * @param: **cmd: A pointer to the string.
+ * @var: i: The number of chars that were passed until the delimiter was reached.
+ * @var: quote: The current quote.
+ * 
+ * @return: int.
+ * 
+*/
+
 int crop_quote_tkn(char **cmd)
 {
 	int i;
@@ -79,7 +121,7 @@ int crop_quote_tkn(char **cmd)
 	quote = **cmd;
 	i = 1;
 	(*cmd)++;
-	while(**cmd != quote)
+	while(**cmd)
 	{
 		while(**cmd != quote)
 		{
@@ -88,25 +130,31 @@ int crop_quote_tkn(char **cmd)
 		}
 		i++;
 		(*cmd)++;
-		if(**cmd == '\'' || **cmd == '"')		
+		if(crop_quote_tkn_validator(&i, cmd) && (**cmd == '\'' || **cmd == '"'))
 			quote = **cmd;
-		else if(!isdelimiter(*cmd))
-		{
-			while(**cmd && **cmd != ' ')
-			{
-				i++;
-				(*cmd)++;
-			}
-		}	
 		else
-			return(i);
-		i++;
-		(*cmd)++;		
+			return (i);
 	}
 	i++;
-	(*cmd)++;		
+	(*cmd)++;
 	return(i);
 }
+
+/**
+ * Function: crop_tkn
+ * -----------------
+ * The crop_tkn function iterates through the string
+ * and generate a substring based on the result of
+ * the isdelimiter function or is_expander function.
+ * 
+ * @param: **cmd: A pointer to the string.
+ * @param: *env: A pointer to the hashtable.
+ * @var: char *cropped: The substring.
+ * @var: i: The number of chars that were passed until the delimiter was reached.
+ * 
+ * @return: char *.
+ * 
+*/
 
 char *crop_tkn(char **cmd, t_hashtable *env)
 {
@@ -132,18 +180,22 @@ char *crop_tkn(char **cmd, t_hashtable *env)
 	return(ft_substr(cropped, 0, i));
 } 
 
-void expand_all(t_tkn_list *tkn_list, t_hashtable *env)
-{
-	t_tkn_list *current;
-	
-	current = tkn_list;
-	while(current)
-	{
-		if(current->type == EXPAND)
-			is_quotes(env, &current->content);
-		current = current->next;
-	}
-}
+/**
+ * Function: tokenizer
+ * -----------------
+ * The tokenizer function iterates through the readline input
+ * and generate a tkn_list based on the result of the crop_tkn function,
+ * that is further passed to the expand_all function that finishes the process
+ * of tokenization.
+ * 
+ * @param: *g_global: A pointer to the global struct.
+ * @param: *cmd: A pointer to the string.
+ * @param: *env: A pointer to the hashtable.
+ * @var: *actual_cmd: Will receive the content of the readline stored at g_global variable.
+ * 
+ * @return: void.
+ * 
+*/
 
 void tokenizer(t_global *g_global, char *cmd, t_hashtable *env)
 {
@@ -162,12 +214,12 @@ void tokenizer(t_global *g_global, char *cmd, t_hashtable *env)
 	expand_all(g_global->tkn_list, env);
 }
 
-int main(int argc, char **argv, char** envp)
-{
-	(void)argc;
-	(void)argv;
+// int main(int argc, char **argv, char** envp)
+// {
+// 	(void)argc;
+// 	(void)argv;
 
-	t_hashtable *hash = create_hashtable();
-	init_hash(hash, envp);
-	prompt(hash);
-}
+// 	t_hashtable *hash = create_hashtable();
+// 	init_hash(hash, envp);
+// 	prompt(hash);
+// }
