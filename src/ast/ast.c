@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/24 11:24:47 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/24 18:32:03 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
  * @return: Returns a pointer to the new node.
  *
  */
+
 
 t_ast *create_node(t_type type, char *cmds, t_op weight, char *delim)
 {
@@ -122,9 +123,8 @@ void delete_node(t_ast *root)
 	{
 		delete_node(root->left);
 		delete_node(root->right);
-		safe_free((void **)&root->split);
+		free_split(root->split);
 		safe_free((void **)&root->path);
-		safe_free((void **)&root->cmds);
 		free(root);
 	}
 }

@@ -39,12 +39,12 @@ int main(int argc, char **argv, char **envp)
 
 	t_ast *root = NULL;
 
-	t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT, NULL);
+	t_ast *node1 = create_node(TYPE_COMMAND, "usr/bin/echo hello", DEFAULT, NULL);
 	insert_ast(&root, node1);
 	// print_ast(root);
 
 	// puts( "---------------------" );
-	t_ast *node2 = create_node(TYPE_REDIRECT, "<", OP_REDIRECT, NULL);
+	t_ast *node2 = create_node(TYPE_REDIRECT, ">", OP_REDIRECT, NULL);
 	insert_ast(&root, node2);
 	// // print_ast(node1);
 

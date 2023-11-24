@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/24 11:24:57 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/24 18:26:59 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ typedef enum
 	DEFAULT = 0,
 }	t_op;
 
-// typedef struct s_temp
-// {
-// 	char **split;
-// }	t_temp;
+typedef struct s_temp
+{
+	char **split;
+}	t_temp;
 
 typedef struct s_ast
 {
@@ -52,6 +52,7 @@ typedef struct s_ast
 	char *delim;
 	t_op weight;
 	t_type type;
+	t_temp *temp;
 	struct s_ast *left;
 	struct s_ast *right;
 } 	t_ast;

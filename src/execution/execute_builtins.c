@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:00:37 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/24 17:15:19 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/24 18:33:18 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 #include "../include/builtins.h"
 #include "../include/hash.h"
 
-void	init_builtins(t_cmd *cmd)
+void	init_builtins(t_cmd *builtins)
 {
-	cmd[0].name = "echo";
-	cmd[0].function = ft_echo;
+	builtins->cmd = NULL;
+	builtins[0].name = "echo";
+	builtins[0].function = ft_echo;
 }
 
 // cmd[1].name = "export";
@@ -34,24 +35,24 @@ void	init_builtins(t_cmd *cmd)
 	// cmd[6].function = ft_pwd;
 
 
+
 t_bool	is_builtins(t_cmd *builtins, t_hashtable *hashtable, t_ast *node)
 {
-	// char *cmds;
-
-	
-	// if (ft_strchr(node->cmds, '/') != NULL)
-	// 	node->cmds = ft_strrchr(node->cmds, '/') + 1;
-	// else
+	if (ft_strchr(node->cmds, '/') != NULL)
+		builtins->cmd = ft_strrchr(node->cmds, '/') + 1;
+	else
+		builtins->cmd = node->cmds;
 	
 	while (builtins->name)
 	{
-		if (ft_strcmp(node->cmds, builtins->name) == 0)
+		if (ft_strcmp(builtins->cmd, builtins->name) == 0)
 		{
 			execute_builtins(builtins, hashtable, node);
 			return (true);
 		}
 		builtins++;
 	}
+	free(builtins->cmd);
 	return (false);
 }
 
@@ -59,7 +60,7 @@ void	execute_builtins(t_cmd *builtins, t_hashtable *hashtable, t_ast *node)
 {
 	while (builtins->name)
 	{
-		if (ft_strcmp(node->cmds, builtins->name) == 0)
+		if (ft_strcmp(builtins->cmd, builtins->name) == 0)
 		{
 			builtins->function(hashtable, node->args);
 			break ;

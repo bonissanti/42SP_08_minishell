@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:56:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/24 17:08:48 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/24 18:10:31 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct t_env
 typedef struct s_command
 {
 	char	*name;
+	char	*cmd;
 	void	(*function)(t_hashtable *hash_table, char **args);
 }		t_cmd;
 
