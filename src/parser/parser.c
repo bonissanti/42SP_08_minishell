@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/18 01:20:47 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/24 17:08:48 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_cmd_list *rewind_list(t_cmd_list **cmd_list)
 	return(*cmd_list);
 }
 
-void set_command_input(t_cmd_list **cmd_list, t_cmd_list *head)
+void set_cmd_input(t_cmd_list **cmd_list, t_cmd_list *head)
 {
 	while((*cmd_list)->type != TYPE_COMMAND)
 		*cmd_list = (*cmd_list)->next;
@@ -62,7 +62,7 @@ void set_command_input(t_cmd_list **cmd_list, t_cmd_list *head)
 	}
 }
 
-void set_command_output(t_cmd_list **cmd_list, t_cmd_list *head)
+void set_cmd_output(t_cmd_list **cmd_list, t_cmd_list *head)
 {
 	while((*cmd_list)->type != TYPE_COMMAND)
 		*cmd_list = (*cmd_list)->next;
@@ -79,9 +79,9 @@ void set_io(t_cmd_list **cmd_list)
 	{
 		temp = head->next;
 		if (head->type == TYPE_REDIRECT && (!ft_strncmp(head->args, "<<", 2) || *(*head).args == '<'))
-			set_command_input(cmd_list, head);
+			set_cmd_input(cmd_list, head);
 		else if (head->type == TYPE_REDIRECT && (!ft_strncmp(head->args, ">>", 2) || *(*head).args == '>'))
-			set_command_output(cmd_list, head);
+			set_cmd_output(cmd_list, head);
 		head = temp;		
 	}
 }

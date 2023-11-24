@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 19:43:06 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/24 17:11:57 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,26 @@
 void	analyzing_cmd(t_hashtable *hashtable, t_ast *node)
 {
 	char *path;
+	int result;
 	
+	result = verify_cmd_permissions(node->cmds);
 	if (node)
 	{
 		if (node->type == TYPE_COMMAND)
 		{
-			path = search(hashtable, "PATH")->value;
-			node->path = build_cmd_path(node, path);
+			if (ft_strchr(node->cmds, '/') != NULL && result == 0)
+			{
+				if (result == 126) // tacar isso numa função para printar erro de permissão
+					ft_fprintf(2, "minishell: %s: command not found\n", node->cmds);
+				else if (result == 127)
+					ft_fprintf(2, "minishell: %s: %s\n", node->cmds, strerror(errno));
+				return ;
+			}
+			else
+			{
+				path = search(hashtable, "PATH")->value;
+				node->path = build_cmd_path(node, path);
+			}	
 		}
 		else if (node->type == TYPE_REDIRECT && ft_strncmp(node->cmds, "<<", 2) == 0)
 			handle_heredoc(hashtable, node->delim);

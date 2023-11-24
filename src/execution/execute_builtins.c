@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_builtins.c                                   :+:      :+:    :+:   */
+/*   execute_builtins.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:00:37 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 12:33:29 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/24 17:15:19 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../include/builtins.h"
 #include "../include/hash.h"
 
-void	init_builtins(t_command *cmd)
+void	init_builtins(t_cmd *cmd)
 {
 	cmd[0].name = "echo";
 	cmd[0].function = ft_echo;
@@ -33,7 +33,29 @@ void	init_builtins(t_command *cmd)
 	// cmd[6].name = "pwd";
 	// cmd[6].function = ft_pwd;
 
-void	is_builtins(t_command *builtins, t_hashtable *hashtable, t_ast *node)
+
+t_bool	is_builtins(t_cmd *builtins, t_hashtable *hashtable, t_ast *node)
+{
+	// char *cmds;
+
+	
+	// if (ft_strchr(node->cmds, '/') != NULL)
+	// 	node->cmds = ft_strrchr(node->cmds, '/') + 1;
+	// else
+	
+	while (builtins->name)
+	{
+		if (ft_strcmp(node->cmds, builtins->name) == 0)
+		{
+			execute_builtins(builtins, hashtable, node);
+			return (true);
+		}
+		builtins++;
+	}
+	return (false);
+}
+
+void	execute_builtins(t_cmd *builtins, t_hashtable *hashtable, t_ast *node)
 {
 	while (builtins->name)
 	{

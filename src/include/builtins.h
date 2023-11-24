@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:56:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 13:06:39 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/24 17:08:48 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,13 @@ typedef struct s_command
 {
 	char	*name;
 	void	(*function)(t_hashtable *hash_table, char **args);
-}		t_command;
+}		t_cmd;
 
 //############################### Builtins ####################################
 
-void		init_builtins(t_command *cmd);
-void		is_builtins(t_command *builtins, t_hashtable *hashtable, t_ast *node);
+void		init_builtins(t_cmd *cmd);
+t_bool		is_builtins(t_cmd *builtins, t_hashtable *hashtable, t_ast *node);
+void		execute_builtins(t_cmd *builtins, t_hashtable *hashtable, t_ast *node);
 // void		ft_export(t_hashtable *hashtable, char **args);
 void 		ft_echo(t_hashtable *hashtable, char **args);
 // void		ft_exit(t_hashtable *hashtable, char **args);

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 13:04:28 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/24 17:21:34 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	handle_heredoc(t_hashtable *env, char *delim)
 	{
 		len = 0;
 		line = readline("> ");
-		if (!ft_strncmp(line, delim, ft_strlen(delim)))
+		if (!ft_strcmp(line, delim))
 		{
 			free(line);
 			break ;
