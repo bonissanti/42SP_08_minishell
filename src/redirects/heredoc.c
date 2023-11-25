@@ -68,6 +68,11 @@ void	handle_heredoc(t_hashtable *env, char *delim)
 	char	*line;
 	size_t 	len;
 	pipe(pipefd);
+	if (delim == NULL)
+	{
+		ft_fprintf(2, "Syntax error: missing delimiter\n");
+		return ;
+	}
 	while (1)
 	{
 		len = 0;

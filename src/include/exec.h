@@ -2,6 +2,34 @@
 # include "../include/builtins.h"
 # include "../include/ast.h"
 
+typedef struct s_cmd
+{
+	char	*name;
+	char	*cmd;
+	void	(*function)(t_hashtable *hash_table, char **args);
+}		t_cmd;
+
+typedef struct s_redirect
+{
+	char	*name;
+	void	(*function)(char *filename);
+	void	(*func_here)(t_hashtable *env, char *delim);
+}		t_redirect;
+
+typedef struct s_vector
+{
+	t_redirect	*redirect;
+    t_cmd	    *builtins;
+}		t_vector;
+
+
+//############################### VECTOR #####################################//
+
+void		init_builtins(t_cmd *cmd);
+t_bool		is_builtins(t_cmd *builtins, t_hashtable *hashtable, t_ast *node);
+void		execute_builtins(t_cmd *builtins, t_hashtable *hashtable, t_ast *node);
+void        init_redirects(t_vector *vtr);
+t_bool      is_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 
 //############################# REDIRECTIONS #################################//
 

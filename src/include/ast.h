@@ -69,7 +69,7 @@ typedef struct s_ast
 
 //############################### AST #########################################
 
-t_ast 				*create_node(t_type type, char *cmds, t_op weight, char *delim);
+t_ast 				*create_node(t_type type, char *cmds, t_op weight);
 void				insert_ast(t_ast **root, t_ast *new_node);
 void				delete_node(t_ast *root);
 void				pre_order_traversal(t_ast *root); // Remover depois

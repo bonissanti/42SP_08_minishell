@@ -39,24 +39,24 @@ int main(int argc, char **argv, char **envp)
 
 	t_ast *root = NULL;
 
-	t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT, NULL);
+	t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
 	insert_ast(&root, node1);
 	// print_ast(root);
 
 	// puts( "---------------------" );
-	t_ast *node2 = create_node(TYPE_REDIRECT, "<", OP_REDIRECT, NULL);
+	t_ast *node2 = create_node(TYPE_REDIRECT, "<<", OP_REDIRECT);
 	insert_ast(&root, node2);
 	// // print_ast(node1);
 
 	// puts( "---------------------" );
-	t_ast *node3 = create_node(TYPE_FILE, "file.txt", DEFAULT, NULL);
-	insert_ast(&root, node3);
+	// t_ast *node3 = create_node(TYPE_FILE, "file.txt", DEFAULT, NULL);
+	// insert_ast(&root, node3);
 	// print_ast(node2);
 
 	// puts( "---------------------" );
 	// pre_order_traversal(root);
 
-	analyzing_cmd(hashtable, root->left);
+	analyzing_cmd(hashtable, root);
 	is_builtins(builtins, hashtable, root->left);
 	execve(root->left->path, root->left->args, NULL);
 

@@ -27,18 +27,9 @@ typedef struct t_env
 	int		num_env;
 }			t_env;
 
-typedef struct s_command
-{
-	char	*name;
-	char	*cmd;
-	void	(*function)(t_hashtable *hash_table, char **args);
-}		t_cmd;
 
 //############################### Builtins ####################################
 
-void		init_builtins(t_cmd *cmd);
-t_bool		is_builtins(t_cmd *builtins, t_hashtable *hashtable, t_ast *node);
-void		execute_builtins(t_cmd *builtins, t_hashtable *hashtable, t_ast *node);
 // void		ft_export(t_hashtable *hashtable, char **args);
 void 		ft_echo(t_hashtable *hashtable, char **args);
 // void		ft_exit(t_hashtable *hashtable, char **args);

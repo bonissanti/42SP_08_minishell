@@ -27,7 +27,7 @@ MAND_SRCS 	= 	ast/ast.c ast/ast_split.c \
 				handle_segments/quotes_error.c handle_segments/tilde_handler.c \
 				handle_segments/wildcard_handler.c handle_segments/wildcard_utils.c \
 				execution/find_path.c execution/prepare_exec.c \
-				execution/execute_builtins.c redirects/redirects.c \
+				execution/check_builtins.c redirects/redirects.c \
 				redirects/heredoc.c redirects/verify_permissions.c \
 				minishell_utils.c
 		

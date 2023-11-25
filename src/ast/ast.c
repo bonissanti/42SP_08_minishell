@@ -14,6 +14,23 @@
 #include "../include/builtins.h"
 
 
+static void	prepare_ast(t_ast *new_node, char *cmds, t_type type)
+{
+	new_node->split = ast_split(cmds, ' ');
+	if (type == TYPE_COMMAND)
+	{
+		new_node->cmds = new_node->split[0];
+		new_node->args = new_node->split + 1;
+		new_node->delim = NULL;
+	}
+	else if (type == TYPE_REDIRECT && ft_strcmp(new_node->split[0], "<<") == 0)
+	{
+		new_node->cmds = new_node->split[0];
+		new_node->delim = new_node->split[1];
+		new_node->args = NULL;
+	}
+}
+
 /**
  * Function: Create_node
  * -----------------
@@ -35,18 +52,15 @@
  */
 
 
-t_ast *create_node(t_type type, char *cmds, t_op weight, char *delim)
+t_ast *create_node(t_type type, char *cmds, t_op weight)
 {
 	t_ast *new_node;
 	
 	new_node = (t_ast *)malloc(sizeof(t_ast));
-	new_node->split = ast_split(cmds, ' ');
-	new_node->cmds = new_node->split[0];
-	new_node->args = new_node->split + 1;
+	prepare_ast(new_node, cmds, type);
 	new_node->path = NULL;
 	new_node->in_fd = 0;
 	new_node->out_fd = 0;
-	new_node->delim = delim;
 	new_node->weight = weight;
 	new_node->type = type;
 	new_node->left = NULL;
