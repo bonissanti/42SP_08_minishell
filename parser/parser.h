@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/23 20:21:52 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/24 21:10:34 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,5 +117,6 @@ void		set_command_output(t_cmd_list **cmd_list, t_cmd_list *head);
 void		set_command_input(t_cmd_list **cmd_list, t_cmd_list *head);
 t_cmd_list	*find_command(t_cmd_list *cmd_list);
 void		append_expand(t_tkn_list **current);
+void		expand_all(t_tkn_list *tkn_list, t_hashtable *env);
 
 #endif

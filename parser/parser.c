@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/23 21:29:59 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/24 21:11:23 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,5 +128,5 @@ void parser(t_hashtable *env)
 	(void)env;
 	command_consistency(g_global.tkn_list);
 	join_args(g_global.tkn_list);
-	print_cmd_list(g_global.cmd_list);
+	// print_cmd_list(g_global.cmd_list);
 }

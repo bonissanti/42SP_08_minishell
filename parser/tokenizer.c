@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/24 18:44:56 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/11/24 21:10:59 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,12 +214,13 @@ void tokenizer(t_global *g_global, char *cmd, t_hashtable *env)
 	expand_all(g_global->tkn_list, env);
 }
 
-// int main(int argc, char **argv, char** envp)
-// {
-// 	(void)argc;
-// 	(void)argv;
+int main(int argc, char **argv, char** envp)
+{
+	(void)argc;
+	(void)argv;
 
-// 	t_hashtable *hash = create_hashtable();
-// 	init_hash(hash, envp);
-// 	prompt(hash);
-// }
+	t_hashtable *hash = create_hashtable();
+	init_hash(hash, envp);
+	prompt(hash);
+}
+
