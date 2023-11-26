@@ -13,7 +13,6 @@
 #include "../include/builtins.h"
 #include "../include/hash.h"
 #include "../include/segments.h"
-#include "../include/temp.h"
 #include <errno.h>
 
 static void		get_dir_and_token(t_file *file, char *pattern);

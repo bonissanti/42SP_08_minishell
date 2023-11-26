@@ -95,6 +95,7 @@ t_bool					check_handle_error(t_lex *quote, int i);
 char					*ft_strndup(const char *str, size_t num);
 size_t					custom_strcspn(const char *str, char *delim1);
 t_bool					is_whitespace(char c);
+size_t 					ft_strcspn(const char *str, char *delim1);
 
 //############################### WILDCARD ###################################
 

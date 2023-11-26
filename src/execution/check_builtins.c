@@ -15,7 +15,7 @@
 #include "../include/builtins.h"
 #include "../include/hash.h"
 
-void	init_builtins(t_vector *vtr)
+void	init_cmd(t_vector *vtr)
 {
 	vtr->builtins[0].cmd = NULL;
 	vtr->builtins[0].name = "echo";
@@ -24,34 +24,24 @@ void	init_builtins(t_vector *vtr)
 	vtr->builtins[1].function = NULL;
 }
 
-t_bool	is_builtins(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
+t_bool	execute_if_builtin(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {
-	if (ft_strchr(node->cmds, '/') != NULL)
-		vtr->builtins->cmd = ft_strrchr(node->cmds, '/') + 1;
-	else
-		vtr->builtins->cmd = node->cmds;
+	t_cmd *current; 
 	
-	while (vtr->builtins->name)
+	current = vtr->builtins;
+	if (ft_strchr(node->cmds, '/') != NULL)
+		current->cmd = ft_strrchr(node->cmds, '/') + 1;
+	else
+		current->cmd = node->cmds;
+	
+	while (current->name)
 	{
-		if (ft_strcmp(vtr->builtins->cmd, vtr->builtins->name) == 0)
+		if (ft_strcmp(current->cmd, current->name) == 0)
 		{
-			execute_builtins(vtr->builtins, hashtable, node);
+			current->function(hashtable, node->args);
 			return (true);
 		}
-		vtr->builtins++;
+		current++;
 	}
 	return (false);
-}
-
-void	execute_builtins(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
-{
-	while (vtr->builtins->name)
-	{
-		if (ft_strcmp(vtr->builtins->cmd, vtr->builtins->name) == 0)
-		{
-			vtr->builtins->function(hashtable, node->args);
-			break ;
-		}
-		vtr->builtins++;
-	}
 }

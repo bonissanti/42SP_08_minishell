@@ -17,17 +17,17 @@
 static void	prepare_ast(t_ast *new_node, char *cmds, t_type type)
 {
 	new_node->split = ast_split(cmds, ' ');
-	if (type == TYPE_COMMAND)
-	{
-		new_node->cmds = new_node->split[0];
-		new_node->args = new_node->split + 1;
-		new_node->delim = NULL;
-	}
-	else if (type == TYPE_REDIRECT && ft_strcmp(new_node->split[0], "<<") == 0)
+	if (type == TYPE_REDIRECT && ft_strcmp(new_node->split[0], "<<") == 0)
 	{
 		new_node->cmds = new_node->split[0];
 		new_node->delim = new_node->split[1];
 		new_node->args = NULL;
+	}
+	else
+	{
+		new_node->cmds = new_node->split[0];
+		new_node->args = new_node->split + 1;
+		new_node->delim = NULL;
 	}
 }
 

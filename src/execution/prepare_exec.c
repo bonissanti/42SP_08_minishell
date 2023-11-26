@@ -15,16 +15,16 @@
 #include "../include/hash.h"
 #include "../include/exec.h"
 
-void	analyzing_cmd(t_hashtable *hashtable, t_ast *node)
+void	analyzing_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {
 	char *path;
 	int result;
 	
-	result = verify_cmd_permissions(node->cmds);
 	if (node)
 	{
 		if (node->type == TYPE_COMMAND)
 		{
+			result = verify_cmd_permissions(node->cmds);
 			if (ft_strchr(node->cmds, '/') != NULL && result == 0) // tratamento para caminho absoluto'
 			{
 				if (result == 126) // tacar isso numa função para printar erro de permissão
@@ -37,20 +37,15 @@ void	analyzing_cmd(t_hashtable *hashtable, t_ast *node)
 			{
 				path = search(hashtable, "PATH")->value;
 				node->path = build_cmd_path(node, path);
-			}	
+			}
+
 		}
-		else if (node->type == TYPE_REDIRECT && ft_strncmp(node->cmds, "<<", 2) == 0)
-			handle_heredoc(hashtable, node->delim);
-		else if (node->type == TYPE_REDIRECT && ft_strcmp(node->cmds, "<") == 0)
-			redirect_input(node->right->cmds);
-		else if (node->type == TYPE_REDIRECT && ft_strcmp(node->cmds, ">") == 0)
-			redirect_output(node->right->cmds);
-		else if (node->type == TYPE_REDIRECT && ft_strcmp(node->cmds, ">>") == 0)
-			redirect_append(node->right->cmds);
+		if (node->type == TYPE_REDIRECT)
+			is_redirect(vtr, hashtable, node);
 	}
 	if (node->left)
-		analyzing_cmd(hashtable, node->left);
+		analyzing_cmd(vtr, hashtable, node->left);
 	if (node->right)
-		analyzing_cmd(hashtable, node->right);
+		analyzing_cmd(vtr, hashtable, node->right);
 }
 

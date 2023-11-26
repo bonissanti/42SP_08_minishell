@@ -17,23 +17,26 @@
 
 char *build_cmd_path(t_ast *node, char *path)
 {
-    char    *temp = NULL;
+    char    **temp;
     char    *full_path;
     char    *slash;
     int     result;
 
-    temp = ft_strtok(path, ":");
-    while (temp)
+    temp = ft_split(path, ':');
+    while (*temp)
     {
-        slash = ft_strjoin(temp, "/");
+        slash = ft_strjoin(*temp, "/");
         full_path = ft_strjoin(slash, node->cmds);
         free(slash);
         result = verify_cmd_permissions(full_path);
         if (result == 0)
+        {
             return (full_path);
-        temp = ft_strtok(NULL, ":");
+        }
         free(full_path);
+        temp++;
     }
+    free_split(temp);
     if (result == 126)
         ft_fprintf(2, "minishell: %s: command not found\n", node->cmds);
     else if (result == 127)

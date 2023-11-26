@@ -35,11 +35,6 @@ typedef enum
 	DEFAULT = 0,
 }	t_op;
 
-typedef struct s_temp
-{
-	char **split;
-}	t_temp;
-
 typedef struct s_ast
 {
 	
@@ -52,7 +47,6 @@ typedef struct s_ast
 	char *delim;
 	t_op weight;
 	t_type type;
-	t_temp *temp;
 	struct s_ast *left;
 	struct s_ast *right;
 } 	t_ast;

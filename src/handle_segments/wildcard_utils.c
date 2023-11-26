@@ -1,5 +1,4 @@
 #include "../include/hash.h"
-#include "../include/temp.h"
 #include "../include/segments.h"
 
 size_t	ft_strcspn(const char *str, char *delim1)
@@ -19,7 +18,7 @@ size_t	ft_strcspn(const char *str, char *delim1)
 
 char *ft_strtok(char *str, const char *delim)
 {
-	static char *input;
+	char *input;
 	char *token;
 
 	if (str)

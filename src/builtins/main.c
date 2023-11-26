@@ -1,7 +1,6 @@
 #include "../include/hash.h"
 #include "../include/builtins.h"
 #include "../include/segments.h"
-#include "../include/temp.h"
 #include "../include/ast.h"
 #include "../include/exec.h"
 
@@ -31,34 +30,41 @@ int main(int argc, char **argv, char **envp)
 	(void)argv;
 
 	t_hashtable *hashtable = create_hashtable();
-	t_cmd builtins[1];
+	t_vector vtr;
 
 	init_hash(hashtable, envp);
-	init_builtins(builtins);
+	init_cmd(&vtr);
+	init_redirects(&vtr);
 
 
 	t_ast *root = NULL;
 
+	// t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
 	t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
 	insert_ast(&root, node1);
 	// print_ast(root);
 
 	// puts( "---------------------" );
-	t_ast *node2 = create_node(TYPE_REDIRECT, "<<", OP_REDIRECT);
+	// t_ast *node2 = create_node(TYPE_REDIRECT, "<< EOF", OP_REDIRECT);
+	t_ast *node2 = create_node(TYPE_REDIRECT, "<< EOF", OP_REDIRECT);
 	insert_ast(&root, node2);
 	// // print_ast(node1);
 
 	// puts( "---------------------" );
-	// t_ast *node3 = create_node(TYPE_FILE, "file.txt", DEFAULT, NULL);
-	// insert_ast(&root, node3);
+	t_ast *node3 = create_node(TYPE_FILE, ">>", DEFAULT);
+	insert_ast(&root, node3);
 	// print_ast(node2);
+
+	t_ast *node4 = create_node(TYPE_FILE, "error.txt", DEFAULT);
+	insert_ast(&root, node4);
 
 	// puts( "---------------------" );
 	// pre_order_traversal(root);
 
-	analyzing_cmd(hashtable, root);
-	is_builtins(builtins, hashtable, root->left);
-	execve(root->left->path, root->left->args, NULL);
+	analyzing_cmd(&vtr, hashtable, root);
+	exec_cmds(&vtr, hashtable, root);
+	// execute_if_builtin(&vtr, hashtable, root);
+	// execve(root->left->path, root->left->args, NULL);
 
 	delete_node(root);
 	destroy_hashtable(hashtable);

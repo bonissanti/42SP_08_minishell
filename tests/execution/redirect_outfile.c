@@ -34,7 +34,7 @@ int main(int argc, char **argv, char **envp)
 	t_cmd builtins[1];
 
 	init_hash(hashtable, envp);
-	init_builtins(builtins);
+	init_cmd(builtins);
 
 
 	t_ast *root = NULL;

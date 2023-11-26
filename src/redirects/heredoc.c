@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/temp.h"
 #include "../include/hash.h"
 #include "../include/segments.h"
+#include "../include/exec.h"
 
 
 void print_pipe_contents(int pipefd[2]) {
@@ -61,16 +61,16 @@ char *check_expansion(t_hashtable *env, char **line, size_t *len)
 	return (expanded);
 }
 
-void	handle_heredoc(t_hashtable *env, char *delim)
+void	handle_heredoc(t_ast *node, t_hashtable *env, char *delim)
 {
-	int		pipefd[2];
+	int		fd[2];
 	// int		fd;
 	char	*line;
 	size_t 	len;
-	pipe(pipefd);
+	pipe(fd);
 	if (delim == NULL)
 	{
-		ft_fprintf(2, "Syntax error: missing delimiter\n");
+		ft_fprintf(2, "minishell: syntax error near unexpected token `newline'\n");
 		return ;
 	}
 	while (1)
@@ -83,9 +83,10 @@ void	handle_heredoc(t_hashtable *env, char *delim)
 			break ;
 		}
 		line = check_expansion(env, &line, &len);
-		ft_putendl_fd(line, pipefd[1]);
+		ft_putendl_fd(line, fd[1]);
 		free(line);
 	}
-	close(pipefd[1]);
-	print_pipe_contents(pipefd);
+	close(fd[1]);
+	node->in_fd = fd[0];
+	// print_pipe_contents(pipefd);
 }

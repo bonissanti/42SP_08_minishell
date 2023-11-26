@@ -15,35 +15,35 @@
 #include "../include/exec.h"
 #include "../include/hash.h"
 
-void	redirect_input(char *filename)
+void	redirect_input(t_ast *node, char *filename)
 {
-	int	file;
 
-	file = open(filename, O_RDONLY);
+	if (filename == NULL)
+	{
+		ft_fprintf(2, "minishell: syntax error near unexpected token `newline'\n");
+		return ;
+	}
+	node->in_fd = open(filename, O_RDONLY);
 	if (!verify_file_permissions(filename))
 		return ;
-	dup2(file, STDIN_FILENO);
-	close(file);
+	dup2(node->in_fd, 0);
+	// close(node->in_fd); talvez
 }
 
-void	redirect_output(char *filename)
+void	redirect_output(t_ast *node, char *filename)
 {
-	int file;
-
-	file = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	node->in_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (!verify_file_permissions(filename))
 		return ;
-	dup2(file, STDOUT_FILENO);
-	close(file);
+	dup2(node->in_fd, 1);
+	// close(node->in_fd); talvez
 }
 
-void	redirect_append(char *filename)
-{
-	int	file;
+void	redirect_append(t_ast *node, char *filename)
+{	
+	node->in_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (!verify_file_permissions(filename))
+		return ;
+	dup2(node->in_fd, 1);
 	
-	file = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (!verify_file_permissions(filename))
-		return ;
-	dup2(file, STDOUT_FILENO);
-	close(file);
 }
