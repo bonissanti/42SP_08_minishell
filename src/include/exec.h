@@ -50,3 +50,4 @@ char    *build_cmd_path(t_ast *node , char *path);
 //############################# EXECUTION ####################################//
 
 void	exec_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
+void	multiples_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node); //temp

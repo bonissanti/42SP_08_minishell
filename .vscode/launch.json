@@ -38,8 +38,8 @@
                     "ignoreFailures": true
                 },
 				{
-					"description": "Set follow-fork-mode to child",
-					"text": "set follow-fork-mode child",
+					"description": "Set follow-fork-mode to parent",
+					"text": "set follow-fork-mode parent",
 					"ignoreFailures": false
 				}
 			]

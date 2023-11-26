@@ -61,6 +61,7 @@ char *check_expansion(t_hashtable *env, char **line, size_t *len)
 	return (expanded);
 }
 
+
 void	handle_heredoc(t_ast *node, t_hashtable *env, char *delim)
 {
 	int		fd[2];
@@ -90,3 +91,4 @@ void	handle_heredoc(t_ast *node, t_hashtable *env, char *delim)
 	node->in_fd = fd[0];
 	// print_pipe_contents(pipefd);
 }
+

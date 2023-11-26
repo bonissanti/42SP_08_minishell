@@ -27,7 +27,7 @@ void	redirect_input(t_ast *node, char *filename)
 	if (!verify_file_permissions(filename))
 		return ;
 	dup2(node->in_fd, 0);
-	// close(node->in_fd); talvez
+	close(node->in_fd);
 }
 
 void	redirect_output(t_ast *node, char *filename)
@@ -36,7 +36,7 @@ void	redirect_output(t_ast *node, char *filename)
 	if (!verify_file_permissions(filename))
 		return ;
 	dup2(node->in_fd, 1);
-	// close(node->in_fd); talvez
+	close(node->in_fd);
 }
 
 void	redirect_append(t_ast *node, char *filename)
@@ -45,5 +45,5 @@ void	redirect_append(t_ast *node, char *filename)
 	if (!verify_file_permissions(filename))
 		return ;
 	dup2(node->in_fd, 1);
-	
+	close(node->in_fd);
 }
