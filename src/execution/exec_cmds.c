@@ -137,16 +137,16 @@ void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 
 	if ((node->type == TYPE_OPERATOR && ft_strcmp(node->cmds, "|") == 0 )) //pipes
 		complet_execution(vtr, hashtable, node);
+
 	else if (node->type == TYPE_OPERATOR && ft_strcmp(node->cmds, "|" ) != 0)
 		execute_and_or(vtr, hashtable, node);
 
-	else if (node->type == TYPE_REDIRECT && ft_strcmp(node->cmds, "<<" ) == 0)
-		simple_execution(vtr, hashtable, node->left);
-
 	else if (node->type == TYPE_REDIRECT)
 		simple_execution(vtr, hashtable, node->left);
+
 	else if (node->type == TYPE_COMMAND && node->left == NULL && node->right == NULL)
 		simple_execution(vtr, hashtable, node);
+
 	if (node->right && ft_strcmp(node->cmds, "&&") != 0) 
 		handle_cmd(vtr, hashtable, node->right);
 }
