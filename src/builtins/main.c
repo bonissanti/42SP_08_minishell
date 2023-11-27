@@ -40,33 +40,42 @@ int main(int argc, char **argv, char **envp)
 	t_ast *root = NULL;
 
 	// t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
-	t_ast *node1 = create_node(TYPE_COMMAND, "echo fdp", DEFAULT);
+	t_ast *node1 = create_node(TYPE_COMMAND, "echo fucker", DEFAULT);
 	insert_ast(&root, node1);
 	// print_ast(root);
 
 	// puts( "---------------------" );
 	t_ast *node2 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-	// t_ast *node2 = create_node(TYPE_REDIRECT, "<< EOF", OP_REDIRECT);
+	// t_ast *node2 = create_node(TYPE_OPERATOR, "||", OP_LOGICAL);
+	// t_ast *node2 = create_node(TYPE_REDIRECT, "<< NULL", OP_REDIRECT);
+	// t_ast *node2 = create_node(TYPE_REDIRECT, ">", OP_REDIRECT);
+
 	insert_ast(&root, node2);
 	// // print_ast(node1);
 
 	// puts( "---------------------" );
+	// t_ast *node3 = create_node(TYPE_FILE, "sucker.txt", DEFAULT);
+
 	// t_ast *node3 = create_node(TYPE_REDIRECT, ">>", OP_REDIRECT);
-	t_ast *node3 = create_node(TYPE_COMMAND, "wc -l", DEFAULT);
+	// t_ast *node3 = create_node(TYPE_COMMAND, "wc -l", DEFAULT);
+	// t_ast *node3 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+	t_ast *node3 = create_node(TYPE_COMMAND, "echo sucker", DEFAULT);
 	insert_ast(&root, node3);
 	// print_ast(node2);
 
-	// t_ast *node4 = create_node(TYPE_REDIRECT, ">", OP_REDIRECT);
-	t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+	// t_ast *node4 = create_node(TYPE_COMMAND, "wc -l", DEFAULT);
+	t_ast *node4 = create_node(TYPE_REDIRECT, ">", OP_REDIRECT);
+	// t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
 	insert_ast(&root, node4);
 
-	t_ast *node5 = create_node(TYPE_COMMAND, "cat", DEFAULT);
-	insert_ast(&root, node5);
+	// t_ast *node5 = create_node(TYPE_COMMAND, "cat", DEFAULT);
+	// insert_ast(&root, node5);
 
-	t_ast *node6 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-	insert_ast(&root, node6);
+	// t_ast *node6 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+	// insert_ast(&root, node6);
 
-	t_ast *node7 = create_node(TYPE_COMMAND, "wc -l", DEFAULT);
+	t_ast *node7 = create_node(TYPE_FILE, "sucker.txt", DEFAULT);
+	// t_ast *node7 = create_node(TYPE_COMMAND, "wc -l", DEFAULT);
 	insert_ast(&root, node7);
 	// pre_order_traversal(root);
 

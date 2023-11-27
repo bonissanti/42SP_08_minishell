@@ -134,14 +134,12 @@ void	multiples_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {
 	int	fd[2];
 	pid_t pid;
-	int current_in_fd;
-	int current_out_fd;
+	int current_fd;
 
 	if (node == NULL)
 		return ;
 	
-	current_in_fd = node->in_fd;
-	current_out_fd = node->out_fd;
+	current_fd = node->in_fd;
 	if ((node->type == TYPE_OPERATOR && ft_strcmp(node->cmds, "|") == 0 )||(node->type == TYPE_REDIRECT))
 	{
 		pipe(fd);
@@ -154,19 +152,13 @@ void	multiples_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 		if (pid == 0)
 		{
 			close(fd[0]);
-			if (current_in_fd != STDIN_FILENO)
+			if (current_fd != STDIN_FILENO)
 			{
-				dup2(current_in_fd, STDIN_FILENO);
-				close(current_in_fd);
-			}
-			if (current_out_fd != STDOUT_FILENO)
-			{
-				dup2(current_out_fd, STDOUT_FILENO);
-				close(current_out_fd);
+				dup2(current_fd, STDIN_FILENO);
+				close(current_fd);
 			}
 			// else if (node->type != TYPE_REDIRECT)
 			dup2(fd[1], STDOUT_FILENO);
-			close(fd[1]);
 			if (!execute_if_builtin(vtr, hashtable, node->left))
 				execve(node->left->path, node->left->args, NULL);
 			exit(0);
@@ -174,11 +166,11 @@ void	multiples_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 		else
 		{
 			wait(NULL);
-			close(fd[1]);
-			if (current_in_fd != STDIN_FILENO)
-				close(current_in_fd);
 			dup2(fd[0], STDIN_FILENO);
 			ft_fprintf(2, "fd[0]: %d\n", fd[0]);
+			close(fd[1]);
+			if (current_fd != STDIN_FILENO)
+				close(current_fd);
 			if (!execute_if_builtin(vtr, hashtable, node->right))
 				execve(node->right->path, node->right->args, NULL);
 		}
@@ -258,7 +250,7 @@ void	simple_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 // 		}
 // 		if (pid == 0) // child
 // 		{
-// 			dup2(current_in_fd, STDIN_FILENO);
+// 			dup2(current_fd, STDIN_FILENO);
 // 			close(fd[0]);
 // 			if (!execute_if_builtin(vtr, hashtable, node->left) && node->left->type == TYPE_COMMAND)
 // 				execve(node->left->path, node->left->args, NULL);

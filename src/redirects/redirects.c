@@ -32,18 +32,18 @@ void	redirect_input(t_ast *node, char *filename)
 
 void	redirect_output(t_ast *node, char *filename)
 {
-	node->in_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	node->out_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (!verify_file_permissions(filename))
 		return ;
-	dup2(node->in_fd, 1);
-	close(node->in_fd);
+	dup2(node->out_fd, 1);
+	close(node->out_fd);
 }
 
 void	redirect_append(t_ast *node, char *filename)
 {	
-	node->in_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	node->out_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (!verify_file_permissions(filename))
 		return ;
-	dup2(node->in_fd, 1);
-	close(node->in_fd);
+	dup2(node->out_fd, 1);
+	close(node->out_fd);
 }
