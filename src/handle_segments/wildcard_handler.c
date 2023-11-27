@@ -97,13 +97,13 @@ char	*handle_wildcard(char *pattern)
 	while (file->entry)
 	{
 		stat(file->entry->d_name, &file->entry_stat);
-		if (ft_strcmp(file->entry->d_name, ".") != 0
-			&& ft_strcmp(file->entry->d_name, "..") != 0
+		if (ft_strncmp(file->entry->d_name, ".", 1) != 0
+			&& ft_strncmp(file->entry->d_name, "..", 2) != 0
 			&& wildcard_match(file->entry->d_name, file->token))
 			add_segments(&head, file->entry->d_name);
 		file->entry = readdir(file->dir);
 	}
-	return(generate_results(head, file));
+	return (generate_results(head, file));
 }
 
 /**
@@ -189,6 +189,8 @@ static t_bool	wildcard_match(char *file, char *pattern)
 			return (wildcard_match(file + 1, pattern + 1));
 		file++;
 	}
+	if (*pattern == '*' && *(pattern + 1) == '\0')
+		return (true);
 	return (false);
 }
 
@@ -221,7 +223,7 @@ inline void	finish_wildcard(t_segment *head, t_file *file)
 		tmp = tmp->next;
 	}
 	free_segments(head);
-	ft_safe_free((void **)&file->directory);
+	safe_free((void **)&file->directory);
 	closedir(file->dir);
-	ft_safe_free((void **)&file);
+	safe_free((void **)&file);
 }
