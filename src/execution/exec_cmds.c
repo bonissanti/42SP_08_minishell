@@ -3,9 +3,9 @@
 #include "../include/hash.h"
 #include "../include/builtins.h"
 
-void	simple_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
+void	simple_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node);
-
+static void	complet_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 // void	exec_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 // {
 // 	int fd[2];
@@ -121,80 +121,89 @@ void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node);
 // 		}
 // 	}
 // 	else if (node->type == TYPE_REDIRECT)
-// 		simple_cmd(vtr, hashtable, node->left);
+// 		simple_execution(vtr, hashtable, node->left);
 // 	else if (node->type == TYPE_COMMAND)
-// 		simple_cmd(vtr, hashtable, node);
+// 		simple_execution(vtr, hashtable, node);
 // }
 
 
 
 // funciona com multiplos pipes
 
-void	multiples_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
+void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {
-	int	fd[2];
+	if (node == NULL)
+		return ;
+
+	if ((node->type == TYPE_OPERATOR && ft_strcmp(node->cmds, "|") == 0 )) //pipes
+		complet_execution(vtr, hashtable, node);
+	else if (node->type == TYPE_OPERATOR && ft_strcmp(node->cmds, "|" ) != 0)
+		execute_and_or(vtr, hashtable, node);
+
+	else if (node->type == TYPE_REDIRECT && ft_strcmp(node->cmds, "<<" ) == 0)
+		simple_execution(vtr, hashtable, node->left);
+
+	else if (node->type == TYPE_REDIRECT)
+		simple_execution(vtr, hashtable, node->left);
+	else if (node->type == TYPE_COMMAND && node->left == NULL && node->right == NULL)
+		simple_execution(vtr, hashtable, node);
+	if (node->right && ft_strcmp(node->cmds, "&&") != 0) 
+		handle_cmd(vtr, hashtable, node->right);
+}
+
+
+static void	complet_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
+{
+	int fd[2];
 	pid_t pid;
 	int current_in_fd;
 	int current_out_fd;
 
-	if (node == NULL)
-		return ;
-	
 	current_in_fd = node->in_fd;
 	current_out_fd = node->out_fd;
-	if ((node->type == TYPE_OPERATOR && ft_strcmp(node->cmds, "|") == 0 )||(node->type == TYPE_REDIRECT))
+	pipe(fd);
+	pid = fork();
+	if (pid == -1)
 	{
-		pipe(fd);
-		pid = fork();
-		if (pid == -1)
-		{
-			ft_fprintf(2, "minishell: fork: %s\n", strerror(errno));
-			return ;
-		}
-		if (pid == 0)
-		{
-			close(fd[0]);
-			if (current_in_fd != STDIN_FILENO)
-			{
-				dup2(current_in_fd, STDIN_FILENO);
-				close(current_in_fd);
-			}
-			if (current_out_fd != STDOUT_FILENO)
-			{
-				dup2(current_out_fd, STDOUT_FILENO);
-				close(current_out_fd);
-			}
-			// else if (node->type != TYPE_REDIRECT)
-			dup2(fd[1], STDOUT_FILENO);
-			close(fd[1]);
-			if (!execute_if_builtin(vtr, hashtable, node->left))
-				execve(node->left->path, node->left->args, NULL);
-			exit(0);
-		}
-		else
-		{
-			wait(NULL);
-			close(fd[1]);
-			if (current_in_fd != STDIN_FILENO)
-				close(current_in_fd);
-			dup2(fd[0], STDIN_FILENO);
-			ft_fprintf(2, "fd[0]: %d\n", fd[0]);
-			if (!execute_if_builtin(vtr, hashtable, node->right))
-				execve(node->right->path, node->right->args, NULL);
-		}
+		ft_fprintf(2, "minishell: fork: %s\n", strerror(errno));
+		return ;
 	}
-	
-	else if (node->type == TYPE_OPERATOR && ft_strcmp(node->cmds, "|" ) != 0)
-		execute_and_or(vtr, hashtable, node);
-	else if (node->type == TYPE_REDIRECT && node->left->type == TYPE_COMMAND)
-		simple_cmd(vtr, hashtable, node->left);
-	else if (node->type == TYPE_COMMAND && node->left == NULL && node->right == NULL)
-		simple_cmd(vtr, hashtable, node);
-
-	if (node->right)
-		multiples_cmd(vtr, hashtable, node->right);
+	if (pid == 0)
+	{
+		close(fd[0]);
+		if (current_in_fd != STDIN_FILENO)
+		{
+			dup2(current_in_fd, STDIN_FILENO);
+			close(current_in_fd);
+		}
+		if (current_out_fd != STDOUT_FILENO)
+		{
+			dup2(current_out_fd, STDOUT_FILENO);
+			close(current_out_fd);
+		}
+		// else if (node->type != TYPE_REDIRECT)
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+		if (node->type == TYPE_REDIRECT)
+			simple_execution(vtr, hashtable, node->left->left);
+		if (!execute_if_builtin(vtr, hashtable, node->left))
+			execve(node->left->path, node->left->args, NULL);
+		exit(0);
+	}
+	else
+	{
+		wait(NULL);
+		close(fd[1]);
+		if (current_in_fd != STDIN_FILENO)
+			close(current_in_fd);
+		dup2(fd[0], STDIN_FILENO);
+		// print_pipe_contents(fd);
+		if (node->type == TYPE_REDIRECT)
+			simple_execution(vtr, hashtable, node->right->left);
+		if (!execute_if_builtin(vtr, hashtable, node->right) && node->right->type != TYPE_REDIRECT)
+			execve(node->right->path, node->right->args, NULL);
+	}
 }
-
 
 void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node)
 {
@@ -224,7 +233,7 @@ void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node)
 }
 
 
-void	simple_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
+void	simple_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {
 	pid_t pid;
 

@@ -25,7 +25,7 @@ void ft_echo(t_hashtable *hashtable, char **args)
 	{
 		if (args[i][0] == '-' && is_flag_n(args[i]))
 			continue ;
-		ft_printf("%s", args[i]);
+		ft_printf("%s ", args[i]);
 	}
 	if (!is_flag_n(args[i - 1]))
 		ft_printf("\n");

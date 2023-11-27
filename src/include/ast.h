@@ -23,7 +23,6 @@ typedef enum
 	TYPE_OPERATOR,
 	TYPE_FILE,
 	TYPE_REDIRECT,
-	TYPE_DELIMITER,
 }	t_type;
 
 // Inverted order of precedence

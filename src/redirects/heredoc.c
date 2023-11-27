@@ -15,7 +15,7 @@
 #include "../include/exec.h"
 
 
-void print_pipe_contents(int pipefd[2]) {
+void print_pipe_contents(int *pipefd) {
     char buffer[1024];
     int bytes;
 
@@ -23,9 +23,9 @@ void print_pipe_contents(int pipefd[2]) {
     close(pipefd[1]);
 
     // Read from the pipe
-    while ((bytes = read(pipefd[0], buffer, sizeof(buffer) - 1)) > 0) {
+    while ((bytes = read(pipefd[0], buffer, sizeof(buffer) - 1)) != 0) {
         buffer[bytes] = '\0';  // Null-terminate the string
-        ft_fprintf(1, "%s", buffer);
+        ft_fprintf(2, "%s", buffer);
     }
 
     // Close the read end of the pipe
@@ -88,7 +88,8 @@ void	handle_heredoc(t_ast *node, t_hashtable *env, char *delim)
 		free(line);
 	}
 	close(fd[1]);
-	node->in_fd = fd[0];
+	node->in_fd = dup2(fd[0], 0);
+	close(fd[0]);
 	// print_pipe_contents(pipefd);
 }
 

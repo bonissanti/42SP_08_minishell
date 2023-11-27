@@ -39,23 +39,30 @@ int main(int argc, char **argv, char **envp)
 
 	t_ast *root = NULL;
 
-	t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
+	t_ast *node1 = create_node(TYPE_COMMAND, "echo fucker", DEFAULT);
 	insert_ast(&root, node1);
 	
-	t_ast *node2 = create_node(TYPE_REDIRECT, "<", OP_REDIRECT);;
+	t_ast *node2 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
 	insert_ast(&root, node2);
 
-	t_ast *node3 = create_node(TYPE_FILE, "outfile.txt", DEFAULT);
+	t_ast *node3 = create_node(TYPE_COMMAND, "wc", DEFAULT);
 	insert_ast(&root, node3);
 
     t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
 	insert_ast(&root, node4);
 
-    t_ast *node5 = create_node(TYPE_COMMAND, "wc", DEFAULT);;
+    t_ast *node5 = create_node(TYPE_COMMAND, "wc", DEFAULT);
 	insert_ast(&root, node5);
 
+    t_ast *node6 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+	insert_ast(&root, node6);
+
+    t_ast *node7 = create_node(TYPE_COMMAND, "wc", DEFAULT);
+	insert_ast(&root, node7);
+
+
 	analyzing_cmd(&vtr, hashtable, root);
-	handle_cmd(&vtr, hashtable, root);
+	execute_cmd(&vtr, hashtable, root);
 	delete_node(root);
 	destroy_hashtable(hashtable);
 }

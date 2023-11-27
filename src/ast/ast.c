@@ -59,8 +59,8 @@ t_ast *create_node(t_type type, char *cmds, t_op weight)
 	new_node = (t_ast *)malloc(sizeof(t_ast));
 	prepare_ast(new_node, cmds, type);
 	new_node->path = NULL;
-	new_node->in_fd = 0;
-	new_node->out_fd = 0;
+	new_node->in_fd = STDIN_FILENO;
+	new_node->out_fd = STDOUT_FILENO;
 	new_node->weight = weight;
 	new_node->type = type;
 	new_node->left = NULL;
