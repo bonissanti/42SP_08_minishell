@@ -151,16 +151,27 @@ void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 		handle_cmd(vtr, hashtable, node->right);
 }
 
+static void traverse_and_exec(t_vector *vtr, t_hashtable *hashtable, t_ast *node, int i)
+{
+	if (node == NULL)
+		return ;
+	
+	if (i == 0)
+		traverse_and_exec(vtr, hashtable, node->left, i);
+
+	if (node->type == TYPE_COMMAND && !execute_if_builtin(vtr, hashtable, node))
+		execve(node->path, node->args, NULL);
+
+	if (i == 1)
+		traverse_and_exec(vtr, hashtable, node->right, i);
+
+}
 
 static void	complet_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {
 	int fd[2];
 	pid_t pid;
-	int current_in_fd;
-	int current_out_fd;
 
-	current_in_fd = node->in_fd;
-	current_out_fd = node->out_fd;
 	pipe(fd);
 	pid = fork();
 	if (pid == -1)
@@ -171,37 +182,33 @@ static void	complet_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node
 	if (pid == 0)
 	{
 		close(fd[0]);
-		if (current_in_fd != STDIN_FILENO)
+		if (node->in_fd != STDIN_FILENO)
 		{
-			dup2(current_in_fd, STDIN_FILENO);
-			close(current_in_fd);
+			dup2(node->in_fd, STDIN_FILENO);
+			close(node->in_fd);
 		}
-		if (current_out_fd != STDOUT_FILENO)
+		if (node->out_fd != STDOUT_FILENO)
 		{
-			dup2(current_out_fd, STDOUT_FILENO);
-			close(current_out_fd);
+			dup2(node->out_fd, STDOUT_FILENO);
+			close(node->out_fd);
 		}
-		// else if (node->type != TYPE_REDIRECT)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
-		if (node->type == TYPE_REDIRECT)
-			simple_execution(vtr, hashtable, node->left->left);
-		if (!execute_if_builtin(vtr, hashtable, node->left))
-			execve(node->left->path, node->left->args, NULL);
+		
+		traverse_and_exec(vtr, hashtable, node->left, 0);
 		exit(0);
 	}
 	else
 	{
 		wait(NULL);
 		close(fd[1]);
-		if (current_in_fd != STDIN_FILENO)
-			close(current_in_fd);
+		if (node->in_fd != STDIN_FILENO)
+			close(node->in_fd);
 		dup2(fd[0], STDIN_FILENO);
 		// print_pipe_contents(fd);
 		if (node->type == TYPE_REDIRECT)
 			simple_execution(vtr, hashtable, node->right->left);
-		if (!execute_if_builtin(vtr, hashtable, node->right) && node->right->type != TYPE_REDIRECT)
-			execve(node->right->path, node->right->args, NULL);
+		traverse_and_exec(vtr, hashtable, node->right, 1);
 	}
 }
 

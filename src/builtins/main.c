@@ -42,10 +42,10 @@ int main(int argc, char **argv, char **envp)
 	t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
 	insert_ast(&root, node1);
 	
-	t_ast *node2 = create_node(TYPE_REDIRECT, ">", OP_REDIRECT);;
+	t_ast *node2 = create_node(TYPE_REDIRECT, "<", OP_REDIRECT);;
 	insert_ast(&root, node2);
 
-	t_ast *node3 = create_node(TYPE_FILE, "outfile.txt", DEFAULT);
+	t_ast *node3 = create_node(TYPE_FILE, "/home/bruno/Documents/42SP/07.Minishell/v_atual/42SP_08_minishell/outfile.txt", DEFAULT);
 	insert_ast(&root, node3);
 
     t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
