@@ -21,6 +21,7 @@ char *ft_strtok(char *str, const char *delim)
 	char *input;
 	char *token;
 
+	input = NULL;
 	if (str)
 		input = str;
 	if (!input)

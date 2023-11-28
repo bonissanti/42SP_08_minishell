@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/24 18:55:27 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/27 17:17:21 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	analyzing_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 				path = search(hashtable, "PATH")->value;
 				node->path = build_cmd_path(node, path);
 			}
-
 		}
 		if (node->type == TYPE_REDIRECT)
 			is_redirect(vtr, hashtable, node);

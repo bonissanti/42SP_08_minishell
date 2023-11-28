@@ -151,6 +151,20 @@ void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 		handle_cmd(vtr, hashtable, node->right);
 }
 
+t_ast *branch_tip(t_ast *node)
+{
+	t_ast *first;
+
+	first = node;
+	if(first->left == NULL)
+		return (first);
+	else
+	{
+		while(first->left)
+			first = first->left;
+	}
+	return(first);
+}
 
 static void	complet_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {
@@ -158,6 +172,8 @@ static void	complet_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node
 	pid_t pid;
 	int current_in_fd;
 	int current_out_fd;
+	t_ast *first_left_branch = branch_tip(node->left);
+	t_ast *first_right_branch = branch_tip(node->right);
 
 	current_in_fd = node->in_fd;
 	current_out_fd = node->out_fd;
@@ -187,7 +203,8 @@ static void	complet_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node
 		if (node->type == TYPE_REDIRECT)
 			simple_execution(vtr, hashtable, node->left->left);
 		if (!execute_if_builtin(vtr, hashtable, node->left))
-			execve(node->left->path, node->left->args, NULL);
+			execve(first_left_branch->path, first_left_branch->args, NULL);
+			// execve(node->left->path, node->left->args, NULL);
 		exit(0);
 	}
 	else
@@ -201,7 +218,8 @@ static void	complet_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node
 		if (node->type == TYPE_REDIRECT)
 			simple_execution(vtr, hashtable, node->right->left);
 		if (!execute_if_builtin(vtr, hashtable, node->right) && node->right->type != TYPE_REDIRECT)
-			execve(node->right->path, node->right->args, NULL);
+			execve(first_right_branch->path, first_right_branch->args, NULL);
+			// execve(node->right->path, node->right->args, NULL);
 	}
 }
 
