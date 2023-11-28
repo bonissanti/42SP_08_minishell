@@ -1,6 +1,5 @@
 #include "../minunit.h"
 
-
 /**
  * Function: Send_command_and_write_to_file
  * -----------------
@@ -136,25 +135,12 @@ void compare_files(char *filename1, char *filename2)
 
 }
 
-/**
- * Function: Test_...
- * -----------------
- * This function is used by the minunit library to run a test. It is used to
- * test the command or some part of the code.
- * 
- * @param: void: The function does not receive any arguments.
- * @function: system: The system function is used to run a command in the shell.
- * 
- * @return: Returns nothing.
- *
- */
-
-MU_TEST(echo_2arg_to_file)
+MU_TEST(test_export)
 {
-	pid_t pid;
+    pid_t pid;
 
     pid = fork();
-	system("echo sucker dicker > ./txts/echo_fucker_to_file_bash.txt");
+	system("export hello=\"i am a fucker\" > ./txts/export_var_i_am_a_fucker_minishell.txt");
 
     if (pid == 0)
         execlp("/nfs/homes/brunrodr/09.MINISHELL/42SP_08_minishell/minishell", "minishell", NULL);
@@ -164,19 +150,47 @@ MU_TEST(echo_2arg_to_file)
         kill(pid, SIGINT);
     }
 
-    send_command_and_write_to_file("echo sucker dicker", "./txts/echo_fucker_to_file_minishell.txt");
-    compare_files("./txts/echo_fucker_to_file_minishell.txt", "./txts/echo_fucker_to_file_bash.txt");
+    send_command_and_write_to_file("export  hello=\"i am a fucker\"", "./txts/export_var_i_am_a_fucker_minishell.txt");
+    compare_files("./txts/export_var_i_am_a_fucker_minishell.txt", "./txts/export_var_hello_world_quotes_bash.txt");
 }
-
 
 MU_TEST_SUITE(test_suite)
 {
-    MU_RUN_TEST(echo_2arg_to_file);
+    MU_RUN_TEST(test_export);
 }
 
 int main(void)
-{   
-    printf("\n------------------- TEST ECHO n°2 -------------------\n");
+{
+    printf("\n------------------ TEST EXPORT N°1 ------------------\n");
     MU_RUN_SUITE(test_suite);
     return (0);
 }
+
+// echo aaaa > file | tr a C
+
+
+// Tokenização - split de todas a palavras e operadores ("", '', |, >, >>, >, <, <<);
+
+// Analise Lexica - transformar os tokens em WORD, PIPE, GREATER, DGREATER,) 
+
+// // enum {
+// //     AND 5
+// //     PIPE 4
+// // }
+
+// Analise Sintática - word word pipe word dgreater greater 
+
+// Separar os tokens em Commandos - Lista linkadas split pelos PIPES (stdin operação stdout)
+
+// Node {
+
+//     __REDIRECT
+
+//         arg1_execve
+//         arg2_execve;
+
+//         stdin
+//         stdout
+// }
+
+// Pipex

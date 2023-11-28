@@ -116,7 +116,7 @@ void compare_files(char *filename1, char *filename2)
 
     if (file1 == NULL || file2 == NULL)
     {
-        printf("Failed to open file\n");
+        printf(RED"Failed to open file\n"RESET);
         exit(1);
     }
     while (fgets(line1, 10000, file1) != NULL && fgets(line2, 10000, file2) != NULL)
@@ -155,7 +155,7 @@ MU_TEST(echo_1arg_to_file)
 	pid_t pid;
 
     pid = fork();
-	system("echo fucker > echo_fucker_to_file_bash.txt");
+	system("echo fucker > ./txts/echo_fucker_to_file_bash.txt");
 
     if (pid == 0)
         execlp("/nfs/homes/brunrodr/09.MINISHELL/42SP_08_minishell/minishell", "minishell", NULL);
@@ -165,8 +165,8 @@ MU_TEST(echo_1arg_to_file)
         kill(pid, SIGINT);
     }
 
-    send_command_and_write_to_file("echo fucker", "echo_fucker_to_file_minishell.txt");
-    compare_files("echo_fucker_to_file_minishell.txt", "echo_fucker_to_file_bash.txt");
+    send_command_and_write_to_file("echo fucker", "./txts/echo_fucker_to_file_minishell.txt");
+    compare_files("./txts/echo_fucker_to_file_minishell.txt", "./txts/echo_fucker_to_file_bash.txt");
 }
 
 MU_TEST_SUITE(test_suite)
@@ -177,7 +177,7 @@ MU_TEST_SUITE(test_suite)
 
 int main(void)
 {
-    printf("\n------------------- n°1 -------------------\n");
+    printf("\n------------------- TEST ECHO n°1 -------------------\n");
     MU_RUN_SUITE(test_suite);
     return (0);
 }

@@ -85,46 +85,46 @@ static void	complet_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node
 // 	}
 // }
 
-// void	exec_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
-// {
-// 	int fd[2];
-// 	pid_t pid;
-// 	int current_fd;
+void	exec_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
+{
+	int fd[2];
+	pid_t pid;
+	int current_fd;
 
-// 	current_fd = node->in_fd;
-// 	if ((node->type == TYPE_OPERATOR && node->weight == OP_PIPE) || (node->type == TYPE_REDIRECT))
-// 	{
-// 		pipe(fd);
-// 		pid = fork();
-// 		if (pid == -1)
-// 		{
-// 			ft_fprintf(2, "minishell: fork: %s\n", strerror(errno));
-// 			return ;
-// 		}
-// 		if (pid == 0) // child
-// 		{
-// 			dup2(current_fd, STDIN_FILENO);
-// 			close(fd[0]);
-// 			if (!execute_if_builtin(vtr, hashtable, node->left) && node->left->type == TYPE_COMMAND)
-// 				execve(node->left->path, node->left->args, NULL);
-// 			// exit(0);
-// 		}
-// 		else // parent
-// 		{
-// 			wait(NULL);
-// 			dup2(fd[0], STDIN_FILENO);
-// 			close(fd[1]);
-// 			if (current_fd != STDIN_FILENO)
-// 				close(current_fd);
-// 			// if (!execute_if_builtin(vtr, hashtable, node->right) && node->right->type == TYPE_COMMAND)
-// 				// execve(node->right->path, node->right->args, NULL);
-// 		}
-// 	}
-// 	else if (node->type == TYPE_REDIRECT)
-// 		simple_execution(vtr, hashtable, node->left);
-// 	else if (node->type == TYPE_COMMAND)
-// 		simple_execution(vtr, hashtable, node);
-// }
+	current_fd = node->in_fd;
+	if ((node->type == TYPE_OPERATOR && node->weight == OP_PIPE) || (node->type == TYPE_REDIRECT))
+	{
+		pipe(fd);
+		pid = fork();
+		if (pid == -1)
+		{
+			ft_fprintf(2, "minishell: fork: %s\n", strerror(errno));
+			return ;
+		}
+		if (pid == 0) // child
+		{
+			dup2(current_fd, STDIN_FILENO);
+			close(fd[0]);
+			if (!execute_if_builtin(vtr, hashtable, node->left) && node->left->type == TYPE_COMMAND)
+				execve(node->left->path, node->left->args, NULL);
+			// exit(0);
+		}
+		else // parent
+		{
+			wait(NULL);
+			dup2(fd[0], STDIN_FILENO);
+			close(fd[1]);
+			if (current_fd != STDIN_FILENO)
+				close(current_fd);
+			// if (!execute_if_builtin(vtr, hashtable, node->right) && node->right->type == TYPE_COMMAND)
+				// execve(node->right->path, node->right->args, NULL);
+		}
+	}
+	else if (node->type == TYPE_REDIRECT)
+		simple_execution(vtr, hashtable, node->left);
+	else if (node->type == TYPE_COMMAND)
+		simple_execution(vtr, hashtable, node);
+}
 
 
 
@@ -170,8 +170,6 @@ static void	complet_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node
 {
 	int fd[2];
 	pid_t pid;
-	int current_in_fd;
-	int current_out_fd;
 	t_ast *first_left_branch = branch_tip(node->left);
 	t_ast *first_right_branch = branch_tip(node->right);
 

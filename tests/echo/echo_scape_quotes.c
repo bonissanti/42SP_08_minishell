@@ -154,7 +154,7 @@ MU_TEST(echo_2arg_to_file)
 	pid_t pid;
 
     pid = fork();
-	system("echo sucker dicker > ./txts/echo_fucker_to_file_bash.txt");
+	system("echo \\'$USER' > ./txts/echo_scape_quotes.txt");
 
     if (pid == 0)
         execlp("/nfs/homes/brunrodr/09.MINISHELL/42SP_08_minishell/minishell", "minishell", NULL);
@@ -164,8 +164,8 @@ MU_TEST(echo_2arg_to_file)
         kill(pid, SIGINT);
     }
 
-    send_command_and_write_to_file("echo sucker dicker", "./txts/echo_fucker_to_file_minishell.txt");
-    compare_files("./txts/echo_fucker_to_file_minishell.txt", "./txts/echo_fucker_to_file_bash.txt");
+    send_command_and_write_to_file("echo \\'$USER'", "./txts/echo_scape_quotes_minishell.txt");
+    compare_files("./txts/echo_scape_quotes_minishell.txt", "./txts/echo_scape_quotes_bash.txt");
 }
 
 
@@ -175,8 +175,9 @@ MU_TEST_SUITE(test_suite)
 }
 
 int main(void)
-{   
-    printf("\n------------------- TEST ECHO n°2 -------------------\n");
+{
+    printf("\n------------------- TEST ECHO n°3 -------------------\n");
     MU_RUN_SUITE(test_suite);
+    // MU_REPORT();
     return (0);
 }

@@ -1,12 +1,16 @@
 #----------------------- Makefile for minunit tests -----------------------#
 ################################ Colors ####################################
 
-GREEN           	= \033[1;32m
-YELLOW          	= \033[1;33m
-RED             	= \033[1;31m
-RESET           	= \033[0m
+RED      	= \033[1;31m
+GREEN    	= \033[1;32m
+YELLOW   	= \033[1;33m
+BLUE     	= \033[1;34m
+RESET    	= \033[0m
 
 ############################# Project files ################################
+
+# NAME 				= tests
+
 SRC             	= ../src/ast/ast.c \
 					../src/ast/ast_split.c \
 					../src/builtins/export.c \
@@ -40,28 +44,32 @@ SRC             	= ../src/ast/ast.c \
 
 TESTS           	= ./echo/echo_1arg_to_file.c \
 					./echo/echo_2arg_to_file.c \
-					./export/export_basic_cmds.c
+					./echo/echo_expand_var.c \
+					./echo/echo_expand_var_single_quotes.c \
+					./export/export_var.c
 					
-
-
 PROGRAM_TEST    	= $(patsubst %.c, %, $(TESTS))
-# PROGRAM_TEST_BONUS 	= $(patsubst %.c, %, $(TESTS_BONUS))
 HEADER_MINUNIT  	= ../minunit.h
 TEST_PROGRAMS   	= $(PROGRAM_TEST)
-# TEST_PROGRAMS_BONUS = $(PROGRAM_TEST_BONUS)
+
+OBJDIR          = ./objs
+
+############################# Compilation ###################################
+
+CC = cc
+CFLAGS = -Wall -Wextra -Werror -g3 
 
 ########################### Compile tests ###################################
 
-all: minishell $(PROGRAM_TEST)
+all: m $(PROGRAM_TEST)
 
 $(PROGRAM_TEST): $(OBJS)
 	@cc $(SRC) $@.c -o $@ -L../libft -lft -lreadline
 
 ########################### Compile minishell ##################################
 
-# minishell: Call to the Makefile (minishell) in the root directory
-minishell:
-	$(MAKE) -C .. 
+m:
+	@$(MAKE) -C .. --no-print-directory --silent
 
 ############################## Execution ####################################
 
@@ -86,7 +94,6 @@ run: minishell $(PROGRAM_TEST)
 		fi \
 	done
 
-
 ############################## Valgrind #####################################
 
 # Leak: Run the tests compiled with valgrind with complete leak check
@@ -96,17 +103,20 @@ leak: test
 ############################## Clean ########################################
 
 clean-minishell:
-	$(MAKE) -C .. fclean --no-print-directory --silent
+	@$(MAKE) -C .. fclean --no-print-directory --silent
 
-clean: clean-minishell fdclean
+clean: clean-minishell tclean
 	@rm -f minishell minishell_bonus $(TEST_PROGRAMS) $(TEST_PROGRAMS_BONUS)
 	@echo "$(YELLOW)Cleaning done!$(RESET)"
 
-fdclean:
-	@rm -f *.txt
+tclean:
+	@rm -rf ./txts
+	@echo "$(YELLOW)Files .txt deleted!$(RESET)"
 
-fclean: clean fdclean
+fclean: clean tclean 
+	@echo "$(YELLOW)Full cleaning done!$(RESET)"
+	@rm -rf $(OBJDIR)
 
-re:	fclean all fdclean
+re:	fclean all tclean
 
 .PHONY: all clean fclean re

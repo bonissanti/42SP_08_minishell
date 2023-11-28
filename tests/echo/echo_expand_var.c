@@ -116,7 +116,7 @@ void compare_files(char *filename1, char *filename2)
 
     if (file1 == NULL || file2 == NULL)
     {
-        printf("Failed to open file\n");
+        printf(RED"Failed to open file\n"RESET);
         exit(1);
     }
     while (fgets(line1, 10000, file1) != NULL && fgets(line2, 10000, file2) != NULL)
@@ -154,7 +154,7 @@ MU_TEST(echo_2arg_to_file)
 	pid_t pid;
 
     pid = fork();
-	system("echo $USER > echo_expand_var.txt");
+	system("echo $USER > ./txts/echo_expand_var.txt");
 
     if (pid == 0)
         execlp("/nfs/homes/brunrodr/09.MINISHELL/42SP_08_minishell/minishell", "minishell", NULL);
@@ -164,8 +164,8 @@ MU_TEST(echo_2arg_to_file)
         kill(pid, SIGINT);
     }
 
-    send_command_and_write_to_file("echo $USER", "eecho_expand_var_minishell.txt");
-    compare_files("echo_expand_var_minishell.txt", "echo_expand_var_bash.txt");
+    send_command_and_write_to_file("echo $USER", "./txts/echo_expand_var_minishell.txt");
+    compare_files("./txts/echo_expand_var_minishell.txt", "./txts/echo_expand_var_bash.txt");
 }
 
 
@@ -176,7 +176,7 @@ MU_TEST_SUITE(test_suite)
 
 int main(void)
 {
-    printf("\n------------------- n°3 -------------------\n");
+    printf("\n------------------- TEST ECHO n°3 -------------------\n");
     MU_RUN_SUITE(test_suite);
     // MU_REPORT();
     return (0);

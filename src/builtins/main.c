@@ -39,8 +39,8 @@ int main(int argc, char **argv, char **envp)
 
 	t_ast *root = NULL;
 
-	t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
-	insert_ast(&root, node1);
+	// t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
+	// insert_ast(&root, node1);
 	
 	t_ast *node2 = create_node(TYPE_REDIRECT, "<< EOF", OP_REDIRECT);;
 	insert_ast(&root, node2);
@@ -48,11 +48,11 @@ int main(int argc, char **argv, char **envp)
 	// t_ast *node3 = create_node(TYPE_FILE, "NULL", DEFAULT);
 	// insert_ast(&root, node3);
 
-    t_ast *node3 = create_node(TYPE_OPERATOR, "&&", OP_LOGICAL);
-	insert_ast(&root, node3);
+    // t_ast *node3 = create_node(TYPE_OPERATOR, "&&", OP_LOGICAL);
+	// insert_ast(&root, node3);
 
-    t_ast *node4 = create_node(TYPE_COMMAND, "echo fucker", DEFAULT);;
-	insert_ast(&root, node4);
+    // t_ast *node4 = create_node(TYPE_COMMAND, "echo fucker", DEFAULT);;
+	// insert_ast(&root, node4);
 
 	analyzing_cmd(&vtr, hashtable, root);
 	handle_cmd(&vtr, hashtable, root);
