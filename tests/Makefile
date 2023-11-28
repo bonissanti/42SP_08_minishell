@@ -7,15 +7,41 @@ RED             	= \033[1;31m
 RESET           	= \033[0m
 
 ############################# Project files ################################
-SRC             	= ../src/builtins/export.c ../src/builtins/export_utils.c ../src/builtins/hashtable.c
-
-HEADER_PROJECT  	= ../src/builtins/env.h
-# HEADER_BONUS		= ../bonus/minishell_bonus.h
+SRC             	= ../src/ast/ast.c \
+					../src/ast/ast_split.c \
+					../src/builtins/export.c \
+					../src/builtins/export_utils.c \
+					../src/builtins/hashtable.c \
+					../src/builtins/exit.c \
+					../src/builtins/env.c \
+					../src/builtins/cd.c \
+					../src/builtins/pwd.c \
+					../src/builtins/echo.c \
+					../src/builtins/unset.c \
+					../src/handle_segments/quotes_handler.c \
+					../src/handle_segments/segments_utils.c \
+					../src/handle_segments/expand_dollar.c \
+					../src/handle_segments/quotes_validater.c \
+					../src/handle_segments/quotes_error.c \
+					../src/handle_segments/tilde_handler.c \
+					../src/handle_segments/wildcard_handler.c \
+					../src/handle_segments/wildcard_utils.c \
+					../src/execution/find_path.c \
+					../src/execution/prepare_exec.c \
+					../src/execution/exec_cmds.c \
+					../src/execution/check_builtins.c \
+					../src/redirects/check_redirects.c \
+					../src/redirects/redirects.c \
+					../src/redirects/heredoc.c \
+					../src/redirects/verify_permissions.c \
+					../src/minishell_utils.c \
 
 ############################# Test files ###################################
 
-TESTS           	= ./export/test_export.c
-
+TESTS           	= ./echo/echo_1arg_to_file.c \
+					./echo/echo_2arg_to_file.c \
+					./export/export_basic_cmds.c
+					
 
 
 PROGRAM_TEST    	= $(patsubst %.c, %, $(TESTS))
@@ -29,13 +55,13 @@ TEST_PROGRAMS   	= $(PROGRAM_TEST)
 all: minishell $(PROGRAM_TEST)
 
 $(PROGRAM_TEST): $(OBJS)
-	@cc $(SRC) $@.c -o $@ -L../libft -lft
+	@cc $(SRC) $@.c -o $@ -L../libft -lft -lreadline
 
 ########################### Compile minishell ##################################
 
 # minishell: Call to the Makefile (minishell) in the root directory
 minishell:
-	$(MAKE) -C .. --no-print-directory --silent
+	$(MAKE) -C .. 
 
 ############################## Execution ####################################
 
@@ -50,7 +76,7 @@ test: $(TEST_PROGRAMS)
 		fi \
 	done
 
-m: minishell $(PROGRAM_TEST)
+run: minishell $(PROGRAM_TEST)
 	@for program in $(PROGRAM_TEST); do \
 		./$$program; \
 		if [ $$? -eq 0 ]; then \
@@ -72,7 +98,7 @@ leak: test
 clean-minishell:
 	$(MAKE) -C .. fclean --no-print-directory --silent
 
-clean: clean-minishell
+clean: clean-minishell fdclean
 	@rm -f minishell minishell_bonus $(TEST_PROGRAMS) $(TEST_PROGRAMS_BONUS)
 	@echo "$(YELLOW)Cleaning done!$(RESET)"
 
