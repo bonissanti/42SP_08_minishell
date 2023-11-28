@@ -80,7 +80,7 @@ int main(int argc, char **argv, char **envp)
 	// pre_order_traversal(root);
 
 	analyzing_cmd(&vtr, hashtable, root);
-	execute_cmd(&vtr, hashtable, root);
+	handle_cmd(&vtr, hashtable, root);
 	delete_node(root);
 	destroy_hashtable(hashtable);
 }

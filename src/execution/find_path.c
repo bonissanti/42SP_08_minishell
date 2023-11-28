@@ -30,9 +30,7 @@ char *build_cmd_path(t_ast *node, char *path)
         free(slash);
         result = verify_cmd_permissions(full_path);
         if (result == 0)
-        {
             return (full_path);
-        }
         free(full_path);
         temp++;
     }

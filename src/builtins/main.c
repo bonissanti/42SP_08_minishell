@@ -4,25 +4,25 @@
 #include "../include/ast.h"
 #include "../include/exec.h"
 
-void	print_ast(t_ast *node)
-{
-	if (node)
-	{
-		size_t i = -1;
+// void	print_ast(t_ast *node)
+// {
+// 	if (node)
+// 	{
+// 		size_t i = -1;
 
-		printf("node->cmds: %s\n", node->cmds);
-		while (node->args[++i])
-			printf("node->args[%zu]: %s\n", i, node->args[i]);
-		printf("node->path: %s\n", node->path);
-		printf("node->in_fd: %d\n", node->in_fd);
-		printf("node->out_fd: %d\n", node->out_fd);
-		printf("node->delim: %s\n", node->delim);
-		printf("node->weight: %d\n", node->weight);
-		printf("node->type: %d\n", node->type);
-		// print_ast(node->left);
-		// print_ast(node->right);
-	}
-}
+// 		printf("node->cmds: %s\n", node->cmds);
+// 		while (node->args[++i])
+// 			printf("node->args[%zu]: %s\n", i, node->args[i]);
+// 		printf("node->path: %s\n", node->path);
+// 		printf("node->in_fd: %d\n", node->in_fd);
+// 		printf("node->out_fd: %d\n", node->out_fd);
+// 		printf("node->delim: %s\n", node->delim);
+// 		printf("node->weight: %d\n", node->weight);
+// 		printf("node->type: %d\n", node->type);
+// 		// print_ast(node->left);
+// 		// print_ast(node->right);
+// 	}
+// }
 
 int main(int argc, char **argv, char **envp)
 {
@@ -77,7 +77,7 @@ int main(int argc, char **argv, char **envp)
 // 			free(trimmed_input);
 // 			exit(0);
 // 		}
-// 		else if (ft_strcmp(trimmed_input, "/nfs/homes/brunrodr/09.MINISHELL/V_atual/42SP_08_minishell/src/execution/*.c") == 0)
+// 		else if (ft_strcmp(trimmed_input, "/home/bruno/Documents/42SP/07.Minishell/v_atual/42SP_08_minishell/src/execution/*.c") == 0)
 // 		{
 // 			handle_wildcard(trimmed_input);
 // 			free(trimmed_input);
@@ -109,37 +109,37 @@ int main(int argc, char **argv, char **envp)
 // 		num_args = ft_split(trimmed_input, ' ');
 // 		free(trimmed_input);
 		
-		// if (ft_strcmp(num_args[0], "export") == 0)
-        //    ft_export(hash_table, num_args);
+// 		if (ft_strcmp(num_args[0], "export") == 0)
+//            ft_export(hash_table, num_args);
 
-		// if (ft_strcmp(num_args[0], "echo") == 0)
-		// 	analyzing_quotes(hash_table, num_args + 1);
+// 		if (ft_strcmp(num_args[0], "echo") == 0)
+// 			analyzing_quotes(hash_table, num_args + 1);
        
-		// if (ft_strcmp(num_args[0], "exit") == 0)
-		// 	ft_exit(hash_table, num_args);
+// 		if (ft_strcmp(num_args[0], "exit") == 0)
+// 			ft_exit(hash_table, num_args);
 
-		// if (ft_strcmp(num_args[0], "unset") == 0)
-		// 	ft_unset(hash_table, num_args);
+// 		if (ft_strcmp(num_args[0], "unset") == 0)
+// 			ft_unset(hash_table, num_args);
 		
-		// if (ft_strcmp(num_args[0], "env") == 0)
-		// 	ft_env(hash_table, num_args);
+// 		if (ft_strcmp(num_args[0], "env") == 0)
+// 			ft_env(hash_table, num_args);
 
-		// if (ft_strcmp(num_args[0], "cd") == 0)
-		// 	ft_cd(hash_table, num_args);
+// 		if (ft_strcmp(num_args[0], "cd") == 0)
+// 			ft_cd(hash_table, num_args);
 
-		// if (ft_strcmp(num_args[0], "pwd") == 0)
-		// 	ft_pwd(hash_table, num_args);
+// 		if (ft_strcmp(num_args[0], "pwd") == 0)
+// 			ft_pwd(hash_table, num_args);
 
-		// if (ft_strcmp(num_args[0], "<<") == 0)
-		// 	handle_heredoc(hash_table, num_args[1]);
+// 		if (ft_strcmp(num_args[0], "<<") == 0)
+// 			handle_heredoc(hash_table, num_args[1]);
 
-		// if (ft_strcmp(argv[1], "*.c") == 0)
-		// 	handle_wildcard(argv[1]);
+// 		if (ft_strcmp(argv[1], "*.c") == 0)
+// 			handle_wildcard(argv[1]);
 
-		// if (ft_strcmp(num_args[0], "expand") == 0)
-		// 	expand_tilde(hash_table, num_args[1]);
+// 		if (ft_strcmp(num_args[0], "expand") == 0)
+// 			expand_tilde(hash_table, num_args[1]);
 
-		// safe_free((void **)&num_args);
+// 		safe_free((void **)&num_args);
 
 // 	}
 // 	destroy_hashtable(hash_table);

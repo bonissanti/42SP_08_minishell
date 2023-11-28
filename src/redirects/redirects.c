@@ -35,7 +35,7 @@ void	redirect_output(t_ast *node, char *filename)
 	node->out_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (!verify_file_permissions(filename))
 		return ;
-	dup2(node->out_fd, 1);
+	dup2(node->out_fd, 0);
 	close(node->out_fd);
 }
 

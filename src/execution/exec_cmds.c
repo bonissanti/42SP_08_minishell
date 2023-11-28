@@ -137,16 +137,16 @@ void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 
 	if ((node->type == TYPE_OPERATOR && ft_strcmp(node->cmds, "|") == 0 )) //pipes
 		complet_execution(vtr, hashtable, node);
+
 	else if (node->type == TYPE_OPERATOR && ft_strcmp(node->cmds, "|" ) != 0)
 		execute_and_or(vtr, hashtable, node);
 
-	else if (node->type == TYPE_REDIRECT && ft_strcmp(node->cmds, "<<" ) == 0)
-		simple_execution(vtr, hashtable, node->left);
-
 	else if (node->type == TYPE_REDIRECT)
 		simple_execution(vtr, hashtable, node->left);
+
 	else if (node->type == TYPE_COMMAND && node->left == NULL && node->right == NULL)
 		simple_execution(vtr, hashtable, node);
+
 	if (node->right && ft_strcmp(node->cmds, "&&") != 0) 
 		handle_cmd(vtr, hashtable, node->right);
 }
@@ -175,8 +175,6 @@ static void	complet_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node
 	t_ast *first_left_branch = branch_tip(node->left);
 	t_ast *first_right_branch = branch_tip(node->right);
 
-	current_in_fd = node->in_fd;
-	current_out_fd = node->out_fd;
 	pipe(fd);
 	pid = fork();
 	if (pid == -1)
@@ -187,17 +185,16 @@ static void	complet_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node
 	if (pid == 0)
 	{
 		close(fd[0]);
-		if (current_in_fd != STDIN_FILENO)
+		if (node->in_fd != STDIN_FILENO)
 		{
-			dup2(current_in_fd, STDIN_FILENO);
-			close(current_in_fd);
+			dup2(node->in_fd, STDIN_FILENO);
+			close(node->in_fd);
 		}
-		if (current_out_fd != STDOUT_FILENO)
+		if (node->out_fd != STDOUT_FILENO)
 		{
-			dup2(current_out_fd, STDOUT_FILENO);
-			close(current_out_fd);
+			dup2(node->out_fd, STDOUT_FILENO);
+			close(node->out_fd);
 		}
-		// else if (node->type != TYPE_REDIRECT)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
 		if (node->type == TYPE_REDIRECT)
@@ -211,8 +208,8 @@ static void	complet_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node
 	{
 		wait(NULL);
 		close(fd[1]);
-		if (current_in_fd != STDIN_FILENO)
-			close(current_in_fd);
+		if (node->in_fd != STDIN_FILENO)
+			close(node->in_fd);
 		dup2(fd[0], STDIN_FILENO);
 		// print_pipe_contents(fd);
 		if (node->type == TYPE_REDIRECT)

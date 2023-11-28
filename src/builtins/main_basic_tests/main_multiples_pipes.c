@@ -62,7 +62,7 @@ int main(int argc, char **argv, char **envp)
 
 
 	analyzing_cmd(&vtr, hashtable, root);
-	execute_cmd(&vtr, hashtable, root);
+	handle_cmd(&vtr, hashtable, root);
 	delete_node(root);
 	destroy_hashtable(hashtable);
 }

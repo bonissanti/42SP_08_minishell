@@ -130,7 +130,7 @@ void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node);
 
 // funciona com multiplos pipes
 
-// void	execute_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
+// void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 // {
 // 	int	fd[2];
 // 	pid_t pid;
@@ -184,7 +184,7 @@ void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node);
 // 		simple_execution(vtr, hashtable, node);
 
 // 	if (node->right)
-// 		execute_cmd(vtr, hashtable, node->right);
+// 		handle_cmd(vtr, hashtable, node->right);
 // }
 
 
