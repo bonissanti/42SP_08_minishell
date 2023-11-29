@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/24 17:21:34 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/29 19:05:17 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void print_pipe_contents(int *pipefd) {
     // Read from the pipe
     while ((bytes = read(pipefd[0], buffer, sizeof(buffer) - 1)) != 0) {
         buffer[bytes] = '\0';  // Null-terminate the string
-        ft_fprintf(2, "%s", buffer);
+        ft_fprintf(2, "%s\n", buffer);
     }
 
     // Close the read end of the pipe
@@ -88,7 +88,7 @@ void	handle_heredoc(t_ast *node, t_hashtable *env, char *delim)
 		free(line);
 	}
 	close(fd[1]);
-	node->in_fd = dup2(fd[0], 0);
+	node->in_fd = dup2(fd[0], STDIN_FILENO);
 	close(fd[0]);
 	// print_pipe_contents(pipefd);
 }

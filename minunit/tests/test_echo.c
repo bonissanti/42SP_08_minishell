@@ -298,42 +298,17 @@ MU_TEST(echo_expand_variable_between_single_quotes_double_quotes)
 
 //############################### 8th test ###############################
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-
 MU_TEST(echo_expand_double_quotes)
 {
-    pid_t pid;
-    int fd;
-    char *fifo_path = "/tmp/my_fifo";
-
-    // Create the FIFO
-    mkfifo(fifo_path, 0666);
+	pid_t pid;
 
     pid = fork();
+	system("echo \"'\" \"'\" \"'\" > ./txt/echo_bash8.txt");
+
     if (pid == 0)
-    {
-        // Child: exec minishell with input redirected from the FIFO
-        fd = open(fifo_path, O_RDONLY);
-        dup2(fd, STDIN_FILENO);
-        close(fd);
         execlp("/nfs/homes/brunrodr/09.MINISHELL/42SP_08_minishell/minishell", "minishell", NULL);
-    }
-    else if (pid > 0)
-    {
-        // Parent: write command to the FIFO
-        fd = open(fifo_path, O_WRONLY);
-        close(fd);
-        sleep(1);
-        kill(pid, SIGINT);
-    }
-
-    // Compare output files
+    
     compare_files("./txt/echo_minishell8.txt", "./txt/echo_bash8.txt");
-
-    // Remove the FIFO
-    unlink(fifo_path);
 }
 
 //############################### 9th test ###############################
