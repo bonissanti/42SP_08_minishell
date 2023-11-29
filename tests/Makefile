@@ -9,7 +9,7 @@ RESET    	= \033[0m
 
 ############################# Project files ################################
 
-# NAME 				= tests
+NAME 				= minunit
 
 SRC             	= ../src/ast/ast.c \
 					../src/ast/ast_split.c \
@@ -42,81 +42,37 @@ SRC             	= ../src/ast/ast.c \
 
 ############################# Test files ###################################
 
-TESTS           	= ./echo/echo_1arg_to_file.c \
-					./echo/echo_2arg_to_file.c \
-					./echo/echo_expand_var.c \
-					./echo/echo_expand_var_single_quotes.c \
-					./export/export_var.c
-					
-PROGRAM_TEST    	= $(patsubst %.c, %, $(TESTS))
-HEADER_MINUNIT  	= ../minunit.h
-TEST_PROGRAMS   	= $(PROGRAM_TEST)
+TESTS_ECHO         	= ./echo/echo_1arg_to_file.c
+TESTS_ECHO_OBJ 		= $(patsubst %.c, %.o, $(TESTS_ECHO))
 
-OBJDIR          = ./objs
 
-############################# Compilation ###################################
-
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 
-
-########################### Compile tests ###################################
-
-all: m $(PROGRAM_TEST)
-
-$(PROGRAM_TEST): $(OBJS)
-	@cc $(SRC) $@.c -o $@ -L../libft -lft -lreadline
+OBJDIR          	= ./objs
 
 ########################### Compile minishell ##################################
 
 m:
 	@$(MAKE) -C .. --no-print-directory --silent
 
-############################## Execution ####################################
+############################## Compile tests ##################################
 
-# Test: Run the tests compiled
-test: $(TEST_PROGRAMS)
-	@for program in $(TEST_PROGRAMS); do \
-		./$$program; \
-		if [ $$? -eq 0 ]; then \
-			echo "$(GREEN)$$program passed!$(RESET)"; \
-		else \
-			echo "$(RED)$$program failed!$(RESET)"; \
-		fi \
-	done
+all: $(NAME)
 
-run: minishell $(PROGRAM_TEST)
-	@for program in $(PROGRAM_TEST); do \
-		./$$program; \
-		if [ $$? -eq 0 ]; then \
-			echo "$(GREEN)$$program passed!$(RESET)"; \
-		else \
-			echo "$(RED)$$program failed!$(RESET)"; \
-		fi \
-	done
+$(NAME): $(OBJDIR) $(TESTS_ECHO_OBJ:%=$(OBJDIR)/%)
+	@$(CC) $(CFLAGS) -o $(NAME) $(TESTS_ECHO_OBJ:%=$(OBJDIR)/%) $(SRC) -L .. -lft -lreadline
+	@echo "$(GREEN)$(NAME) created$(RESET)"
 
-############################## Valgrind #####################################
+$(OBJDIR):
+	@mkdir -p $(OBJDIR)
 
-# Leak: Run the tests compiled with valgrind with complete leak check
-leak: test
-	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes --trace-children=yes -s -q ./${PROGRAM_TEST}
+run: $(NAME)
+	@./$(NAME)
 
-############################## Clean ########################################
-
-clean-minishell:
-	@$(MAKE) -C .. fclean --no-print-directory --silent
-
-clean: clean-minishell tclean
-	@rm -f minishell minishell_bonus $(TEST_PROGRAMS) $(TEST_PROGRAMS_BONUS)
-	@echo "$(YELLOW)Cleaning done!$(RESET)"
-
-tclean:
-	@rm -rf ./txts
-	@echo "$(YELLOW)Files .txt deleted!$(RESET)"
-
-fclean: clean tclean 
-	@echo "$(YELLOW)Full cleaning done!$(RESET)"
+clean:
 	@rm -rf $(OBJDIR)
+	@echo "$(RED)$(NAME) objects deleted$(RESET)"
 
-re:	fclean all tclean
+fclean: clean
+	@rm -rf $(NAME)
+	@echo "$(RED)$(NAME) deleted$(RESET)"
 
-.PHONY: all clean fclean re
+re: fclean all
