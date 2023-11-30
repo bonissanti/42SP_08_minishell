@@ -37,17 +37,17 @@ int main(int argc, char **argv, char **envp)
 	init_redirects(&vtr);
 
 
-	t_ast *root = NULL;
+	t_ast *head = NULL;
 
 	t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
-	insert_ast(&root, node1);
+	insert_ast(&head, node1);
 	
 	t_ast *node4 = create_node(TYPE_REDIRECT, "<<", OP_REDIRECT);
-	insert_ast(&root, node4);
+	insert_ast(&head, node4);
 
-	analyzing_cmd(&vtr, hashtable, root);
-	handle_cmd(&vtr, hashtable, root);
-	delete_node(root);
+	analyzing_cmd(&vtr, hashtable, head);
+	handle_cmd(&vtr, hashtable, head);
+	delete_node(head);
 	destroy_hashtable(hashtable);
 }
 

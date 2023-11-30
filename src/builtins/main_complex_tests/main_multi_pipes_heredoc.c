@@ -37,30 +37,30 @@ int main(int argc, char **argv, char **envp)
 	init_redirects(&vtr);
 
 
-	t_ast *root = NULL;
+	t_ast *head = NULL;
 
 	t_ast *node1 = create_node(TYPE_COMMAND, "echo 00000", DEFAULT);
-	insert_ast(&root, node1);
+	insert_ast(&head, node1);
 	
 	t_ast *node2 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-	insert_ast(&root, node2);
+	insert_ast(&head, node2);
 
 	t_ast *node3 = create_node(TYPE_COMMAND, "sort", DEFAULT);
-	insert_ast(&root, node3);
+	insert_ast(&head, node3);
 
     t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-	insert_ast(&root, node4);
+	insert_ast(&head, node4);
 
     t_ast *node5 = create_node(TYPE_COMMAND, "wc", DEFAULT);
-	insert_ast(&root, node5);
+	insert_ast(&head, node5);
 
 	t_ast *node6 = create_node(TYPE_REDIRECT, "<< EOF", OP_REDIRECT);
-	insert_ast(&root, node6);
+	insert_ast(&head, node6);
 
 
-	analyzing_cmd(&vtr, hashtable, root);
-	handle_cmd(&vtr, hashtable, root);
-	delete_node(root);
+	analyzing_cmd(&vtr, hashtable, head);
+	handle_cmd(&vtr, hashtable, head);
+	delete_node(head);
 	destroy_hashtable(hashtable);
 }
 

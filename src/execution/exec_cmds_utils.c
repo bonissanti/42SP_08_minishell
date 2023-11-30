@@ -15,29 +15,31 @@
 #include "../include/hash.h"
 #include "../include/builtins.h"
 
-void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node)
-{
-	int status;
-	pid_t pid;
+void	init_stru
 
-	pid = fork();
-	if (pid == -1)
-	{
-		ft_fprintf(2, "minishell: fork: %s\n", strerror(errno));
-		return ;
-	}
-	if (pid == 0)
-	{
-		if (!execute_if_builtin(vtr, hashtable, node->left))
-			execve(node->left->path, node->left->args, NULL);
-		exit(0);
-	}
-	else
-	{
-		wait(&status);
-		if ((ft_strncmp(node->cmds, "&&", 2) == 0 && WEXITSTATUS(status) == 0) 
-			|| (ft_strncmp(node->cmds, "||", 2) == 0 && WEXITSTATUS(status) != 0))
-			if (!execute_if_builtin(vtr, hashtable, node->right))
-				execve(node->right->path, node->right->args, NULL);
-	}
-}
+// void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node)
+// {
+// 	int status;
+// 	pid_t pid;
+
+// 	pid = fork();
+// 	if (pid == -1)
+// 	{
+// 		ft_fprintf(2, "minishell: fork: %s\n", strerror(errno));
+// 		return ;
+// 	}
+// 	if (pid == 0)
+// 	{
+// 		if (!execute_if_builtin(vtr, hashtable, node->left))
+// 			execve(node->left->path, node->left->args, NULL);
+// 		exit(0);
+// 	}
+// 	else
+// 	{
+// 		wait(&status);
+// 		if ((ft_strncmp(node->cmds, "&&", 2) == 0 && WEXITSTATUS(status) == 0) 
+// 			|| (ft_strncmp(node->cmds, "||", 2) == 0 && WEXITSTATUS(status) != 0))
+// 			if (!execute_if_builtin(vtr, hashtable, node->right))
+// 				execve(node->right->path, node->right->args, NULL);
+// 	}
+// }

@@ -59,8 +59,8 @@ t_ast *create_node(t_type type, char *cmds, t_op weight)
 	new_node = (t_ast *)malloc(sizeof(t_ast));
 	prepare_ast(new_node, cmds, type);
 	new_node->path = NULL;
-	new_node->in_fd = STDIN_FILENO;
-	new_node->out_fd = STDOUT_FILENO;
+	// new_node->in_fd = STDIN_FILENO;
+	// new_node->out_fd = STDOUT_FILENO;
 	new_node->weight = weight;
 	new_node->type = type;
 	new_node->left = NULL;
@@ -77,18 +77,18 @@ t_ast *create_node(t_type type, char *cmds, t_op weight)
  * tree, and the nodes with higher precedence will be on the bottom.
  * 
  * Insert ast has two cases:
- * 1. Left: When the new node has higher precedence than the root node, the new
- * node will be the new root node and the old root node will be the left.
+ * 1. Left: When the new node has higher precedence than the head node, the new
+ * node will be the new head node and the old head node will be the left.
  * 
- * 2. Right: Root will have the operator with the lowest precedence, so the 
+ * 2. Right: head will have the operator with the lowest precedence, so the 
  * second line of nodes, needs to have the second lowest precedence (if exists),
  * if not, than the second line of needs needs to be occupied by the highest
- * precedence node. To do this, we need to pass the right node of the root
- * to the left node, then the new node will be the right node of the root.
+ * precedence node. To do this, we need to pass the right node of the head
+ * to the left node, then the new node will be the right node of the head.
  * 
  *  
- * @param: **root: The root of the AST. It's a double pointer because we need
- * to change the root node when the new node has higher precedence.
+ * @param: **head: The head of the AST. It's a double pointer because we need
+ * to change the head node when the new node has higher precedence.
  * @param: *new_node: The new node to be inserted.
  * 
  * @var: current: The current node of the AST.
@@ -97,20 +97,20 @@ t_ast *create_node(t_type type, char *cmds, t_op weight)
  *
  */
 
-void insert_ast(t_ast **root, t_ast *new_node)
+void insert_ast(t_ast **head, t_ast *new_node)
 {
 	t_ast *current;
 
-	if (*root == NULL)
-		*root = new_node;
-	else if (new_node->weight > (*root)->weight)
+	if (*head == NULL)
+		*head = new_node;
+	else if (new_node->weight > (*head)->weight)
 	{
-		new_node->left = *root;
-		*root = new_node;
+		new_node->left = *head;
+		*head = new_node;
 	}
 	else
 	{
-		current = *root;
+		current = *head;
 		while (current->right != NULL && current->right->weight 
 			>= new_node->weight)
 			current = current->right;
@@ -131,89 +131,89 @@ void insert_ast(t_ast **root, t_ast *new_node)
  *
  */
 
-void delete_node(t_ast *root)
+void delete_node(t_ast *head)
 {
-	if (root != NULL)
+	if (head != NULL)
 	{
-		delete_node(root->left);
-		delete_node(root->right);
-		free_split(root->split);
-		safe_free((void **)&root->path);
-		free(root);
+		delete_node(head->left);
+		delete_node(head->right);
+		free_split(head->split);
+		safe_free((void **)&head->path);
+		free(head);
 	}
 }
 
 
-// void in_order_traversal(t_ast *root)
+// void in_order_traversal(t_ast *head)
 // {
-// 	if (root != NULL)
+// 	if (head != NULL)
 // 	{
-// 		in_order_traversal(root->left);
-// 		printf("%s\n", root->args);
-// 		in_order_traversal(root->right);
+// 		in_order_traversal(head->left);
+// 		printf("%s\n", head->args);
+// 		in_order_traversal(head->right);
 // 	}
 // }
 
-void pre_order_traversal(t_ast *root)
+void pre_order_traversal(t_ast *head)
 {
-	if (root != NULL)
+	if (head != NULL)
 	{
-		printf("%s\n", root->cmds);
-		pre_order_traversal(root->left);
-		pre_order_traversal(root->right);
+		printf("%s\n", head->cmds);
+		pre_order_traversal(head->left);
+		pre_order_traversal(head->right);
 	}
 }
 
-// void post_order_traversal(t_ast *root)
+// void post_order_traversal(t_ast *head)
 // {
-// 	if (root != NULL)
+// 	if (head != NULL)
 // 	{
-// 		post_order_traversal(root->left);
-// 		post_order_traversal(root->right);
-// 		printf("%s\n", root->args);
+// 		post_order_traversal(head->left);
+// 		post_order_traversal(head->right);
+// 		printf("%s\n", head->args);
 // 	}
 // }
 
-// void print_tree(t_ast *root, int depth)
+// void print_tree(t_ast *head, int depth)
 // {
 // 	int i = -1;
-// 	if (root != NULL)
+// 	if (head != NULL)
 // 	{
-// 		print_tree(root->left, depth + 1);
+// 		print_tree(head->left, depth + 1);
 // 		while (++i < depth)
 // 			printf("   ");
-// 		printf("%s\n", root->args);
-// 		print_tree(root->right, depth + 1);
+// 		printf("%s\n", head->args);
+// 		print_tree(head->right, depth + 1);
 // 	}
 // }
 
 // int main(void)
 // {
-//     t_ast *root = NULL;
+//     t_ast *head = NULL;
 
 //     t_ast *node1 = create_node(TYPE_COMMAND, "ls -l", DEFAULT);
-//     insert_ast(&root, node1);
+//     insert_ast(&head, node1);
 
 //     t_ast *node2 = create_node(TYPE_OPERATOR, ">", OP_REDIRECT);
-//     insert_ast(&root, node2);
+//     insert_ast(&head, node2);
 
 //     t_ast *node3 = create_node(TYPE_FILE, "error.txt", DEFAULT);
-//     insert_ast(&root, node3);
+//     insert_ast(&head, node3);
 
 //     t_ast *node4 = create_node(TYPE_OPERATOR, "&&", OP_LOGICAL);
-//     insert_ast(&root, node4);
+//     insert_ast(&head, node4);
 
 //     t_ast *node5 = create_node(TYPE_COMMAND, "cat error.txt", DEFAULT);
-//     insert_ast(&root, node5);
+//     insert_ast(&head, node5);
 
 //     t_ast *node6 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-//     insert_ast(&root, node6);
+//     insert_ast(&head, node6);
 
 //     t_ast *node7 = create_node(TYPE_COMMAND, "grep \"42\"", DEFAULT);
-//     insert_ast(&root, node7);
+//     insert_ast(&head, node7);
 
-//     pre_order_traversal(root);
-// 	delete_node(root);
+//     pre_order_traversal(head);
+// 	delete_node(head);
 
 //     return (0);
 // }
@@ -222,28 +222,28 @@ void pre_order_traversal(t_ast *root)
 //ls -l > outfile.txt < cat | wc -l
 // int main(void)
 // {
-// 	t_ast *root = create_node(TYPE_COMMAND, "ls -l");
+// 	t_ast *head = create_node(TYPE_COMMAND, "ls -l");
 
 // 	t_ast *node1 = create_node(TYPE_OPERATOR, "|");
-// 	insert_ast(&root, node1, OP_PIPE);
+// 	insert_ast(&head, node1, OP_PIPE);
 
 // 	t_ast *node2 = create_node(TYPE_FILE, "grep .c");
-// 	insert_ast(&root, node2, DEFAULT);
+// 	insert_ast(&head, node2, DEFAULT);
 
 // 	t_ast *node3 = create_node(TYPE_OPERATOR, "&&");
-// 	insert_ast(&root, node3, OP_LOGICAL);
+// 	insert_ast(&head, node3, OP_LOGICAL);
 
 // 	t_ast *node4 = create_node(TYPE_COMMAND, "wc -l");
-// 	insert_ast(&root, node4, DEFAULT);
+// 	insert_ast(&head, node4, DEFAULT);
 
 // 	t_ast *node5 = create_node(TYPE_OPERATOR, ">");
-// 	insert_ast(&root, node5, OP_REDIRECT);
+// 	insert_ast(&head, node5, OP_REDIRECT);
 
 // 	t_ast *node6 = create_node(TYPE_FILE, "output.txt");
-// 	insert_ast(&root, node6, DEFAULT);
+// 	insert_ast(&head, node6, DEFAULT);
 
-// 	pre_order_traversal(root);
-// 	// print_tree(root, 0);
+// 	pre_order_traversal(head);
+// 	// print_tree(head, 0);
 // 	return (0);
 // }
 
@@ -251,43 +251,43 @@ void pre_order_traversal(t_ast *root)
 //ls -l > outfile.txt < cat | wc -l
 // int main(void)
 // {
-// 	t_ast *root = create_node(NODE_COMMAND, "ls -l");
+// 	t_ast *head = create_node(NODE_COMMAND, "ls -l");
 
 // 	t_ast *node1 = create_node(NODE_OPERATOR, "|");
-// 	insert_ast(&root, node1, OP_PIPE);
+// 	insert_ast(&head, node1, OP_PIPE);
 
 // 	t_ast *node2 = create_node(NODE_FILE, "grep .c");
-// 	insert_ast(&root, node2, DEFAULT);
+// 	insert_ast(&head, node2, DEFAULT);
 
 // 	t_ast *node3 = create_node(NODE_OPERATOR, "&&");
-// 	insert_ast(&root, node3, OP_LOGICAL);
+// 	insert_ast(&head, node3, OP_LOGICAL);
 
 // 	t_ast *node4 = create_node(NODE_COMMAND, "wc -l");
-// 	insert_ast(&root, node4, DEFAULT);
+// 	insert_ast(&head, node4, DEFAULT);
 
 // 	t_ast *node5 = create_node(NODE_OPERATOR, ">");
-// 	insert_ast(&root, node5, OP_REDIRECT);
+// 	insert_ast(&head, node5, OP_REDIRECT);
 
 // 	t_ast *node6 = create_node(NODE_FILE, "output.txt");
-// 	insert_ast(&root, node6, DEFAULT);
+// 	insert_ast(&head, node6, DEFAULT);
 
-// 	pre_order_traversal(root);
-// 	// print_tree(root, 0);
+// 	pre_order_traversal(head);
+// 	// print_tree(head, 0);
 // 	return (0);
 // }
 
 // int main(void)
 // {
-// 	t_ast *root = create_node(NODE_COMMAND, "ls");
+// 	t_ast *head = create_node(NODE_COMMAND, "ls");
 
 // 	t_ast *node1 = create_node(NODE_OPERATOR, "|");
-// 	insert_ast(&root, node1, OP_PIPE);
+// 	insert_ast(&head, node1, OP_PIPE);
 
 // 	t_ast *node2 = create_node(NODE_COMMAND, "grep .c");
-// 	insert_ast(&root, node2, OP_PIPE);
+// 	insert_ast(&head, node2, OP_PIPE);
 
-// 	print_tree(root, 0);
-// 	delete_node(root);
+// 	print_tree(head, 0);
+// 	delete_node(head);
 // 	delete_node(node1);
 // 	delete_node(node2);
 // 	return (0);

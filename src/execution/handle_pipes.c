@@ -7,7 +7,7 @@ static void	handle_pipes(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {
     int fd[2];
     pid_t pid;
-   	t_rdir rdir;
+   	t_exec rdir;
 
     // rdir.in_fd = STDIN_FILENO;
 	// rdir.out_fd = STDOUT_FILENO;
@@ -57,7 +57,7 @@ static void	handle_pipes(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 }
 
 
-void exec_cmds_in_pipe(t_vector *vtr, t_hashtable *hashtable, t_ast *node, t_rdir rdir, int *fd)
+void exec_cmds_in_pipe(t_vector *vtr, t_hashtable *hashtable, t_ast *node, t_exec rdir, int *fd)
 {
     close(fd[0]);
 	// ft_printf("Filho: rdir.current_pipe: %d\n", rdir.current_pipe);
@@ -69,7 +69,7 @@ void exec_cmds_in_pipe(t_vector *vtr, t_hashtable *hashtable, t_ast *node, t_rdi
 		// ft_fprintf(2, "Filho :entrei aqui no fd[1]\n");
 	}
 	ft_fprintf(2, "fd[1]: %d\n", fd[1]);
-    if (!execute_if_builtin(vtr, hashtable, node->left) && node->type == TYPE_COMMAND)
+    if (!execute_if_builtin(vtr, hashtable, node->left) && node->left->type == TYPE_COMMAND)
 	{
 		ft_fprintf(2, "Filho: Executando cmd shell: %s\n", node->left->path);
         execve(node->left->path, node->left->args, NULL);
@@ -78,7 +78,7 @@ void exec_cmds_in_pipe(t_vector *vtr, t_hashtable *hashtable, t_ast *node, t_rdi
 }
 
 
-void	parent_process(t_rdir rdir, int *fd)
+void	parent_process(t_exec rdir, int *fd)
 {
 	wait(NULL);
 	close(fd[1]);

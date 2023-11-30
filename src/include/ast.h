@@ -21,27 +21,27 @@ typedef enum
 {
 	TYPE_COMMAND,
 	TYPE_OPERATOR,
-	TYPE_FILE,
 	TYPE_REDIRECT,
 }	t_type;
 
-// Inverted order of precedence
 typedef enum
 {
-	OP_REDIRECT = 3, // <, >, >>
+	OP_REDIRECT = 3,
 	// OP_HEREDOC = 4,
-	OP_PIPE = 3,     // |
-	OP_LOGICAL = 3,  // &&, ||
+	OP_PIPE = 3,  
+	OP_LOGICAL = 3,
 	DEFAULT = 0,
 }	t_op;
 
 typedef struct s_rdir
 {
-	// int	in_fd;
-	// int	out_fd;
+	int	in_fd;
+	int	out_fd;
+	int old_stdin;
+	int old_stdout;
 	int current_pipe;
-	t_bool is_last_cmd;
-}	t_rdir;
+	// t_bool is_last_cmd;
+}	t_exec;
 
 typedef struct s_ast
 {
@@ -50,11 +50,11 @@ typedef struct s_ast
 	char **args;
 	char **split; //
 	char *path;
-	int in_fd;
-	int out_fd;
 	char *delim;
+	int exit_status;
 	t_op weight;
 	t_type type;
+	pid_t pid;
 	struct s_ast *left;
 	struct s_ast *right;
 } 	t_ast;
@@ -63,9 +63,9 @@ typedef struct s_ast
 //############################### AST #########################################
 
 t_ast 				*create_node(t_type type, char *cmds, t_op weight);
-void				insert_ast(t_ast **root, t_ast *new_node);
-void				delete_node(t_ast *root);
-void				pre_order_traversal(t_ast *root); // Remover depois
+void				insert_ast(t_ast **head, t_ast *new_node);
+void				delete_node(t_ast *head);
+void				pre_order_traversal(t_ast *head); // Remover depois
 
 //############################### UTILS #######################################
 

@@ -26,7 +26,7 @@ MAND_SRCS 	= 	ast/ast.c ast/ast_split.c \
 				handle_segments/expand_dollar.c handle_segments/quotes_validater.c \
 				handle_segments/quotes_error.c handle_segments/tilde_handler.c \
 				handle_segments/wildcard_handler.c handle_segments/wildcard_utils.c \
-				execution/find_path.c execution/prepare_exec.c execution/exec_cmds.c \
+				execution/find_path.c execution/prepare_exec.c execution/multi_exec_cmds.c \
 				execution/check_builtins.c redirects/check_redirects.c \
 				redirects/redirects.c redirects/heredoc.c redirects/verify_permissions.c \
 				minishell_utils.c
@@ -42,7 +42,7 @@ OBJDIR 		= ./objs
 
 ################################# Compilate #################################
 
-CC = cc
+CC = cc 
 CFLAGS = -Wall -Wextra -Werror -g3 
 
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) --no-print-directory

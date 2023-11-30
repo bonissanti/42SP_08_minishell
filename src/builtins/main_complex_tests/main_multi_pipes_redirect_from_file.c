@@ -41,46 +41,46 @@ int main(int argc, char **argv, char **envp)
 	init_redirects(&vtr);
 
 
-	t_ast *root = NULL;
+	t_ast *head = NULL;
 
 	t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
-	insert_ast(&root, node1);
+	insert_ast(&head, node1);
 
 	t_ast *node11 = create_node(TYPE_REDIRECT, ">", OP_REDIRECT);
-	insert_ast(&root, node11);
+	insert_ast(&head, node11);
 
 	t_ast *node12 = create_node(TYPE_FILE, "outfile.txt", DEFAULT);
-	insert_ast(&root, node12);
+	insert_ast(&head, node12);
 	
 	
 	t_ast *node2 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-	insert_ast(&root, node2);
+	insert_ast(&head, node2);
 
 	t_ast *node3 = create_node(TYPE_COMMAND, "echo tonto", DEFAULT);
-	insert_ast(&root, node3);
+	insert_ast(&head, node3);
 
     t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-	insert_ast(&root, node4);
+	insert_ast(&head, node4);
 
     t_ast *node5 = create_node(TYPE_COMMAND, "echo motherfucker", DEFAULT);
-	insert_ast(&root, node5);
+	insert_ast(&head, node5);
 
 	t_ast *node6 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-	insert_ast(&root, node6);
+	insert_ast(&head, node6);
 
 	t_ast *node7 = create_node(TYPE_COMMAND, "echo stupid", DEFAULT);
-	insert_ast(&root, node7);
+	insert_ast(&head, node7);
 
 	t_ast *node8 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-	insert_ast(&root, node8);
+	insert_ast(&head, node8);
 
 	t_ast *node9 = create_node(TYPE_COMMAND, "ls", DEFAULT);
-	insert_ast(&root, node9);
+	insert_ast(&head, node9);
 
 
-	analyzing_cmd(&vtr, hashtable, root);
-	handle_cmd(&vtr, hashtable, root);
-	delete_node(root);
+	analyzing_cmd(&vtr, hashtable, head);
+	handle_cmd(&vtr, hashtable, head);
+	delete_node(head);
 	destroy_hashtable(hashtable);
 }
 
@@ -97,20 +97,20 @@ int main(int argc, char **argv, char **envp)
 // 	init_redirects(&vtr);
 
 
-// 	t_ast *root = NULL;
+// 	t_ast *head = NULL;
 
 // 	t_ast *node1 = create_node(TYPE_COMMAND, "echo fucker", DEFAULT);
-// 	insert_ast(&root, node1);
+// 	insert_ast(&head, node1);
 	
 // 	t_ast *node4 = create_node(TYPE_REDIRECT, ">", OP_REDIRECT);
-// 	insert_ast(&root, node4);
+// 	insert_ast(&head, node4);
 
 // 	t_ast *node7 = create_node(TYPE_FILE, "sucker.txt", DEFAULT);
-// 	insert_ast(&root, node7);
+// 	insert_ast(&head, node7);
 
-// 	analyzing_cmd(&vtr, hashtable, root);
-// 	handle_cmd(&vtr, hashtable, root);
-// 	delete_node(root);
+// 	analyzing_cmd(&vtr, hashtable, head);
+// 	handle_cmd(&vtr, hashtable, head);
+// 	delete_node(head);
 // 	destroy_hashtable(hashtable);
 // }
 
