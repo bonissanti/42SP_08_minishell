@@ -35,6 +35,14 @@ typedef enum
 	DEFAULT = 0,
 }	t_op;
 
+typedef struct s_rdir
+{
+	// int	in_fd;
+	// int	out_fd;
+	int current_pipe;
+	t_bool is_last_cmd;
+}	t_rdir;
+
 typedef struct s_ast
 {
 	
@@ -51,15 +59,6 @@ typedef struct s_ast
 	struct s_ast *right;
 } 	t_ast;
 
-// typedef struct s_ast
-// {
-// 	char			*args;
-// 	char			**path;
-// 	t_op			weight;
-// 	t_type			type;
-// 	struct s_ast	*left;
-// 	struct s_ast	*right;
-// }					t_ast;
 
 //############################### AST #########################################
 

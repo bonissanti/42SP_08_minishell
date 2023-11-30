@@ -38,6 +38,7 @@ t_bool	execute_if_builtin(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 	{
 		if (ft_strcmp(current->cmd, current->name) == 0)
 		{
+			ft_fprintf(2, "Executando builtin: %s\n\n", current->name);
 			current->function(hashtable, node->args);
 			return (true);
 		}
