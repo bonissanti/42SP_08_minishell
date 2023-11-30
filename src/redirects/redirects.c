@@ -17,7 +17,6 @@
 
 void	redirect_input(t_ast *node, char *filename)
 {
-
 	if (filename == NULL)
 	{
 		ft_fprintf(2, "minishell: syntax error near unexpected token `newline'\n");
@@ -26,28 +25,24 @@ void	redirect_input(t_ast *node, char *filename)
 	node->in_fd = open(filename, O_RDONLY);
 	if (!verify_file_permissions(filename))
 		return ;
+	dup2(node->in_fd, STDIN_FILENO);
+	close(node->in_fd);
 }
 
 void	redirect_output(t_ast *node, char *filename)
 {
-	if (filename == NULL)
-	{
-		ft_fprintf(2, "minishell: syntax error near unexpected token `newline'\n");
-		return ;
-	}
 	node->out_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (!verify_file_permissions(filename))
 		return ;
+	dup2(node->out_fd, STDOUT_FILENO);
+	close(node->out_fd);
 }
 
 void	redirect_append(t_ast *node, char *filename)
 {	
-	if (filename == NULL)
-	{
-		ft_fprintf(2, "minishell: syntax error near unexpected token `newline'\n");
-		return ;
-	}
 	node->out_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (!verify_file_permissions(filename))
 		return ;
+	dup2(node->out_fd, STDOUT_FILENO);
+	close(node->out_fd);
 }

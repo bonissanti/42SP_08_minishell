@@ -46,14 +46,36 @@ int main(int argc, char **argv, char **envp)
 	t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
 	insert_ast(&root, node1);
 
-	t_ast *node2 = create_node(TYPE_REDIRECT, "> wait_test.txt", OP_REDIRECT);
+	t_ast *node11 = create_node(TYPE_REDIRECT, ">", OP_REDIRECT);
+	insert_ast(&root, node11);
+
+	t_ast *node12 = create_node(TYPE_FILE, "outfile.txt", DEFAULT);
+	insert_ast(&root, node12);
+	
+	
+	t_ast *node2 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
 	insert_ast(&root, node2);
 
-	t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+	t_ast *node3 = create_node(TYPE_COMMAND, "echo tonto", DEFAULT);
+	insert_ast(&root, node3);
+
+    t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
 	insert_ast(&root, node4);
 
-	t_ast *node5 = create_node(TYPE_COMMAND, "wc", DEFAULT);
+    t_ast *node5 = create_node(TYPE_COMMAND, "echo motherfucker", DEFAULT);
 	insert_ast(&root, node5);
+
+	t_ast *node6 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+	insert_ast(&root, node6);
+
+	t_ast *node7 = create_node(TYPE_COMMAND, "echo stupid", DEFAULT);
+	insert_ast(&root, node7);
+
+	t_ast *node8 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+	insert_ast(&root, node8);
+
+	t_ast *node9 = create_node(TYPE_COMMAND, "ls", DEFAULT);
+	insert_ast(&root, node9);
 
 
 	analyzing_cmd(&vtr, hashtable, root);

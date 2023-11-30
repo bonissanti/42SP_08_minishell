@@ -3,34 +3,6 @@
 #include "../include/hash.h"
 #include "../include/builtins.h"
 
-static void	simple_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
-// void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node);
-static void	handle_pipes(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
-void	exec_cmds_in_pipe(t_vector *vtr, t_hashtable *hashtable, t_ast *node, t_rdir rdir, int *fd);
-void	parent_process(t_rdir rdir, int *fd);
-
-void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
-{
-	if (node == NULL)
-		return ;
-
-	if ((node->type == TYPE_OPERATOR && ft_strcmp(node->cmds, "|") == 0 )) //pipes
-		handle_pipes(vtr, hashtable, node);
-
-	// else if (node->type == TYPE_OPERATOR && ft_strcmp(node->cmds, "|" ) != 0)
-	// 	execute_and_or(vtr, hashtable, node);
-
-	else if (node->type == TYPE_REDIRECT)
-		simple_execution(vtr, hashtable, node->left);
-
-	// else if (node->type == TYPE_COMMAND && node->left == NULL && node->right == NULL)
-	// 	simple_execution(vtr, hashtable, node);
-
-	// if (node->right && ft_strcmp(node->cmds, "&&") != 0) 
-	// 	handle_cmd(vtr, hashtable, node->right);
-}
-
-
 static void	handle_pipes(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {
     int fd[2];

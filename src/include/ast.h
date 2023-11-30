@@ -28,7 +28,7 @@ typedef enum
 // Inverted order of precedence
 typedef enum
 {
-	OP_REDIRECT = 2, // <, >, >>
+	OP_REDIRECT = 3, // <, >, >>
 	// OP_HEREDOC = 4,
 	OP_PIPE = 3,     // |
 	OP_LOGICAL = 3,  // &&, ||

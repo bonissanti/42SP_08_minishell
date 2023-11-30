@@ -34,7 +34,7 @@ void  is_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
             if (ft_strcmp(current->name, "<<") == 0)
                 current->func_here(node , hashtable, node->delim);
             else
-                current->function(node, node->right->cmds);
+                current->function(node, node->delim);
             break;
         }
         current++;
