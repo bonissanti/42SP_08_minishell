@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/01 18:54:46 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/01 20:00:44 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,38 +28,11 @@ static void     execute_forked_command(t_hashtable *hashtable, t_ast *node);
 
 void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
 {
-	t_exec exec;
 
-	init_structs(&exec, 0, sizeof(t_exec));
     handle_redirects(vtr, hashtable, root);
 	handle_pipes(hashtable, root);
 	wait_for_children(root);
 }
-
-
-
-// static void    assign_and_exec_pids(t_hashtable *hashtable, t_ast *node)
-// {
-//     if (node == NULL)
-//         return ;
-
-//     if (node->type == TYPE_COMMAND)
-//     {
-//         node->pid = fork();
-//         if (node->pid == 0)
-//         {
-            
-//             execute_forked_command(hashtable, node);
-//             // exit(node->exit_status);
-//             exit(EXIT_SUCCESS);
-//         }
-//     }
-//     else if (node->type == TYPE_OPERATOR || node->type == TYPE_REDIRECT)
-//     {
-//         assign_and_exec_pids(hashtable, node->left);
-//         assign_and_exec_pids(hashtable, node->right);
-//     }
-// }
 
 
 
@@ -105,6 +78,9 @@ static void handle_pipes(t_hashtable *hashtable, t_ast *node)
         else
             break ;
     }
+	close_all_fds(pipefd);
+	// ft_fprintf(2, "pipefd[0]: %s\n", get_next_line(pipefd[0]));
+	// ft_fprintf(2, "pipefd[1]: %s\n", get_next_line(pipefd[1]));
     final_cmd(hashtable, node, pipefd);
 }
 
@@ -124,6 +100,9 @@ void    first_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd)
 		close(pipefd[1]);
 }
 
+
+
+		
 void	middle_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd, int *new_pipefd)
 {
 	pipe(new_pipefd);

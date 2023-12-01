@@ -37,11 +37,21 @@
                     "text": "target remote | /usr/bin/vgdb --pid=125151",
                     "ignoreFailures": true
                 },
-			// 	{
-			// 		"description": "Set follow-fork-mode to child",
-			// 		"text": "set follow-fork-mode child",
-			// 		"ignoreFailures": false
-			// 	}
+				{
+                    "description": "Start Valgrind",
+                    "text": "set solib-search-path /usr/lib/x86_64-linux-gnu/valgrind",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Start Valgrind",
+                    "text": "target remote | /usr/bin/vgdb --pid=193568",
+                    "ignoreFailures": true
+                },
+				// {
+				// 	"description": "Set follow-fork-mode to child",
+				// 	"text": "set follow-fork-mode child",
+				// 	"ignoreFailures": false
+				// }
 			// ]
 		}
 	]

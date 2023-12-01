@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/01 17:18:50 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/01 19:26:36 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,12 @@ t_ast *create_node(t_type type, char *cmds, t_op weight)
 	new_node = (t_ast *)malloc(sizeof(t_ast));
 	prepare_ast(new_node, cmds, type);
 	new_node->path = NULL;
-	// new_node->in_fd = STDIN_FILENO;
-	// new_node->out_fd = STDOUT_FILENO;
 	new_node->weight = weight;
 	new_node->type = type;
 	new_node->left = NULL;
 	new_node->right = NULL;
+	new_node->exit_status = 0;
+	new_node->fd = 0;
 	return (new_node);
 }
 

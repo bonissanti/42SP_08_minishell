@@ -52,9 +52,8 @@ char    *build_cmd_path(t_ast *node , char *path);
 //############################# EXECUTION ####################################//
 
 void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root);
-void	close_unused_pipes(int *pipefd, t_bool first_cmd, t_bool middle_cmd);
+void    close_all_fds(int *fd);
 // void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node); //temp
 
 // void print_pipe_contents(int *pipefd); // Remover depois
 // void depth_first_traversal(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
-

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/01 17:40:56 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/01 19:02:18 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,8 @@
 #include "../include/builtins.h"
 #include "../include/segments.h"
 
-void	close_unused_pipes(int *pipefd, t_bool first_cmd, t_bool middle_cmd)
+void    close_all_fds(int *fd)
 {
-	if (!middle_cmd)
-		close(pipefd[1]);
-	else if (!first_cmd)
-		close(pipefd[0]);
+    close(fd[0]);
+	close(fd[1]);
 }
