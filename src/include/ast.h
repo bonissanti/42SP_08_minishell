@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/24 18:26:59 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/30 14:13:46 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libft/libft.h"
+
+typedef struct s_rdir
+{
+    // int    in_fd;
+    // int    out_fd;
+    int current_pipe;
+    t_bool is_last_cmd;
+}    t_rdir;
 
 typedef enum
 {
@@ -28,11 +36,12 @@ typedef enum
 // Inverted order of precedence
 typedef enum
 {
-	OP_REDIRECT = 2, // <, >, >>
-	OP_PIPE = 3,     // |
-	OP_LOGICAL = 3,  // &&, ||
-	DEFAULT = 0,
-}	t_op;
+    OP_REDIRECT = 3, // <, >, >>
+    // OP_HEREDOC = 4,
+    OP_PIPE = 3,     // |
+    OP_LOGICAL = 3,  // &&, ||
+    DEFAULT = 0,
+}    t_op;
 
 typedef struct s_ast
 {

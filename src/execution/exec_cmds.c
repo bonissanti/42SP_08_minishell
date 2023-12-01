@@ -2,6 +2,7 @@
 #include "../include/exec.h"
 #include "../include/hash.h"
 #include "../include/builtins.h"
+#include <sys/wait.h>
 
 void	simple_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node);
@@ -32,6 +33,8 @@ t_ast *branch_tip(t_ast *node)
 {
 	t_ast *first;
 
+	if(!node)
+		return (NULL);
 	first = node;
 	if(first->left == NULL)
 		return (first);
@@ -48,7 +51,7 @@ void	set_fds(int (*fd)[2])
 	int	i;
 
 	i = 0;
-	while (i < 1024 + 1)
+	while (i <= 100)
 	{
 		if (pipe(fd[i]) == -1)
 		{
@@ -66,7 +69,7 @@ void	close_unused_fds(int (*fds)[2], int pid, int total_fds)
 
 	i = 0;
 	j = 0;
-	while (i < total_fds)
+	while (i <= total_fds)
 	{
 		if (fds[i][j] != fds[pid - 1][j])
 			close(fds[i][j]);
@@ -74,7 +77,7 @@ void	close_unused_fds(int (*fds)[2], int pid, int total_fds)
 	}
 	i = 0;
 	j = 1;
-	while (i < total_fds)
+	while (i <= total_fds)
 	{
 		if (fds[i][j] != fds[pid][j])
 			close(fds[i][j]);
@@ -89,7 +92,7 @@ void	close_all_fds(int (*fds)[2], int total_fds)
 
 	i = 0;
 	j = 0;
-	while (i < total_fds)
+	while (i <= total_fds)
 	{
 		close(fds[i][j]);
 		close(fds[i][j + 1]);
@@ -97,66 +100,86 @@ void	close_all_fds(int (*fds)[2], int total_fds)
 	}
 }
 
-static void child_executor(t_vector *vtr, t_hashtable *hashtable, t_ast *node, int (*fd)[2], int i)
+int total_branchs(t_ast *node)
 {
-	// close(fd[i][0]);
-	close_unused_fds(fd, i, 1024);
-	if (node->in_fd != STDIN_FILENO)
+	int total;
+
+	total = 0;
+	if(!node)
+		return(total);
+	while(node)
 	{
-		dup2(node->in_fd, STDIN_FILENO);
-		close(node->in_fd);
+		total++;
+		node = node->right;
 	}
-	if (node->out_fd != STDOUT_FILENO)
-	{
-		dup2(node->out_fd, STDOUT_FILENO);
-		close(node->out_fd);
-	}
-	dup2(fd[i][1], STDOUT_FILENO);
-	close(fd[i][1]);
-	if (node->type == TYPE_REDIRECT)
-		simple_execution(vtr, hashtable, branch_tip(node->left));
-	if (!execute_if_builtin(vtr, hashtable, branch_tip(node->left)))
-		exit(execve(branch_tip(node->left)->path, branch_tip(node->left)->args, NULL));
+	return(total);
+	ft_printf("Total: %d\n", total);
 }
 
-static void parent_executor(t_vector *vtr, t_hashtable *hashtable, t_ast *node, int (*fd)[2], int i)
-{
-	// close(fd[i][1]);
-	close_unused_fds(fd, i, 1024);
-	if (node->in_fd != STDIN_FILENO)
-		close(node->in_fd);
-	dup2(fd[i][0], STDIN_FILENO);
-	if (node->type == TYPE_REDIRECT)
-		simple_execution(vtr, hashtable, branch_tip(node->right));
-	if (!execute_if_builtin(vtr, hashtable, branch_tip(node->right))
-		&& branch_tip(node->right)->type != TYPE_REDIRECT)
-		exit(execve(branch_tip(node->right)->path, branch_tip(node->right)->args, NULL));
-}
+// static void child_executor(t_vector *vtr, t_hashtable *hashtable, t_ast *node, int *fd, int i)
+// {
+
+// }
+
+// static void parent_executor(t_vector *vtr, t_hashtable *hashtable, t_ast *node, int *fd)
+// {
+// 	// (void)vtr;
+// 	// (void)hashtable;
+// 	// (void)node;
+// 	// (void)fd;
+// 	dup2(fd[0], STDIN_FILENO);
+//    	close(fd[0]);
+//    	close(fd[1]);
+
+// 	// close(fd[i][1]);
+// 	// if (node->in_fd != STDIN_FILENO)
+// 	// 	close(node->in_fd);
+// 	// dup2(fd[i][0], STDIN_FILENO);
+// 	// if (node->type == TYPE_REDIRECT)
+// 	// 	simple_execution(vtr, hashtable, branch_tip(node->right));
+// 	// dup2(fd[i - 1][0], STDIN_FILENO);
+// 	// close(fd[i - 1][0]);
+// 	// // dup2(fd[i][1], STDOUT_FILENO);
+// 	// // close(fd[i][1]);
+// 	// if(!node->right)
+// 	// 	return ;
+// 	if (!execute_if_builtin(vtr, hashtable, branch_tip(node->right))																						
+// 		&& branch_tip(node->right)->type != TYPE_REDIRECT)
+// 		exit(execve(branch_tip(node->right)->path, branch_tip(node->right)->args, NULL));
+// }
 
 static void	complet_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {
-	int fd[1024][2];
+	int fd[100][2];
+	int pid[100][1];
 	pid_t pid;
+	int status;
+	int exit_status;
 	int i = 0;
+	int total_pipes = total_branchs(node);
+	int out_bkp = dup(STDOUT_FILENO);
 
 	// pipe(fd);
 	set_fds(fd);
-	while(node->type == TYPE_OPERATOR)
+	while(i < total_pipes)
 	{
-		pid = fork();
-		if (pid == -1)
-		{
-			ft_fprintf(2, "minishell: fork: %s\n", strerror(errno));
-			return ;
-		}
-		if (pid == 0)
-			child_executor(vtr, hashtable, node, fd, i);
-		node = node->right;
+		pid[i][0] = fork();
+		if (pid[i][0] == 0)
+		//here
 		i++;
 	}
-	wait(NULL);
-	parent_executor(vtr, hashtable, node, fd, i);
-	close_all_fds(fd, 1024);
+	pid = fork();
+	if (pid == -1)
+	{
+		ft_fprintf(2, "minishell: fork: %s\n", strerror(errno));
+		return ;
+	}
+
+	node = node->right;
+	i++;
+	waitpid(pid, &status, 0);
+	if(WIFEXITED(status))
+		exit_status = WEXITSTATUS(status);
 }
 
 void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node)
@@ -178,7 +201,7 @@ void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node)
 	else
 	{
 		wait(&status);
-		if ((ft_strncmp(node->cmds, "&&", 2) == 0 && WEXITSTATUS(status) == 0) 
+		if ((ft_strncmp(node->cmds, "&&", 2) == 0 && WEXITSTATUS(status) == 0)
 			|| (ft_strncmp(node->cmds, "||", 2) == 0 && WEXITSTATUS(status) != 0))
 			if (!execute_if_builtin(vtr, hashtable, branch_tip(node->right)))
 				exit(execve(branch_tip(node->right)->path, branch_tip(node->right)->args, NULL));

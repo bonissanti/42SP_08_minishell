@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_builtins.c                                 :+:      :+:    :+:   */
+/*   check_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:00:37 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/24 19:07:06 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/11/29 18:15:52 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ t_bool	execute_if_builtin(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {
 	t_cmd *current; 
 	
+	if(!node)
+		return (false);
 	current = vtr->builtins;
 	if (ft_strchr(node->cmds, '/') != NULL)
 		current->cmd = ft_strrchr(node->cmds, '/') + 1;

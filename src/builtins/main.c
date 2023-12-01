@@ -24,6 +24,54 @@
 // 	}
 // }
 
+// int main(int argc, char **argv, char **envp)
+// {
+//     (void)argc;
+//     (void)argv;
+
+//     t_hashtable *hashtable = create_hashtable();
+//     t_vector vtr;
+
+//     init_hash(hashtable, envp);
+//     init_cmd(&vtr);
+//     init_redirects(&vtr);
+
+
+//     t_ast *root = NULL;
+
+//     t_ast *node1 = create_node(TYPE_COMMAND, "echo 0 0 0 1 0 0", DEFAULT);
+//     insert_ast(&root, node1);
+    
+//     t_ast *node2 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+//     insert_ast(&root, node2);
+
+//     t_ast *node3 = create_node(TYPE_COMMAND, "echo tonto", DEFAULT);
+//     insert_ast(&root, node3);
+
+//     t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+//     insert_ast(&root, node4);
+
+//     t_ast *node5 = create_node(TYPE_COMMAND, "echo motherfucker", DEFAULT);
+//     insert_ast(&root, node5);
+
+//     t_ast *node6 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+//     insert_ast(&root, node6);
+
+//     t_ast *node7 = create_node(TYPE_COMMAND, "echo stupid", DEFAULT);
+//     insert_ast(&root, node7);
+
+//     t_ast *node8 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+//     insert_ast(&root, node8);
+
+//     t_ast *node9 = create_node(TYPE_COMMAND, "ls", DEFAULT);
+//     insert_ast(&root, node9);
+
+//     analyzing_cmd(&vtr, hashtable, root);
+//     handle_cmd(&vtr, hashtable, root);
+//     delete_node(root);
+//     destroy_hashtable(hashtable);
+// }
+
 int main(int argc, char **argv, char **envp)
 {
 	(void)argc;
@@ -39,7 +87,7 @@ int main(int argc, char **argv, char **envp)
 
 	t_ast *root = NULL;
 
-	t_ast *node1 = create_node(TYPE_COMMAND, "echo 0 0 0", DEFAULT);
+	t_ast *node1 = create_node(TYPE_COMMAND, "ls -l", DEFAULT);
 	insert_ast(&root, node1);
 	
 	t_ast *node2 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
@@ -51,25 +99,62 @@ int main(int argc, char **argv, char **envp)
 	t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
 	insert_ast(&root, node4);
 
-    t_ast *node5 = create_node(TYPE_COMMAND, "tr -d ' '", DEFAULT);
+    t_ast *node5 = create_node(TYPE_COMMAND, "wc", DEFAULT);
 	insert_ast(&root, node5);
-
-	// t_ast *node6 = create_node(TYPE_REDIRECT, "<< eof", OP_REDIRECT);
-	// insert_ast(&root, node6);
-
-
-	// t_ast *node3 = create_node(TYPE_FILE, "NULL", DEFAULT);
-	// insert_ast(&root, node3);
-
-    // t_ast *node3 = create_node(TYPE_OPERATOR, "&&", OP_LOGICAL);
-	// insert_ast(&root, node3);
-
 
 	analyzing_cmd(&vtr, hashtable, root);
 	handle_cmd(&vtr, hashtable, root);
 	delete_node(root);
 	destroy_hashtable(hashtable);
 }
+
+// int main(int argc, char **argv, char **envp)
+// {
+//     (void)argc;
+//     (void)argv;
+
+//     t_hashtable *hashtable = create_hashtable();
+//     t_vector vtr;
+
+//     init_hash(hashtable, envp);
+//     init_cmd(&vtr);
+//     init_redirects(&vtr);
+
+
+//     t_ast *root = NULL;
+
+//     t_ast *node1 = create_node(TYPE_COMMAND, "echo 0 0 0 1 0 0", DEFAULT);
+//     insert_ast(&root, node1);
+    
+//     t_ast *node2 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+//     insert_ast(&root, node2);
+
+//     t_ast *node3 = create_node(TYPE_COMMAND, "echo tonto", DEFAULT);
+//     insert_ast(&root, node3);
+
+//     t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+//     insert_ast(&root, node4);
+
+//     t_ast *node5 = create_node(TYPE_COMMAND, "echo motherfucker", DEFAULT);
+//     insert_ast(&root, node5);
+
+//     t_ast *node6 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+//     insert_ast(&root, node6);
+
+//     t_ast *node7 = create_node(TYPE_COMMAND, "echo stupid", DEFAULT);
+//     insert_ast(&root, node7);
+
+//     t_ast *node8 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+//     insert_ast(&root, node8);
+
+//     t_ast *node9 = create_node(TYPE_COMMAND, "ls", DEFAULT);
+//     insert_ast(&root, node9);
+
+//     analyzing_cmd(&vtr, hashtable, root);
+//     handle_cmd(&vtr, hashtable, root);
+//     delete_node(root);
+//     destroy_hashtable(hashtable);
+// }
 
 
 // int main(int argc, char **argv)
