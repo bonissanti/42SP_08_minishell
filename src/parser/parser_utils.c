@@ -56,7 +56,7 @@ int is_operator(t_tkn_type tkn)
 	return (false);
 }
 
-int is_redirect(t_tkn_type tkn)
+int handle_redirect(t_tkn_type tkn)
 {
 	if(tkn == INFILE || tkn == REDIRECT
 	|| tkn == HERE_DOC || tkn == APPEND)

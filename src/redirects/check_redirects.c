@@ -22,7 +22,7 @@ void    init_redirects(t_vector *vtr)
     vtr->redirect[4].func_here = NULL;
 }
 
-void  is_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
+void  handle_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {
     t_redirect *current;
 

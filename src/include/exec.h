@@ -30,7 +30,7 @@ typedef struct s_vector
 void	    init_cmd(t_vector *vtr);
 t_bool		execute_if_builtin(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 void        init_redirects(t_vector *vtr);
-void        is_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
+void        handle_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 
 //############################# REDIRECTIONS #################################//
 

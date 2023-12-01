@@ -96,7 +96,7 @@ void	join_args(t_tkn_list *tkn_list)
 		if (current && (current->type == IDENTIFIER
 		|| current->type == EXPAND || current->type == WILD))
 			new_cmd_file_node(&current);
-		if (current && is_redirect(current->type))
+		if (current && handle_redirect(current->type))
 			new_redirect_node(&current);
 		if (current && current->type == O_PARENTESIS)
 			new_subshell_node(&current);

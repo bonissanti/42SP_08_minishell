@@ -45,7 +45,7 @@ void append_expand(t_tkn_list **current)
 
 void new_cmd_file_node(t_tkn_list **current)
 {
-	if(tkn_list_size((*current)->prev) && is_redirect((*current)->prev->type))
+	if(tkn_list_size((*current)->prev) && handle_redirect((*current)->prev->type))
 	{
 		add_cmd_list((t_cmd_list){
 			.type = TYPE_FILE,

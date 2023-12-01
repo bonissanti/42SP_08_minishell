@@ -8,6 +8,7 @@ void	exec_multi_cmds(t_hashtable *hashtable, t_ast *root)
 	t_exec exec;
 
 	init_structs(&exec, 0, sizeof(t_exec));
+    handle_redirects(hashtable, root);
 	handle_pipes(hashtable, root, &exec);
 	wait_for_children(root);
 }
@@ -22,6 +23,12 @@ static void    assign_and_exec_pids(t_hashtable *hashtable, t_ast *node)
         node->pid = fork();
         if (node->pid == 0)
         {
+            if (node->left && node->left->type == TYPE_REDIRECT)
+                swap_fd(node->left->fd, STDIN_FILENO);
+
+            if (node->right && node->right->type == TYPE_REDIRECT)
+                swap_fd(node->right->fd, STDOUT_FILENO);
+
             execute_forked_command(hashtable, node->cmds, node->args);
             // exit(node->exit_status);
             exit(EXIT_SUCCESS);

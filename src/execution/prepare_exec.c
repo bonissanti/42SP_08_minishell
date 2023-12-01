@@ -40,7 +40,7 @@
 // 			}
 // 		}
 // 		if (node->type == TYPE_REDIRECT)
-// 			is_redirect(vtr, hashtable, node);
+// 			handle_redirect(vtr, hashtable, node);
 // 	}
 // 	if (node->left)
 // 		analyzing_cmd(vtr, hashtable, node->left);

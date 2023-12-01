@@ -97,7 +97,7 @@ int			tkn_list_size(t_tkn_list *tkn_list);
 char		*cmd_type_string(t_type type);
 void		print_cmd_list(t_cmd_list *cmd_list);
 void		print_tkn_list(t_tkn_list *tkn_list);
-int			is_redirect(t_tkn_type tkn);
+int			handle_redirect(t_tkn_type tkn);
 char		*tkn_type_converter(t_tkn_type type);
 void		new_cmd_file_node(t_tkn_list **current);
 void		new_redirect_node(t_tkn_list **current);

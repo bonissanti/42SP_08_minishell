@@ -33,7 +33,7 @@ typedef enum
 	DEFAULT = 0,
 }	t_op;
 
-typedef struct s_rdir
+typedef struct s_texec
 {
 	int	in_fd;
 	int	out_fd;
@@ -52,6 +52,7 @@ typedef struct s_ast
 	char *path;
 	char *delim;
 	int exit_status;
+	int	fd;
 	t_op weight;
 	t_type type;
 	pid_t pid;
