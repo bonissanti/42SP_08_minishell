@@ -51,11 +51,11 @@ int main(int argc, char **argv, char **envp)
     t_ast *node3 = create_node(TYPE_COMMAND, "wc", DEFAULT);
     insert_ast(&head, node3);
     
-    // t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-    // insert_ast(&head, node4);
+    t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+    insert_ast(&head, node4);
 
-    // t_ast *node5 = create_node(TYPE_COMMAND, "wc", DEFAULT);
-    // insert_ast(&head, node5);
+    t_ast *node5 = create_node(TYPE_COMMAND, "wc", DEFAULT);
+    insert_ast(&head, node5);
 
     exec_multi_cmds(&vtr, hashtable, head);
     delete_node(head);

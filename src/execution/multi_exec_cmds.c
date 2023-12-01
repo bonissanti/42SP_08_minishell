@@ -29,12 +29,11 @@ static void    assign_and_exec_pids(t_hashtable *hashtable, t_ast *node)
         node->pid = fork();
         if (node->pid == 0)
         {
-            if (node->left && node->left->type == TYPE_REDIRECT)
-                swap_fd(node->left->fd, STDIN_FILENO);
+            // if (node->left && node->left->type == TYPE_REDIRECT) // verify this
+            //     swap_fd(node->left->fd, STDIN_FILENO);
 
-            if (node->right && node->right->type == TYPE_REDIRECT)
-                swap_fd(node->right->fd, STDOUT_FILENO);
-
+            // if (node->right && node->right->type == TYPE_REDIRECT) // verify this
+            //     swap_fd(node->right->fd, STDOUT_FILENO);
             execute_forked_command(hashtable, node);
             // exit(node->exit_status);
             exit(EXIT_SUCCESS);
@@ -84,6 +83,7 @@ static void    handle_pipes(t_hashtable *hashtable, t_ast *root, t_exec *exec)
         swap_fd(pipefd[0], STDIN_FILENO);
         assign_and_exec_pids(hashtable, root->right);
         restore_fd(exec->old_stdin, exec->old_stdout);
+        
     }
     else 
     {
@@ -91,6 +91,7 @@ static void    handle_pipes(t_hashtable *hashtable, t_ast *root, t_exec *exec)
         handle_pipes(hashtable, root->right, exec);
     }
 }
+
 
 static void execute_forked_command(t_hashtable *hashtable, t_ast *node)
 {
