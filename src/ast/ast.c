@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/29 18:31:04 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/01 17:18:50 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,10 @@ t_ast *create_node(t_type type, char *cmds, t_op weight)
  *
  */
 
-void insert_ast(t_ast **head, t_ast *new_node)
+void insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 {
 	t_ast *current;
-
+	
 	if (*head == NULL)
 		*head = new_node;
 	else if (new_node->weight > (*head)->weight)
@@ -117,6 +117,9 @@ void insert_ast(t_ast **head, t_ast *new_node)
 		new_node->left = current->right;
 		current->right = new_node;
 	}
+
+	if (new_node->type == TYPE_COMMAND)
+		exec->cmd_count++;
 }
 
 /**

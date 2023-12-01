@@ -44,7 +44,6 @@ int 	verify_cmd_permissions(const char *cmd);
 
 //############################# PREPARE_EXEC #################################//
 
-// void	analyzing_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 void	backup_fd(int *old_stdin, int *old_stdout);
 void	swap_fd(int new_fd, int system_fd);
 void	restore_fd(int reset_stdin, int reset_stdout);
@@ -53,6 +52,7 @@ char    *build_cmd_path(t_ast *node , char *path);
 //############################# EXECUTION ####################################//
 
 void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root);
+void	close_unused_pipes(int *pipefd, t_bool first_cmd, t_bool middle_cmd);
 // void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node); //temp
 
 // void print_pipe_contents(int *pipefd); // Remover depois

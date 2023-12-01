@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/29 19:52:41 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/01 17:18:59 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,13 @@ typedef enum
 	DEFAULT = 0,
 }	t_op;
 
-typedef struct s_texec
+typedef struct s_exec
 {
 	int	in_fd;
 	int	out_fd;
 	int old_stdin;
 	int old_stdout;
-	int current_pipe;
+	int cmd_count;
 	// t_bool is_last_cmd;
 }	t_exec;
 
@@ -64,7 +64,7 @@ typedef struct s_ast
 //############################### AST #########################################
 
 t_ast 				*create_node(t_type type, char *cmds, t_op weight);
-void				insert_ast(t_ast **head, t_ast *new_node);
+void 				insert_ast(t_ast **head, t_ast *new_node, t_exec *exec);
 void				delete_node(t_ast *head);
 void				pre_order_traversal(t_ast *head); // Remover depois
 
