@@ -2,13 +2,19 @@
 #include "../include/exec.h"
 #include "../include/hash.h"
 #include "../include/builtins.h"
+#include "../include/segments.h"
 
-void	exec_multi_cmds(t_hashtable *hashtable, t_ast *root)
+static void    assign_and_exec_pids(t_hashtable *hashtable, t_ast *node);
+static void    wait_for_children(t_ast *root);
+static void    handle_pipes(t_hashtable *hashtable, t_ast *root, t_exec *exec);
+static void     execute_forked_command(t_hashtable *hashtable, t_ast *node);
+
+void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
 {
 	t_exec exec;
 
 	init_structs(&exec, 0, sizeof(t_exec));
-    handle_redirects(hashtable, root);
+    handle_redirects(vtr, hashtable, root);
 	handle_pipes(hashtable, root, &exec);
 	wait_for_children(root);
 }
@@ -29,7 +35,7 @@ static void    assign_and_exec_pids(t_hashtable *hashtable, t_ast *node)
             if (node->right && node->right->type == TYPE_REDIRECT)
                 swap_fd(node->right->fd, STDOUT_FILENO);
 
-            execute_forked_command(hashtable, node->cmds, node->args);
+            execute_forked_command(hashtable, node);
             // exit(node->exit_status);
             exit(EXIT_SUCCESS);
         }
@@ -86,26 +92,26 @@ static void    handle_pipes(t_hashtable *hashtable, t_ast *root, t_exec *exec)
     }
 }
 
-static void execute_forked_command(t_hashtable *hashtable, char *cmd, char **args)
+static void execute_forked_command(t_hashtable *hashtable, t_ast *node)
 {
 	char *path;
 	int result;
 
-	result = verify_cmd_permissions(cmd);
-	if (ft_strchr(cmd, '/') != NULL && result == 0) // tratamento para caminho absoluto'
+	result = verify_cmd_permissions(node->cmds);
+	if (ft_strchr(node->cmds, '/') != NULL && result == 0) // tratamento para caminho absoluto'
 	{
 		if (result == 126) // tacar isso numa função para printar erro de permissão
-			ft_fprintf(2, "minishell: %s: command not found\n", cmd);
+			ft_fprintf(2, "minishell: %s: command not found\n", node->cmds);
 		else if (result == 127)
-			ft_fprintf(2, "minishell: %s: %s\n", cmd, strerror(errno));
+			ft_fprintf(2, "minishell: %s: %s\n", node->cmds, strerror(errno));
 		return ;
 	}
 	else
 	{
 		path = search(hashtable, "PATH")->value;
-		cmd = build_cmd_path(cmd, path);
+		node->path = build_cmd_path(node, path);
 	}
-	execve(cmd, args, NULL);
-	ft_fprintf(2, "minishell: %s: %s\n", cmd, strerror(errno));
+	execve(node->path, node->args, NULL);
+	ft_fprintf(2, "minishell: %s: %s\n", node->path, strerror(errno));
 	exit(EXIT_FAILURE);
 }

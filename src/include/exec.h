@@ -30,7 +30,7 @@ typedef struct s_vector
 void	    init_cmd(t_vector *vtr);
 t_bool		execute_if_builtin(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 void        init_redirects(t_vector *vtr);
-void        handle_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
+void        handle_redirects(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 
 //############################# REDIRECTIONS #################################//
 
@@ -52,7 +52,7 @@ char    *build_cmd_path(t_ast *node , char *path);
 
 //############################# EXECUTION ####################################//
 
-void	exec_multi_cmds(t_hashtable *hashtable, t_ast *root);
+void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root);
 // void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node); //temp
 
 // void print_pipe_contents(int *pipefd); // Remover depois
