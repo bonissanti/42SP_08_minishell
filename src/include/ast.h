@@ -39,8 +39,9 @@ typedef struct s_exec
 	int	out_fd;
 	int old_stdin;
 	int old_stdout;
-	int cmd_count;
-	// t_bool is_last_cmd;
+	int pipes_count;
+	int total_pipes;
+	t_bool between_pipes;
 }	t_exec;
 
 typedef struct s_ast

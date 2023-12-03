@@ -65,7 +65,6 @@ int main(int argc, char **argv, char **envp)
     t_ast *node7 = create_node(TYPE_COMMAND, "wc", DEFAULT);
     insert_ast(&head, node7, &exec);
 
-
     exec_multi_cmds(&vtr, hashtable, head);
     delete_node(head);
     destroy_hashtable(hashtable);

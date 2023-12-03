@@ -1,0 +1,15 @@
+total 444
+drwxrwxr-x 2 bruno bruno   4096 dez  3 19:24 libft
+-rw-rw-r-- 1 bruno bruno     12 nov 30 13:13 lolo
+-rw-rw-r-- 1 bruno bruno   2815 dez  3 17:54 Makefile
+-rwxrwxr-x 1 bruno bruno 250240 dez  3 20:32 minishell
+-rw-rw-r-- 1 bruno bruno   1021 nov 23 11:13 minishell.c
+-rw-rw-r-- 1 bruno bruno   1136 nov 23 11:13 minishell.h
+-rw-rw-r-- 1 bruno bruno 152979 nov 23 11:13 minishell-workspace.excalidraw
+drwxrwxr-x 3 bruno bruno   4096 nov 30 09:14 minunit
+drwxrwxr-x 3 bruno bruno   4096 dez  3 19:24 objs
+-rw-rw-r-- 1 bruno bruno      0 dez  3 20:34 outfile
+-rw-r--r-- 1 bruno bruno    118 nov 30 12:36 outfile.txt
+-rw-rw-r-- 1 bruno bruno   1789 nov 23 11:13 prompt.c
+drwxrwxr-x 9 bruno bruno   4096 nov 23 11:13 src
+-rw-r--r-- 1 bruno bruno      5 nov 30 13:56 wait_test.txt

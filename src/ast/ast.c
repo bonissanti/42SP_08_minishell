@@ -118,8 +118,8 @@ void insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 		current->right = new_node;
 	}
 
-	if (new_node->type == TYPE_COMMAND)
-		exec->cmd_count++;
+	if (new_node->type == TYPE_OPERATOR && new_node->weight == OP_PIPE)
+		exec->total_pipes++;
 }
 
 /**

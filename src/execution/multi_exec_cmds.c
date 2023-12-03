@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/01 20:00:44 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/01 18:54:46 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 
 static void    handle_pipes(t_hashtable *hashtable, t_ast *root);
 void    first_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd);
+void    third_cmd(t_hashtable *hashtable, t_ast *node, int *otario, int *fucker);
+void    fourth_cmd(t_hashtable *hashtable, t_ast *node, int *fucker, int *sucker);
+void second_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd, int *otario);
 void	middle_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd, int *new_pipefd);
 void	final_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd);
 static void    wait_for_children(t_ast *root);
@@ -28,13 +31,13 @@ static void     execute_forked_command(t_hashtable *hashtable, t_ast *node);
 
 void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
 {
+	t_exec exec;
 
+	init_structs(&exec, 0, sizeof(t_exec));
     handle_redirects(vtr, hashtable, root);
 	handle_pipes(hashtable, root);
 	wait_for_children(root);
 }
-
-
 
 static void    wait_for_children(t_ast *root)
 {
@@ -60,28 +63,32 @@ static void    wait_for_children(t_ast *root)
 static void handle_pipes(t_hashtable *hashtable, t_ast *node)
 {
     int pipefd[2];
-    int new_pipefd[2];
-
+    int otario[2];
+    int fucker[2];
+    int sucker[2];
     if (node == NULL)
         return ;
 
     first_cmd(hashtable, node->left, pipefd);
-    while (node)
-    {
-        if (node->type == TYPE_OPERATOR || node->type == TYPE_REDIRECT)
-        {
-            middle_cmd(hashtable, node->left, pipefd, new_pipefd);
-            pipefd[0] = new_pipefd[0];
-            pipefd[1] = new_pipefd[1];
-            node = node->right;
-        }
-        else
-            break ;
-    }
-	close_all_fds(pipefd);
-	// ft_fprintf(2, "pipefd[0]: %s\n", get_next_line(pipefd[0]));
-	// ft_fprintf(2, "pipefd[1]: %s\n", get_next_line(pipefd[1]));
-    final_cmd(hashtable, node, pipefd);
+    second_cmd(hashtable, node->right->left, pipefd, otario);
+    third_cmd(hashtable, node->right->right->left, otario, fucker);
+    fourth_cmd(hashtable, node->right->right->right, fucker, sucker);
+
+    ft_printf_fd(sucker[0]);
+    // third_cmd(hashtable, node->right->right, new_pipefd);
+    // while (node)
+    // {
+    // if (node->type == TYPE_OPERATOR || node->type == TYPE_REDIRECT)
+    //     {
+    //         middle_cmd(hashtable, node->left, pipefd, new_pipefd);
+    //         pipefd[0] = new_pipefd[0];
+    //         pipefd[1] = new_pipefd[1];
+    //         node = node->right;
+    //     }
+    //     else
+    //         break ;
+    // }
+    // final_cmd(hashtable, node, pipefd);
 }
 
 void    first_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd)
@@ -91,58 +98,154 @@ void    first_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd)
     if (node->pid == 0)
     {
         dup2(pipefd[1], STDOUT_FILENO);
-        close(pipefd[0]);
         close(pipefd[1]);
+        close(pipefd[0]);
 		execute_forked_command(hashtable, node);
 		exit(EXIT_SUCCESS);
     }
 	else
+        wait(NULL);
 		close(pipefd[1]);
 }
 
-
-
-		
-void	middle_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd, int *new_pipefd)
+void second_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd, int *otario)
 {
-	pipe(new_pipefd);
-	node->pid = fork();
-	if (node->pid == 0)
+
+    pipe(otario);
+    node->pid = fork();
+    if (node->pid == 0)
+    {
+        // le do pipe anterior
+        dup2(pipefd[0], STDIN_FILENO);
+        // ft_printf_fd(pipefd[0]);
+        close(pipefd[0]);
+        close(pipefd[1]);
+
+        // escreve no pipe atual
+        dup2(otario[1], STDOUT_FILENO);
+        close(otario[0]);
+        close(otario[1]);
+        execute_forked_command(hashtable, node);
+        exit(EXIT_SUCCESS);
+    }
+    else
+    {
+        close(otario[1]);
+        // close(pipefd[1]); // hang/erro por fechar a escrita do pipe anterior
+        // close(otario[1]);
+    }
+}
+
+void    third_cmd(t_hashtable *hashtable, t_ast *node, int *otario, int *fucker)
+{
+    pipe(fucker);
+    node->pid = fork();
+    if (node->pid == 0)
+    {
+        //le do pipe anterior
+        dup2(otario[0], STDIN_FILENO);
+        close(otario[0]);
+        close(otario[1]);
+
+        //escreve no pipe atual
+        dup2(fucker[1], STDOUT_FILENO);
+        close(fucker[0]);
+        close(fucker[1]);
+        execute_forked_command(hashtable, node);
+        exit(EXIT_SUCCESS);
+    }
+    close(fucker[1]);
+}
+
+void    fourth_cmd(t_hashtable *hashtable, t_ast *node, int *fucker, int *sucker)
+{
+    pipe(sucker);
+    node->pid = fork();
+    if (node->pid == 0)
+    {
+        dup2(fucker[0], STDIN_FILENO);
+        close(fucker[0]);
+        close(fucker[1]);
+
+        dup2(sucker[1], STDOUT_FILENO);
+        close(sucker[0]);
+        close(sucker[1]);
+        execute_forked_command(hashtable, node);
+        exit(EXIT_SUCCESS);
+    }
+    close(sucker[1]);
+}
+
+// void	middle_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd, int *new_pipefd)
+// {
+// 	pipe(new_pipefd);
+// 	node->pid = fork();
+// 	if (node->pid == 0)
+// 	{
+// 		close(pipefd[1]);
+// 		dup2(pipefd[0], STDIN_FILENO);
+// 		dup2(new_pipefd[1], STDOUT_FILENO);
+// 		close(pipefd[0]);
+// 		close(new_pipefd[0]);
+// 		close(new_pipefd[1]);
+// 		execute_forked_command(hashtable, node);
+// 		exit(EXIT_SUCCESS);
+// 	}
+// 	else
+// 	{
+// 		close(pipefd[0]);
+// 		close(pipefd[1]);
+// 		close(new_pipefd[1]);
+// 	}
+// }
+
+
+
+
+// void	final_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd)
+// {
+// 	node->pid = fork();
+// 	if (node->pid == 0)
+// 	{
+// 		dup2(pipefd[0], STDIN_FILENO);
+// 		close(pipefd[0]);
+// 		close(pipefd[1]);
+// 		execute_forked_command(hashtable, node);
+// 		exit(EXIT_SUCCESS);
+// 	}
+// 	else
+// 	{
+// 		close(pipefd[0]);
+// 		close(pipefd[1]);
+// 	}
+// }
+
+static void execute_forked_command(t_hashtable *hashtable, t_ast *node)
+{
+	char *path;
+	int result;
+
+	result = verify_cmd_permissions(node->cmds);
+	if (ft_strchr(node->cmds, '/') != NULL && result == 0) // tratamento para caminho absoluto'
 	{
-		dup2(pipefd[0], STDIN_FILENO);
-		dup2(new_pipefd[1], STDOUT_FILENO);
-		close(pipefd[0]);
-		close(pipefd[1]);
-		close(new_pipefd[0]);
-		close(new_pipefd[1]);
-		execute_forked_command(hashtable, node);
-		exit(EXIT_SUCCESS);
+		if (result == 126) // tacar isso numa função para printar erro de permissão
+			ft_fprintf(2, "minishell: %s: command not found\n", node->cmds);
+		else if (result == 127)
+			ft_fprintf(2, "minishell: %s: %s\n", node->cmds, strerror(errno));
+		return ;
 	}
 	else
 	{
-		close(pipefd[0]);
-		close(pipefd[1]);
-		close(new_pipefd[1]);
+		path = search(hashtable, "PATH")->value;
+		node->path = build_cmd_path(node, path);
 	}
+	execve(node->path, node->args, NULL);
+	ft_fprintf(2, "minishell: %s: %s\n", node->path, strerror(errno));
+	exit(EXIT_FAILURE);
 }
 
-void	final_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd)
-{
-	node->pid = fork();
-	if (node->pid == 0)
-	{
-		dup2(pipefd[0], STDIN_FILENO);
-		close(pipefd[0]);
-		close(pipefd[1]);
-		execute_forked_command(hashtable, node);
-		exit(EXIT_SUCCESS);
-	}
-	else
-	{
-		close(pipefd[0]);
-		close(pipefd[1]);
-	}
-}
+
+
 
 // static void    handle_pipes(t_hashtable *hashtable, t_ast *root, t_exec *exec)
 // {
@@ -169,28 +272,3 @@ void	final_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd)
 //         handle_pipes(hashtable, root->right, exec);
 //     }
 // }
-
-
-static void execute_forked_command(t_hashtable *hashtable, t_ast *node)
-{
-	char *path;
-	int result;
-
-	result = verify_cmd_permissions(node->cmds);
-	if (ft_strchr(node->cmds, '/') != NULL && result == 0) // tratamento para caminho absoluto'
-	{
-		if (result == 126) // tacar isso numa função para printar erro de permissão
-			ft_fprintf(2, "minishell: %s: command not found\n", node->cmds);
-		else if (result == 127)
-			ft_fprintf(2, "minishell: %s: %s\n", node->cmds, strerror(errno));
-		return ;
-	}
-	else
-	{
-		path = search(hashtable, "PATH")->value;
-		node->path = build_cmd_path(node, path);
-	}
-	execve(node->path, node->args, NULL);
-	ft_fprintf(2, "minishell: %s: %s\n", node->path, strerror(errno));
-	exit(EXIT_FAILURE);
-}

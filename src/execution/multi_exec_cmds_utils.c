@@ -21,3 +21,21 @@ void    close_all_fds(int *fd)
     close(fd[0]);
 	close(fd[1]);
 }
+
+void ft_printf_fd(int fd)
+{
+    char *line;
+
+    line = get_next_line(fd);
+    if (!line)
+    {
+        ft_fprintf(2, "fd didn't have any lines to print.\n");
+        return ;
+    }
+    while(line)
+    {
+        ft_fprintf(2, "%s", line);
+        line = get_next_line(fd);
+    }
+    ft_fprintf(2, "____________________\n");
+}

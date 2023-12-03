@@ -56,4 +56,5 @@ void    close_all_fds(int *fd);
 // void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node); //temp
 
 // void print_pipe_contents(int *pipefd); // Remover depois
-// void depth_first_traversal(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
+
+void ft_printf_fd(int fd);

@@ -52,7 +52,7 @@
 				// 	"text": "set follow-fork-mode child",
 				// 	"ignoreFailures": false
 				// }
-			// ]
+			]
 		}
 	]
 }
