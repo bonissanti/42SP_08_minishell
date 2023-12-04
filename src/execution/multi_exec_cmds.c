@@ -84,19 +84,26 @@ static void handle_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node)
         prev_pipe[1] = next_pipe[1];
         exec->count_pipes--;
 
+        while (exec->count_pipes > 0)
+        {
+            pipe(next_pipe);
+            if (exec->count_pipes % 2 == 0)
+                generic_exec_cmd(hashtable, exec, node->right->left, prev_pipe, next_pipe);
+            else
+                generic_exec_cmd(hashtable, exec, node->right->right, prev_pipe, next_pipe);
+            prev_pipe[0] = next_pipe[0];
+            prev_pipe[1] = next_pipe[1];
+            exec->count_pipes--;
+        }
+
         // generic_exec_cmd(hashtable, exec, node->right->left, prev_pipe, next_pipe);
 
         // // segunda reciclagem de pipes aqui
-        // prev_pipe[0] = next_pipe[0];
-        // prev_pipe[1] = next_pipe[1];
-        // next_pipe[0] = -1;
-        // next_pipe[1] = -1;
+
 
         // generic_exec_cmd(hashtable, exec, node->right->right, prev_pipe, next_pipe);
-
-
         if (exec->count_pipes == 0)
-            generic_exec_cmd(hashtable, exec, node->right, prev_pipe, NULL);
+            generic_exec_cmd(hashtable, exec, node->right->right, prev_pipe, NULL);
     }
 }
 
