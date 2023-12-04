@@ -48,6 +48,7 @@ void	backup_fd(int *old_stdin, int *old_stdout);
 void	swap_fd(int new_fd, int system_fd);
 void	restore_fd(int reset_stdin, int reset_stdout);
 char    *build_cmd_path(t_ast *node , char *path);
+void	handle_error(t_ast *node, int result);
 
 //############################# EXECUTION ####################################//
 

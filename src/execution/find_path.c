@@ -18,8 +18,8 @@
 char *build_cmd_path(t_ast *node, char *path)
 {
     char    **temp;
-    char    *full_path;
-    char    *slash;
+    char    *full_path = NULL;
+    char    *slash = NULL;
     int     result;
 
     temp = ft_split(path, ':');

@@ -43,7 +43,7 @@ OBJDIR 		= ./objs
 ################################# Compilate #################################
 
 CC = cc 
-CFLAGS = -Wall -Wextra -g3 
+CFLAGS = -Wall -Wextra -Werror -g3 
 
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) --no-print-directory
 LIBFT_LIB = $(LIBFT)/libft.a

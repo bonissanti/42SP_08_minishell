@@ -179,7 +179,7 @@ t_hash	*search(t_hashtable *hash_table, char *key)
 	search_env = hash_table->buckets[index];
 	while (search_env != NULL)
 	{
-		if (strcmp(search_env->key, key) == 0)
+		if (ft_strcmp(search_env->key, key) == 0)
 			return (search_env);
 		search_env = search_env->next;
 	}
@@ -256,27 +256,3 @@ void	destroy_hashtable(t_hashtable *hash_table)
 	}
 	free(hash_table);
 }
-
-// int main(void)
-// {
-//     t_hashtable *hash_table = create_hashtable();
-
-//     insert(hash_table, "PATH", "/usr/bin:bin");
-//     insert(hash_table, "HOME", "/home/user");
-//     insert(hash_table, "USER", "user");
-
-//     printf("%s\n", search(hash_table, "PATH"));
-//     printf("%s\n", search(hash_table, "HOME"));
-//     printf("%s\n", search(hash_table, "USER"));
-
-//     delete(hash_table, "PATH");
-//     delete(hash_table, "HOME");
-//     delete(hash_table, "USER");
-
-//     // printf("%s\n", search(hash_table, "PATH"));
-
-//     free(hash_table);
-
-//     return (0);
-
-// }

@@ -44,6 +44,7 @@ static void    wait_for_children(t_ast *root)
 {
     int status;
 
+    status = 0;
     if (root == NULL)
         return ;
 
@@ -77,14 +78,19 @@ static void handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node, int *prev
         handle_pipes(hash, exec, node->right, prev_pipe);
     }
     else if (node->right == NULL)
+    {
         generic_exec_cmd(hash, exec, node, prev_pipe, NULL);
+        if (prev_pipe)
+        {
+            close(prev_pipe[0]);
+            close(prev_pipe[1]);
+        }
+    }
 }
 
 
 void    generic_exec_cmd(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 {
-    if (exec->count_pipes >= 1)
-        pipe(next_pipe);
     node->pid = fork();
     if (node->pid == 0)
     {
@@ -121,12 +127,9 @@ static void execute_forked_command(t_hashtable *hashtable, t_ast *node)
 	int result;
 
 	result = verify_cmd_permissions(node->cmds);
-	if (ft_strchr(node->cmds, '/') != NULL && result == 0) // tratamento para caminho absoluto'
+	if (ft_strchr(node->cmds, '/') != NULL && result != 0) // tratamento para caminho absoluto'
 	{
-		if (result == 126) // tacar isso numa função para printar erro de permissão
-			ft_fprintf(2, "minishell: %s: command not found\n", node->cmds);
-		else if (result == 127)
-			ft_fprintf(2, "minishell: %s: %s\n", node->cmds, strerror(errno));
+		handle_error(node, result);
 		return ;
 	}
 	else
@@ -134,6 +137,7 @@ static void execute_forked_command(t_hashtable *hashtable, t_ast *node)
 		path = search(hashtable, "PATH")->value;
 		node->path = build_cmd_path(node, path);
 	}
+    ft_fprintf(2, "node->path: %s\n", node->path);
 	execve(node->path, node->args, NULL);
 	ft_fprintf(2, "minishell: %s: %s\n", node->path, strerror(errno));
 	exit(EXIT_FAILURE);
