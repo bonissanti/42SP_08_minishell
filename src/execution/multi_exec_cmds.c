@@ -61,50 +61,7 @@ static void    wait_for_children(t_ast *root)
 }
 
 
-// first_cmd(hashtable, node->left, pipefd);
-// second_cmd(hashtable, node->right->left, pipefd, otario);
-// third_cmd(hashtable, node->right->right->left, otario, fucker);
-// fourth_cmd(hashtable, node->right->right->right, fucker, sucker);
-
-// static void handle_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe)
-// {
-//     static int next_pipe[2];
-//     static int prev_pipe[2];
-
-//     if (node == NULL)
-//         return ;
-
-//     int total_pipe = exec->count_pipes;
-//     if (node->type == TYPE_OPERATOR)
-//     {   
-//         if (total_pipe == exec->count_pipes) // checa se são iguais, se forem, não foi executado nenhum
-//         {
-//             generic_exec_cmd(hashtable, exec, node->left, NULL, next_pipe);
-//             prev_pipe[0] = next_pipe[0];
-//             prev_pipe[1] = next_pipe[1];
-//             exec->count_pipes--;
-//         }
-
-//         while (exec->count_pipes > 0 && node->type == TYPE_OPERATOR && node->weight == OP_PIPE)
-//         {
-//             pipe(next_pipe);
-
-//             if (exec->count_pipes % 2 == 0)
-//                 generic_exec_cmd(hashtable, exec, node->right->left, prev_pipe, next_pipe);
-//             else 
-//                 generic_exec_cmd(hashtable, exec, node->right->right->left, prev_pipe, next_pipe);
-
-//             prev_pipe[0] = next_pipe[0];
-//             prev_pipe[1] = next_pipe[1];
-//             exec->count_pipes--;
-//         }
-
-//         if (exec->count_pipes == 0) // execução final
-//             generic_exec_cmd(hashtable, exec, node->right->right->right, prev_pipe, NULL);
-//     }
-// }
-
-static void handle_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe)
+static void handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node, int *prev_pipe)
 {
     int next_pipe[2];
 
@@ -114,18 +71,15 @@ static void handle_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node, int 
     if (node->type == TYPE_OPERATOR && node->weight == OP_PIPE)
     {
         pipe(next_pipe);
-        generic_exec_cmd(hashtable, exec, node->left, prev_pipe, next_pipe);
+        generic_exec_cmd(hash, exec, node->left, prev_pipe, next_pipe);
         prev_pipe[0] = next_pipe[0];
         prev_pipe[1] = next_pipe[1];
         exec->count_pipes--;
-        handle_pipes(hashtable, exec, node->right, prev_pipe);
+        handle_pipes(hash, exec, node->right, prev_pipe);
     }
     else if (exec->count_pipes == 0)
-        generic_exec_cmd(hashtable, exec, node, prev_pipe, NULL);
+        generic_exec_cmd(hash, exec, node, prev_pipe, NULL);
 }
-
-
-
 
 
 void    generic_exec_cmd(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
