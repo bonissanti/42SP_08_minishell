@@ -74,10 +74,9 @@ static void handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node, int *prev
         generic_exec_cmd(hash, exec, node->left, prev_pipe, next_pipe);
         prev_pipe[0] = next_pipe[0];
         prev_pipe[1] = next_pipe[1];
-        exec->count_pipes--;
         handle_pipes(hash, exec, node->right, prev_pipe);
     }
-    else if (exec->count_pipes == 0)
+    else if (node->right == NULL)
         generic_exec_cmd(hash, exec, node, prev_pipe, NULL);
 }
 
@@ -89,7 +88,7 @@ void    generic_exec_cmd(t_hashtable *hashtable, t_exec *exec, t_ast *node, int 
     node->pid = fork();
     if (node->pid == 0)
     {
-        if (prev_pipe)
+        if (*prev_pipe != -1)
         {
             dup2(prev_pipe[0], STDIN_FILENO);
             close(prev_pipe[0]);

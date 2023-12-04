@@ -41,7 +41,6 @@ typedef struct s_exec
 	int old_stdout;
 	int pipes_count;
 	int count_pipes;
-	t_bool between_pipes;
 }	t_exec;
 
 typedef struct s_ast

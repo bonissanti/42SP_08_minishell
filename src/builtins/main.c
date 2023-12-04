@@ -59,11 +59,11 @@ int main(int argc, char **argv, char **envp)
     t_ast *node5 = create_node(TYPE_COMMAND, "ls", DEFAULT);
     insert_ast(&head, node5, &exec);
 
-    t_ast *node6 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-    insert_ast(&head, node6, &exec);
+    // t_ast *node6 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+    // insert_ast(&head, node6, &exec);
 
-    t_ast *node7 = create_node(TYPE_COMMAND, "wc", DEFAULT);
-    insert_ast(&head, node7, &exec);
+    // t_ast *node7 = create_node(TYPE_COMMAND, "wc", DEFAULT);
+    // insert_ast(&head, node7, &exec);
 
     ft_fprintf(2, "Pipes count: %d\n", exec.count_pipes);
     exec_multi_cmds(&vtr, hashtable, head, &exec);
