@@ -38,7 +38,6 @@ void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root, t_exec 
 	wait_for_children(root);
     // chama o node->left
     //chama o node->right
-    
 }
 
 static void    wait_for_children(t_ast *root)
@@ -75,35 +74,34 @@ static void handle_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node)
     if (node == NULL)
         return ;
 
+    int total_pipe = exec->count_pipes;
     if (node->type == TYPE_OPERATOR)
-    {
-        generic_exec_cmd(hashtable, exec, node->left, NULL, next_pipe);
-
-        // reciclagem de pipes aqui
-        prev_pipe[0] = next_pipe[0];
-        prev_pipe[1] = next_pipe[1];
-        exec->count_pipes--;
-
-        while (exec->count_pipes > 0)
+    {   
+        if (total_pipe == exec->count_pipes)
         {
-            pipe(next_pipe);
-            if (exec->count_pipes % 2 == 0)
-                generic_exec_cmd(hashtable, exec, node->right->left, prev_pipe, next_pipe);
-            else
-                generic_exec_cmd(hashtable, exec, node->right->right, prev_pipe, next_pipe);
+            generic_exec_cmd(hashtable, exec, node->left, NULL, next_pipe);
             prev_pipe[0] = next_pipe[0];
             prev_pipe[1] = next_pipe[1];
             exec->count_pipes--;
         }
 
-        // generic_exec_cmd(hashtable, exec, node->right->left, prev_pipe, next_pipe);
+        while (exec->count_pipes > 0)
+        {
+            pipe(next_pipe);
 
-        // // segunda reciclagem de pipes aqui
+            if (exec->count_pipes % 2 == 0)
+                generic_exec_cmd(hashtable, exec, node->right->left, prev_pipe, next_pipe);
+            else 
+                generic_exec_cmd(hashtable, exec, node->right->right->left, prev_pipe, next_pipe);
 
+            // reciclagem de pipes apos executar um comando
+            prev_pipe[0] = next_pipe[0];
+            prev_pipe[1] = next_pipe[1];
+            exec->count_pipes--;
+        }
 
-        // generic_exec_cmd(hashtable, exec, node->right->right, prev_pipe, next_pipe);
         if (exec->count_pipes == 0)
-            generic_exec_cmd(hashtable, exec, node->right->right, prev_pipe, NULL);
+            generic_exec_cmd(hashtable, exec, node->right->right->right, prev_pipe, NULL);
     }
 }
 
