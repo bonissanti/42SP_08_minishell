@@ -40,7 +40,7 @@ typedef struct s_exec
 	int old_stdin;
 	int old_stdout;
 	int pipes_count;
-	int total_pipes;
+	int count_pipes;
 	t_bool between_pipes;
 }	t_exec;
 

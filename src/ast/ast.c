@@ -119,7 +119,7 @@ void insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 	}
 
 	if (new_node->type == TYPE_OPERATOR && new_node->weight == OP_PIPE)
-		exec->total_pipes++;
+		exec->count_pipes++;
 }
 
 /**
