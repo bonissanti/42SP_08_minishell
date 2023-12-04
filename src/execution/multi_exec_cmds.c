@@ -70,13 +70,34 @@ static void    wait_for_children(t_ast *root)
 static void handle_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node)
 {
     int next_pipe[2];
+    int prev_pipe[2];
 
     if (node == NULL)
         return ;
 
-    generic_exec_cmd(hashtable, exec, node->left, NULL, next_pipe);
-    generic_exec_cmd(hashtable, exec, node->right, next_pipe, NULL);
+    if (node->type == TYPE_OPERATOR)
+    {
+        generic_exec_cmd(hashtable, exec, node->left, NULL, next_pipe);
 
+        // reciclagem de pipes aqui
+        prev_pipe[0] = next_pipe[0];
+        prev_pipe[1] = next_pipe[1];
+        exec->count_pipes--;
+
+        // generic_exec_cmd(hashtable, exec, node->right->left, prev_pipe, next_pipe);
+
+        // // segunda reciclagem de pipes aqui
+        // prev_pipe[0] = next_pipe[0];
+        // prev_pipe[1] = next_pipe[1];
+        // next_pipe[0] = -1;
+        // next_pipe[1] = -1;
+
+        // generic_exec_cmd(hashtable, exec, node->right->right, prev_pipe, next_pipe);
+
+
+        if (exec->count_pipes == 0)
+            generic_exec_cmd(hashtable, exec, node->right, prev_pipe, NULL);
+    }
 }
 
 

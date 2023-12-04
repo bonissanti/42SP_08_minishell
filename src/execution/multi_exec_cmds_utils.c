@@ -34,7 +34,7 @@ void ft_printf_fd(int fd)
     }
     while(line)
     {
-        ft_fprintf(2, "%s", line);
+        ft_fprintf(2, "es: %s", line);
         line = get_next_line(fd);
     }
     ft_fprintf(2, "____________________\n");
