@@ -16,14 +16,8 @@
 #include "../include/builtins.h"
 #include "../include/segments.h"
 
-static void handle_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node);
+static void handle_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe);
 void    generic_exec_cmd(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe);
-// void    first_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd);
-// void    third_cmd(t_hashtable *hashtable, t_ast *node, int *otario, int *fucker);
-// void    fourth_cmd(t_hashtable *hashtable, t_ast *node, int *fucker, int *sucker);
-// void second_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd, int *otario);
-// void	middle_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd, int *new_pipefd);
-// void	final_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd);
 static void    wait_for_children(t_ast *root);
 static void     execute_forked_command(t_hashtable *hashtable, t_ast *node);
 
@@ -32,12 +26,18 @@ static void     execute_forked_command(t_hashtable *hashtable, t_ast *node);
 
 void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root, t_exec *exec)
 {
+    int initial_pipe[2] = {-1, -1};
+    if (root == NULL)
+        return ;
 
-    handle_redirects(vtr, hashtable, root);
-	handle_pipes(hashtable, exec, root);
-	wait_for_children(root);
-    // chama o node->left
-    //chama o node->right
+    if (root->type == TYPE_REDIRECT)
+        handle_redirects(vtr, hashtable, root);
+
+    else if (root->type == TYPE_OPERATOR && root->weight == OP_PIPE)
+    {
+        handle_pipes(hashtable, exec, root, initial_pipe);
+	    wait_for_children(root);
+    }
 }
 
 static void    wait_for_children(t_ast *root)
@@ -66,44 +66,66 @@ static void    wait_for_children(t_ast *root)
 // third_cmd(hashtable, node->right->right->left, otario, fucker);
 // fourth_cmd(hashtable, node->right->right->right, fucker, sucker);
 
-static void handle_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node)
+// static void handle_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe)
+// {
+//     static int next_pipe[2];
+//     static int prev_pipe[2];
+
+//     if (node == NULL)
+//         return ;
+
+//     int total_pipe = exec->count_pipes;
+//     if (node->type == TYPE_OPERATOR)
+//     {   
+//         if (total_pipe == exec->count_pipes) // checa se são iguais, se forem, não foi executado nenhum
+//         {
+//             generic_exec_cmd(hashtable, exec, node->left, NULL, next_pipe);
+//             prev_pipe[0] = next_pipe[0];
+//             prev_pipe[1] = next_pipe[1];
+//             exec->count_pipes--;
+//         }
+
+//         while (exec->count_pipes > 0 && node->type == TYPE_OPERATOR && node->weight == OP_PIPE)
+//         {
+//             pipe(next_pipe);
+
+//             if (exec->count_pipes % 2 == 0)
+//                 generic_exec_cmd(hashtable, exec, node->right->left, prev_pipe, next_pipe);
+//             else 
+//                 generic_exec_cmd(hashtable, exec, node->right->right->left, prev_pipe, next_pipe);
+
+//             prev_pipe[0] = next_pipe[0];
+//             prev_pipe[1] = next_pipe[1];
+//             exec->count_pipes--;
+//         }
+
+//         if (exec->count_pipes == 0) // execução final
+//             generic_exec_cmd(hashtable, exec, node->right->right->right, prev_pipe, NULL);
+//     }
+// }
+
+static void handle_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe)
 {
     int next_pipe[2];
-    int prev_pipe[2];
 
     if (node == NULL)
         return ;
 
-    int total_pipe = exec->count_pipes;
-    if (node->type == TYPE_OPERATOR)
-    {   
-        if (total_pipe == exec->count_pipes)
-        {
-            generic_exec_cmd(hashtable, exec, node->left, NULL, next_pipe);
-            prev_pipe[0] = next_pipe[0];
-            prev_pipe[1] = next_pipe[1];
-            exec->count_pipes--;
-        }
-
-        while (exec->count_pipes > 0)
-        {
-            pipe(next_pipe);
-
-            if (exec->count_pipes % 2 == 0)
-                generic_exec_cmd(hashtable, exec, node->right->left, prev_pipe, next_pipe);
-            else 
-                generic_exec_cmd(hashtable, exec, node->right->right->left, prev_pipe, next_pipe);
-
-            // reciclagem de pipes apos executar um comando
-            prev_pipe[0] = next_pipe[0];
-            prev_pipe[1] = next_pipe[1];
-            exec->count_pipes--;
-        }
-
-        if (exec->count_pipes == 0)
-            generic_exec_cmd(hashtable, exec, node->right->right->right, prev_pipe, NULL);
+    if (node->type == TYPE_OPERATOR && node->weight == OP_PIPE)
+    {
+        pipe(next_pipe);
+        generic_exec_cmd(hashtable, exec, node->left, prev_pipe, next_pipe);
+        prev_pipe[0] = next_pipe[0];
+        prev_pipe[1] = next_pipe[1];
+        exec->count_pipes--;
+        handle_pipes(hashtable, exec, node->right, prev_pipe);
     }
+    else if (exec->count_pipes == 0)
+        generic_exec_cmd(hashtable, exec, node, prev_pipe, NULL);
 }
+
+
+
 
 
 void    generic_exec_cmd(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
@@ -138,94 +160,6 @@ void    generic_exec_cmd(t_hashtable *hashtable, t_exec *exec, t_ast *node, int 
             close(next_pipe[1]);
     }
 }
-
-
-// void    first_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd)
-// {
-//     pipe(pipefd);
-//     node->pid = fork();
-//     if (node->pid == 0)
-//     {
-//         dup2(pipefd[1], STDOUT_FILENO);
-//         close(pipefd[1]);
-//         close(pipefd[0]);
-// 		// execute_forked_command(hashtable, node); não executa mais aqui
-// 		// exit(EXIT_SUCCESS);
-//     }
-// 	else
-//         wait(NULL);
-// 		close(pipefd[1]);
-// }
-
-// void second_cmd(t_hashtable *hashtable, t_ast *node, int *pipefd, int *otario)
-// {
-
-//     pipe(otario);
-//     node->pid = fork();
-//     if (node->pid == 0)
-//     {
-//         // le do pipe anterior
-//         dup2(pipefd[0], STDIN_FILENO);
-//         // ft_printf_fd(pipefd[0]);
-//         close(pipefd[0]);
-//         close(pipefd[1]);
-
-//         // escreve no pipe atual
-//         dup2(otario[1], STDOUT_FILENO);
-//         close(otario[0]);
-//         close(otario[1]);
-//         execute_forked_command(hashtable, node);
-//         exit(EXIT_SUCCESS);
-//     }
-//     else
-//     {
-//         close(otario[1]);
-//         // close(pipefd[1]); // hang/erro por fechar a escrita do pipe anterior
-//     }
-// }
-
-// void    third_cmd(t_hashtable *hashtable, t_ast *node, int *otario, int *fucker)
-// {
-//     pipe(fucker);
-//     node->pid = fork();
-//     if (node->pid == 0)
-//     {
-//         //le do pipe anterior
-//         dup2(otario[0], STDIN_FILENO);
-//         close(otario[0]);
-//         close(otario[1]);
-
-//         //escreve no pipe atual
-//         dup2(fucker[1], STDOUT_FILENO);
-//         close(fucker[0]);
-//         close(fucker[1]);
-//         execute_forked_command(hashtable, node);
-//         exit(EXIT_SUCCESS);
-//     }
-//     else
-//         close(fucker[1]);
-// }
-
-// void    fourth_cmd(t_hashtable *hashtable, t_ast *node, int *fucker, int *sucker)
-// {
-//     pipe(sucker);
-//     node->pid = fork();
-//     if (node->pid == 0)
-//     {
-//         dup2(fucker[0], STDIN_FILENO);
-//         close(fucker[0]);
-//         close(fucker[1]);
-
-//         dup2(sucker[1], STDOUT_FILENO);
-//         close(sucker[0]);
-//         close(sucker[1]);
-//         execute_forked_command(hashtable, node);
-//         exit(EXIT_SUCCESS);
-//     }
-//     else
-//         close(sucker[1]);
-// }
-
 
 
 static void execute_forked_command(t_hashtable *hashtable, t_ast *node)
