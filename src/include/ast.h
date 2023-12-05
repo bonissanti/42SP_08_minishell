@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/01 19:26:32 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/05 18:29:55 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ typedef enum
 typedef enum
 {
 	OP_REDIRECT = 3,
-	// OP_HEREDOC = 4,
+	OP_HEREDOC = 4,
 	OP_PIPE = 3,  
 	OP_LOGICAL = 3,
 	DEFAULT = 0,
@@ -48,7 +48,7 @@ typedef struct s_ast
 	
 	char *cmds;
 	char **args;
-	char **split; //
+	// char **split; //
 	char *path;
 	char *delim;
 	int exit_status;

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 19:08:58 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/24 14:13:41 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/05 17:30:32 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@
 char *build_cmd_path(t_ast *node, char *path)
 {
     char    **temp;
-    char    *full_path = NULL;
-    char    *slash = NULL;
+    char    *full_path;
+    char    *slash;
     int     result;
 
     temp = ft_split(path, ':');

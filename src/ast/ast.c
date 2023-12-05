@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/01 19:26:36 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/05 17:25:04 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,14 @@
 
 static void	prepare_ast(t_ast *new_node, char *cmds, t_type type)
 {
-	new_node->split = ast_split(cmds, ' ');
+	new_node->args = ast_split(cmds, ' ');
 	if (type == TYPE_REDIRECT)
 	{
-		new_node->cmds = new_node->split[0];
-		new_node->delim = new_node->split[1];
-		new_node->args = NULL;
+		new_node->cmds = new_node->args[0];
+		new_node->delim = new_node->args[1];
 	}
 	else
-	{
-		new_node->cmds = new_node->split[0];
-		new_node->args = new_node->split + 1;
-		new_node->delim = NULL;
-	}
+		new_node->cmds = new_node->args[0];
 }
 
 /**
@@ -140,7 +135,7 @@ void delete_node(t_ast *head)
 	{
 		delete_node(head->left);
 		delete_node(head->right);
-		free_split(head->split);
+		free_split(head->args);
 		safe_free((void **)&head->path);
 		free(head);
 	}
@@ -161,7 +156,7 @@ void pre_order_traversal(t_ast *head)
 {
 	if (head != NULL)
 	{
-		printf("%s\n", head->cmds);
+		printf("%s\n", *head->args);
 		pre_order_traversal(head->left);
 		pre_order_traversal(head->right);
 	}

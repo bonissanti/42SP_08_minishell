@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/01 11:38:04 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/05 19:12:38 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,20 @@ char *check_expansion(t_hashtable *env, char **line, size_t *len)
 }
 
 
-void	handle_heredoc(t_ast *node, t_hashtable *env, char *delim)
+void	handle_heredoc(t_ast *node, t_hashtable *hash, char *delim)
 {
 	int		fd[2];
-	// int		fd;
 	char	*line;
 	size_t 	len;
-	pipe(fd);
-	(void)node;
+	
+	// pipe(fd);
 	if (delim == NULL)
 	{
 		ft_fprintf(2, "minishell: syntax error near unexpected token `newline'\n");
 		return ;
 	}
+	// node->fd = open("/tmp/fileXXXXXX", O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	pipe(fd);
 	while (1)
 	{
 		len = 0;
@@ -84,12 +85,11 @@ void	handle_heredoc(t_ast *node, t_hashtable *env, char *delim)
 			free(line);
 			break ;
 		}
-		line = check_expansion(env, &line, &len);
+		line = check_expansion(hash, &line, &len);
 		ft_putendl_fd(line, fd[1]);
 		free(line);
 	}
 	close(fd[1]);
-	close(fd[0]);
-	// print_pipe_contents(pipefd);
+	print_pipe_contents(fd);
 }
 
