@@ -44,20 +44,29 @@ int main(int argc, char **argv, char **envp)
 
     t_ast *head = NULL;
 
-    t_ast *node1 = create_node(TYPE_COMMAND, "ls", DEFAULT);
+    t_ast *node1 = create_node(TYPE_COMMAND, "echo test", DEFAULT);
     insert_ast(&head, node1, &exec);
     
-    t_ast *node2 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+    // t_ast *node2 = create_node(TYPE_OPERATOR, "&&", OP_LOGICAL);
+	// insert_ast(&head, node2, &exec);
+
+	// t_ast *node4 = create_node(TYPE_REDIRECT, "> sucker.txt", OP_REDIRECT);
+	// insert_ast(&head, node4, &exec);
+
+	// t_ast *node7 = create_node(TYPE_FILE, "sucker.txt", DEFAULT);
+	// insert_ast(&head, node7);
+
+    t_ast *node2 = create_node(TYPE_OPERATOR, "&&", OP_LOGICAL);
     insert_ast(&head, node2, &exec);
 
     t_ast *node3 = create_node(TYPE_COMMAND, "wc", DEFAULT);
     insert_ast(&head, node3, &exec);
     
-    t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-    insert_ast(&head, node4, &exec);
+    // t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+    // insert_ast(&head, node4, &exec);
 
-    t_ast *node5 = create_node(TYPE_COMMAND, "ls", DEFAULT);
-    insert_ast(&head, node5, &exec);
+    // t_ast *node5 = create_node(TYPE_COMMAND, "tr -d ' ' '*'", DEFAULT);
+    // insert_ast(&head, node5, &exec);
 
     // t_ast *node6 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
     // insert_ast(&head, node6, &exec);

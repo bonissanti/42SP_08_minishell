@@ -22,7 +22,7 @@ void    init_redirects(t_vector *vtr)
     vtr->redirect[4].func_here = NULL;
 }
 
-void  handle_redirects(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
+void  handle_redirects(t_vector *vtr, t_hashtable *hashtable, t_ast *node, t_exec *exec)
 {
     t_redirect *current;
 
@@ -35,7 +35,8 @@ void  handle_redirects(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
                 current->func_here(node , hashtable, node->delim);
             else
                 current->function(node, node->delim);
-            break;
+            // break;
+            exec_multi_cmds(vtr, hashtable, node->right, exec);
         }
         current++;
     }

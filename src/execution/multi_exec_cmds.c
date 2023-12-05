@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/01 18:54:46 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/04 22:10:49 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,22 @@ void    generic_exec_cmd(t_hashtable *hashtable, t_exec *exec, t_ast *node, int 
 static void    wait_for_children(t_ast *root);
 static void     execute_forked_command(t_hashtable *hashtable, t_ast *node);
 
-
-
-
 void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root, t_exec *exec)
 {
     int initial_pipe[2] = {-1, -1};
+    
     if (root == NULL)
         return ;
-
     if (root->type == TYPE_REDIRECT)
         handle_redirects(vtr, hashtable, root);
-
-    else if (root->type == TYPE_OPERATOR && root->weight == OP_PIPE)
+    else if (root->type == TYPE_OPERATOR
+    && (!ft_strncmp(root->cmds, "&&", 2)
+    || !ft_strncmp(root->cmds, "||", 2)))
+    {
+        execute_and_or(vtr, hashtable, root, exec);
+	    wait_for_children(root);
+    }
+    else if (root->type == TYPE_OPERATOR && root->cmds == '|')
     {
         handle_pipes(hashtable, exec, root, initial_pipe);
 	    wait_for_children(root);
@@ -68,7 +71,7 @@ static void handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node, int *prev
     if (node == NULL)
         return ;
 
-    if (node->type == TYPE_OPERATOR && node->weight == OP_PIPE)
+    if (node->type == TYPE_OPERATOR && node->weight == OP_PIPE) // this condition may cause a problem "node->weight == OP_PIPE"
     {
         pipe(next_pipe);
         generic_exec_cmd(hash, exec, node->left, prev_pipe, next_pipe);
@@ -100,8 +103,8 @@ void    generic_exec_cmd(t_hashtable *hashtable, t_exec *exec, t_ast *node, int 
             close(next_pipe[0]);
             close(next_pipe[1]);
         }
-        execute_forked_command(hashtable, node);
-        exit(EXIT_SUCCESS);
+        execute_forked_command(hashtable, node); // better if its a int?
+        exit(EXIT_SUCCESS);   
     }
     else
     {
@@ -111,6 +114,7 @@ void    generic_exec_cmd(t_hashtable *hashtable, t_exec *exec, t_ast *node, int 
 
         if (next_pipe && exec->count_pipes >= 1)
             close(next_pipe[1]);
+        
     }
 }
 
@@ -139,7 +143,47 @@ static void execute_forked_command(t_hashtable *hashtable, t_ast *node)
 	exit(EXIT_FAILURE);
 }
 
+t_ast *branch_tip(t_ast *node)
+{
+	t_ast *first;
 
+	if(!node)
+		return (NULL);
+	first = node;
+	if(first->left == NULL)
+		return (first);
+	else
+	{
+		while(first->left)
+			first = first->left;
+	}
+	return(first);
+}
+
+void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node, t_exec *exec)
+{
+	int status;
+	pid_t pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		ft_fprintf(2, "minishell: fork: %s\n", strerror(errno));
+		return ;
+	}
+	if (pid == 0)
+	{
+		if (!execute_if_builtin(vtr, hashtable, branch_tip(node->left)))
+			exit(execve(branch_tip(node->left)->path, branch_tip(node->left)->args, NULL));
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		if ((ft_strncmp(node->cmds, "&&", 2) == 0 && WEXITSTATUS(status) == 0)
+			|| (ft_strncmp(node->cmds, "||", 2) == 0 && WEXITSTATUS(status) != 0))
+            exec_multi_cmds(vtr, hashtable, node->right, exec);
+	}
+}
 
 
 // static void    handle_pipes(t_hashtable *hashtable, t_ast *root, t_exec *exec)
