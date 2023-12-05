@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:51:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/01 11:37:05 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/05 16:59:41 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	redirect_input(t_ast *node, char *filename)
 	node->fd = open(filename, O_RDONLY);
 	if (!verify_file_permissions(filename))
 		return ;
-
+	dup2(node->fd, STDIN_FILENO);
+	close(node->fd);
 }
 
 void	redirect_output(t_ast *node, char *filename)
@@ -38,6 +39,8 @@ void	redirect_output(t_ast *node, char *filename)
 	node->fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (!verify_file_permissions(filename))
 		return ;
+	dup2(node->fd, STDOUT_FILENO);
+	close(node->fd);
 }
 
 void	redirect_append(t_ast *node, char *filename)
@@ -50,6 +53,8 @@ void	redirect_append(t_ast *node, char *filename)
 	node->fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (!verify_file_permissions(filename))
 		return ;
+	dup2(node->fd, STDOUT_FILENO);
+	close(node->fd);
 }
 
 // void redirect_pipe(int fd_to_redirect, int fd_system)

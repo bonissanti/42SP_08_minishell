@@ -24,13 +24,25 @@ typedef struct s_vector
     t_cmd	    builtins[2];
 }		t_vector;
 
+typedef struct s_global{
+	// char		*readline_input;
+	// t_tkn_list	*tkn_list;
+	// t_cmd_list	*cmd_list;
+	int exit_status;
+	//
+	//
+} t_global;
+
+extern t_global g_global;
+
 
 //############################### VECTOR #####################################//
 
 void	    init_cmd(t_vector *vtr);
 t_bool		execute_if_builtin(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 void        init_redirects(t_vector *vtr);
-void        handle_redirects(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
+void		handle_redirects(t_vector *vtr, t_hashtable *hashtable, t_ast *node, t_exec *exec);
+
 
 //############################# REDIRECTIONS #################################//
 
@@ -53,6 +65,8 @@ char    *build_cmd_path(t_ast *node , char *path);
 
 void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root, t_exec *exec);
 void    close_all_fds(int *fd);
+void	execute_forked_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
+
 // void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node); //temp
 
 // void print_pipe_contents(int *pipefd); // Remover depois

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/01 19:26:36 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/05 19:52:22 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_ast *create_node(t_type type, char *cmds, t_op weight)
 	new_node->type = type;
 	new_node->left = NULL;
 	new_node->right = NULL;
-	new_node->exit_status = 0;
+	// new_node->exit_status = 0;
 	new_node->fd = 0;
 	return (new_node);
 }
