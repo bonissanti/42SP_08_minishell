@@ -20,6 +20,7 @@ typedef struct s_redirect
 
 typedef struct s_vector
 {
+	int 	   fd[2];
 	t_redirect  redirect[5];
     t_cmd	    builtins[2];
 }		t_vector;
