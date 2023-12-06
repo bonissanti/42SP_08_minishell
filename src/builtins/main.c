@@ -66,9 +66,27 @@ int main(int argc, char **argv, char **envp)
 
     t_ast *root = NULL;
 
-    t_ast *node1 = create_node(TYPE_REDIRECT, "<< EOF", OP_HEREDOC);
+    t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
     insert_ast(&root, node1, &exec);
+
+    t_ast *node2 = create_node(TYPE_REDIRECT, "<< EOF", OP_HEREDOC);
+    insert_ast(&root, node2, &exec);
     
+    // ft_fprintf(2, "Pipes count: %d\n", exec.count_pipes);
+    exec_multi_cmds(&vtr, hashtable, root, &exec);
+    // execute_forked_command(hashtable, root);
+
+    // char *exec_args[] = {"/bin/echo", "stupid", NULL};
+    // execve(exec_args[0], exec_args, NULL);
+
+    // ft_fprintf(2, "root->args[0]: %s\n", root->args[0]);
+
+    // execve(root->cmds, root->args, NULL);
+    delete_node(root);
+    destroy_hashtable(hashtable);
+}
+
+
     // t_ast *node2 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
     // insert_ast(&root, node2, &exec);
 
@@ -87,19 +105,6 @@ int main(int argc, char **argv, char **envp)
     // t_ast *node7 = create_node(TYPE_COMMAND, "wc", DEFAULT);
     // insert_ast(&root, node7, &exec);
 
-    // ft_fprintf(2, "Pipes count: %d\n", exec.count_pipes);
-    exec_multi_cmds(&vtr, hashtable, root, &exec);
-    // execute_forked_command(hashtable, root);
-
-    // char *exec_args[] = {"/bin/echo", "stupid", NULL};
-    // execve(exec_args[0], exec_args, NULL);
-
-    // ft_fprintf(2, "root->args[0]: %s\n", root->args[0]);
-
-    // execve(root->cmds, root->args, NULL);
-    delete_node(root);
-    destroy_hashtable(hashtable);
-}
 
 
 // int main(int argc, char **argv, char **envp)

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/05 18:34:38 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/06 15:54:37 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,8 @@ void execute_forked_command(t_hashtable *hashtable, t_ast *node)
 		node->path = build_cmd_path(node, path);
 	}
     // ft_fprintf(2, "node->path: %s\n", node->path);
-	execve(node->path, node->args, NULL);
+	if (!execute_if_builtin(hashtable, node))
+        execve(node->path, node->args, NULL);
 	ft_fprintf(2, "minishell: %s: %s\n", node->path, strerror(errno));
 	exit(EXIT_FAILURE);
 }

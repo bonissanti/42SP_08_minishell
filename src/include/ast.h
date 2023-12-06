@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/05 18:29:55 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/06 16:01:38 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libft/libft.h"
+#include "exec.h"
 
 typedef enum
 {
