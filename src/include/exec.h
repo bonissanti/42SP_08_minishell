@@ -3,6 +3,7 @@
 # include "../include/ast.h"
 # include <sys/wait.h>
 
+struct s_exec;
 
 typedef struct s_cmd
 {
@@ -20,7 +21,7 @@ typedef struct s_redirect
 
 typedef struct s_vector
 {
-	int 	   fd[2];
+	t_exec		exec;
 	t_redirect  redirect[5];
     t_cmd	    builtins[2];
 }		t_vector;
@@ -29,6 +30,7 @@ typedef struct s_vector
 //############################### VECTOR #####################################//
 
 void	    init_cmd(t_vector *vtr);
+void		init_exec_vector(t_vector *vtr);
 t_bool		execute_if_builtin(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 void        init_redirects(t_vector *vtr);
 void        handle_redirects(t_vector *vtr, t_hashtable *hashtable, t_ast *node);

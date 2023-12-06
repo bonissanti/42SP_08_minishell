@@ -6,12 +6,13 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/05 17:25:04 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/06 17:22:11 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ast.h"
 #include "../include/builtins.h"
+#include "../include/exec.h"
 
 
 static void	prepare_ast(t_ast *new_node, char *cmds, t_type type)

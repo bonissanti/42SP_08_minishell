@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_builtins.c                                 :+:      :+:    :+:   */
+/*   check_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:00:37 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/24 19:07:06 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/06 17:26:25 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 #include "../include/builtins.h"
 #include "../include/hash.h"
 
-void	init_cmd(t_vector *vtr)
-{
-	vtr->builtins[0].cmd = NULL;
-	vtr->builtins[0].name = "echo";
-	vtr->builtins[0].function = ft_echo;
-	vtr->builtins[1].name = NULL;
-	vtr->builtins[1].function = NULL;
-}
+// void	init_cmd(t_vector *vtr)
+// {
+// 	vtr->builtins[0].cmd = NULL;
+// 	vtr->builtins[0].name = "echo";
+// 	vtr->builtins[0].function = ft_echo;
+// 	vtr->builtins[1].name = NULL;
+// 	vtr->builtins[1].function = NULL;
+// }
 
 t_bool	execute_if_builtin(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {
