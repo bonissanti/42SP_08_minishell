@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/06 16:05:49 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/06 20:16:35 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "../include/builtins.h"
 #include "../include/segments.h"
 
-static void handle_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe);
+static void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe);
 void    generic_exec_cmd(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe);
 // static void    wait_for_children(t_ast *root);
 void     execute_forked_command(t_hashtable *hashtable, t_ast *node);
@@ -24,7 +24,7 @@ void     execute_forked_command(t_hashtable *hashtable, t_ast *node);
 
 
 
-void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root, t_exec *exec)
+void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
 {
     int initial_pipe[2] = {-1, -1};
     if (root == NULL)
@@ -41,7 +41,7 @@ void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root, t_exec 
 
     else if (root->type == TYPE_OPERATOR && root->weight == OP_PIPE)
     {
-        handle_pipes(hashtable, exec, root, initial_pipe);
+        handle_pipes(hashtable, vtr, root, initial_pipe);
 	    // wait_for_children(root);
     }
 }
@@ -68,7 +68,7 @@ void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root, t_exec 
 // }
 
 
-static void handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node, int *prev_pipe)
+static void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
 {
     int next_pipe[2];
 
@@ -78,19 +78,26 @@ static void handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node, int *prev
     if (node->type == TYPE_OPERATOR && node->weight == OP_PIPE)
     {
         pipe(next_pipe);
-        generic_exec_cmd(hash, exec, node->left, prev_pipe, next_pipe);
+        generic_exec_cmd(hash, &vtr->exec, node->left, prev_pipe, next_pipe);
         prev_pipe[0] = next_pipe[0];
         prev_pipe[1] = next_pipe[1];
-        handle_pipes(hash, exec, node->right, prev_pipe);
+        handle_pipes(hash, vtr, node->right, prev_pipe);
     }
-    else if (node->right == NULL)
+    else if (node->right == NULL && node->type == TYPE_COMMAND)
     {
-        generic_exec_cmd(hash, exec, node, prev_pipe, NULL);
+        generic_exec_cmd(hash, &vtr->exec, node, prev_pipe, NULL);
         if (prev_pipe)
         {
             close(prev_pipe[0]);
             close(prev_pipe[1]);
         }
+    }
+    else if (node->type == TYPE_REDIRECT)
+    {
+        handle_redirects(vtr, hash, node);
+        dup2(node->fd, STDOUT_FILENO);
+        close(node->fd);
+        generic_exec_cmd(hash, &vtr->exec, node->left, prev_pipe, &node->fd);
     }
 }
 
@@ -112,6 +119,11 @@ void    generic_exec_cmd(t_hashtable *hashtable, t_exec *exec, t_ast *node, int 
             close(next_pipe[0]);
             close(next_pipe[1]);
         }
+        // if (!next_pipe && exec->out_fd != 0)
+        // {
+        //     dup2(exec->out_fd, STDOUT_FILENO);
+        //     close(exec->out_fd);
+        // }
         execute_forked_command(hashtable, node);
         exit(EXIT_SUCCESS);
     }

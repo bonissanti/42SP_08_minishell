@@ -55,7 +55,7 @@ void	handle_error(t_ast *node, int result);
 
 //############################# EXECUTION ####################################//
 
-void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root, t_exec *exec);
+void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root);
 void 	execute_forked_command(t_hashtable *hashtable, t_ast *node);
 void    close_all_fds(int *fd);
 // void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node); //temp

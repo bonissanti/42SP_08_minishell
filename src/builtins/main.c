@@ -75,9 +75,12 @@ int main(int argc, char **argv, char **envp)
 
     t_ast *node3 = create_node(TYPE_COMMAND, "wc", DEFAULT);
     insert_ast(&root, node3, &vtr.exec);
+
+    t_ast *node4 = create_node(TYPE_REDIRECT, "> outfile.txt", OP_REDIRECT);
+    insert_ast(&root, node4, &vtr.exec);
     
     // ft_fprintf(2, "Pipes count: %d\n", exec.count_pipes);
-    exec_multi_cmds(&vtr, hashtable, root, &vtr.exec);
+    exec_multi_cmds(&vtr, hashtable, root);
     // execute_forked_command(hashtable, root);
 
     // char *exec_args[] = {"/bin/echo", "stupid", NULL};
