@@ -66,11 +66,15 @@ int main(int argc, char **argv, char **envp)
 
     t_ast *root = NULL;
 
-    t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
+
+    t_ast *node1 = create_node(TYPE_COMMAND, "ls", DEFAULT);
     insert_ast(&root, node1, &vtr.exec);
 
-    t_ast *node2 = create_node(TYPE_REDIRECT, "<< EOF", OP_HEREDOC);
+    t_ast *node2 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
     insert_ast(&root, node2, &vtr.exec);
+
+    t_ast *node3 = create_node(TYPE_COMMAND, "wc", DEFAULT);
+    insert_ast(&root, node3, &vtr.exec);
     
     // ft_fprintf(2, "Pipes count: %d\n", exec.count_pipes);
     exec_multi_cmds(&vtr, hashtable, root, &vtr.exec);
