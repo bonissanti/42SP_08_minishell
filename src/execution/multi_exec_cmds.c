@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/05 20:23:55 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/06 20:18:05 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,29 +22,18 @@ static void handle_pipes(t_vector *vtr, t_hashtable *hashtable, t_exec *exec, t_
 void    generic_exec_cmd(t_vector *vtr, t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe);
 static void    wait_for_children(t_ast *root);
 void	execute_forked_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
-void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node, t_exec *exec);
+void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node, int *prev_pipe, t_exec *exec);
 
 void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root, t_exec *exec)
 {
     int initial_pipe[2] = {-1, -1};
-	int status = 0;
     
     if (root == NULL)
         return ;
     if (root->type == TYPE_REDIRECT)
         handle_redirects(vtr, hashtable, root, exec);
-    else if (root->type == TYPE_OPERATOR
-    && (!ft_strncmp(root->cmds, "&&", 2)
-    || !ft_strncmp(root->cmds, "||", 2)))
-    {
-		if ((ft_strncmp(root->cmds, "&&", 2) == 0 && WEXITSTATUS(status) == 0)
-		|| (ft_strncmp(root->cmds, "||", 2) == 0 && WEXITSTATUS(status) != 0))
-        	exec_multi_cmds(vtr, hashtable, root->right, exec);
-		else
-			return ;
-			// execute_and_or(vtr, hashtable, root, exec);
-	    // wait_for_children(root);
-    }
+    else if (root->type == TYPE_OPERATOR && is_logical(root->cmds))
+		execute_and_or(vtr, hashtable, root, initial_pipe, exec);
     else if (root->type == TYPE_OPERATOR && *root->cmds == '|')
     {
         handle_pipes(vtr, hashtable, exec, root, initial_pipe);
@@ -90,10 +79,23 @@ static void handle_pipes(t_vector *vtr, t_hashtable *hash, t_exec *exec, t_ast *
         prev_pipe[1] = next_pipe[1];
         handle_pipes(vtr, hash, exec, node->right, prev_pipe);
     }
-    else if (node->right == NULL)
+    else if (node->right == NULL && node->type == TYPE_COMMAND) // so it can print in the stdout if t is the last node
         generic_exec_cmd(vtr, hash, exec, node, prev_pipe, NULL);
+	else if (is_logical(node->cmds))
+		execute_and_or(vtr, hash, node, prev_pipe, exec);
+	else if (node->type == TYPE_REDIRECT)
+	{
+		handle_redirects(vtr, hash, node, exec);
+		dup2(node->fd, STDOUT_FILENO);
+		close(node->fd);
+		generic_exec_cmd(vtr, hash, exec, node->left, prev_pipe, NULL);
+		exec_multi_cmds(vtr, hash, node, exec); // MAY SEGFAULT!!
+	}
 	else
+	{
+		ft_printf("node: %s\n", node->cmds);
 		exec_multi_cmds(vtr, hash, node, exec);
+	}
 }
 
 
@@ -116,12 +118,17 @@ void    generic_exec_cmd(t_vector *vtr, t_hashtable *hashtable, t_exec *exec, t_
             close(next_pipe[0]);
             close(next_pipe[1]);
         }
+		else if(exec->out_fd != 0)
+		{
+			dup2(exec->out_fd, STDOUT_FILENO);
+			close(exec->out_fd);
+		}
         execute_forked_command(vtr, hashtable, node); // better if its a int?
-        exit(EXIT_SUCCESS);   
+        exit(EXIT_SUCCESS);
     }
     else
     {
-        wait (NULL);
+        wait_for_children(node);
         if (prev_pipe && !next_pipe)
             close(prev_pipe[1]);
 
@@ -129,15 +136,6 @@ void    generic_exec_cmd(t_vector *vtr, t_hashtable *hashtable, t_exec *exec, t_
             close(next_pipe[1]);
         
     }
-}
-
-void    handle_error(t_ast *node, int result)
-{
-    if (result == 126)
-        ft_fprintf(2, "minishell: %s: command not found\n", node->cmds);
-    else if (result == 127)
-        ft_fprintf(2, "minishell: %s: %s\n", node->cmds, strerror(errno));
-    return ;
 }
 
 void execute_forked_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
@@ -159,77 +157,18 @@ void execute_forked_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
         node->path = build_cmd_path(node, path);
     }
     ft_fprintf(2, "node->path: %s\n", node->path);
-	execute_if_builtin(vtr, hashtable, node);
-    // execve(node->path, node->args, NULL);
-    // ft_fprintf(2, "minishell: %s: %s\n", node->path, strerror(errno));
-    // exit(EXIT_FAILURE);
+	if(!execute_if_builtin(vtr, hashtable, node))
+	{			
+		execve(node->path, node->args, NULL);
+		ft_fprintf(2, "minishell: %s: %s\n", node->path, strerror(errno));
+		exit(EXIT_FAILURE);
+	}
 }
 
-t_ast *branch_tip(t_ast *node)
+void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node, int *prev_pipe, t_exec *exec)
 {
-	t_ast *first;
-
-	if(!node)
-		return (NULL);
-	first = node;
-	if(first->left == NULL)
-		return (first);
-	else
-	{
-		while(first->left)
-			first = first->left;
-	}
-	return(first);
+	generic_exec_cmd(vtr, hashtable, exec, node->left, prev_pipe, NULL);
+	if ((!ft_strncmp(node->cmds, "&&", 2) && g_global.exit_status == 0)
+	|| (!ft_strncmp(node->cmds, "||", 2) && g_global.exit_status != 0))
+		exec_multi_cmds(vtr, hashtable, node->right, exec);
 }
-
-void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node, t_exec *exec)
-{
-	int status;
-	pid_t pid;
-	
-	pid = fork();
-	if (pid == -1)
-	{
-		ft_fprintf(2, "minishell: fork: %s\n", strerror(errno));
-		return ;
-	}
-	if (pid == 0)
-	{
-		if (!execute_if_builtin(vtr, hashtable, branch_tip(node->left)))
-			exit(execve(branch_tip(node->left)->path, branch_tip(node->left)->args, NULL));
-	}
-	else
-	{
-		waitpid(pid, &status, 0);
-		if ((ft_strncmp(node->cmds, "&&", 2) == 0 && WEXITSTATUS(status) == 0)
-			|| (ft_strncmp(node->cmds, "||", 2) == 0 && WEXITSTATUS(status) != 0))
-            exec_multi_cmds(vtr, hashtable, node->right, exec);
-	}
-}
-
-
-// static void    handle_pipes(t_hashtable *hashtable, t_ast *root, t_exec *exec)
-// {
-//     int pipefd[2];
-
-//     if (root == NULL)
-//         return ;
-
-//     if (root->type == TYPE_OPERATOR && root->weight == OP_PIPE)
-//     {
-//         pipe(pipefd);
-//         backup_fd(&exec->old_stdin, &exec->old_stdout);
-//         swap_fd(pipefd[1], STDOUT_FILENO);
-//         assign_and_exec_pids(hashtable, root->left);
-//         restore_fd(exec->old_stdin, exec->old_stdout);
-//         swap_fd(pipefd[0], STDIN_FILENO);
-//         assign_and_exec_pids(hashtable, root->right);
-//         restore_fd(exec->old_stdin, exec->old_stdout);
-        
-//     }
-//     else 
-//     {
-//         handle_pipes(hashtable, root->left, exec);
-//         handle_pipes(hashtable, root->right, exec);
-//     }
-// }

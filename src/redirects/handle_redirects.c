@@ -25,6 +25,7 @@ void    init_redirects(t_vector *vtr)
 void  handle_redirects(t_vector *vtr, t_hashtable *hashtable, t_ast *node, t_exec *exec)
 {
     t_redirect *current;
+	(void)exec;
 
     current = vtr->redirect;
     while (current->name)

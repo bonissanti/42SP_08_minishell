@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/05 19:52:22 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/06 14:22:53 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ void insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 		current->right = new_node;
 	}
 
-	if (new_node->type == TYPE_OPERATOR && new_node->weight == OP_PIPE)
+	if (new_node->type == TYPE_OPERATOR && ft_strncmp(new_node->cmds, "||", 2) && *new_node->cmds == '|')
 		exec->count_pipes++;
 }
 

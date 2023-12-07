@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/01 19:02:18 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/06 19:28:38 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,22 @@
 #include "../include/builtins.h"
 #include "../include/segments.h"
 
-void    close_all_fds(int *fd)
-{
-    close(fd[0]);
-	close(fd[1]);
-}
+// t_ast *branch_tip(t_ast *node)
+// {
+// 	t_ast *first;
+
+// 	if(!node)
+// 		return (NULL);
+// 	first = node;
+// 	if(first->left == NULL)
+// 		return (first);
+// 	else
+// 	{
+// 		while(first->left)
+// 			first = first->left;
+// 	}
+// 	return(first);
+// }
 
 void ft_printf_fd(int fd)
 {
@@ -38,4 +49,11 @@ void ft_printf_fd(int fd)
         line = get_next_line(fd);
     }
     ft_fprintf(2, "____________________\n");
+}
+
+int is_logical(char *operator)
+{
+	if(!ft_strncmp(operator, "&&", 2) || !ft_strncmp(operator, "||", 2))
+		return (true);
+	return(false);
 }

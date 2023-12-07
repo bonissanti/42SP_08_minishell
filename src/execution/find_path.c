@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 19:08:58 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/24 14:13:41 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/06 19:28:06 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,15 @@
 #include "../include/hash.h"
 #include "../include/exec.h"
 #include "../include/segments.h"
+
+void    handle_error(t_ast *node, int result)
+{
+    if (result == 126)
+        ft_fprintf(2, "minishell: %s: command not found\n", node->cmds);
+    else if (result == 127)
+        ft_fprintf(2, "minishell: %s: %s\n", node->cmds, strerror(errno));
+    return ;
+}
 
 char *build_cmd_path(t_ast *node, char *path)
 {

@@ -66,6 +66,9 @@ char    *build_cmd_path(t_ast *node , char *path);
 void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root, t_exec *exec);
 void    close_all_fds(int *fd);
 void	execute_forked_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
+int		is_logical(char *operator);
+void    handle_error(t_ast *node, int result);
+void	ft_printf_fd(int fd);
 
 // void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node); //temp
 
