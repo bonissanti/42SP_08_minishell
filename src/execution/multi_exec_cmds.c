@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/06 20:18:05 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/07 17:12:23 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,19 @@ void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root, t_exec 
     if (root == NULL)
         return ;
     if (root->type == TYPE_REDIRECT)
+	{
         handle_redirects(vtr, hashtable, root, exec);
+		if(check_redirect_type(root->cmds) == 1)
+			dup2(root->fd, STDIN_FILENO);
+		else if (check_redirect_type(root->cmds) == 2)
+			dup2(root->fd, STDOUT_FILENO);
+		close(root->fd);
+	}
     else if (root->type == TYPE_OPERATOR && is_logical(root->cmds))
+	{
+		// restore_fd(exec->in_fd, exec->out_fd);
 		execute_and_or(vtr, hashtable, root, initial_pipe, exec);
+	}
     else if (root->type == TYPE_OPERATOR && *root->cmds == '|')
     {
         handle_pipes(vtr, hashtable, exec, root, initial_pipe);
@@ -74,22 +84,30 @@ static void handle_pipes(t_vector *vtr, t_hashtable *hash, t_exec *exec, t_ast *
     if (node->type == TYPE_OPERATOR && ft_strncmp(node->cmds, "||", 2) && *node->cmds == '|') // this condition may cause a problem "node->weight == OP_PIPE"
     {
         pipe(next_pipe);
-        generic_exec_cmd(vtr, hash, exec, node->left, prev_pipe, next_pipe);
+		if(node->left)
+        	generic_exec_cmd(vtr, hash, exec, node->left, prev_pipe, next_pipe);
         prev_pipe[0] = next_pipe[0];
         prev_pipe[1] = next_pipe[1];
         handle_pipes(vtr, hash, exec, node->right, prev_pipe);
     }
     else if (node->right == NULL && node->type == TYPE_COMMAND) // so it can print in the stdout if t is the last node
-        generic_exec_cmd(vtr, hash, exec, node, prev_pipe, NULL);
+    {
+		generic_exec_cmd(vtr, hash, exec, node, prev_pipe, NULL);
+		if (prev_pipe)
+        {
+            close(prev_pipe[0]);
+            close(prev_pipe[1]);
+        }
+	}
 	else if (is_logical(node->cmds))
 		execute_and_or(vtr, hash, node, prev_pipe, exec);
 	else if (node->type == TYPE_REDIRECT)
 	{
 		handle_redirects(vtr, hash, node, exec);
-		dup2(node->fd, STDOUT_FILENO);
-		close(node->fd);
-		generic_exec_cmd(vtr, hash, exec, node->left, prev_pipe, NULL);
-		exec_multi_cmds(vtr, hash, node, exec); // MAY SEGFAULT!!
+        dup2(node->fd, STDOUT_FILENO);
+        close(node->fd);
+        generic_exec_cmd(vtr, hash, exec, node->left, prev_pipe, NULL);
+		exec_multi_cmds(vtr, hash, node->right, exec);
 	}
 	else
 	{
@@ -167,7 +185,8 @@ void execute_forked_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 
 void	execute_and_or(t_vector  *vtr, t_hashtable *hashtable, t_ast *node, int *prev_pipe, t_exec *exec)
 {
-	generic_exec_cmd(vtr, hashtable, exec, node->left, prev_pipe, NULL);
+	if(node->left)
+		generic_exec_cmd(vtr, hashtable, exec, node->left, prev_pipe, NULL);
 	if ((!ft_strncmp(node->cmds, "&&", 2) && g_global.exit_status == 0)
 	|| (!ft_strncmp(node->cmds, "||", 2) && g_global.exit_status != 0))
 		exec_multi_cmds(vtr, hashtable, node->right, exec);

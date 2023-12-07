@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/27 17:17:21 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/07 16:09:55 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,6 @@ void	backup_fd(int *old_stdin, int *old_stdout)
 {
 	*old_stdin = dup(STDIN_FILENO);
 	*old_stdout = dup(STDOUT_FILENO);
-}
-
-void	swap_fd(int new_fd, int system_fd)
-{
-	dup2(new_fd, system_fd);
-	close(new_fd);
 }
 
 void	restore_fd(int reset_stdin, int reset_stdout)

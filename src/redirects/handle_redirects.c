@@ -37,10 +37,10 @@ void  handle_redirects(t_vector *vtr, t_hashtable *hashtable, t_ast *node, t_exe
             else
 			{
                 current->function(node, node->delim);
-				if(node->left)
-					execute_forked_command(vtr, hashtable, node->left);
-				if (node->right)
-					exec_multi_cmds(vtr, hashtable, node->right, exec);
+				// if(node->left)
+				// 	execute_forked_command(vtr, hashtable, node->left);
+				// if (node->right)
+				// 	exec_multi_cmds(vtr, hashtable, node->right, exec);
 				break ;
 			}
         }

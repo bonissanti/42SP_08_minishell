@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/06 19:28:38 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/07 14:54:13 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,14 @@ int is_logical(char *operator)
 	if(!ft_strncmp(operator, "&&", 2) || !ft_strncmp(operator, "||", 2))
 		return (true);
 	return(false);
+}
+
+int check_redirect_type(char *operator)
+{
+	if (ft_strncmp(operator, "<<", 2) && *operator == '<')
+		return (1);
+	else if(!ft_strncmp(operator, ">>", 2) || *operator == '>')
+		return (2);
+	else
+		return (0);
 }

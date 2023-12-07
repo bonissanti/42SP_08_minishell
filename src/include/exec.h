@@ -68,6 +68,10 @@ void    close_all_fds(int *fd);
 void	execute_forked_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 int		is_logical(char *operator);
 void    handle_error(t_ast *node, int result);
+
+//############################# UTILS #################################//
+
+int		check_redirect_type(char *operator);
 void	ft_printf_fd(int fd);
 
 // void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node); //temp
