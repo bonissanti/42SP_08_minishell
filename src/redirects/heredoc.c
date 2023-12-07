@@ -6,20 +6,20 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/06 16:05:07 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/07 18:42:54 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/exec.h"
 #include "../include/hash.h"
 #include "../include/segments.h"
-#include "../include/exec.h"
 
-char *check_expansion(t_hashtable *env, char **line, size_t *len)
+char	*check_expansion(t_hashtable *env, char **line, size_t *len)
 {
-	t_lex *quote;
-	t_segment *head;
-	char *expanded;
-	
+	t_lex		*quote;
+	t_segment	*head;
+	char		*expanded;
+
 	quote = init_lex(env, *line);
 	head = NULL;
 	expanded = NULL;
@@ -47,11 +47,11 @@ void	handle_heredoc(t_ast *node, t_hashtable *hash, char *delim)
 {
 	int		fd[2];
 	char	*line;
-	size_t 	len;
-	
+	size_t	len;
+
 	if (delim == NULL)
 	{
-		ft_fprintf(2, "minishell: syntax error near unexpected token `newline'\n");
+		ft_fprintf(2, "minishell: syntax error near unexpected token EOF\n");
 		return ;
 	}
 	pipe(fd);

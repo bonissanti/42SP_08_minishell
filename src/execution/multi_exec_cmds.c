@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 18:36:21 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/07 19:04:49 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
     if (root->type == TYPE_REDIRECT && root->weight == OP_HEREDOC)
         handle_heredoc(root, hashtable, root->delim);
 
+    // if (root->type == TYPE_OPERATOR && (ft_strncmp(root->name, "&&", 2) == 0 || ft_strncmp(root->name, "||", 2) == 0))    
+
     else if (root->type == TYPE_OPERATOR && root->weight == OP_PIPE)
     {
         handle_pipes(hashtable, vtr, root, initial_pipe);
@@ -47,26 +49,26 @@ void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
     }
 }
 
-// static void    wait_for_children(t_ast *root)
-// {
-//     int status;
+void    wait_for_children(t_ast *root)
+{
+    int status;
 
-//     status = 0;
-//     if (root == NULL)
-//         return ;
+    status = 0;
+    if (root == NULL)
+        return ;
 
-//     if (root->type == TYPE_COMMAND)
-//     {
-//         waitpid(root->pid, &status, 0);
-//         if (WIFEXITED(status))
-//             root->exit_status = WEXITSTATUS(status);
-//     }
-//     else if (root->type == TYPE_OPERATOR || root->type == TYPE_REDIRECT)
-//     {
-//         wait_for_children(root->left);
-//         wait_for_children(root->right);
-//     }
-// }
+    if (root->type == TYPE_COMMAND)
+    {
+        waitpid(root->pid, &status, 0);
+        if (WIFEXITED(status))
+            root->exit_status = WEXITSTATUS(status);
+    }
+    else if (root->type == TYPE_OPERATOR || root->type == TYPE_REDIRECT)
+    {
+        wait_for_children(root->left);
+        wait_for_children(root->right);
+    }
+}
 
 static void    redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node, int *prev_pipe)
 {
@@ -101,36 +103,7 @@ static void    redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *
 }
 
 
-static void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
-{
-    int next_pipe[2];
 
-    if (node == NULL)
-        return ;
-
-    if (node->type == TYPE_OPERATOR && node->weight == OP_PIPE)
-    {
-        pipe(next_pipe);
-        generic_exec_cmd(hash, &vtr->exec, node->left, prev_pipe, next_pipe);
-        prev_pipe[0] = next_pipe[0];
-        prev_pipe[1] = next_pipe[1];
-        handle_pipes(hash, vtr, node->right, prev_pipe);
-    }
-    else if (node->right == NULL && node->type == TYPE_COMMAND)
-    {
-        generic_exec_cmd(hash, &vtr->exec, node, prev_pipe, NULL);
-        if (prev_pipe)
-        {
-            close(prev_pipe[0]);
-            close(prev_pipe[1]);
-        }
-    }
-    else if (node->type == TYPE_REDIRECT)
-    {
-        handle_redirects(vtr, hash, node);
-        redirect_execution(vtr, hash, node, prev_pipe);
-    }
-}
 
 void    generic_exec_cmd(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 {
@@ -159,7 +132,7 @@ void    generic_exec_cmd(t_hashtable *hashtable, t_exec *exec, t_ast *node, int 
     }
     else
     {
-        wait (NULL);
+        wait (&status);
         if (prev_pipe && !next_pipe)
             close(prev_pipe[1]);
 

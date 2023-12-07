@@ -5,6 +5,8 @@
 
 struct s_exec;
 
+extern int status;
+
 typedef struct s_cmd
 {
 	char	*name;

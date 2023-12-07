@@ -78,6 +78,12 @@ int main(int argc, char **argv, char **envp)
     t_ast *node4 = create_node(TYPE_REDIRECT, "> outfile.txt", OP_REDIRECT);
     insert_ast(&root, node4, &vtr.exec);
     
+    t_ast *node5 = create_node(TYPE_OPERATOR, "&&", OP_LOGICAL);
+    insert_ast(&root, node2, &vtr.exec);
+
+    t_ast *node6 = create_node(TYPE_COMMAND, "echo fucker sucker", DEFAULT);
+    insert_ast(&root, node6, &vtr.exec);
+
     // ft_fprintf(2, "Pipes count: %d\n", exec.count_pipes);
     backup_fd(&vtr.exec.old_stdin, &vtr.exec.old_stdout);
     exec_multi_cmds(&vtr, hashtable, root);

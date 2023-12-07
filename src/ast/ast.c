@@ -6,14 +6,13 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 17:48:07 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/07 18:48:18 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ast.h"
 #include "../include/builtins.h"
 #include "../include/exec.h"
-
 
 static void	prepare_ast(t_ast *new_node, char *cmds, t_type type)
 {
@@ -47,11 +46,10 @@ static void	prepare_ast(t_ast *new_node, char *cmds, t_type type)
  *
  */
 
-
-t_ast *create_node(t_type type, char *cmds, t_op weight)
+t_ast	*create_node(t_type type, char *cmds, t_op weight)
 {
-	t_ast *new_node;
-	
+	t_ast	*new_node;
+
 	new_node = (t_ast *)malloc(sizeof(t_ast));
 	prepare_ast(new_node, cmds, type);
 	new_node->path = NULL;
@@ -94,10 +92,10 @@ t_ast *create_node(t_type type, char *cmds, t_op weight)
  *
  */
 
-void insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
+void	insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 {
-	t_ast *current;
-	
+	t_ast	*current;
+
 	if (*head == NULL)
 		*head = new_node;
 	else if (new_node->weight > (*head)->weight)
@@ -108,13 +106,12 @@ void insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 	else
 	{
 		current = *head;
-		while (current->right != NULL && current->right->weight 
-			>= new_node->weight)
+		while (current->right != NULL
+			&& current->right->weight >= new_node->weight)
 			current = current->right;
 		new_node->left = current->right;
 		current->right = new_node;
 	}
-
 	if (new_node->type == TYPE_OPERATOR && new_node->weight == OP_PIPE)
 		exec->count_pipes++;
 }
@@ -131,7 +128,7 @@ void insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
  *
  */
 
-void delete_node(t_ast *head)
+void	delete_node(t_ast *head)
 {
 	if (head != NULL)
 	{
@@ -142,153 +139,3 @@ void delete_node(t_ast *head)
 		free(head);
 	}
 }
-
-
-// void in_order_traversal(t_ast *head)
-// {
-// 	if (head != NULL)
-// 	{
-// 		in_order_traversal(head->left);
-// 		printf("%s\n", head->args);
-// 		in_order_traversal(head->right);
-// 	}
-// }
-
-void pre_order_traversal(t_ast *head)
-{
-	if (head != NULL)
-	{
-		printf("%s\n", *head->args);
-		pre_order_traversal(head->left);
-		pre_order_traversal(head->right);
-	}
-}
-
-// void post_order_traversal(t_ast *head)
-// {
-// 	if (head != NULL)
-// 	{
-// 		post_order_traversal(head->left);
-// 		post_order_traversal(head->right);
-// 		printf("%s\n", head->args);
-// 	}
-// }
-
-// void print_tree(t_ast *head, int depth)
-// {
-// 	int i = -1;
-// 	if (head != NULL)
-// 	{
-// 		print_tree(head->left, depth + 1);
-// 		while (++i < depth)
-// 			printf("   ");
-// 		printf("%s\n", head->args);
-// 		print_tree(head->right, depth + 1);
-// 	}
-// }
-
-// int main(void)
-// {
-//     t_ast *head = NULL;
-
-//     t_ast *node1 = create_node(TYPE_COMMAND, "ls -l", DEFAULT);
-//     insert_ast(&head, node1);
-
-//     t_ast *node2 = create_node(TYPE_OPERATOR, ">", OP_REDIRECT);
-//     insert_ast(&head, node2);
-
-//     t_ast *node3 = create_node(TYPE_FILE, "error.txt", DEFAULT);
-//     insert_ast(&head, node3);
-
-//     t_ast *node4 = create_node(TYPE_OPERATOR, "&&", OP_LOGICAL);
-//     insert_ast(&head, node4);
-
-//     t_ast *node5 = create_node(TYPE_COMMAND, "cat error.txt", DEFAULT);
-//     insert_ast(&head, node5);
-
-//     t_ast *node6 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-//     insert_ast(&head, node6);
-
-//     t_ast *node7 = create_node(TYPE_COMMAND, "grep \"42\"", DEFAULT);
-//     insert_ast(&head, node7);
-
-//     pre_order_traversal(head);
-// 	delete_node(head);
-
-//     return (0);
-// }
-
-
-//ls -l > outfile.txt < cat | wc -l
-// int main(void)
-// {
-// 	t_ast *head = create_node(TYPE_COMMAND, "ls -l");
-
-// 	t_ast *node1 = create_node(TYPE_OPERATOR, "|");
-// 	insert_ast(&head, node1, OP_PIPE);
-
-// 	t_ast *node2 = create_node(TYPE_FILE, "grep .c");
-// 	insert_ast(&head, node2, DEFAULT);
-
-// 	t_ast *node3 = create_node(TYPE_OPERATOR, "&&");
-// 	insert_ast(&head, node3, OP_LOGICAL);
-
-// 	t_ast *node4 = create_node(TYPE_COMMAND, "wc -l");
-// 	insert_ast(&head, node4, DEFAULT);
-
-// 	t_ast *node5 = create_node(TYPE_OPERATOR, ">");
-// 	insert_ast(&head, node5, OP_REDIRECT);
-
-// 	t_ast *node6 = create_node(TYPE_FILE, "output.txt");
-// 	insert_ast(&head, node6, DEFAULT);
-
-// 	pre_order_traversal(head);
-// 	// print_tree(head, 0);
-// 	return (0);
-// }
-
-
-//ls -l > outfile.txt < cat | wc -l
-// int main(void)
-// {
-// 	t_ast *head = create_node(NODE_COMMAND, "ls -l");
-
-// 	t_ast *node1 = create_node(NODE_OPERATOR, "|");
-// 	insert_ast(&head, node1, OP_PIPE);
-
-// 	t_ast *node2 = create_node(NODE_FILE, "grep .c");
-// 	insert_ast(&head, node2, DEFAULT);
-
-// 	t_ast *node3 = create_node(NODE_OPERATOR, "&&");
-// 	insert_ast(&head, node3, OP_LOGICAL);
-
-// 	t_ast *node4 = create_node(NODE_COMMAND, "wc -l");
-// 	insert_ast(&head, node4, DEFAULT);
-
-// 	t_ast *node5 = create_node(NODE_OPERATOR, ">");
-// 	insert_ast(&head, node5, OP_REDIRECT);
-
-// 	t_ast *node6 = create_node(NODE_FILE, "output.txt");
-// 	insert_ast(&head, node6, DEFAULT);
-
-// 	pre_order_traversal(head);
-// 	// print_tree(head, 0);
-// 	return (0);
-// }
-
-// int main(void)
-// {
-// 	t_ast *head = create_node(NODE_COMMAND, "ls");
-
-// 	t_ast *node1 = create_node(NODE_OPERATOR, "|");
-// 	insert_ast(&head, node1, OP_PIPE);
-
-// 	t_ast *node2 = create_node(NODE_COMMAND, "grep .c");
-// 	insert_ast(&head, node2, OP_PIPE);
-
-// 	print_tree(head, 0);
-// 	delete_node(head);
-// 	delete_node(node1);
-// 	delete_node(node2);
-// 	return (0);
-// }
