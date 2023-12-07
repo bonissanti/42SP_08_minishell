@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_handler.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:51:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/23 17:44:46 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/07 18:51:30 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,15 +35,14 @@ inline void		finish_wildcard(t_segment *head, t_file *file);
  * 
 */
 
-
-char *generate_results(t_segment *segments, t_file *file)
+char	*generate_results(t_segment *segments, t_file *file)
 {
-	char *result;
+	char	*result;
 
 	result = NULL;
-	while(segments)
+	while (segments)
 	{
-		if(!ft_strlen(result))
+		if (!ft_strlen(result))
 			result = gnl_strjoin(result, segments->str);
 		else
 		{
@@ -53,7 +52,7 @@ char *generate_results(t_segment *segments, t_file *file)
 		segments = segments->next;
 	}
 	finish_wildcard(segments, file);
-	return(result);
+	return (result);
 }
 
 /**

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validate_quotes.c                                  :+:      :+:    :+:   */
+/*   quotes_validater.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:29 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/16 17:04:40 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/07 18:49:13 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 #include "../include/hash.h"
 #include "../include/segments.h"
 
-size_t even_close_quotes(char *str) 
+size_t	even_close_quotes(char *str)
 {
 	t_quote_bool	state;
-	
+
 	init_structs(&state, false, sizeof(t_quote_bool));
 	while (*str)
 	{
@@ -27,8 +27,8 @@ size_t even_close_quotes(char *str)
 			state.escape_next = false;
 		else if (*str == '\'' && !state.double_open)
 			state.single_open = !state.single_open;
-		else if ((*str == '\"' && !state.single_open) 
-			&& (!state.escape_next || state.escape_next))
+		else if ((*str == '\"' && !state.single_open) && (!state.escape_next
+					|| state.escape_next))
 			state.double_open = !state.double_open;
 		str++;
 	}
