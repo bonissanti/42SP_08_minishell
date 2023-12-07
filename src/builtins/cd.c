@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:32:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 12:36:46 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/07 11:52:35 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,9 @@
 
 void	ft_cd(t_hashtable *hashtable, char **args)
 {
+	char 	*oldpwd;
+	char	*cwd;
 	size_t	argc;
-	char	*home;
 
 	argc = ft_count_args(args);
 	if (argc > 2)
@@ -25,12 +26,11 @@ void	ft_cd(t_hashtable *hashtable, char **args)
 		ft_putstr_fd("cd: too many arguments\n", 2);
 		return ;
 	}
-	else if (argc == 1)
+	if (argc == 1)
 	{
-		home = search(hashtable, "HOME")->value;
-		if (chdir(home) == -1)
+		if (chdir(hashtable->home->value) == -1)
 		{
-			ft_fprintf(2, "cd: %s: %s\n", home, strerror(errno));
+			ft_fprintf(2, "cd: %s: %s\n", hashtable->home, strerror(errno));
 			return ;
 		}
 	}
@@ -38,10 +38,15 @@ void	ft_cd(t_hashtable *hashtable, char **args)
 	{
 		if (chdir(args[1]) == -1)
 		{
-			ft_fprintf(2, "cd: %s: No such file or directory\n", args[1]);
+			ft_fprintf(2, "cd: %s: %s\n", args[1], strerror(errno));
 			return ;
 		}
 	}
+	cwd = getcwd(NULL, 0);
+	oldpwd = search(hashtable, "PWD")->value;
+	insert(hashtable, "OLDPWD", oldpwd);
+	insert(hashtable, "PWD", cwd);
+	free(cwd);
 	return ;
 }
 

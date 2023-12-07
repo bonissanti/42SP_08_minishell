@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/06 20:16:35 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/06 20:20:47 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ static void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *pre
         handle_redirects(vtr, hash, node);
         dup2(node->fd, STDOUT_FILENO);
         close(node->fd);
-        generic_exec_cmd(hash, &vtr->exec, node->left, prev_pipe, &node->fd);
+        generic_exec_cmd(hash, &vtr->exec, node->left, prev_pipe, NULL);
     }
 }
 

@@ -8,7 +8,7 @@
  * This function will allocate memory for the buckets of the hashtable.
  * For default, buckets will be 101 and must be initialized to 0.
  * 
- * @var: hash_table: Pointer to the hashtable.
+ * @var: hashtable: Pointer to the hashtable.
  * 
  * @return: Returns the pointer to the hashtable.
  *
@@ -16,10 +16,10 @@
 
 t_hashtable	*create_hashtable(void)
 {
-	t_hashtable	*hash_table;
+	t_hashtable	*hashtable;
 
-	hash_table = (t_hashtable *)calloc(1, sizeof(t_hashtable));
-	return (hash_table);
+	hashtable = (t_hashtable *)calloc(1, sizeof(t_hashtable));
+	return (hashtable);
 }
 
 /**
@@ -32,7 +32,7 @@ t_hashtable	*create_hashtable(void)
  * this is used futurely to print the environment variables in alphabetical
  * order.
  *  
- * @param: *hash_table: The pointer to the hashtable.
+ * @param: *hashtable: The pointer to the hashtable.
  * @param: **envp: The environment variables.
  * 
  * @var: i: The counter for the number of environment variables.
@@ -42,22 +42,22 @@ t_hashtable	*create_hashtable(void)
  *
  */
 
-void init_hash(t_hashtable *hash_table, char **envp)
+void init_hash(t_hashtable *hashtable, char **envp)
 {
 	int i;
 	t_env env;
 
 	i = -1;
-	hash_table->num_keys = 0;
-	hash_table->home = NULL;
+	hashtable->num_keys = 0;
+	hashtable->home = NULL;
 	while (envp[++i] != NULL)
 	{
 		env.equals_sign = ft_split(envp[i], '=');
 		env.key = env.equals_sign[0];
 		env.value = env.equals_sign[1];
-		insert(hash_table, env.key, env.value);
-		if (strcmp(env.key, "HOME") == 0)
-			hash_table->home = search(hash_table, env.key);
+		insert(hashtable, env.key, env.value);
+		if (ft_strcmp(env.key, "HOME") == 0)
+			hashtable->home = search(hashtable, env.key);
 		free_split(env.equals_sign);
 	}
 }
@@ -99,7 +99,7 @@ unsigned int	hash(char *key)
  * After get index of the bucket, it will allocate memory for the new
  * environment variable and pass the key and value to the new environment.
  *  
- * @param: hash_table: The pointer to the hashtable.
+ * @param: hashtable: The pointer to the hashtable.
  * @param: key: The environment variable name.
  * @param: value: The environment variable value.
  * 
@@ -110,7 +110,7 @@ unsigned int	hash(char *key)
  *
  */
 
-void	insert(t_hashtable *hash_table, char *key, char *value)
+void	insert(t_hashtable *hashtable, char *key, char *value)
 {
 	unsigned int	index;
 	t_hash			*add_env;
@@ -120,7 +120,7 @@ void	insert(t_hashtable *hash_table, char *key, char *value)
 
 	index = hash(key);
 	key_copy = ft_strdup(key);
-	check_dup = search(hash_table, key_copy);
+	check_dup = search(hashtable, key_copy);
 
 	if (value != NULL)
 		value_copy = ft_strdup(value);
@@ -145,9 +145,9 @@ void	insert(t_hashtable *hash_table, char *key, char *value)
 		add_env = (t_hash *)malloc(sizeof(t_hash));
 		add_env->key = key_copy;
 		add_env->value = value_copy;
-		add_env->next = hash_table->buckets[index];
-		hash_table->buckets[index] = add_env;
-		hash_table->num_keys++;		
+		add_env->next = hashtable->buckets[index];
+		hashtable->buckets[index] = add_env;
+		hashtable->num_keys++;		
 	}
 }
 
@@ -160,7 +160,7 @@ void	insert(t_hashtable *hash_table, char *key, char *value)
  * If it finds it, it will return the value of the environment variable.
  * If it does not find it, it will return NULL.
  *  
- * @param: hash_table: The pointer to the hashtable.
+ * @param: hashtable: The pointer to the hashtable.
  * @param: key: The environment variable name.
  * 
  * @var: index: The index of the bucket.
@@ -170,13 +170,13 @@ void	insert(t_hashtable *hash_table, char *key, char *value)
  *
  */
 
-t_hash	*search(t_hashtable *hash_table, char *key)
+t_hash	*search(t_hashtable *hashtable, char *key)
 {
 	unsigned int	index;
 	t_hash			*search_env;
 
 	index = hash(key);
-	search_env = hash_table->buckets[index];
+	search_env = hashtable->buckets[index];
 	while (search_env != NULL)
 	{
 		if (ft_strcmp(search_env->key, key) == 0)
@@ -195,7 +195,7 @@ t_hash	*search(t_hashtable *hash_table, char *key)
  * If it finds it, it will return the value of the environment variable.
  * If it does not find it, it will return NULL.
  *  
- * @param: hash_table: The pointer to the hashtable.
+ * @param: hashtable: The pointer to the hashtable.
  * @param: key: The environment variable name.
  * 
  * @var: index: The index of the bucket.
@@ -205,27 +205,27 @@ t_hash	*search(t_hashtable *hash_table, char *key)
  *
  */
 
-void	delete_hash(t_hashtable *hash_table, char *key)
+void	delete_hash(t_hashtable *hashtable, char *key)
 {
 	unsigned int	index;
 	t_hash			*delete_env;
 	t_hash			*prev_env;
 
 	index = hash(key);
-	delete_env = hash_table->buckets[index];
+	delete_env = hashtable->buckets[index];
 	prev_env = NULL;
 	while (delete_env != NULL)
 	{
 		if (ft_strcmp(delete_env->key, key) == 0)
 		{
 			if (prev_env == NULL)
-				hash_table->buckets[index] = delete_env->next;
+				hashtable->buckets[index] = delete_env->next;
 			else
 				prev_env->next = delete_env->next;
 			free(delete_env->key);
 			free(delete_env->value);
 			free(delete_env);
-			hash_table->num_keys--;
+			hashtable->num_keys--;
 			return ;
 		}
 		prev_env = delete_env;
@@ -235,7 +235,7 @@ void	delete_hash(t_hashtable *hash_table, char *key)
 
 
 
-void	destroy_hashtable(t_hashtable *hash_table)
+void	destroy_hashtable(t_hashtable *hashtable)
 {
 	t_hash	*temp;
 	t_hash	*next;
@@ -244,7 +244,7 @@ void	destroy_hashtable(t_hashtable *hash_table)
 	i = -1;
 	while (++i < HASHSIZE)
 	{
-		temp = hash_table->buckets[i];
+		temp = hashtable->buckets[i];
 		while (temp != NULL)
 		{
 			next = temp->next;
@@ -254,5 +254,5 @@ void	destroy_hashtable(t_hashtable *hash_table)
 			temp = next;
 		}
 	}
-	free(hash_table);
+	free(hashtable);
 }
