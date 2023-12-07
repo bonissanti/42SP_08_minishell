@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 18:22:48 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/07 18:36:21 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
     else if (root->type == TYPE_OPERATOR && root->weight == OP_PIPE)
     {
         handle_pipes(hashtable, vtr, root, initial_pipe);
-		// ft_fprintf(1, "alo");
-		// restore_fd(vtr->exec.old_stdin, vtr->exec.old_stdout);
-		// ft_fprintf(1, "alo");
+		restore_fd(vtr->exec.old_stdin, vtr->exec.old_stdout);
 	    // wait_for_children(root);
     }
 }

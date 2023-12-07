@@ -79,7 +79,7 @@ int main(int argc, char **argv, char **envp)
     insert_ast(&root, node4, &vtr.exec);
     
     // ft_fprintf(2, "Pipes count: %d\n", exec.count_pipes);
-    // backup_fd(&vtr.exec.old_stdin, &vtr.exec.old_stdout);
+    backup_fd(&vtr.exec.old_stdin, &vtr.exec.old_stdout);
     exec_multi_cmds(&vtr, hashtable, root);
     // execute_forked_command(hashtable, root);
 
