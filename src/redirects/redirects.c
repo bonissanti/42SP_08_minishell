@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:51:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/01 11:37:05 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/07 17:48:45 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	redirect_input(t_ast *node, char *filename)
 		ft_fprintf(2, "minishell: syntax error near unexpected token `newline'\n");
 		return ;
 	}
-	node->fd = open(filename, O_RDONLY);
+	node->in_fd = open(filename, O_RDONLY);
 	if (!verify_file_permissions(filename))
 		return ;
 
@@ -35,7 +35,7 @@ void	redirect_output(t_ast *node, char *filename)
 		ft_fprintf(2, "minishell: syntax error near unexpected token `newline'\n");
 		return ;
 	}
-	node->fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	node->out_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (!verify_file_permissions(filename))
 		return ;
 }
@@ -47,7 +47,7 @@ void	redirect_append(t_ast *node, char *filename)
 		ft_fprintf(2, "minishell: syntax error near unexpected token `newline'\n");
 		return ;
 	}
-	node->fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	node->out_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (!verify_file_permissions(filename))
 		return ;
 }

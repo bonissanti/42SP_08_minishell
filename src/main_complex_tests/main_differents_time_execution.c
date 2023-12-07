@@ -24,95 +24,47 @@
 // 	}
 // }
 
-// static void execute_forked_command(t_hashtable *hashtable, t_ast *node)
-// {
-// 	char *path;
-// 	int result;
-
-// 	result = verify_cmd_permissions(node->cmds);
-// 	if (ft_strchr(node->cmds, '/') != NULL && result != 0) // tratamento para caminho absoluto'
-// 	{
-// 		handle_error(node, result);
-// 		return ;
-// 	}
-// 	else
-// 	{
-// 		path = search(hashtable, "PATH")->value;
-// 		node->path = build_cmd_path(node, path);
-// 	}
-//     ft_fprintf(2, "node->path: %s\n", node->path);
-// 	execve(node->path, node->args, NULL);
-// 	ft_fprintf(2, "minishell: %s: %s\n", node->path, strerror(errno));
-// 	exit(EXIT_FAILURE);
-// }
 
 
 
 
 int main(int argc, char **argv, char **envp)
 {
-    (void)argc;
-    (void)argv;
+	(void)argc;
+	(void)argv;
 
-    t_hashtable *hashtable = create_hashtable();
-    t_vector vtr;
-	// t_exec exec;
+	t_hashtable *hashtable = create_hashtable();
+	t_vector vtr;
 
-    init_hash(hashtable, envp);
-    init_exec_vector(&vtr);
-    // init_cmd(&vtr);
-    // init_redirects(&vtr);
+	init_hash(hashtable, envp);
+	init_cmd(&vtr);
+	init_redirects(&vtr);
 
 
-    t_ast *root = NULL;
+	t_ast *head = NULL;
 
-    t_ast *node1 = create_node(TYPE_COMMAND, "echo fucker sucker", DEFAULT);
-    insert_ast(&root, node1, &vtr.exec);
+	t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
+	insert_ast(&head, node1);
 
-    t_ast *node2 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-    insert_ast(&root, node2, &vtr.exec);
+	t_ast *node2 = create_node(TYPE_REDIRECT, ">", OP_REDIRECT);
+	insert_ast(&head, node2);
 
-    t_ast *node3 = create_node(TYPE_COMMAND, "wc", DEFAULT);
-    insert_ast(&root, node3, &vtr.exec);
+	t_ast *node3 = create_node(TYPE_FILE, "wait_test.txt", DEFAULT);
+	insert_ast(&head, node3);
 
-    t_ast *node4 = create_node(TYPE_REDIRECT, "> outfile.txt", OP_REDIRECT);
-    insert_ast(&root, node4, &vtr.exec);
-    
-    // ft_fprintf(2, "Pipes count: %d\n", exec.count_pipes);
-    // backup_fd(&vtr.exec.old_stdin, &vtr.exec.old_stdout);
-    exec_multi_cmds(&vtr, hashtable, root);
-    // execute_forked_command(hashtable, root);
 
-    // char *exec_args[] = {"/bin/echo", "stupid", NULL};
-    // execve(exec_args[0], exec_args, NULL);
+	t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+	insert_ast(&head, node4);
 
-    // ft_fprintf(2, "root->args[0]: %s\n", root->args[0]);
+	t_ast *node5 = create_node(TYPE_COMMAND, "wc", DEFAULT);
+	insert_ast(&head, node5);
 
-    // execve(root->cmds, root->args, NULL);
-    delete_node(root);
-    destroy_hashtable(hashtable);
+
+	analyzing_cmd(&vtr, hashtable, head);
+	handle_cmd(&vtr, hashtable, head);
+	delete_node(head);
+	destroy_hashtable(hashtable);
 }
-
-
-    // t_ast *node2 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-    // insert_ast(&root, node2, &exec);
-
-    // t_ast *node3 = create_node(TYPE_COMMAND, "wc -l", DEFAULT);
-    // insert_ast(&root, node3, &exec);
-    
-    // t_ast *node4 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-    // insert_ast(&root, node4, &exec);
-
-    // t_ast *node5 = create_node(TYPE_COMMAND, "ls", DEFAULT);
-    // insert_ast(&root, node5, &exec);
-
-    // t_ast *node6 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-    // insert_ast(&root, node6, &exec);
-
-    // t_ast *node7 = create_node(TYPE_COMMAND, "wc", DEFAULT);
-    // insert_ast(&root, node7, &exec);
-
-
 
 // int main(int argc, char **argv, char **envp)
 // {

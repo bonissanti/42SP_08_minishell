@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/06 17:24:45 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/07 17:48:25 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ typedef struct s_ast
 	char *path;
 	char *delim;
 	int exit_status;
-	int	fd;
+	int	in_fd;
+	int	out_fd;
 	t_op weight;
 	t_type type;
 	pid_t pid;

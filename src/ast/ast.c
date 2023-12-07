@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/06 17:22:11 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/07 17:48:07 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ t_ast *create_node(t_type type, char *cmds, t_op weight)
 	new_node->left = NULL;
 	new_node->right = NULL;
 	new_node->exit_status = 0;
-	new_node->fd = 0;
+	new_node->in_fd = -1;
+	new_node->out_fd = -1;
 	return (new_node);
 }
 

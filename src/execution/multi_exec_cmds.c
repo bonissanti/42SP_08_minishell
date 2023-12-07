@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/06 20:20:47 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/07 18:22:48 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
     else if (root->type == TYPE_OPERATOR && root->weight == OP_PIPE)
     {
         handle_pipes(hashtable, vtr, root, initial_pipe);
+		// ft_fprintf(1, "alo");
+		// restore_fd(vtr->exec.old_stdin, vtr->exec.old_stdout);
+		// ft_fprintf(1, "alo");
 	    // wait_for_children(root);
     }
 }
@@ -66,6 +69,38 @@ void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
 //         wait_for_children(root->right);
 //     }
 // }
+
+static void    redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node, int *prev_pipe)
+{
+    pid_t pid;
+
+    if (node->type == TYPE_REDIRECT)
+    {   
+        pid = fork();
+        if (prev_pipe)
+        {
+            dup2(prev_pipe[0], STDIN_FILENO);
+            close(prev_pipe[0]);
+        }
+        if (node->in_fd != -1)
+        {
+            dup2(node->in_fd, STDIN_FILENO);
+            close(node->in_fd);
+        }
+        if (node->out_fd != -1)
+        {
+            dup2(node->out_fd, STDOUT_FILENO);
+            close(node->out_fd);
+        }
+        if (pid == 0)
+            execute_forked_command(hashtable, node->left);
+        else
+        {
+            wait(NULL);
+            close(prev_pipe[1]);
+        }
+    }
+}
 
 
 static void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
@@ -95,12 +130,9 @@ static void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *pre
     else if (node->type == TYPE_REDIRECT)
     {
         handle_redirects(vtr, hash, node);
-        dup2(node->fd, STDOUT_FILENO);
-        close(node->fd);
-        generic_exec_cmd(hash, &vtr->exec, node->left, prev_pipe, NULL);
+        redirect_execution(vtr, hash, node, prev_pipe);
     }
 }
-
 
 void    generic_exec_cmd(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 {
