@@ -42,10 +42,16 @@ void        handle_redirects(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 void	redirect_input(t_ast *node, char *filename);
 void	redirect_output(t_ast *node, char *filename);
 void	redirect_append(t_ast *node, char *filename);
+void    redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node, int *prev_pipe);
 void	handle_heredoc(t_ast *node, t_hashtable *env, char *delim);
 char    *check_expansion(t_hashtable *env, char **line, size_t *len);
 t_bool	verify_file_permissions(const char *file);
 int 	verify_cmd_permissions(const char *cmd);
+
+//############################# OPERATOR #####################################//
+
+void 	handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe);
+int 	is_logical(char *operator);
 
 //############################# PREPARE_EXEC #################################//
 

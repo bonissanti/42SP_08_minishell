@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 19:07:15 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/07 19:14:54 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int is_logical(char *operator)
     return(false);
 }
 
-static void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
+void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
 {
     int next_pipe[2];
 

@@ -69,14 +69,14 @@ int main(int argc, char **argv, char **envp)
     t_ast *node1 = create_node(TYPE_COMMAND, "echo fucker sucker", DEFAULT);
     insert_ast(&root, node1, &vtr.exec);
 
-    t_ast *node2 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-    insert_ast(&root, node2, &vtr.exec);
+    // t_ast *node2 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
+    // insert_ast(&root, node2, &vtr.exec);
 
-    t_ast *node3 = create_node(TYPE_COMMAND, "wc", DEFAULT);
-    insert_ast(&root, node3, &vtr.exec);
+    // t_ast *node3 = create_node(TYPE_COMMAND, "wc", DEFAULT);
+    // insert_ast(&root, node3, &vtr.exec);
 
-    t_ast *node4 = create_node(TYPE_REDIRECT, "> outfile.txt", OP_REDIRECT);
-    insert_ast(&root, node4, &vtr.exec);
+    // t_ast *node4 = create_node(TYPE_REDIRECT, "> outfile.txt", OP_REDIRECT);
+    // insert_ast(&root, node4, &vtr.exec);
     
     t_ast *node5 = create_node(TYPE_OPERATOR, "&&", OP_LOGICAL);
     insert_ast(&root, node2, &vtr.exec);
