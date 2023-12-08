@@ -36,8 +36,11 @@ void	handle_redirects(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 
 void    redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node, int *prev_pipe)
 {
+    int next_pipe[2];
     pid_t pid;
 
+    if (vtr->exec.count_pipes >= 1)
+        pipe(next_pipe);
     if (node->type == TYPE_REDIRECT)
     {   
         pid = fork();
@@ -57,11 +60,27 @@ void    redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node, i
             close(node->out_fd);
         }
         if (pid == 0)
-            execute_forked_command(hashtable, node->left);
+        {
+            if (node->right->type == TYPE_PIPE)
+            {
+                dup2(next_pipe[1], STDOUT_FILENO);
+                close(next_pipe[1]);
+                execute_forked_command(hashtable, node->left);
+                exit(0);
+            }
+            else
+                execute_forked_command(hashtable, node->left); 
+        }
         else
         {
             wait(NULL);
             close(prev_pipe[1]);
+            if (node->right->type == TYPE_PIPE)
+            {
+                close(next_pipe[1]);
+                vtr->exec.count_pipes--;
+                pipe_from_redirect(hashtable, vtr, node->right, next_pipe);
+            }
         }
     }
 }

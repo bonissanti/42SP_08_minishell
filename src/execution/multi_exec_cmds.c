@@ -28,42 +28,24 @@ void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
     if (root->type == TYPE_COMMAND)
         execute_forked_command(hashtable, root);
 
-    // if (root->type == TYPE_REDIRECT && root->weight != OP_HEREDOC)
-    //     handle_redirects(vtr, hashtable, root);
+    if (root->type == TYPE_REDIRECT && root->weight != OP_HEREDOC)
+    {
+        handle_redirects(vtr, hashtable, root);
+        redirect_execution(vtr, hashtable, root, initial_pipe);
+    }
 
     // if (root->type == TYPE_REDIRECT && root->weight == OP_HEREDOC)
     //     handle_heredoc(root, hashtable, root->delim);
 
-    // if (root->type == TYPE_PIPE && root->weight == OP_PIPE)
-    // {
-    //     handle_pipes(hashtable, vtr, root, initial_pipe);
-	// 	restore_fd(vtr->exec.old_stdin, vtr->exec.old_stdout);
-    // }
+    if (root->type == TYPE_PIPE)
+    {
+        handle_pipes(hashtable, vtr, root, initial_pipe);
+		restore_fd(vtr->exec.old_stdin, vtr->exec.old_stdout);
+    }
 
-    if (root->type == TYPE_LOGICAL && root->weight == OP_LOGICAL)
+    if (root->type == TYPE_LOGICAL)
         handle_logical(vtr, hashtable, root, initial_pipe);
 }
-
-// void    wait_for_children(t_ast *root)
-// {
-//     int status;
-
-//     status = 0;
-//     if (root == NULL)
-//         return ;
-
-//     if (root->type == TYPE_COMMAND)
-//     {
-//         waitpid(root->pid, &status, 0);
-//         if (WIFEXITED(status))
-//             root->exit_status = WEXITSTATUS(status);
-//     }
-//     else if (root->type == TYPE_OPERATOR || root->type == TYPE_REDIRECT)
-//     {
-//         wait_for_children(root->left);
-//         wait_for_children(root->right);
-//     }
-// }
 
 void execute_forked_command(t_hashtable *hashtable, t_ast *node)
 {

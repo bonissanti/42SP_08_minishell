@@ -15,12 +15,33 @@
 #include "../include/hash.h"
 #include "../include/builtins.h"
 
-int is_logical(char *operator)
+
+void    pipe_from_redirect(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
 {
-    if(!ft_strncmp(operator, "&&", 2) || !ft_strncmp(operator, "||", 2))
-        return (true);
-    return(false);
+    int next_pipe[2] = {-1, -1};
+
+    if (node == NULL)
+        return ;
+
+    if (node->type == TYPE_PIPE && vtr->exec.count_pipes == 0)
+    {
+        execute_pipes(hash, &vtr->exec, node->right, prev_pipe, NULL);
+        if (prev_pipe)
+        {
+            close(prev_pipe[0]);
+            close(prev_pipe[1]);
+        }
+    }
+    else // lida com multiplos pipes após redirect
+    {
+        pipe(next_pipe);
+        execute_pipes(hash, &vtr->exec, node->right->left, prev_pipe, next_pipe);
+        ft_printf_fd(next_pipe[0]);
+        prev_pipe[0] = next_pipe[0];
+        prev_pipe[1] = next_pipe[1];
+    }
 }
+
 
 void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
 {
@@ -29,7 +50,7 @@ void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
     if (node == NULL)
         return ;
 
-    if (node->type == TYPE_PIPE && node->weight == OP_PIPE)
+    if (node->type == TYPE_PIPE)
     {
         pipe(next_pipe);
         execute_pipes(hash, &vtr->exec, node->left, prev_pipe, next_pipe);
@@ -46,11 +67,14 @@ void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
             close(prev_pipe[1]);
         }
     }
+
     else if (node->type == TYPE_REDIRECT)
     {
         handle_redirects(vtr, hash, node);
         redirect_execution(vtr, hash, node, prev_pipe);
     }
+    else if (node->type == TYPE_LOGICAL)
+        handle_logical(vtr, hash, node, prev_pipe);
 }
 
 void    execute_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)

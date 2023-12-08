@@ -15,15 +15,6 @@
 #include "../include/builtins.h"
 #include "../include/hash.h"
 
-// void	init_cmd(t_vector *vtr)
-// {
-// 	vtr->builtins[0].cmd = NULL;
-// 	vtr->builtins[0].name = "echo";
-// 	vtr->builtins[0].function = ft_echo;
-// 	vtr->builtins[1].name = NULL;
-// 	vtr->builtins[1].function = NULL;
-// }
-
 t_bool	execute_if_builtin(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {
 	t_cmd *current; 

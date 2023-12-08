@@ -1,0 +1,11 @@
+total 292
+drwxrwxr-x  2 bruno bruno   4096 dez  8 09:34 libft
+-rw-rw-r--  1 bruno bruno   2889 dez  8 10:00 Makefile
+-rwxrwxr-x  1 bruno bruno 263000 dez  8 10:23 minishell
+-rw-rw-r--  1 bruno bruno   1021 nov 23 11:13 minishell.c
+-rw-rw-r--  1 bruno bruno   1136 nov 23 11:13 minishell.h
+drwxrwxr-x  3 bruno bruno   4096 nov 30 09:14 minunit
+drwxrwxr-x  3 bruno bruno   4096 dez  8 09:34 objs
+-rw-rw-r--  1 bruno bruno   1789 nov 23 11:13 prompt.c
+drwxrwxr-x 11 bruno bruno   4096 dez  8 09:04 src
+-rw-rw-r--  1 bruno bruno      0 dez  8 10:25 sucker_expected.txt
