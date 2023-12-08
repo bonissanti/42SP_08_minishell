@@ -50,6 +50,7 @@ int 	verify_cmd_permissions(const char *cmd);
 
 void 	handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe);
 void    execute_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe);
+// void    execute_pipes2(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe);
 void    handle_logical(t_vector *vtr, t_hashtable *hash, t_ast *node, int *prev_pipe);
 void    pipe_from_redirect(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe);
 

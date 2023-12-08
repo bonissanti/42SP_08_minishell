@@ -20,27 +20,45 @@ void    pipe_from_redirect(t_hashtable *hash, t_vector *vtr, t_ast *node, int *p
 {
     int next_pipe[2] = {-1, -1};
 
+    pipe(next_pipe);
+
     if (node == NULL)
         return ;
 
-    if (node->type == TYPE_PIPE && vtr->exec.count_pipes == 0)
+    if (vtr->exec.count_pipes == 0)
     {
-        execute_pipes(hash, &vtr->exec, node->right, prev_pipe, NULL);
+        ft_printf_fd(prev_pipe[0]);
+        execute_pipes(hash, &vtr->exec, node, prev_pipe, NULL);
         if (prev_pipe)
         {
             close(prev_pipe[0]);
             close(prev_pipe[1]);
         }
     }
-    else // lida com multiplos pipes após redirect
+    if (node->type == TYPE_PIPE && node->left)
     {
-        pipe(next_pipe);
-        execute_pipes(hash, &vtr->exec, node->right->left, prev_pipe, next_pipe);
-        ft_printf_fd(next_pipe[0]);
-        prev_pipe[0] = next_pipe[0];
-        prev_pipe[1] = next_pipe[1];
+        node->pid = fork();
+        if (node->pid == 0)
+        {
+            execute_pipes(hash, &vtr->exec, node->left, prev_pipe, next_pipe);
+            prev_pipe[0] = next_pipe[0];
+            prev_pipe[1] = next_pipe[1];
+            vtr->exec.count_pipes--;
+            pipe_from_redirect(hash, vtr, node->right, prev_pipe);
+
+        }
+        else
+        {
+            wait(NULL);
+            close(next_pipe[1]);
+        }
     }
+    else
+        pipe_from_redirect(hash, vtr, node->right, prev_pipe);
 }
+
+
+
 
 
 void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
@@ -67,7 +85,6 @@ void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
             close(prev_pipe[1]);
         }
     }
-
     else if (node->type == TYPE_REDIRECT)
     {
         handle_redirects(vtr, hash, node);
@@ -76,6 +93,10 @@ void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
     else if (node->type == TYPE_LOGICAL)
         handle_logical(vtr, hash, node, prev_pipe);
 }
+
+
+
+
 
 void    execute_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 {
