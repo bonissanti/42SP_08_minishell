@@ -43,8 +43,9 @@ char	*check_expansion(t_hashtable *env, char **line, size_t *len)
 	return (expanded);
 }
 
-void	handle_heredoc(t_ast *node, t_hashtable *hash, char *delim)
+void	handle_heredoc(t_vector *vtr, t_ast *node, t_hashtable *hash, char *delim)
 {
+	int 	next_pipe[2];
 	int		fd[2];
 	char	*line;
 	size_t	len;
@@ -72,4 +73,20 @@ void	handle_heredoc(t_ast *node, t_hashtable *hash, char *delim)
 	dup2(fd[0], STDIN_FILENO);
 	if (node->left)
 		execute_forked_command(hash, node->left);
+
+	if (node->right->type == TYPE_PIPE)
+	{
+		pipe(next_pipe);
+		dup2(next_pipe[1], STDOUT_FILENO);
+		close(next_pipe[1]);
+		// pipe_from_redirect(node, next_pipe);
+	}
+	else if (node->right->type == TYPE_REDIRECT)
+	{
+		if (node->right->out_fd != -1)
+		{
+			dup2(node->right->out_fd, STDOUT_FILENO);
+			close(node->right->out_fd);
+		}
+	}
 }

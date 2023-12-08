@@ -15,7 +15,6 @@ typedef struct s_cmd
 typedef struct s_redirect
 {
 	char	*name;
-	void	(*func_here)(t_ast *node, t_hashtable *env, char *delim);
 	void	(*function)(t_ast *node, char *filename);
 }		t_redirect;
 
@@ -33,7 +32,7 @@ void	    init_cmd(t_vector *vtr);
 void		init_exec_vector(t_vector *vtr);
 t_bool		execute_if_builtin(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 void        init_redirects(t_vector *vtr);
-void        handle_redirects(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
+void		handle_redirects(t_vector *vtr, t_ast *node);
 
 //############################# REDIRECTIONS #################################//
 
@@ -41,7 +40,7 @@ void	redirect_input(t_ast *node, char *filename);
 void	redirect_output(t_ast *node, char *filename);
 void	redirect_append(t_ast *node, char *filename);
 void    redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node, int *prev_pipe);
-void	handle_heredoc(t_ast *node, t_hashtable *env, char *delim);
+void	handle_heredoc(t_vector *vtr, t_ast *node, t_hashtable *env, char *delim);
 char    *check_expansion(t_hashtable *env, char **line, size_t *len);
 t_bool	verify_file_permissions(const char *file);
 int 	verify_cmd_permissions(const char *cmd);

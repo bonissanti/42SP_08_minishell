@@ -34,17 +34,11 @@ void    init_redirects(t_vector *vtr)
     vtr->redirect[0].name = "<";
     vtr->redirect[1].name = ">";
     vtr->redirect[2].name = ">>";
-    vtr->redirect[3].name = "<<";
-    vtr->redirect[4].name = NULL;
+    vtr->redirect[3].name = NULL;
     vtr->redirect[0].function = redirect_input;
     vtr->redirect[1].function = redirect_output;
     vtr->redirect[2].function = redirect_append;
     vtr->redirect[3].function = NULL;
-    vtr->redirect[4].function = NULL;
-    vtr->redirect[0].func_here = NULL;
-    vtr->redirect[1].func_here = NULL;
-    vtr->redirect[2].func_here = NULL;
-    vtr->redirect[3].func_here = handle_heredoc;
-    vtr->redirect[4].func_here = NULL;
+
 }
 

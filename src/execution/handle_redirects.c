@@ -15,7 +15,7 @@
 #include "../include/hash.h"
 #include "../include/segments.h"
 
-void	handle_redirects(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
+void	handle_redirects(t_vector *vtr, t_ast *node)
 {
 	t_redirect	*current;
 
@@ -24,10 +24,7 @@ void	handle_redirects(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 	{
 		if (ft_strcmp(current->name, node->cmds) == 0)
 		{
-			if (ft_strcmp(current->name, "<<") == 0)
-				current->func_here(node, hashtable, node->delim);
-			else
-				current->function(node, node->delim);
+			current->function(node, node->delim);
 			break ;
 		}
 		current++;
