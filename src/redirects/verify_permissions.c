@@ -37,14 +37,8 @@ t_bool	verify_file_permissions(const char *file)
 int	verify_cmd_permissions(const char *cmd)
 {
 	if (access(cmd, F_OK) != 0)
-	{
-		ft_fprintf(2, "minishell: command not found: %s\n", cmd);
 		return (126);
-	}
 	else if (access(cmd, X_OK) != 0)
-	{
-		ft_fprintf(2, "minishell: denied permission: %s\n", cmd);
 		return (127);
-	}
 	return (0);
 }

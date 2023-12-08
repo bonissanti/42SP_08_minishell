@@ -10,63 +10,63 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+// #ifndef PARSER_H
+// # define PARSER_H
 
-#include "../minishell.h"
-#include "hash.h"
-#include "segments.h"
+// #include "../minishell.h"
+// #include "hash.h"
+// #include "segments.h"
 
-typedef enum {
-	IDENTIFIER,
-	INFILE,
-	REDIRECT,
-	HERE_DOC,
-	APPEND,
-	PIPE,
-	O_PARENTESIS,
-	C_PARENTESIS,
-	AND,
-	OR,
-	EXPAND,
-	WILD
-} t_tkn_type;
+// typedef enum {
+// 	IDENTIFIER,
+// 	INFILE,
+// 	REDIRECT,
+// 	HERE_DOC,
+// 	APPEND,
+// 	PIPE,
+// 	O_PARENTESIS,
+// 	C_PARENTESIS,
+// 	AND,
+// 	OR,
+// 	EXPAND,
+// 	WILD
+// } t_tkn_type;
 
-typedef enum 
-{
-	TYPE_COMMAND,
-	TYPE_OPERATOR,
-	TYPE_FILE,
-	TYPE_REDIRECT,
-} t_type;
+// // typedef enum 
+// // {
+// // 	TYPE_COMMAND,
+// // 	TYPE_OPERATOR,
+// // 	TYPE_FILE,
+// // 	TYPE_REDIRECT,
+// // } t_type;
 
-typedef enum
-{
-	OP_REDIRECT = 2, 	// <, >, >> 
-	OP_PIPE = 3, 		// |
-	OP_LOGICAL = 4, 	// &&, ||
-	DEFAULT = 0,
-} t_op;
+// typedef enum
+// {
+// 	OP_REDIRECT = 2, 	// <, >, >> 
+// 	OP_PIPE = 3, 		// |
+// 	OP_LOGICAL = 4, 	// &&, ||
+// 	DEFAULT = 0,
+// } t_op;
 
-typedef struct s_cmd_list
-{    
-    t_type 	type;
-    char *args;
-    t_op	weight;
-    char *infile;
-    char *outfile;
-	int	here_doc_fd;
-	t_bool here_doc;
-	struct s_cmd_list	*next;
-	struct s_cmd_list	*prev;
-} t_cmd_list;
+// typedef struct s_cmd_list
+// {    
+//     t_type 	type;
+//     char *args;
+//     t_op	weight;
+//     char *infile;
+//     char *outfile;
+// 	int	here_doc_fd;
+// 	t_bool here_doc;
+// 	struct s_cmd_list	*next;
+// 	struct s_cmd_list	*prev;
+// } t_cmd_list;
 
-typedef struct s_tkn_list {
-	t_tkn_type			type;
-	char				*content;
-	struct s_tkn_list	*next;
-	struct s_tkn_list	*prev;
-} t_tkn_list;
+// typedef struct s_tkn_list {
+// 	t_tkn_type			type;
+// 	char				*content;
+// 	struct s_tkn_list	*next;
+// 	struct s_tkn_list	*prev;
+// } t_tkn_list;
 
 typedef struct s_global{
 	char		*readline_input;

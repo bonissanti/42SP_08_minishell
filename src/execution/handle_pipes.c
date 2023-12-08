@@ -29,17 +29,17 @@ void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
     if (node == NULL)
         return ;
 
-    if (node->type == TYPE_OPERATOR && node->weight == OP_PIPE)
+    if (node->type == TYPE_PIPE && node->weight == OP_PIPE)
     {
         pipe(next_pipe);
-        generic_exec_cmd(hash, &vtr->exec, node->left, prev_pipe, next_pipe);
+        execute_pipes(hash, &vtr->exec, node->left, prev_pipe, next_pipe);
         prev_pipe[0] = next_pipe[0];
         prev_pipe[1] = next_pipe[1];
         handle_pipes(hash, vtr, node->right, prev_pipe);
     }
     else if (node->right == NULL && node->type == TYPE_COMMAND)
     {
-        generic_exec_cmd(hash, &vtr->exec, node, prev_pipe, NULL);
+        execute_pipes(hash, &vtr->exec, node, prev_pipe, NULL);
         if (prev_pipe)
         {
             close(prev_pipe[0]);
@@ -51,12 +51,35 @@ void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
         handle_redirects(vtr, hash, node);
         redirect_execution(vtr, hash, node, prev_pipe);
     }
+}
 
-	else if (node->type == TYPE_OPERATOR && is_logical(node->cmds))
-	{
-		generic_exec_cmd(hash, &vtr->exec, node->left, prev_pipe, NULL);
-		if ((!ft_strncmp(node->cmds, "&&", 2) && status == 0)
-    		|| (!ft_strncmp(node->cmds, "||", 2) && status != 0))
-			exec_multi_cmds(vtr, hash, node->right);
-	}
+void    execute_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
+{
+    node->pid = fork();
+    if (node->pid == 0)
+    {
+        if (*prev_pipe != -1)
+        {
+            dup2(prev_pipe[0], STDIN_FILENO);
+            close(prev_pipe[0]);
+            close(prev_pipe[1]);
+        }
+        if (next_pipe && exec->count_pipes >= 1)
+        {
+            dup2(next_pipe[1], STDOUT_FILENO);
+            close(next_pipe[0]);
+            close(next_pipe[1]);
+        }
+        execute_forked_command(hashtable, node);
+        exit(EXIT_SUCCESS);
+    }
+    else
+    {
+        wait (NULL);
+        if (prev_pipe && !next_pipe)
+            close(prev_pipe[1]);
+
+        if (next_pipe && exec->count_pipes >= 1)
+            close(next_pipe[1]);
+    }
 }

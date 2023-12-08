@@ -41,7 +41,7 @@ void    redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node, i
     if (node->type == TYPE_REDIRECT)
     {   
         pid = fork();
-        if (prev_pipe)
+        if (*prev_pipe != -1)
         {
             dup2(prev_pipe[0], STDIN_FILENO);
             close(prev_pipe[0]);

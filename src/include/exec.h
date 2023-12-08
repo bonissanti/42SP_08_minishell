@@ -5,8 +5,6 @@
 
 struct s_exec;
 
-extern int status;
-
 typedef struct s_cmd
 {
 	char	*name;
@@ -51,6 +49,8 @@ int 	verify_cmd_permissions(const char *cmd);
 //############################# OPERATOR #####################################//
 
 void 	handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe);
+void    execute_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe);
+void    handle_logical(t_vector *vtr, t_hashtable *hash, t_ast *node, int *prev_pipe);
 int 	is_logical(char *operator);
 
 //############################# PREPARE_EXEC #################################//

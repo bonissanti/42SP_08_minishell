@@ -66,35 +66,18 @@ int main(int argc, char **argv, char **envp)
 
     t_ast *root = NULL;
 
-    t_ast *node1 = create_node(TYPE_COMMAND, "echo fucker sucker", DEFAULT);
+    t_ast *node1 = create_node(TYPE_COMMAND, "ls -l", DEFAULT);
     insert_ast(&root, node1, &vtr.exec);
 
-    // t_ast *node2 = create_node(TYPE_OPERATOR, "|", OP_PIPE);
-    // insert_ast(&root, node2, &vtr.exec);
-
-    // t_ast *node3 = create_node(TYPE_COMMAND, "wc", DEFAULT);
-    // insert_ast(&root, node3, &vtr.exec);
-
-    // t_ast *node4 = create_node(TYPE_REDIRECT, "> outfile.txt", OP_REDIRECT);
-    // insert_ast(&root, node4, &vtr.exec);
-    
-    t_ast *node5 = create_node(TYPE_OPERATOR, "&&", OP_LOGICAL);
+    t_ast *node2 = create_node(TYPE_LOGICAL, "&&", OP_LOGICAL);
     insert_ast(&root, node2, &vtr.exec);
 
-    t_ast *node6 = create_node(TYPE_COMMAND, "echo fucker sucker", DEFAULT);
-    insert_ast(&root, node6, &vtr.exec);
+    t_ast *node3 = create_node(TYPE_COMMAND, "echo fucker", DEFAULT);
+    insert_ast(&root, node3, &vtr.exec);
 
-    // ft_fprintf(2, "Pipes count: %d\n", exec.count_pipes);
     backup_fd(&vtr.exec.old_stdin, &vtr.exec.old_stdout);
     exec_multi_cmds(&vtr, hashtable, root);
-    // execute_forked_command(hashtable, root);
 
-    // char *exec_args[] = {"/bin/echo", "stupid", NULL};
-    // execve(exec_args[0], exec_args, NULL);
-
-    // ft_fprintf(2, "root->args[0]: %s\n", root->args[0]);
-
-    // execve(root->cmds, root->args, NULL);
     delete_node(root);
     destroy_hashtable(hashtable);
 }

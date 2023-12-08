@@ -21,7 +21,8 @@
 typedef enum
 {
 	TYPE_COMMAND,
-	TYPE_OPERATOR,
+	TYPE_LOGICAL,
+	TYPE_PIPE,
 	TYPE_REDIRECT,
 }	t_type;
 
@@ -49,7 +50,6 @@ typedef struct s_ast
 	
 	char *cmds;
 	char **args;
-	// char **split; //
 	char *path;
 	char *delim;
 	int exit_status;
