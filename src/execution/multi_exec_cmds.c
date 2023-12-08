@@ -39,8 +39,7 @@ void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
 
     if (root->type == TYPE_PIPE)
     {
-        pipe_from_redirect(hashtable, vtr, root, initial_pipe);
-        // handle_pipes(hashtable, vtr, root, initial_pipe);
+        handle_pipes(hashtable, vtr, root, initial_pipe);
 		restore_fd(vtr->exec.old_stdin, vtr->exec.old_stdout);
     }
 

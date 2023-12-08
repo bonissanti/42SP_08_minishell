@@ -21,11 +21,10 @@ void    pipe_from_redirect(t_hashtable *hash, t_vector *vtr, t_ast *node, int *p
     int next_pipe[2] = {-1, -1};
 
     pipe(next_pipe);
-
     if (node == NULL)
         return ;
 
-    if (vtr->exec.count_pipes == 0)
+    if (vtr->exec.count_pipes == 0) // pensado para caso cat < outfile.txt | wc
     {
         ft_printf_fd(prev_pipe[0]);
         execute_pipes(hash, &vtr->exec, node, prev_pipe, NULL);
@@ -35,24 +34,8 @@ void    pipe_from_redirect(t_hashtable *hash, t_vector *vtr, t_ast *node, int *p
             close(prev_pipe[1]);
         }
     }
-    if (node->type == TYPE_PIPE && node->left)
-    {
-        node->pid = fork();
-        if (node->pid == 0)
-        {
-            execute_pipes(hash, &vtr->exec, node->left, prev_pipe, next_pipe);
-            prev_pipe[0] = next_pipe[0];
-            prev_pipe[1] = next_pipe[1];
-            vtr->exec.count_pipes--;
-            pipe_from_redirect(hash, vtr, node->right, prev_pipe);
-
-        }
-        else
-        {
-            wait(NULL);
-            close(next_pipe[1]);
-        }
-    }
+    if (node->type == TYPE_PIPE && node->left) // pensado para casos cat < outfile.txt + multiplos pipes
+        handle_pipes(hash, vtr, node, prev_pipe);
     else
         pipe_from_redirect(hash, vtr, node->right, prev_pipe);
 }
