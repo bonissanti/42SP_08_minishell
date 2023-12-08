@@ -38,6 +38,7 @@ void    redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node, i
 
     if (vtr->exec.count_pipes >= 1)
         pipe(next_pipe);
+
     if (node->type == TYPE_REDIRECT)
     {   
         pid = fork();
@@ -72,7 +73,7 @@ void    redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node, i
         {
             wait(NULL);
             close(prev_pipe[1]);
-            if (node->right->type == TYPE_PIPE)
+            if (vtr->exec.count_pipes >= 1)
             {
                 close(next_pipe[1]);
                 vtr->exec.count_pipes--;

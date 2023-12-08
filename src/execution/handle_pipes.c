@@ -26,7 +26,7 @@ void    pipe_from_redirect(t_hashtable *hash, t_vector *vtr, t_ast *node, int *p
 
     if (vtr->exec.count_pipes == 0) // pensado para caso cat < outfile.txt | wc
     {
-        execute_pipes(hash, &vtr->exec, node, prev_pipe, NULL);
+        execute_pipes(hash, &vtr->exec, node->right, prev_pipe, NULL);
         if (prev_pipe)
         {
             close(prev_pipe[0]);
@@ -35,7 +35,7 @@ void    pipe_from_redirect(t_hashtable *hash, t_vector *vtr, t_ast *node, int *p
     }
     if (node->type == TYPE_PIPE && node->left) // pensado para casos cat < outfile.txt + multiplos pipes
         handle_pipes(hash, vtr, node, prev_pipe);
-    else
+    else if (node->right->type == TYPE_PIPE)
         pipe_from_redirect(hash, vtr, node->right, prev_pipe);
 }
 
@@ -69,7 +69,7 @@ void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
     }
     else if (node->type == TYPE_REDIRECT)
     {
-        handle_redirects(vtr, hash, node);
+        handle_redirects(vtr, node);
         redirect_execution(vtr, hash, node, prev_pipe);
     }
     else if (node->type == TYPE_LOGICAL)
