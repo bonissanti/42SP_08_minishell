@@ -44,7 +44,7 @@ void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
     }
 
     if (root->type == TYPE_LOGICAL)
-        handle_logical(vtr, hashtable, root, initial_pipe);
+        logical_pipe(vtr, hashtable, root, initial_pipe);
 }
 
 void execute_forked_command(t_hashtable *hashtable, t_ast *node)

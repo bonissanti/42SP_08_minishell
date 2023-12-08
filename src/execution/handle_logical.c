@@ -3,7 +3,7 @@
 #include "../include/hash.h"
 #include "../include/builtins.h"
 
-void    handle_logical(t_vector *vtr, t_hashtable *hash, t_ast *node, int *prev_pipe)
+void    logical_pipe(t_vector *vtr, t_hashtable *hash, t_ast *node, int *prev_pipe)
 {
     pid_t pid;
 
@@ -32,4 +32,12 @@ void    handle_logical(t_vector *vtr, t_hashtable *hash, t_ast *node, int *prev_
                 exec_multi_cmds(vtr, hash, node->right);
         }
     }
+}
+
+void    simple_logical(t_vector *vtr, t_hashtable *hash, t_ast *node, int status)
+{
+    if (status == 0 && !ft_strncmp(node->cmds, "&&", 2))
+        exec_multi_cmds(vtr, hash, node->right);
+    else if (status != 0 && !ft_strncmp(node->cmds, "||", 2))
+        exec_multi_cmds(vtr, hash, node->right);
 }

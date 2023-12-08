@@ -73,7 +73,7 @@ void handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
         redirect_execution(vtr, hash, node, prev_pipe);
     }
     else if (node->type == TYPE_LOGICAL)
-        handle_logical(vtr, hash, node, prev_pipe);
+        logical_pipe(vtr, hash, node, prev_pipe);
 }
 
 

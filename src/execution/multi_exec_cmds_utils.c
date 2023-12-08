@@ -34,6 +34,8 @@ void ft_printf_fd(int fd)
     ft_fprintf(2, "____________________\n");
 }
 
+
+
 // void    execute_pipes2(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 // {
 //     node->pid = fork();
