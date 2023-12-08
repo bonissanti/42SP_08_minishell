@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:16:57 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/23 18:56:08 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/08 17:14:27 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void set_io(t_cmd_list **cmd_list)
 		else if (head->type == TYPE_REDIRECT && (!ft_strncmp(head->args, ">>", 2) || *(*head).args == '>'))
 			set_command_output(cmd_list, head);
 		head = temp;
-		if(head && head->type == TYPE_OPERATOR)
+		if(head && (head->type == TYPE_PIPE || head->type == TYPE_LOGICAL)) //this ensures that the last redirect from the right side will be selected to be the in or out of that command block
 			*cmd_list = head;
 	}
 }

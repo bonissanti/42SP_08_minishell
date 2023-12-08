@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/23 20:21:52 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/08 17:22:07 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,14 @@ typedef enum {
 	WILD
 } t_tkn_type;
 
-typedef enum 
+typedef enum
 {
-	TYPE_COMMAND,
-	TYPE_OPERATOR,
-	TYPE_FILE,
-	TYPE_REDIRECT,
-} t_type;
+    TYPE_COMMAND,
+    TYPE_LOGICAL,
+	TYPE_SUBSHELL,
+    TYPE_PIPE,
+    TYPE_REDIRECT,
+}    t_type;
 
 typedef enum
 {

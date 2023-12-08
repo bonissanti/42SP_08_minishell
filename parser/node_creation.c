@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:32:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/23 20:19:39 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/08 17:18:12 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void	new_redirect_node(t_tkn_list **current)
 void	new_subshell_node(t_tkn_list **current)
 {
 	add_cmd_list((t_cmd_list){
-		.type = TYPE_OPERATOR,
+		.type = TYPE_SUBSHELL,
 		.args = tkn_type_converter((*current)->type),
 		.prec_weight = DEFAULT,
 	});
@@ -138,13 +138,20 @@ void	new_subshell_node(t_tkn_list **current)
 void	new_operator_node(t_tkn_list **current)
 {
 	t_operator weight;
+	t_type type_operator;
 	
 	if ((*current)->type == PIPE)
+	{
+		type_operator = TYPE_PIPE;
 		weight = OP_PIPE;
+	}
 	else
+	{
+		type_operator = TYPE_LOGICAL;
 		weight = OP_LOGICAL;
+	}
 	add_cmd_list((t_cmd_list){
-		.type = TYPE_OPERATOR,
+		.type = type_operator,
 		.args = tkn_type_converter((*current)->type),
 		.prec_weight = weight,
 	});

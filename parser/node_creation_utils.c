@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 20:19:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/23 20:19:58 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/08 17:16:45 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_cmd_list *find_command(t_cmd_list *cmd_list)
 	{
 		if(cmd_list->type == TYPE_COMMAND)
 			current_command = cmd_list;
-		else if(cmd_list->type == TYPE_OPERATOR)
+		else if(cmd_list->type == TYPE_LOGICAL || cmd_list->type == TYPE_PIPE)
 			current_command = NULL;
 		cmd_list = cmd_list->next;
 	}
