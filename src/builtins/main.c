@@ -62,18 +62,38 @@ int main(int argc, char **argv, char **envp)
 
     t_ast *root = NULL;
 
-    t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
+    t_ast *node1 = create_node(TYPE_COMMAND, "wc", DEFAULT);
     insert_ast(&root, node1, &vtr.exec);
 
-    t_ast *node2 = create_node(TYPE_REDIRECT, "<< EOF", OP_HEREDOC);
+    t_ast *node2 = create_node(TYPE_REDIRECT, "< infile1.txt", OP_REDIRECT);
     insert_ast(&root, node2, &vtr.exec);
-
-    t_ast *node3 = create_node(TYPE_LOGICAL, "||", OP_LOGICAL);
+    
+	t_ast *node3 = create_node(TYPE_REDIRECT, "< infile2.txt", OP_REDIRECT);
     insert_ast(&root, node3, &vtr.exec);
 
-    t_ast *node4 = create_node(TYPE_COMMAND, "echo stupid", DEFAULT);
+	t_ast *node4 = create_node(TYPE_REDIRECT, "< infile3.txt", OP_REDIRECT);
     insert_ast(&root, node4, &vtr.exec);
+    
+	t_ast *node5 = create_node(TYPE_REDIRECT, "> outfile1.txt", OP_REDIRECT);
+    insert_ast(&root, node5, &vtr.exec);
+    
+	t_ast *node6 = create_node(TYPE_REDIRECT, ">> outfile2.txt", OP_REDIRECT);
+    insert_ast(&root, node6, &vtr.exec);
 
+	t_ast *node7 = create_node(TYPE_REDIRECT, "> outfile3.txt", OP_REDIRECT);
+    insert_ast(&root, node7, &vtr.exec);
+
+    // t_ast *node3 = create_node(TYPE_PIPE, "|", OP_PIPE);
+    // insert_ast(&root, node3, &vtr.exec);
+
+    // t_ast *node4 = create_node(TYPE_COMMAND, "sort", DEFAULT);
+    // insert_ast(&root, node4, &vtr.exec);
+
+    // t_ast *node5 = create_node(TYPE_PIPE, "|", OP_PIPE);
+    // insert_ast(&root, node5, &vtr.exec);
+
+    // t_ast *node6 = create_node(TYPE_COMMAND, "wc", DEFAULT);
+    // insert_ast(&root, node6, &vtr.exec);
 
     backup_fd(&vtr.exec.old_stdin, &vtr.exec.old_stdout);
     exec_multi_cmds(&vtr, hashtable, root);

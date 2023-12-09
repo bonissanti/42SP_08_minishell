@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 17:48:25 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/08 22:09:39 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,27 @@
 #include "../../libft/libft.h"
 // #include "exec.h"
 
+typedef struct s_cmd_list
+{    
+    t_type 	type;
+    char *args;
+    t_op	weight;
+    char *infile;
+    char *outfile;
+	int	here_doc_fd;
+	t_bool here_doc;
+	struct s_cmd_list	*next;
+	struct s_cmd_list	*prev;
+} t_cmd_list;
+
 typedef enum
 {
-	TYPE_COMMAND,
-	TYPE_LOGICAL,
-	TYPE_PIPE,
-	TYPE_REDIRECT,
-}	t_type;
+    TYPE_COMMAND,
+    TYPE_LOGICAL,
+    TYPE_SUBSHELL,
+    TYPE_PIPE,
+    TYPE_REDIRECT,
+}    t_type;
 
 typedef enum
 {
@@ -52,12 +66,15 @@ typedef struct s_ast
 	char **args;
 	char *path;
 	char *delim;
+	char *infile;
+	char *outfile;
 	int exit_status;
 	int	in_fd;
 	int	out_fd;
 	t_op weight;
 	t_type type;
 	pid_t pid;
+	t_bool subshell;
 	struct s_ast *left;
 	struct s_ast *right;
 } 	t_ast;
@@ -65,7 +82,7 @@ typedef struct s_ast
 
 //############################### AST #########################################
 
-t_ast 				*create_node(t_type type, char *cmds, t_op weight);
+t_ast 				*create_node(t_cmd_list *cmd_list);
 void 				insert_ast(t_ast **head, t_ast *new_node, t_exec *exec);
 void				delete_node(t_ast *head);
 void				pre_order_traversal(t_ast *head); // Remover depois

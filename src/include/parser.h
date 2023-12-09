@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/22 17:43:09 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/08 19:27:54 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,18 @@
 // 	DEFAULT = 0,
 // } t_op;
 
-// typedef struct s_cmd_list
-// {    
-//     t_type 	type;
-//     char *args;
-//     t_op	weight;
-//     char *infile;
-//     char *outfile;
-// 	int	here_doc_fd;
-// 	t_bool here_doc;
-// 	struct s_cmd_list	*next;
-// 	struct s_cmd_list	*prev;
-// } t_cmd_list;
+typedef struct s_cmd_list
+{    
+    t_type 	type;
+    char *args;
+    t_op	weight;
+    char *infile;
+    char *outfile;
+	int	here_doc_fd;
+	t_bool here_doc;
+	struct s_cmd_list	*next;
+	struct s_cmd_list	*prev;
+} t_cmd_list;
 
 // typedef struct s_tkn_list {
 // 	t_tkn_type			type;
