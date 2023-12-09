@@ -59,7 +59,7 @@ void    redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node, i
         }
         if (pid == 0)
         {
-            if (node->right->type == TYPE_PIPE)
+            if (vtr->exec.count_pipes >= 1)
             {
                 dup2(next_pipe[1], STDOUT_FILENO);
                 close(next_pipe[1]);
@@ -80,5 +80,11 @@ void    redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node, i
                 pipe_from_redirect(hashtable, vtr, node->right, next_pipe);
             }
         }
+        if (node->type == TYPE_REDIRECT && node->right->type == TYPE_LOGICAL)
+        {
+            waitpid(node->pid, &node->left->exit_status, 0);
+            simple_logical(vtr, hashtable, node->right, node->left->exit_status);
+        }
+        
     }
 }
