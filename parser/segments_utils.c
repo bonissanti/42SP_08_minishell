@@ -1,27 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   segments_utils.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/22 16:25:59 by aperis-p          #+#    #+#             */
+/*   Updated: 2023/11/22 16:26:02 by aperis-p         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "./segments.h"
 
-t_quote *init_quote(t_hashtable *env, char *arg)
+t_lex *init_lex(t_hashtable *env, char *arg)
 {
-    t_quote *quote;
+    t_lex *quote;
 
-    quote = (t_quote *)malloc(sizeof(t_quote));
+    quote = (t_lex *)malloc(sizeof(t_lex));
     quote->ptr = arg;
 	quote->segment = (char *)malloc(sizeof(char) * ft_strlen(arg) + 1);
-	quote->type = 0;
-	quote->prev_type = 0;
 	quote->env = env;
-	quote->state = init_quote_state();
+	init_structs(&quote->state, false, sizeof(t_quote_bool));
+	init_structs(&quote->dollar, false, sizeof(t_expand));
 	return (quote);
-}
-
-t_quote_state init_quote_state(void)
-{
-	t_quote_state state;
-
-	state.single_open = false;
-	state.double_open = false;
-	state.escape_next = false;
-	return (state);
 }
 
 t_segment *new_segments(char *str)
@@ -49,7 +50,7 @@ void add_segments(t_segment **head, char *str)
 	}
 }
 
-char *join_segments(t_segment *head)
+char *join_segments(t_segment *head) // Merece uma atenção ao dar free, precisa ser fora da função
 {
 	t_segment *current;
 	char *str;
@@ -90,15 +91,14 @@ void	free_segments(t_segment *head)
 		current = next;
 	}
 }
-
-size_t ft_strcspn(const char *str, char *delim1, char *delim2)
+size_t custom_strcspn(const char *str, char *delim1)
 {
 	size_t length;
 
 	length = 0;
 	while (*str)
 	{
-		if (*str == *delim1 || *str == *delim2 || *str == '\\')
+		if (*str == *delim1 || *str == '\"' || *str == '\\' || *str == ' ')
 			return (length);
 		str++;
 		length++;

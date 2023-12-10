@@ -1,0 +1,53 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "(gdb) Launch",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/a.out",
+			"args": [],
+			"stopAtEntry": true,
+			"cwd": "${fileDirname}",
+			"environment": [],
+			"externalConsole": false,
+			"MIMode": "gdb",
+            "setupCommands": [
+                // {
+                //     "description": "Enable pretty-printing for gdb",
+                //     "text": "-enable-pretty-printing",
+                //     "ignoreFailures": true
+                // },
+                // {
+                //     "description": "Set Disassembly Flavor to Intel",
+                //     "text": "-gdb-set disassembly-flavor intel",
+                //     "ignoreFailures": true
+                // },
+                // {
+                //     "description": "Start Valgrind",
+                //     "text": "set solib-search-path /usr/lib/x86_64-linux-gnu/valgrind",
+                //     "ignoreFailures": true
+                // },
+                // {
+                //     "description": "Start Valgrind",
+                //     "text": "target remote | /usr/bin/vgdb --pid=125151",
+                //     "ignoreFailures": true
+                // },
+                // {
+                //     "description": "Set follow-fork-mode to child",
+                //     "text": "set follow-fork-mode child",
+                //     "ignoreFailures": false
+                // },
+                // {
+                //     "description": "Do not detach from the parent when a fork occurs",
+                //     "text": "set detach-on-fork off",
+                //     "ignoreFailures": false
+                // }
+			]
+		}
+
+	]
+}

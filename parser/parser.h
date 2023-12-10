@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/08 17:22:07 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/10 13:54:32 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,5 +118,6 @@ void		set_command_output(t_cmd_list **cmd_list, t_cmd_list *head);
 void		set_command_input(t_cmd_list **cmd_list, t_cmd_list *head);
 t_cmd_list	*find_command(t_cmd_list *cmd_list);
 void		append_expand(t_tkn_list **current);
+void		expand_all(t_tkn_list *tkn_list, t_hashtable *env);
 
 #endif

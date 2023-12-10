@@ -1,2 +1,2 @@
 all:
-	cc minishell.c prompt.c ./libft/*.c -Wall -Werror -Wextra -g3 -lreadline && ./a.out
+	cc prompt.c ./libft/*.c ./parser/*.c -Wall -Werror -Wextra -g3 -lreadline && ./a.out
