@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/09 21:44:35 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/10 15:14:19 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ void	join_args(t_tkn_list *tkn_list)
 		if (current && (current->type == IDENTIFIER
 		|| current->type == EXPAND || current->type == WILD))
 			new_cmd_file_node(&current);
-		if (current && is_redirect(current->type))
+		if (current && handle_redirect(current->type))
 			new_redirect_node(&current);
 		if (current && current->type == O_PARENTESIS)
 			new_subshell_node(&current);

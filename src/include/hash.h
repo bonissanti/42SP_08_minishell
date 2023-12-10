@@ -10,12 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_H
-# define ENV_H
+#ifndef HASH_H
+# define HASH_H
 
 #include <stdlib.h>
 #include <unistd.h>
-#include "../libft/libft.h"
+#include <readline/readline.h>
+#include "../../libft/libft.h"
 
 // Hash table size is recommended to be a prime number
 # define HASHSIZE 101
@@ -29,14 +30,28 @@ typedef struct t_hash
 
 typedef struct t_hashtable
 {
+	int num_keys;
 	t_hash *buckets[101];
+	t_hash *home;
 }			t_hashtable;
 
+//############################### Hashtable ###################################
 
-t_hashtable *create_hashtable(void);
-unsigned int hash(char *key);
-void insert(t_hashtable *hash_table, char *key, char *value);
-char *search(t_hashtable *hash_table, char *key);
-void    delete_hash(t_hashtable *hash_table, char *key);
+t_hashtable		*create_hashtable(void);
+unsigned int	hash(char *key);
+void			insert(t_hashtable *hash_table, char *key, char *value);
+t_hash			*search(t_hashtable *hash_table, char *key);
+void			delete_hash(t_hashtable *hash_table, char *key);
+void 			destroy_hashtable(t_hashtable *hash_table);
+
+//############################ Hash Utils ###################################
+
+void			bubble_sort(char **array, int size);
+int				get_num_keys(t_hashtable *hash_table);
+char			**copy_all_keys(t_hashtable *hash_table);
+char 			*handle_elements(t_hashtable *hash_table, char *arg);
+void			init_hash(t_hashtable *hash_table, char **envp);
+
+
 
 #endif

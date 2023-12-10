@@ -6,37 +6,53 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:32:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/10/19 19:06:36 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/07 11:52:35 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "env.h"
-#include <stdio.h>
+#include "../include/builtins.h"
+#include "../include/hash.h"
+#include <errno.h>
 
-int    ft_cd(char **args)
+void	ft_cd(t_hashtable *hashtable, char **args)
 {
-	if (args[1] == NULL)
-		printf("expected argument to \"cd\"\n");
-	else
+	char 	*oldpwd;
+	char	*cwd;
+	size_t	argc;
+
+	argc = ft_count_args(args);
+	if (argc > 2)
 	{
-		if (chdir(args[1]) != 0)
-			perror("");
+		ft_putstr_fd("cd: too many arguments\n", 2);
+		return ;
 	}
-	return (1);
+	if (argc == 1)
+	{
+		if (chdir(hashtable->home->value) == -1)
+		{
+			ft_fprintf(2, "cd: %s: %s\n", hashtable->home, strerror(errno));
+			return ;
+		}
+	}
+	else if (argc == 2)
+	{
+		if (chdir(args[1]) == -1)
+		{
+			ft_fprintf(2, "cd: %s: %s\n", args[1], strerror(errno));
+			return ;
+		}
+	}
+	cwd = getcwd(NULL, 0);
+	oldpwd = search(hashtable, "PWD")->value;
+	insert(hashtable, "OLDPWD", oldpwd);
+	insert(hashtable, "PWD", cwd);
+	free(cwd);
+	return ;
 }
 
-int main()
-{
-	char *cd_args[] = {"cd", "../libft", NULL};
-	ft_cd(cd_args);
 
-	char *cd_args2[] = {"cd", NULL};
-	ft_cd(cd_args2);
 
-	char *cd_args3[] = {"cd", "/path/to/directory/", "with", "extra", "arguments", NULL};
-	ft_cd(cd_args3);
 
-	char *cd_args4[] = {"cd", "/path/to/directory/with/no/permissions", NULL};
-	ft_cd(cd_args4);
-	return (0);
-}
+
+
+

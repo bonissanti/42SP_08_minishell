@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_creation.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:32:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/08 17:18:12 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/10 15:12:12 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@
 
 void new_cmd_file_node(t_tkn_list **current)
 {
-	if(tkn_list_size((*current)->prev) && is_redirect((*current)->prev->type))
+	if(tkn_list_size((*current)->prev) && handle_redirect((*current)->prev->type))
 	{
 		add_cmd_list((t_cmd_list){
 			.type = TYPE_FILE,
 			.args = (*current)->content,
-			.prec_weight = DEFAULT,
+			.weight = DEFAULT,
 			});
 		*current = (*current)->next;
 		return ;
@@ -50,7 +50,7 @@ void new_cmd_file_node(t_tkn_list **current)
 		add_cmd_list((t_cmd_list){
 			.type = TYPE_COMMAND,
 			.args = (*current)->content,
-			.prec_weight = DEFAULT,
+			.weight = DEFAULT,
 		});
 		*current = (*current)->next;
 	}
@@ -82,7 +82,7 @@ void	new_redirect_node(t_tkn_list **current)
 	add_cmd_list((t_cmd_list){
 		.type = TYPE_REDIRECT,
 		.args = tkn_type_converter((*current)->type),
-		.prec_weight = OP_REDIRECT,
+		.weight = OP_REDIRECT,
 		.here_doc = has_here_doc,
 	});
 	*current = (*current)->next;
@@ -106,7 +106,7 @@ void	new_subshell_node(t_tkn_list **current)
 	add_cmd_list((t_cmd_list){
 		.type = TYPE_SUBSHELL,
 		.args = tkn_type_converter((*current)->type),
-		.prec_weight = DEFAULT,
+		.weight = DEFAULT,
 	});
 	*current = (*current)->next;
 	while((*current)->type != C_PARENTESIS)
@@ -153,7 +153,7 @@ void	new_operator_node(t_tkn_list **current)
 	add_cmd_list((t_cmd_list){
 		.type = type_operator,
 		.args = tkn_type_converter((*current)->type),
-		.prec_weight = weight,
+		.weight = weight,
 	});
 	*current = (*current)->next;
 }

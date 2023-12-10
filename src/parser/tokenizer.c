@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/10 13:54:47 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/10 15:05:29 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,4 +223,3 @@ int main(int argc, char **argv, char** envp)
 	init_hash(hash, envp);
 	prompt(hash);
 }
-

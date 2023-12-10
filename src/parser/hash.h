@@ -16,7 +16,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <readline/readline.h>
-#include "../libft/libft.h"
+#include "../../libft/libft.h"
 
 // Hash table size is recommended to be a prime number
 # define HASHSIZE 101

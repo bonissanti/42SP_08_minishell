@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_list_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 17:12:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/23 21:00:24 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/10 15:12:40 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ t_cmd_list	*new_cmd_list(t_cmd_list node)
 	new_node->type = node.type;
 	if(node.args)
     	new_node->args = ft_strdup(node.args);
-    new_node->prec_weight = node.prec_weight;
+    new_node->weight = node.weight;
 	if(node.infile)
     	new_node->infile = ft_strdup(node.infile);
 	if(node.outfile)
