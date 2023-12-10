@@ -1,4 +1,3 @@
-<<<<<<<< HEAD:src/parser/hashtable.c
 #include "parser.h"
 #include "./hash.h"
 #include <stdio.h>
@@ -7,11 +6,9 @@
 
 
 void			ft_safe_free(void **ptr);
-========
+
 #include "../include/hash.h"
 #include "../include/builtins.h"
-
->>>>>>>> origin/tests-exec:src/builtins/hashtable.c
 
 /**
  * Function: Create_hashtable

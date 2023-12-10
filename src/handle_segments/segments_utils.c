@@ -3,27 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   segments_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<<< HEAD:src/parser/segments_utils.c
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/22 16:25:59 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/22 16:26:02 by aperis-p         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "./segments.h"
-
-========
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/16 15:32:06 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 16:43:57 by brunrodr         ###   ########.fr       */
+/*   Created: 2023/12/10 16:38:47 by allesson          #+#    #+#             */
+/*   Updated: 2023/12/10 16:39:08 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/segments.h"
 
->>>>>>>> origin/tests-exec:src/handle_segments/segments_utils.c
 t_lex *init_lex(t_hashtable *env, char *arg)
 {
     t_lex *quote;
@@ -103,10 +91,7 @@ void	free_segments(t_segment *head)
 		current = next;
 	}
 }
-<<<<<<<< HEAD:src/parser/segments_utils.c
-========
 
->>>>>>>> origin/tests-exec:src/handle_segments/segments_utils.c
 size_t custom_strcspn(const char *str, char *delim1)
 {
 	size_t length;

@@ -6,45 +6,35 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-<<<<<<<< HEAD:src/parser/parser.h
-/*   Updated: 2023/12/10 13:54:32 by allesson         ###   ########.fr       */
-========
-/*   Updated: 2023/12/08 19:27:54 by aperis-p         ###   ########.fr       */
->>>>>>>> origin/tests-exec:src/include/parser.h
+/*   Updated: 2023/12/10 16:36:01 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #ifndef PARSER_H
-// # define PARSER_H
 
-<<<<<<<< HEAD:src/parser/parser.h
+#ifndef PARSER_H
+# define PARSER_H
+
 #include "../minishell.h"
 #include "hash.h"
 #include "segments.h"
 #include "builtins.h"
 #include <errno.h>
-========
-// #include "../minishell.h"
-// #include "hash.h"
-// #include "segments.h"
->>>>>>>> origin/tests-exec:src/include/parser.h
 
-// typedef enum {
-// 	IDENTIFIER,
-// 	INFILE,
-// 	REDIRECT,
-// 	HERE_DOC,
-// 	APPEND,
-// 	PIPE,
-// 	O_PARENTESIS,
-// 	C_PARENTESIS,
-// 	AND,
-// 	OR,
-// 	EXPAND,
-// 	WILD
-// } t_tkn_type;
+typedef enum {
+	IDENTIFIER,
+	INFILE,
+	REDIRECT,
+	HERE_DOC,
+	APPEND,
+	PIPE,
+	O_PARENTESIS,
+	C_PARENTESIS,
+	AND,
+	OR,
+	EXPAND,
+	WILD
+} t_tkn_type;
 
-<<<<<<<< HEAD:src/parser/parser.h
 typedef enum
 {
     TYPE_COMMAND,
@@ -53,23 +43,14 @@ typedef enum
     TYPE_PIPE,
     TYPE_REDIRECT,
 }    t_type;
-========
-// // typedef enum 
-// // {
-// // 	TYPE_COMMAND,
-// // 	TYPE_OPERATOR,
-// // 	TYPE_FILE,
-// // 	TYPE_REDIRECT,
-// // } t_type;
->>>>>>>> origin/tests-exec:src/include/parser.h
 
-// typedef enum
-// {
-// 	OP_REDIRECT = 2, 	// <, >, >> 
-// 	OP_PIPE = 3, 		// |
-// 	OP_LOGICAL = 4, 	// &&, ||
-// 	DEFAULT = 0,
-// } t_op;
+typedef enum
+{
+	OP_REDIRECT = 2, 	// <, >, >> 
+	OP_PIPE = 3, 		// |
+	OP_LOGICAL = 4, 	// &&, ||
+	DEFAULT = 0,
+} t_op;
 
 typedef struct s_cmd_list
 {    
@@ -84,12 +65,12 @@ typedef struct s_cmd_list
 	struct s_cmd_list	*prev;
 } t_cmd_list;
 
-// typedef struct s_tkn_list {
-// 	t_tkn_type			type;
-// 	char				*content;
-// 	struct s_tkn_list	*next;
-// 	struct s_tkn_list	*prev;
-// } t_tkn_list;
+typedef struct s_tkn_list {
+	t_tkn_type			type;
+	char				*content;
+	struct s_tkn_list	*next;
+	struct s_tkn_list	*prev;
+} t_tkn_list;
 
 typedef struct s_global{
 	char		*readline_input;
