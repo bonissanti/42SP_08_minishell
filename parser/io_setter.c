@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:16:57 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/23 18:56:08 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/09 22:01:57 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,21 @@
 
 void set_command_input(t_cmd_list **cmd_list, t_cmd_list *head)
 {
-	while((*cmd_list)->type != TYPE_COMMAND)
+	while(*cmd_list && (*cmd_list)->type != TYPE_COMMAND)
 		*cmd_list = (*cmd_list)->next;
-	if (!head->here_doc && head->next->type == TYPE_FILE)
+	if(*cmd_list && (*cmd_list)->type == TYPE_COMMAND)
 	{
-		(*cmd_list)->infile = head->next->args;
-		(*cmd_list)->here_doc_fd = 0;
-	}
-	else if	(head->here_doc)
-	{
-		(*cmd_list)->infile = NULL;
-		(*cmd_list)->here_doc_fd = 42;
+		if (!head->here_doc && head->next->type == TYPE_FILE)
+		{
+			(*cmd_list)->infile = head->next->args;
+			(*cmd_list)->here_doc_fd = 0;
+		}
+		else if	(head->here_doc)
+		{	
+			(*cmd_list)->here_doc = true;
+			(*cmd_list)->infile = head->next->args;
+			(*cmd_list)->here_doc_fd = 42;
+		}		
 	}
 }
 
@@ -59,9 +63,10 @@ void set_command_input(t_cmd_list **cmd_list, t_cmd_list *head)
 
 void set_command_output(t_cmd_list **cmd_list, t_cmd_list *head)
 {
-	while((*cmd_list)->type != TYPE_COMMAND)
+	while(*cmd_list && (*cmd_list)->type != TYPE_COMMAND)
 		*cmd_list = (*cmd_list)->next;
-	(*cmd_list)->outfile = head->next->args;
+	if(*cmd_list && (*cmd_list)->type == TYPE_COMMAND)
+		(*cmd_list)->outfile = head->next->args;
 }
 
 /**
@@ -79,8 +84,10 @@ void set_io(t_cmd_list **cmd_list)
 {
 	t_cmd_list *head;
 	t_cmd_list *temp;
+	t_cmd_list *bkp;
 
 	head = rewind_list(cmd_list);
+	bkp = rewind_list(cmd_list);
 	while(head)
 	{
 		temp = head->next;
@@ -92,4 +99,5 @@ void set_io(t_cmd_list **cmd_list)
 		if(head && head->type == TYPE_OPERATOR)
 			*cmd_list = head;
 	}
+	*cmd_list = bkp;
 }

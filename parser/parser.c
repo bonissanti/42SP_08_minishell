@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/24 21:11:23 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/09 21:44:35 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,12 @@ int	command_consistency(t_tkn_list *tokenized)
 		ft_printf("syntax error near unexpected token `%s'\n", tkn_type_converter(head->type));
 		exit(2);
 	}
-	else if (tail->type == OR || tail->type == AND 
-	|| tail->type == PIPE || tail->type == O_PARENTESIS)
+	else if (tail->type == O_PARENTESIS || is_redirect(tail->type))
 	{
-		ft_printf("syntax error near unexpected token `%s'\n", tkn_type_converter(tail->type));
+		if (tail->type == O_PARENTESIS)
+			ft_printf("syntax error near unexpected token `%s'\n", tkn_type_converter(tail->type));
+		else
+			ft_printf("syntax error near unexpected token `newline'\n");
 		exit(2);
 	}
 	return (1);
@@ -106,7 +108,6 @@ void	join_args(t_tkn_list *tkn_list)
 			new_operator_node(&current);
 	}
 	set_io(&(g_global).cmd_list);
-	rewind_list(&(g_global).cmd_list);
 }
 
 /**
