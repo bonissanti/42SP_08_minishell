@@ -16,8 +16,41 @@
 #include <errno.h>
 
 static void		get_dir_and_token(t_file *file, char *pattern);
-static t_bool	wildcard_match(char *str, char *pattern);
-inline void		finish_wildcard(t_segment *head, t_file *file);
+static t_bool	wildcard_match(char *file, char *pattern);
+
+/**
+ * Function: finish_wildcard
+ * -----------------
+ * This is a function that finishes the wildcard expansion. It will print
+ * the files that match with the token. Then it will free the linked list
+ * and the structure.
+ *   
+ * @param: *head: The head of the linked list.
+ * @param: *file: The structure that contains the directory, token, etc.
+ * @var: *tmp: The temporary pointer to the linked list.
+ * 
+ * @return: void
+ * 
+ */
+
+inline void	finish_wildcard(t_segment *head, t_file *file)
+{
+	t_segment	*tmp;
+
+	tmp = head;
+	while (tmp)
+	{
+		if (file->directory[0] == '.')
+			ft_printf("%s\n", tmp->str);
+		else
+			ft_printf("%s%s\n", file->directory, tmp->str);
+		tmp = tmp->next;
+	}
+	free_segments(head);
+	safe_free((void **)&file->directory);
+	closedir(file->dir);
+	safe_free((void **)&file);
+}
 
 /**
  * Function: generate_results
@@ -191,38 +224,4 @@ static t_bool	wildcard_match(char *file, char *pattern)
 	if (*pattern == '*' && *(pattern + 1) == '\0')
 		return (true);
 	return (false);
-}
-
-/**
- * Function: finish_wildcard
- * -----------------
- * This is a function that finishes the wildcard expansion. It will print
- * the files that match with the token. Then it will free the linked list
- * and the structure.
- *   
- * @param: *head: The head of the linked list.
- * @param: *file: The structure that contains the directory, token, etc.
- * @var: *tmp: The temporary pointer to the linked list.
- * 
- * @return: void
- * 
- */
-
-inline void	finish_wildcard(t_segment *head, t_file *file)
-{
-	t_segment	*tmp;
-
-	tmp = head;
-	while (tmp)
-	{
-		if (file->directory[0] == '.')
-			ft_printf("%s\n", tmp->str);
-		else
-			ft_printf("%s%s\n", file->directory, tmp->str);
-		tmp = tmp->next;
-	}
-	free_segments(head);
-	safe_free((void **)&file->directory);
-	closedir(file->dir);
-	safe_free((void **)&file);
 }

@@ -14,6 +14,35 @@
 #include "../include/hash.h"
 #include "../include/segments.h"
 
+/**
+ * Function: Analyzing_quotes
+ * -----------------
+ * This function a pre-process to handle the quotes, it calls the function
+ * even_close_quotes to check if the number of quotes is even, if it is not
+ * it prints an error message and returns. If everything is ok, it calls the
+ * function handle_quotes.
+ *  
+ * @param: *env: The hashtable that contains all the environment variables.
+ * @param: **args: The array of arguments.
+ * @var: *head: The head of the linked list that contains all the segments.
+ * 
+ * @return: Returns nothing.
+ *
+ */
+
+void	analyzing_quotes(t_hashtable *env, char **args)
+{
+	t_segment	*head;
+
+	head = NULL;
+	if (!even_close_quotes(*args))
+	{
+		ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
+		return ;
+	}
+	handle_quotes(env, head, args);
+}
+
 size_t	even_close_quotes(char *str)
 {
 	t_quote_bool	state;
@@ -28,7 +57,7 @@ size_t	even_close_quotes(char *str)
 		else if (*str == '\'' && !state.double_open)
 			state.single_open = !state.single_open;
 		else if ((*str == '\"' && !state.single_open) && (!state.escape_next
-					|| state.escape_next))
+				|| state.escape_next))
 			state.double_open = !state.double_open;
 		str++;
 	}
