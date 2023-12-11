@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   node_creation_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 20:19:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/08 17:16:45 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/10 21:00:57 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../../minishell.h"
 
 /**
  * Function: find_command

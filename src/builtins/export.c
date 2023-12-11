@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 12:43:01 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/10 20:47:45 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/hash.h"
-#include "../include/segments.h"
-#include "../include/builtins.h"
+#include "../../minishell.h"
 
 /**
  * Function: Print_all_env

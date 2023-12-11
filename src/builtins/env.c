@@ -1,5 +1,4 @@
-#include "../include/hash.h"
-#include "../include/builtins.h"
+#include "../../minishell.h"
 
 void	ft_env(t_hashtable *hashtable, char **args)
 {

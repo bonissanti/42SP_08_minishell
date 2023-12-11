@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:52:18 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/22 16:52:54 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/10 20:18:09 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "minishell.h"
 
 void init_structs(void *structs, int type, size_t struct_size)
 {
@@ -48,11 +48,11 @@ void free_split(char **split)
 	}
 }
 
-// void	safe_free(void **ptr)
-// {
-// 	if (*ptr != NULL)
-// 	{
-// 		free(*ptr);
-// 		*ptr = NULL;
-// 	}
-// }
+void	safe_free(void **ptr)
+{
+	if (*ptr != NULL)
+	{
+		free(*ptr);
+		*ptr = NULL;
+	}
+}

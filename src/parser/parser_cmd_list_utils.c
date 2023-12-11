@@ -6,11 +6,11 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 17:12:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/10 15:12:40 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/10 21:01:13 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../../minishell.h"
 
 /**
  * Function: cmd_list_size

@@ -6,11 +6,11 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 16:38:47 by allesson          #+#    #+#             */
-/*   Updated: 2023/12/10 16:39:08 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/10 20:55:01 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/segments.h"
+#include "../../minishell.h"
 
 size_t	custom_strcspn(const char *str, char *delim1)
 {

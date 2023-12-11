@@ -1,14 +1,4 @@
-#include "parser.h"
-#include "./hash.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-
-void			ft_safe_free(void **ptr);
-
-#include "../include/hash.h"
-#include "../include/builtins.h"
+#include "../../minishell.h"
 
 /**
  * Function: Create_hashtable

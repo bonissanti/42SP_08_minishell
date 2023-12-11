@@ -6,11 +6,11 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/10 15:14:19 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/10 21:01:46 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../../minishell.h"
 
 /**
  * Function: command_consistency

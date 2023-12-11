@@ -6,11 +6,11 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 22:27:30 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/10 15:15:31 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/10 21:16:42 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../../minishell.h"
 
 char *tkn_type_string(t_tkn_type type)
 {
@@ -73,8 +73,8 @@ void print_cmd_list(t_cmd_list *cmd_list)
 	{
 		if(cmd_list->type == TYPE_COMMAND)
 		{
-			ft_printf("Type: %s\nArgs: %s\nPrec_weight: %d\n",
-			cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->prec_weight);
+			ft_printf("Type: %s\nArgs: %s\nweight: %d\n",
+			cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->weight);
 			// if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->infile)
 			// 	ft_printf("Infile: %s\n", cmd_list->infile);
 			// if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->outfile)
@@ -87,8 +87,8 @@ void print_cmd_list(t_cmd_list *cmd_list)
 	}
 	if(cmd_list->type == TYPE_COMMAND)
 	{
-		ft_printf("Type: %s\nArgs: %s\nPrec_weight: %d\n", 
-		cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->prec_weight);
+		ft_printf("Type: %s\nArgs: %s\nweight: %d\n", 
+		cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->weight);
 		// if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->infile)
 		// 	ft_printf("Infile: %s\n", cmd_list->infile);
 		// if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->outfile)

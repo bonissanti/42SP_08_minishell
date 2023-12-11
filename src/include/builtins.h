@@ -3,30 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:56:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/24 18:10:31 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/10 19:21:37 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-# include "../include/hash.h"
-# include "../include/ast.h"
-# include <errno.h>
-#include "../../libft/libft.h"
-
-typedef struct t_env
-{
-	char	*key;
-	char	**env;
-	char	*value;
-	char	**equals_sign;
-	int		num_env;
-}			t_env;
-
+#include "../../minishell.h"
 
 //############################### Builtins ####################################
 

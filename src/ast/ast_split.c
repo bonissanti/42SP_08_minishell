@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ast_split.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:47:48 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 18:47:57 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/10 20:18:56 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/builtins.h"
-#include "../include/segments.h"
+#include "../../minishell.h"
 
 static int	is_delimiter(char c, char delimiter, t_bool in_quotes)
 {

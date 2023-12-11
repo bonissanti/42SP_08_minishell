@@ -6,12 +6,11 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:16:57 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/10 13:51:13 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/10 21:00:50 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
-#include "parser.h"
+#include "../../minishell.h"
 
 /**
  * Function: set_command_input

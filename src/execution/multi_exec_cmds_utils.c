@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 18:41:02 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/10 20:53:27 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ast.h"
-#include "../include/exec.h"
-#include "../include/hash.h"
-#include "../include/builtins.h"
-#include "../include/segments.h"
+#include "../../minishell.h"
 
 void ft_printf_fd(int fd)
 {

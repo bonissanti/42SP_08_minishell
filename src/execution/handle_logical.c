@@ -1,7 +1,4 @@
-#include "../include/ast.h"
-#include "../include/exec.h"
-#include "../include/hash.h"
-#include "../include/builtins.h"
+#include "../../minishell.h"
 
 void    logical_pipe(t_vector *vtr, t_hashtable *hash, t_ast *node, int *prev_pipe)
 {

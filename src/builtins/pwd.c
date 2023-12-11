@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 19:12:58 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/21 14:15:31 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/10 20:49:10 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/builtins.h"
+#include "../../minishell.h"
 
 void	ft_pwd(t_hashtable *hashtable, char **args)
 {

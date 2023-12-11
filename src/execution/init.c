@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/06 16:42:37 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/06 17:27:05 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/10 20:53:16 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/exec.h"
-#include "../include/segments.h"
+#include "../../minishell.h"
 
 void	init_exec_vector(t_vector *vtr)
 {

@@ -8,6 +8,9 @@
 		"hash.h": "c",
 		"exec.h": "c",
 		"stdlib.h": "c",
-		"minunit.h": "c"
+		"minunit.h": "c",
+		"minishell.h": "c",
+		"errno.h": "c",
+		"structs.h": "c"
 	}
 }

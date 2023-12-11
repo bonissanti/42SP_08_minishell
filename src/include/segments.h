@@ -1,60 +1,7 @@
 #ifndef SEGMENTS_H
 # define SEGMENTS_H
 
-# include "hash.h"
-# include <dirent.h>
-# include <stdlib.h>
-# include <sys/stat.h>
-
-typedef struct s_segments
-{
-	char				*str;
-	struct s_segments	*next;
-}						t_segment;
-
-/**
- * Data structure: t_files
- * -----------------
- * Is a linked list used to store the files that are found by the wildcard
- * expansion. Basically in file have the name of the file and the next pointer
- * points to the next file. In function 'handle_wildcard' the files are added
- * to the linked list and checked if files and patterns match.
- * 
- * @param: *file: The name of the file.
- * @param: *next: The pointer to the next file.
- * 
- */
-
-typedef struct s_file
-{
-	char				*token;
-	char				*directory;
-	DIR					*dir;
-	struct dirent		*entry;
-	struct stat			entry_stat;
-}						t_file;
-
-typedef struct s_quote_state
-{
-	t_bool				single_open;
-	t_bool				double_open;
-	t_bool				escape_next;
-	t_bool				space_dollar;
-}						t_quote_bool;
-
-typedef struct s_dollar
-{
-	t_bool				has_dollar;
-}						t_expand;
-
-typedef struct s_lex
-{
-	char				*ptr;
-	char				*segment;
-	t_hashtable			*env;
-	t_quote_bool		state;
-	t_expand			dollar;
-}						t_lex;
+#include "../../minishell.h"
 
 //############################### INIT ###################################
 

@@ -6,11 +6,11 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:32:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/10 15:12:12 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/10 21:14:09 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../../minishell.h"
 
 /**
  * Function: new_cmd_file_node
@@ -137,7 +137,7 @@ void	new_subshell_node(t_tkn_list **current)
 
 void	new_operator_node(t_tkn_list **current)
 {
-	t_operator weight;
+	t_op weight;
 	t_type type_operator;
 	
 	if ((*current)->type == PIPE)

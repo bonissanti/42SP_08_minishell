@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   hashtable_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 12:30:41 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 14:56:52 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/10 20:51:07 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/hash.h"
-#include "../include/builtins.h"
+#include "../../minishell.h"
 
 /**
  * Function: Hash

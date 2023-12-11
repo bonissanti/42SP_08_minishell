@@ -1,6 +1,4 @@
-#include "../include/hash.h"
-#include "../include/segments.h"
-#include "../include/builtins.h"
+#include "../../minishell.h"
 
 void	bubble_sort(char **array, int size)
 {

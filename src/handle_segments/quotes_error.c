@@ -1,6 +1,4 @@
-#include "../include/builtins.h"
-#include "../include/hash.h"
-#include "../include/segments.h"
+#include "../../minishell.h"
 
 t_bool	check_handle_error(t_lex *quote, int i)
 {

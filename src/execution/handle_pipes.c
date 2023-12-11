@@ -3,18 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 19:14:54 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/10 20:52:49 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ast.h"
-#include "../include/exec.h"
-#include "../include/hash.h"
-#include "../include/builtins.h"
-
+#include "../../minishell.h"
 
 void    pipe_from_redirect(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe)
 {

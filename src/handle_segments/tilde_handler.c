@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tilde_handler.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 13:39:58 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 16:48:43 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/10 20:55:11 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/segments.h"
-#include "../include/hash.h"
+#include "../../minishell.h"
 
 void	expand_tilde(t_hashtable *hashtable, char *str)
 {

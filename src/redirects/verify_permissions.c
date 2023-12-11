@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   verify_permissions.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:46:31 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 18:46:51 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/10 21:02:58 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/builtins.h"
-#include "../include/segments.h"
-#include "../include/exec.h"
+#include "../../minishell.h"
 
 t_bool	verify_file_permissions(const char *file)
 {

@@ -1,8 +1,4 @@
-#include "../include/hash.h"
-#include "../include/builtins.h"
-#include "../include/segments.h"
-#include "../include/ast.h"
-#include "../include/exec.h"
+#include "../../minishell.h"
 
 // void	print_ast(t_ast *node)
 // {

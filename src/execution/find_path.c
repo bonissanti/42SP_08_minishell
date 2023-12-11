@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   find_path.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 19:08:58 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/05 17:30:32 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/10 20:52:23 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ast.h"
-#include "../include/hash.h"
-#include "../include/exec.h"
-#include "../include/segments.h"
+#include "../../minishell.h"
 
 char *build_cmd_path(t_ast *node, char *path)
 {

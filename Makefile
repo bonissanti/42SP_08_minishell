@@ -30,7 +30,9 @@ MAND_SRCS 	= 	ast/ast.c ast/ast_split.c \
 				execution/multi_exec_cmds.c execution/multi_exec_cmds_utils.c execution/handle_pipes.c \
 				execution/check_builtins.c execution/handle_redirects.c execution/handle_logical.c \
 				redirects/redirects.c redirects/heredoc.c redirects/verify_permissions.c \
-				minishell_utils.c
+				minishell_utils.c parser/io_setter.c parser/node_creation_utils.c parser/node_creation.c \
+				parser/parser_cmd_list_utils.c parser/parser_debug_helpers.c parser/parser_tkn_list_utils.c \
+				parser/parser_utils.c parser/parser.c parser/tokenizer_utils.c parser/tokenizer.c
 		
 SRCS 		= $(addprefix ./src/, $(MAND_SRCS))
 # BONUS_SRCS 	= $(BONUS_SRCS:%.c=bonus/%.c)
