@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:43:27 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 13:28:59 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/11 18:32:54 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,17 +52,16 @@ void	redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
 			child_redirect(vtr, hashtable, node, next_pipe);
 		else
 		{
-			wait(NULL);
 			restore_fd(vtr->exec.old_stdin, vtr->exec.old_stdout);
-			if (vtr->exec.count_pipes >= 1)
+			if (vtr->exec.count_pipes >= 1 && node->in_fd != 0)
 				close(prev_pipe[1]);
 			check_pipe(vtr, hashtable, node, next_pipe);
 		}
-		if (node->type == TYPE_REDIRECT && node->right->type == TYPE_LOGICAL)
-		{
-			waitpid(node->pid, &node->left->num_status, 0);
-			simple_logical(vtr, hashtable, node->right, node->left->num_status);
-		}
+	}
+	if (node->right && node->type == TYPE_REDIRECT && node->right->type == TYPE_LOGICAL)
+	{
+		waitpid(node->pid, &node->left->num_status, 0);
+		simple_logical(vtr, hashtable, node->right, node->left->num_status);
 	}
 }
 
@@ -90,15 +89,13 @@ static void	child_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
 {
 	if (node->type == TYPE_REDIRECT)
 	{
-		if (vtr->exec.count_pipes >= 1)
+		if (node->in_fd != -1)
 		{
 			dup2(next_pipe[1], STDOUT_FILENO);
 			close(next_pipe[1]);
-			execute_command(vtr, hashtable, node->left);
-			exit(0);
 		}
-		else
-			execute_command(vtr, hashtable, node->left);
+		execute_command(vtr, hashtable, node->left);
+		exit(0);
 	}
 }
 

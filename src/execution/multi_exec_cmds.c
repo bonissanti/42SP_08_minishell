@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 11:26:46 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/11 18:10:03 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "../include/exec.h"
 #include "../include/hash.h"
 #include "../include/segments.h"
+
+static void    wait_for_children(t_ast *node);
 
 void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
 {
@@ -40,6 +42,28 @@ void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
 	}
 	if (root->type == TYPE_LOGICAL)
 		logical_pipe(vtr, hashtable, root, initial_pipe);
+	wait_for_children(root);
+}
+
+static void    wait_for_children(t_ast *node)
+{
+    int status;
+
+    status = 0;
+    if (node == NULL)
+        return ;
+
+    if (node->type == TYPE_COMMAND)
+    {
+        waitpid(node->pid, &status, 0);
+        if (WIFEXITED(status))
+            node->num_status = WEXITSTATUS(status);
+    }
+    else if (node->type == TYPE_PIPE || node->type == TYPE_REDIRECT)
+    {
+        wait_for_children(node->left);
+        wait_for_children(node->right);
+    }
 }
 
 void	execute_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node)

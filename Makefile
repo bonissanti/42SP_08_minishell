@@ -30,7 +30,7 @@ MAND_SRCS 	= 	ast/ast.c ast/ast_split.c \
 				execution/find_path.c execution/init.c execution/prepare_exec.c \
 				execution/multi_exec_cmds.c execution/multi_exec_cmds_utils.c execution/handle_pipes.c \
 				execution/check_builtins.c execution/handle_redirects.c execution/handle_logical.c \
-				redirects/redirects.c redirects/heredoc.c redirects/verify_permissions.c \
+				execution/signals.c redirects/redirects.c redirects/heredoc.c redirects/verify_permissions.c \
 				minishell_utils.c
 		
 SRCS 		= $(addprefix ./src/, $(MAND_SRCS))

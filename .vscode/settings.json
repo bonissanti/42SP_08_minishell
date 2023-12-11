@@ -9,6 +9,7 @@
 		"exec.h": "c",
 		"stdlib.h": "c",
 		"minunit.h": "c",
-		"type_traits": "c"
+		"type_traits": "c",
+		"signal.h": "c"
 	}
 }
