@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 18:10:03 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/11 19:08:25 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	execute_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 	int		result;
 
 	result = verify_cmd_permissions(node->cmds);
-	if (ft_strchr(node->cmds, '/') != NULL && result != 0)
+	if (result != 0)
 	{
 		handle_error(node, result);
 		return ;
