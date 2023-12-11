@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:43:27 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 19:11:40 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/11 13:28:59 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ void	redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
 		else
 		{
 			wait(NULL);
-			close(prev_pipe[1]);
+			restore_fd(vtr->exec.old_stdin, vtr->exec.old_stdout);
+			if (vtr->exec.count_pipes >= 1)
+				close(prev_pipe[1]);
 			check_pipe(vtr, hashtable, node, next_pipe);
 		}
 		if (node->type == TYPE_REDIRECT && node->right->type == TYPE_LOGICAL)

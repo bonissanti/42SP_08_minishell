@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 18:42:54 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/11 11:41:54 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ void	handle_heredoc(t_vector *vtr, t_ast *node, t_hashtable *hash, char *delim)
 		}
 	}
 
-	// outra função auxiliar
 	else if (node->left->type == TYPE_COMMAND && node->right->type == TYPE_REDIRECT)
 	{
 		handle_redirects(vtr, node->right);

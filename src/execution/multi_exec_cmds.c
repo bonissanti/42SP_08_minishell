@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 19:17:49 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/11 11:26:46 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,5 @@ void	execute_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 		node->path = build_cmd_path(node, path);
 	}
 	if (!execute_if_builtin(vtr, hashtable, node))
-		execve(node->path, node->args, NULL);	
+		execve(node->path, node->args, NULL);
 }

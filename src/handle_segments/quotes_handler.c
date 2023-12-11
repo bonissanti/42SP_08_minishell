@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   toggle_quote_state.c                               :+:      :+:    :+:   */
+/*   quotes_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:57 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/16 17:04:40 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/11 11:29:28 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	handle_quotes(t_hashtable *env, t_segment *head, char **args)
 			literal_string(quote, &len);
 		quote->ptr++;
 	}
-	check_handle_error(quote, 1); // talvez dê para remover, tem que testar se algo cai aqui
+	check_handle_error(quote, 1);
 	final_process(quote, &head, args, &len);
 }
 
@@ -181,7 +181,7 @@ void	final_process(t_lex *quote, t_segment **head, char **args, size_t *len)
 	free(quote);
 	*args = join_segments(*head);
 	for (int i = 0; args[i]; i++) // Remover
-		printf("%s ", args[i]);
-	printf("\n");
+		ft_printf("%s ", args[i]);
+	ft_printf("\n");
 	free_segments(*head);
 }

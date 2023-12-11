@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/11 11:18:18 by brunrodr          #+#    #+#             */
+/*   Updated: 2023/12/11 11:25:25 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/builtins.h"
 #include "../include/hash.h"
 #include "../include/segments.h"
@@ -63,6 +75,7 @@ void	env_with_equals(t_hashtable *hashtable, char **args, int i)
 	free_split(equals_sign);
 }
 
+// checar se expandimos aqui ou se vem do parser
 void	env_with_value(t_hashtable *hashtable, char **args, int i, size_t len)
 {
 	char		**equals_sign;
@@ -77,7 +90,7 @@ void	env_with_value(t_hashtable *hashtable, char **args, int i, size_t len)
 	value = ft_strtrim(equals_sign[1], "\"");
 	if (value == NULL)
 		value = "";
-	else if (*value == '$') // jogar para uma função auxiliar
+	else if (*value == '$')
 	{
 		dollar = init_lex(hashtable, value);
 		head = NULL;
