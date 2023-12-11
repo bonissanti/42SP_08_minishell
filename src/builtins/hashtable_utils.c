@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   hashtable_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 12:30:41 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/10 20:51:07 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:43:47 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
 /**
  * Function: Hash

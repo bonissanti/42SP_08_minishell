@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/10 20:53:35 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:43:47 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
 void     execute_forked_command(t_hashtable *hashtable, t_ast *node);
 

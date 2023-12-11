@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/10 20:19:09 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/11 17:37:01 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../include/minishell.h"
+
+t_ast *init_ast(t_cmd_list *cmd_list, t_exec *exec)
+{
+	t_ast *ast;
+	t_cmd_list *head;
+
+	ast = ft_calloc(1, sizeof(t_ast));
+	head = cmd_list;
+	while(head)
+	{
+		insert_ast(&ast, create_node(head), exec);
+		head = head->next;
+	}
+	return(ast);
+}
 
 static void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list)
 {
@@ -18,7 +33,7 @@ static void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list)
 	
 	if (cmd_list->type == TYPE_COMMAND)
 	{
-		new_node->cmds = cmd_list->args[0];
+		new_node->cmds = new_node->args[0];
 		if(cmd_list->here_doc)
 			new_node->delim = cmd_list->infile;
 		else
@@ -120,8 +135,8 @@ void	insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 	else
 	{
 		current = *head;
-		while (current->right != NULL
-			&& current->right->weight >= new_node->weight)
+		while (current && current->right != NULL
+			&& current->right->weight >= new_node->weight) //SEGFAULT HERE
 			current = current->right;
 		new_node->left = current->right;
 		current->right = new_node;

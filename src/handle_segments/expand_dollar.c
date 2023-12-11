@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollar.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:33:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/10 20:53:57 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:43:46 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
 void	expand_variable(t_lex *quote, t_segment **head, size_t *len)
 {

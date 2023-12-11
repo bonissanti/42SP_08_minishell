@@ -1,4 +1,4 @@
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
 void	ft_env(t_hashtable *hashtable, char **args)
 {

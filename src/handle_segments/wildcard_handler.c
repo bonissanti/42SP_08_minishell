@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_handler.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:51:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/10 20:55:38 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:43:47 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
 static void		get_dir_and_token(t_file *file, char *pattern);
 static t_bool	wildcard_match(char *file, char *pattern);

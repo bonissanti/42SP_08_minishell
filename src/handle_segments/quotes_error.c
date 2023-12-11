@@ -1,4 +1,4 @@
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
 t_bool	check_handle_error(t_lex *quote, int i)
 {

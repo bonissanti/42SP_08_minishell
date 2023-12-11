@@ -13,7 +13,7 @@
 #ifndef HASH_H
 # define HASH_H
 
-#include "../../minishell.h"
+#include "./minishell.h"
 
 // Hash table size is recommended to be a prime number
 # define HASHSIZE 101

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ast_split.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:47:48 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/10 20:18:56 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:43:46 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
 static int	is_delimiter(char c, char delimiter, t_bool in_quotes)
 {

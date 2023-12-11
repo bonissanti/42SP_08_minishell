@@ -1,4 +1,4 @@
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
 void	free_for_exit(t_hashtable *hash_table, char **args, int argc);
 

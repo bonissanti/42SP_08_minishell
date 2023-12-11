@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/10 21:01:54 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/11 15:37:19 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
 /**
  * Function: is_expander
@@ -86,7 +86,7 @@ void expand_all(t_tkn_list *tkn_list, t_hashtable *env)
 			|| *current->content == '\'' || *current->content == '"')
 				analyzing_quotes(env, &current->content);
 			else if(*current->content == '~')
-				expand_tilde(env, &current->content);
+				expand_tilde(env, current->content);
 			else if(*current->content == '*')
 				current->content = handle_wildcard(current->content);
 		}

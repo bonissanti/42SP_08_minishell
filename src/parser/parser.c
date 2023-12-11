@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/10 21:01:46 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/11 16:27:41 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
 /**
  * Function: command_consistency
@@ -100,7 +100,7 @@ void	join_args(t_tkn_list *tkn_list)
 		if (current && (current->type == IDENTIFIER
 		|| current->type == EXPAND || current->type == WILD))
 			new_cmd_file_node(&current);
-		if (current && handle_redirect(current->type))
+		if (current && is_redirect(current->type))
 			new_redirect_node(&current);
 		if (current && current->type == O_PARENTESIS)
 			new_subshell_node(&current);

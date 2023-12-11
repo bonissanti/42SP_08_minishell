@@ -1,4 +1,4 @@
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
 void	bubble_sort(char **array, int size)
 {

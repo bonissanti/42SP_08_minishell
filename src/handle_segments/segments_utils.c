@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   segments_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 16:38:47 by allesson          #+#    #+#             */
-/*   Updated: 2023/12/10 20:55:01 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:43:46 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
 size_t	custom_strcspn(const char *str, char *delim1)
 {

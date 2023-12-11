@@ -1,4 +1,4 @@
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
 /**
  * Function: Create_hashtable
@@ -59,36 +59,6 @@ void init_hash(t_hashtable *hashtable, char **envp)
 		free_split(env.equals_sign);
 	}
 }
-
-/**
- * Function: Hash
- * -----------------
- * This function is used to determine the index of the bucket where the
- * key-value pair will be stored. It uses the multiplicative shift hash
- * method. Basically, based on the ASCII value of the key, it will
- * bitshift the value 5 times to the left and add the ASCII value of the
- * next character of the key. This will be done until the end of the key.
- * After that, it will use the modulo operator to get the remainder of the
- * division of the hash by the size(101) of the hashtable.
- *  
- * @param: key: The environment variable name.
- * @var: hash: The hash value, which will be the index of the bucket.
- * 
- * @return: Returns the index of the bucket.
- *
- */
-
-unsigned int	hash(char *key)
-{
-	unsigned int	hash;
-
-	hash = 0;
-	while (*key)
-		hash = (hash << 5) + *key++;
-	return (hash % HASHSIZE);
-}
-
-
 
 /**
  * Function: Insert
@@ -229,28 +199,4 @@ void	delete_hash(t_hashtable *hashtable, char *key)
 		prev_env = delete_env;
 		delete_env = delete_env->next;
 	}
-}
-
-
-
-void	destroy_hashtable(t_hashtable *hashtable)
-{
-	t_hash	*temp;
-	t_hash	*next;
-	size_t	i;
-
-	i = -1;
-	while (++i < HASHSIZE)
-	{
-		temp = hashtable->buckets[i];
-		while (temp != NULL)
-		{
-			next = temp->next;
-			free(temp->key);
-			free(temp->value);
-			free(temp);
-			temp = next;
-		}
-	}
-	free(hashtable);
 }

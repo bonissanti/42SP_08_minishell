@@ -1,4 +1,4 @@
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
 t_lex	*init_lex(t_hashtable *env, char *arg)
 {

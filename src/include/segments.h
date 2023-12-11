@@ -1,7 +1,7 @@
 #ifndef SEGMENTS_H
 # define SEGMENTS_H
 
-#include "../../minishell.h"
+#include "./minishell.h"
 
 //############################### INIT ###################################
 

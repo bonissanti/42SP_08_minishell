@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/10 21:02:01 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:53:35 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
-t_global g_global;
+t_global	g_global;
 
 /**
  * Function: crop_delimiter_tkn
@@ -22,31 +22,32 @@ t_global g_global;
  * and at the same time counts the number of chars
  * that were passed until the delimiter was reached
  * so it can be returned and used by other functions.
- * 
+ *
  * @param: **cmd: A pointer to the string.
- * @var: i: The number of chars that were passed until the delimiter was reached.
- * 
- * @return: int.
- * 
-*/
 
-int crop_delimiter_tkn(char **cmd)
+	* @var: i: The number of chars that were passed until the delimiter was reached.
+ *
+ * @return: int.
+ *
+ */
+
+int	crop_delimiter_tkn(char **cmd)
 {
-	int i;
-	
+	int	i;
+
 	i = 0;
-	if(**cmd == '$' || **cmd == '~' || **cmd == '*')
+	if (**cmd == '$' || **cmd == '~' || **cmd == '*')
 	{
 		i++;
 		(*cmd)++;
-		while(**cmd != ' ' && **cmd != '\0' && !isdelimiter(*cmd))
+		while (**cmd != ' ' && **cmd != '\0' && !isdelimiter(*cmd))
 		{
 			i++;
 			(*cmd)++;
 		}
 	}
-	else if(!ft_strncmp(*cmd, "||", 2) || !ft_strncmp(*cmd, "&&", 2)
-	|| !ft_strncmp(*cmd, "<<", 2) || !ft_strncmp(*cmd, ">>", 2))
+	else if (!ft_strncmp(*cmd, "||", 2) || !ft_strncmp(*cmd, "&&", 2)
+		|| !ft_strncmp(*cmd, "<<", 2) || !ft_strncmp(*cmd, ">>", 2))
 	{
 		i = 2;
 		(*cmd) += 2;
@@ -56,7 +57,7 @@ int crop_delimiter_tkn(char **cmd)
 		i++;
 		(*cmd)++;
 	}
-	return(i);
+	return (i);
 }
 
 /**
@@ -64,20 +65,21 @@ int crop_delimiter_tkn(char **cmd)
  * -----------------
  * This is auxiliary function for the crop_quote_tkn function,
  * it helps keep the code clean and organized as it
- * increments i and also modify the string that is being 
+ * increments i and also modify the string that is being
  * parsed by the function.
- * 
- * @param: *i: A pointer to the number of chars that were passed until the delimiter was reached.
+ *
+
+	* @param: *i: A pointer to the number of chars that were passed until the delimiter was reached.
  * @param: **cmd: A pointer to the string.
  * @var: quote: The current quote.
- * 
+ *
  * @return: int.
-*/
+ */
 
-int crop_quote_tkn_validator(int *i, char **cmd)
+int	crop_quote_tkn_validator(int *i, char **cmd)
 {
-	char quote;
-	
+	char	quote;
+
 	quote = **cmd;
 	if (**cmd == '\'' || **cmd == '"')
 		quote = **cmd;
@@ -104,40 +106,42 @@ int crop_quote_tkn_validator(int *i, char **cmd)
  * and at the same time counts the number of chars
  * that were passed until the delimiter was reached
  * so it can be returned and used by other functions.
- * 
+ *
  * @param: **cmd: A pointer to the string.
- * @var: i: The number of chars that were passed until the delimiter was reached.
- * @var: quote: The current quote.
- * 
- * @return: int.
- * 
-*/
 
-int crop_quote_tkn(char **cmd)
+	* @var: i: The number of chars that were passed until the delimiter was reached.
+ * @var: quote: The current quote.
+ *
+ * @return: int.
+ *
+ */
+
+int	crop_quote_tkn(char **cmd)
 {
-	int i;
-	char quote;
-	
+	int		i;
+	char	quote;
+
 	quote = **cmd;
 	i = 1;
 	(*cmd)++;
-	while(**cmd)
+	while (**cmd)
 	{
-		while(**cmd != quote && **cmd)
+		while (**cmd != quote && **cmd)
 		{
 			i++;
 			(*cmd)++;
 		}
 		i++;
 		(*cmd)++;
-		if(crop_quote_tkn_validator(&i, cmd) && (**cmd == '\'' || **cmd == '"'))
+		if (crop_quote_tkn_validator(&i, cmd) && (**cmd == '\''
+				|| **cmd == '"'))
 			quote = **cmd;
 		else
 			return (i);
 	}
 	i++;
 	(*cmd)++;
-	return(i);
+	return (i);
 }
 
 /**
@@ -146,39 +150,40 @@ int crop_quote_tkn(char **cmd)
  * The crop_tkn function iterates through the string
  * and generate a substring based on the result of
  * the isdelimiter function or is_expander function.
- * 
+ *
  * @param: **cmd: A pointer to the string.
  * @param: *env: A pointer to the hashtable.
  * @var: char *cropped: The substring.
- * @var: i: The number of chars that were passed until the delimiter was reached.
- * 
- * @return: char *.
- * 
-*/
 
-char *crop_tkn(char **cmd, t_hashtable *env)
+	* @var: i: The number of chars that were passed until the delimiter was reached.
+ *
+ * @return: char *.
+ *
+ */
+
+char	*crop_tkn(char **cmd, t_hashtable *env)
 {
-	char *cropped;
-	
-	int i;	
+	char	*cropped;
+	int		i;
+
 	cropped = *cmd;
 	i = 0;
 	if (**cmd == '\'' || **cmd == '"')
 		i = crop_quote_tkn(cmd);
-	else if(isdelimiter(*cmd))
+	else if (isdelimiter(*cmd))
 		i = crop_delimiter_tkn(cmd);
 	else
 	{
-		while(**cmd != ' ' && **cmd != '\0' && !isdelimiter(*cmd))
+		while (**cmd != ' ' && **cmd != '\0' && !isdelimiter(*cmd))
 		{
 			i++;
 			(*cmd)++;
 		}
-		if(is_expander(**cmd))
-			return(append_expanded(cropped, cmd, env, i));
+		if (is_expander(**cmd))
+			return (append_expanded(cropped, cmd, env, i));
 	}
-	return(ft_substr(cropped, 0, i));
-} 
+	return (ft_substr(cropped, 0, i));
+}
 
 /**
  * Function: tokenizer
@@ -187,39 +192,41 @@ char *crop_tkn(char **cmd, t_hashtable *env)
  * and generate a tkn_list based on the result of the crop_tkn function,
  * that is further passed to the expand_all function that finishes the process
  * of tokenization.
- * 
+ *
  * @param: *g_global: A pointer to the global struct.
  * @param: *cmd: A pointer to the string.
  * @param: *env: A pointer to the hashtable.
- * @var: *actual_cmd: Will receive the content of the readline stored at g_global variable.
- * 
- * @return: void.
- * 
-*/
 
-void tokenizer(t_global *g_global, char *cmd, t_hashtable *env)
+	* @var: *actual_cmd: Will receive the content of the readline stored at g_global variable.
+ *
+ * @return: void.
+ *
+ */
+
+void	tokenizer(t_global *g_global, char *cmd, t_hashtable *env)
 {
-	char *actual_cmd;
+	char	*actual_cmd;
 
 	actual_cmd = cmd;
 	g_global->tkn_list = NULL;
-	while(*actual_cmd)
+	while (*actual_cmd)
 	{
-		if(ft_isspace(*actual_cmd))
+		if (ft_isspace(*actual_cmd))
 			skip_spaces(&actual_cmd);
-		if(!(*actual_cmd))
+		if (!(*actual_cmd))
 			return ;
-		handle_token(g_global, crop_tkn(&actual_cmd, env));		
+		handle_token(g_global, crop_tkn(&actual_cmd, env));
 	}
 	expand_all(g_global->tkn_list, env);
 }
 
-int main(int argc, char **argv, char** envp)
-{
-	(void)argc;
-	(void)argv;
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	t_hashtable	*hash;
 
-	t_hashtable *hash = create_hashtable();
-	init_hash(hash, envp);
-	prompt(hash);
-}
+// 	(void)argc;
+// 	(void)argv;
+// 	hash = create_hashtable();
+// 	init_hash(hash, envp);
+// 	prompt(hash);
+// }

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   node_creation.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:32:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/10 21:14:09 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/11 16:29:19 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
 /**
  * Function: new_cmd_file_node
@@ -29,7 +29,7 @@
 
 void new_cmd_file_node(t_tkn_list **current)
 {
-	if(tkn_list_size((*current)->prev) && handle_redirect((*current)->prev->type))
+	if(tkn_list_size((*current)->prev) && is_redirect((*current)->prev->type))
 	{
 		add_cmd_list((t_cmd_list){
 			.type = TYPE_FILE,

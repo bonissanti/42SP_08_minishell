@@ -1,4 +1,4 @@
-#include "../../minishell.h"
+#include "../include/minishell.h"
 
 void    logical_pipe(t_vector *vtr, t_hashtable *hash, t_ast *node, int *prev_pipe)
 {

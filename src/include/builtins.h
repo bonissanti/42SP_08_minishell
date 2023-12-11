@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:56:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/10 19:21:37 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:34:25 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BUILTINS_H
 # define BUILTINS_H
 
-#include "../../minishell.h"
+#include "./minishell.h"
 
 //############################### Builtins ####################################
 
