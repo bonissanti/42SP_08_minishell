@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/hash.h"
 #include "../include/builtins.h"
+#include "../include/hash.h"
 
 /**
  * Function: Hash
@@ -55,7 +55,7 @@ unsigned int	hash(char *key)
  * 
  * 
  * 
- *   
+ *  
  * @param: key: The environment variable name.
  * @var: hash: The hash value, which will be the index of the bucket.
  * 
@@ -75,6 +75,19 @@ void	handle_value(t_hash *check_dup, char *value, char *value_copy)
 	}
 	else
 		safe_free((void **)&value_copy);
+}
+
+void	add_new_key(t_hashtable *hash, char *key_copy, char *value_copy,
+		size_t index)
+{
+	t_hash	*add_env;
+
+	add_env = (t_hash *)malloc(sizeof(t_hash));
+	add_env->key = key_copy;
+	add_env->value = value_copy;
+	add_env->next = hash->buckets[index];
+	hash->buckets[index] = add_env;
+	hash->num_keys++;
 }
 
 void	destroy_hashtable(t_hashtable *hashtable)

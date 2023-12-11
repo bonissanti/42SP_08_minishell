@@ -14,12 +14,10 @@
 
 void	ft_pwd(t_hashtable *hashtable, char **args)
 {
-	char *cwd;
-	// char *old_pwd;
+	char	*cwd;
 
 	(void)hashtable;
 	(void)args;
-	// old_pwd = getenv("OLDPWD");	
 	cwd = getcwd(NULL, 0);
 	ft_printf("%s\n", cwd);
 	free(cwd);

@@ -1,6 +1,5 @@
-#include "../include/hash.h"
 #include "../include/builtins.h"
-
+#include "../include/hash.h"
 
 /**
  * Function: Create_hashtable
@@ -42,10 +41,10 @@ t_hashtable	*create_hashtable(void)
  *
  */
 
-void init_hash(t_hashtable *hashtable, char **envp)
+void	init_hash(t_hashtable *hashtable, char **envp)
 {
-	int i;
-	t_env env;
+	int		i;
+	t_env	env;
 
 	i = -1;
 	hashtable->num_keys = 0;
@@ -61,36 +60,6 @@ void init_hash(t_hashtable *hashtable, char **envp)
 		free_split(env.equals_sign);
 	}
 }
-
-/**
- * Function: Hash
- * -----------------
- * This function is used to determine the index of the bucket where the
- * key-value pair will be stored. It uses the multiplicative shift hash
- * method. Basically, based on the ASCII value of the key, it will
- * bitshift the value 5 times to the left and add the ASCII value of the
- * next character of the key. This will be done until the end of the key.
- * After that, it will use the modulo operator to get the remainder of the
- * division of the hash by the size(101) of the hashtable.
- *  
- * @param: key: The environment variable name.
- * @var: hash: The hash value, which will be the index of the bucket.
- * 
- * @return: Returns the index of the bucket.
- *
- */
-
-unsigned int	hash(char *key)
-{
-	unsigned int	hash;
-
-	hash = 0;
-	while (*key)
-		hash = (hash << 5) + *key++;
-	return (hash % HASHSIZE);
-}
-
-
 
 /**
  * Function: Insert
@@ -112,7 +81,7 @@ unsigned int	hash(char *key)
 
 void	insert(t_hashtable *hashtable, char *key, char *value)
 {
-	unsigned int	index;
+	size_t			index;
 	t_hash			*add_env;
 	t_hash			*check_dup;
 	char			*key_copy;
@@ -121,34 +90,17 @@ void	insert(t_hashtable *hashtable, char *key, char *value)
 	index = hash(key);
 	key_copy = ft_strdup(key);
 	check_dup = search(hashtable, key_copy);
-
 	if (value != NULL)
 		value_copy = ft_strdup(value);
 	else
 		value_copy = NULL;
-	
 	if (check_dup != NULL)
 	{
-		if (((check_dup->value == NULL && value != NULL)) || 
-			((check_dup->value != NULL && value == NULL)) ||
-			((check_dup->value != NULL && value != NULL) && (ft_strcmp(check_dup->value, value) != 0)))
-		{
-			safe_free((void **)&check_dup->value);
-			check_dup->value = value_copy;
-		}
-		else
-			safe_free((void **)&value_copy);
+		handle_value(check_dup, value, value_copy);
 		safe_free((void **)&key_copy);
 	}
 	else
-	{
-		add_env = (t_hash *)malloc(sizeof(t_hash));
-		add_env->key = key_copy;
-		add_env->value = value_copy;
-		add_env->next = hashtable->buckets[index];
-		hashtable->buckets[index] = add_env;
-		hashtable->num_keys++;		
-	}
+		add_new_key(hashtable, key_copy, value_copy, index);
 }
 
 /**
@@ -231,28 +183,4 @@ void	delete_hash(t_hashtable *hashtable, char *key)
 		prev_env = delete_env;
 		delete_env = delete_env->next;
 	}
-}
-
-
-
-void	destroy_hashtable(t_hashtable *hashtable)
-{
-	t_hash	*temp;
-	t_hash	*next;
-	size_t	i;
-
-	i = -1;
-	while (++i < HASHSIZE)
-	{
-		temp = hashtable->buckets[i];
-		while (temp != NULL)
-		{
-			next = temp->next;
-			free(temp->key);
-			free(temp->value);
-			free(temp);
-			temp = next;
-		}
-	}
-	free(hashtable);
 }

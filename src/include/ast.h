@@ -37,6 +37,8 @@ typedef enum
 
 typedef struct s_exec
 {
+	int prev[2];
+	int next[2];
 	int	in_fd;
 	int	out_fd;
 	int old_stdin;
@@ -52,7 +54,7 @@ typedef struct s_ast
 	char **args;
 	char *path;
 	char *delim;
-	int exit_status;
+	int num_status;
 	int	in_fd;
 	int	out_fd;
 	t_op weight;

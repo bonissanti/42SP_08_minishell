@@ -10,21 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/hash.h"
 #include "../include/builtins.h"
+#include "../include/hash.h"
 
-void ft_unset(t_hashtable *hash_table ,char **args)
+void	ft_unset(t_hashtable *hash_table, char **args)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    if (args[1] == NULL)
-        ft_fprintf(2, "unset: not enough arguments\n");
-    else
-    {
-        while (args[++i] != NULL)
-            delete_hash(hash_table, args[i]);
-    }
-    return ;
+	i = 0;
+	if (args[1] == NULL)
+		ft_fprintf(2, "unset: not enough arguments\n");
+	else
+	{
+		while (args[++i] != NULL)
+			delete_hash(hash_table, args[i]);
+	}
+	return ;
 }
-

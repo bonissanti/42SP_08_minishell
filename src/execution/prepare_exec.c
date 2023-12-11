@@ -12,8 +12,8 @@
 
 #include "../include/ast.h"
 #include "../include/builtins.h"
-#include "../include/hash.h"
 #include "../include/exec.h"
+#include "../include/hash.h"
 
 void	handle_error(t_ast *node, int result)
 {

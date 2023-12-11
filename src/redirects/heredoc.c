@@ -72,7 +72,7 @@ void	handle_heredoc(t_vector *vtr, t_ast *node, t_hashtable *hash, char *delim)
 	close(fd[1]);
 	dup2(fd[0], STDIN_FILENO);
 	if (node->left && node->right == NULL)
-		execute_forked_command(hash, node->left);
+		execute_command(vtr, hash, node->left);
 
 
 	// função auxiliar
@@ -84,7 +84,7 @@ void	handle_heredoc(t_vector *vtr, t_ast *node, t_hashtable *hash, char *delim)
 		{
 			dup2(next_pipe[1], STDOUT_FILENO);
 			close(next_pipe[1]);
-			execute_forked_command(hash, node->left);
+			execute_command(vtr, hash, node->left);
 		}
 		else
 		{
@@ -100,7 +100,7 @@ void	handle_heredoc(t_vector *vtr, t_ast *node, t_hashtable *hash, char *delim)
 	{
 		handle_redirects(vtr, node->right);
 		dup2(node->right->out_fd, STDOUT_FILENO);
-		execute_forked_command(hash, node->left);
+		execute_command(vtr, hash, node->left);
 	}
 
 	// outra função auxiliar
@@ -108,11 +108,11 @@ void	handle_heredoc(t_vector *vtr, t_ast *node, t_hashtable *hash, char *delim)
 	{
 		node->pid = fork();
 		if (node->pid == 0)
-			execute_forked_command(hash, node->left);
+			execute_command(vtr, hash, node->left);
 		else
 		{
-			waitpid(node->pid, &node->left->exit_status, 0);
-			simple_logical(vtr, hash, node->right, node->left->exit_status);
+			waitpid(node->pid, &node->left->num_status, 0);
+			simple_logical(vtr, hash, node->right, node->left->num_status);
 		}
 
 	}

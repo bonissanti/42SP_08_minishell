@@ -1,12 +1,12 @@
-#include "../include/hash.h"
 #include "../include/builtins.h"
+#include "../include/hash.h"
 
 void	ft_env(t_hashtable *hashtable, char **args)
 {
-	int i;
-	int	argc;
-	char **keys;
-	char *value;
+	int		i;
+	int		argc;
+	char	**keys;
+	char	*value;
 
 	i = 0;
 	argc = ft_count_args(args);
@@ -14,7 +14,7 @@ void	ft_env(t_hashtable *hashtable, char **args)
 	if (argc > 1)
 	{
 		ft_fprintf(2, "env: %s: No such file or directory\n", args[1]);
-		exit (127);
+		exit(127);
 	}
 	while (++i < hashtable->num_keys)
 	{

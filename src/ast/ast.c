@@ -57,7 +57,7 @@ t_ast	*create_node(t_type type, char *cmds, t_op weight)
 	new_node->type = type;
 	new_node->left = NULL;
 	new_node->right = NULL;
-	new_node->exit_status = 0;
+	new_node->num_status = 0;
 	new_node->in_fd = -1;
 	new_node->out_fd = -1;
 	return (new_node);

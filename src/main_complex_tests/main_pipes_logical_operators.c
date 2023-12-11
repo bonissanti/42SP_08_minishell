@@ -24,7 +24,7 @@
 // 	}
 // }
 
-// static void execute_forked_command(t_hashtable *hashtable, t_ast *node)
+// static void execute_command(t_hashtable *hashtable, t_ast *node)
 // {
 // 	char *path;
 // 	int result;
@@ -73,12 +73,6 @@ int main(int argc, char **argv, char **envp)
 
     t_ast *node4 = create_node(TYPE_COMMAND, "sort", DEFAULT);
     insert_ast(&root, node4, &vtr.exec);
-
-    t_ast *node5 = create_node(TYPE_PIPE, "|", OP_PIPE);
-    insert_ast(&root, node5, &vtr.exec);
-
-    t_ast *node6 = create_node(TYPE_COMMAND, "wc", DEFAULT);
-    insert_ast(&root, node6, &vtr.exec);
 
     backup_fd(&vtr.exec.old_stdin, &vtr.exec.old_stdout);
     exec_multi_cmds(&vtr, hashtable, root);

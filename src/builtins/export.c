@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../include/builtins.h"
 #include "../include/hash.h"
 #include "../include/segments.h"
-#include "../include/builtins.h"
 
 /**
  * Function: Print_all_env
@@ -31,16 +31,16 @@
  *
  */
 
-void print_all_env(t_hashtable *hash_table)
+void	print_all_env(t_hashtable *hash_table)
 {
-    int i;
-    char **keys;
-	char *value;
+	int		i;
+	char	**keys;
+	char	*value;
 
-    keys = copy_all_keys(hash_table);
-    bubble_sort(keys, hash_table->num_keys);
-    i = -1;
-    while (++i < hash_table->num_keys)
+	keys = copy_all_keys(hash_table);
+	bubble_sort(keys, hash_table->num_keys);
+	i = -1;
+	while (++i < hash_table->num_keys)
 	{
 		value = search(hash_table, keys[i])->value;
 		if (value == NULL)
@@ -48,7 +48,7 @@ void print_all_env(t_hashtable *hash_table)
 		else
 			ft_printf("declare -x %s=\"%s\"\n", keys[i], value);
 	}
-    free(keys);
+	free(keys);
 }
 
 /**
@@ -73,8 +73,8 @@ void print_all_env(t_hashtable *hash_table)
 void	add_env(t_hashtable *hash_table, char **args)
 {
 	int		i;
-	t_env 	env;
-	t_hash *hash;
+	t_env	env;
+	t_hash	*hash;
 	size_t	len;
 
 	i = 1;
@@ -87,14 +87,13 @@ void	add_env(t_hashtable *hash_table, char **args)
 		if (args[1][ft_strlen(args[i]) - 1] == '=')
 			env_with_equals(hash_table, args, i);
 		else if (env.equals_sign[1] != NULL)
-			env_with_value(hash_table, args, i, len);			
+			env_with_value(hash_table, args, i, len);
 		else if (hash == NULL)
 			insert(hash_table, env.key, NULL);
 		free_split(env.equals_sign);
 		i++;
 	}
 }
-
 
 /**
  * Function: Export
@@ -123,4 +122,3 @@ void	ft_export(t_hashtable *hash_table, char **args)
 	else
 		add_env(hash_table, args);
 }
-

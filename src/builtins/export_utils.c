@@ -1,6 +1,6 @@
+#include "../include/builtins.h"
 #include "../include/hash.h"
 #include "../include/segments.h"
-#include "../include/builtins.h"
 
 void	bubble_sort(char **array, int size)
 {
@@ -28,10 +28,10 @@ void	bubble_sort(char **array, int size)
 
 char	**copy_all_keys(t_hashtable *hash_table)
 {
-	t_hash *current;
-	char **keys;
-	int index;
-	int i;
+	t_hash	*current;
+	char	**keys;
+	int		index;
+	int		i;
 
 	i = -1;
 	index = 0;
@@ -52,26 +52,24 @@ char	**copy_all_keys(t_hashtable *hash_table)
 
 void	env_with_equals(t_hashtable *hashtable, char **args, int i)
 {
-	char **equals_sign;
-	char *key;
-	char *value;
+	char	**equals_sign;
+	char	*key;
+	char	*value;
 
 	equals_sign = ft_split(args[i], '=');
 	key = equals_sign[0];
 	value = "";
 	insert(hashtable, key, value);
 	free_split(equals_sign);
-
 }
-
 
 void	env_with_value(t_hashtable *hashtable, char **args, int i, size_t len)
 {
-	char **equals_sign;
-	char *key;
-	char *value;
-	t_lex *dollar;
-	t_segment *head;
+	char		**equals_sign;
+	char		*key;
+	char		*value;
+	t_lex		*dollar;
+	t_segment	*head;
 
 	dollar = NULL;
 	equals_sign = ft_split(args[i], '=');
@@ -98,5 +96,4 @@ void	env_with_value(t_hashtable *hashtable, char **args, int i, size_t len)
 	safe_free((void **)&dollar->segment);
 	safe_free((void **)&dollar);
 	free(value);
-
 }

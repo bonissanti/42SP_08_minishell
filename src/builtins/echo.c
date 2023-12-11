@@ -13,12 +13,12 @@
 #include "../include/builtins.h"
 #include "../include/hash.h"
 
-t_bool is_flag_n(char *arg);
+t_bool	is_flag_n(char *arg);
 
-void ft_echo(t_hashtable *hashtable, char **args)
+void	ft_echo(t_hashtable *hashtable, char **args)
 {
-	int i;
-	
+	int	i;
+
 	i = -1;
 	(void)hashtable;
 	while (args[++i] != NULL)
@@ -31,9 +31,9 @@ void ft_echo(t_hashtable *hashtable, char **args)
 		ft_printf("\n");
 }
 
-t_bool is_flag_n(char *arg)
+t_bool	is_flag_n(char *arg)
 {
-	size_t i;
+	size_t	i;
 
 	i = 0;
 	while (arg[++i] != '\0')

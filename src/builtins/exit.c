@@ -5,8 +5,8 @@ void	free_for_exit(t_hashtable *hash_table, char **args, int argc);
 
 void	ft_exit(t_hashtable *hash_table, char **args)
 {
-	long int exit_code;
-	int argc;
+	long int	exit_code;
+	int			argc;
 
 	exit_code = 0;
 	argc = ft_count_args(args);

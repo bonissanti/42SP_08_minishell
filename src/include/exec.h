@@ -48,7 +48,7 @@ int 	verify_cmd_permissions(const char *cmd);
 //############################# OPERATOR #####################################//
 
 void 	handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe);
-void    execute_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe);
+void	execute_pipes(t_hashtable *hashtable, t_vector *vtr, t_ast *node, int *prev_pipe, int *next_pipe);
 void    logical_pipe(t_vector *vtr, t_hashtable *hash, t_ast *node, int *prev_pipe);
 void    simple_logical(t_vector *vtr, t_hashtable *hash, t_ast *node, int status);
 void    pipe_from_redirect(t_hashtable *hash, t_vector *vtr, t_ast *node, int *prev_pipe);
@@ -64,7 +64,7 @@ void	handle_error(t_ast *node, int result);
 //############################# EXECUTION ####################################//
 
 void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root);
-void 	execute_forked_command(t_hashtable *hashtable, t_ast *node);
+void 	execute_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 void    close_all_fds(int *fd);
 // void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node); //temp
 

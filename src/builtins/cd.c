@@ -12,11 +12,10 @@
 
 #include "../include/builtins.h"
 #include "../include/hash.h"
-#include <errno.h>
 
 void	ft_cd(t_hashtable *hashtable, char **args)
 {
-	char 	*oldpwd;
+	char	*oldpwd;
 	char	*cwd;
 	size_t	argc;
 
@@ -49,10 +48,3 @@ void	ft_cd(t_hashtable *hashtable, char **args)
 	free(cwd);
 	return ;
 }
-
-
-
-
-
-
-

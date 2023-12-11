@@ -15,6 +15,12 @@
 #include "../include/hash.h"
 #include "../include/segments.h"
 
+static void	redirect_fds(t_ast *node, int *prev_pipe);
+static void	check_pipe(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
+				int *next_pipe);
+static void	child_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
+				int *next_pipe);
+
 void	handle_redirects(t_vector *vtr, t_ast *node)
 {
 	t_redirect	*current;
@@ -31,60 +37,76 @@ void	handle_redirects(t_vector *vtr, t_ast *node)
 	}
 }
 
-void    redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node, int *prev_pipe)
+void	redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
+		int *prev_pipe)
 {
-    int next_pipe[2];
-    pid_t pid;
+	int	next_pipe[2];
 
-    if (vtr->exec.count_pipes >= 1)
-        pipe(next_pipe);
+	if (vtr->exec.count_pipes >= 1)
+		pipe(next_pipe);
+	if (node->type == TYPE_REDIRECT)
+	{
+		node->pid = fork();
+		redirect_fds(node, prev_pipe);
+		if (node->pid == 0)
+			child_redirect(vtr, hashtable, node, next_pipe);
+		else
+		{
+			wait(NULL);
+			close(prev_pipe[1]);
+			check_pipe(vtr, hashtable, node, next_pipe);
+		}
+		if (node->type == TYPE_REDIRECT && node->right->type == TYPE_LOGICAL)
+		{
+			waitpid(node->pid, &node->left->num_status, 0);
+			simple_logical(vtr, hashtable, node->right, node->left->num_status);
+		}
+	}
+}
 
-    if (node->type == TYPE_REDIRECT)
-    {   
-        pid = fork();
-        if (*prev_pipe != -1)
-        {
-            dup2(prev_pipe[0], STDIN_FILENO);
-            close(prev_pipe[0]);
-        }
-        if (node->in_fd != -1)
-        {
-            dup2(node->in_fd, STDIN_FILENO);
-            close(node->in_fd);
-        }
-        if (node->out_fd != -1)
-        {
-            dup2(node->out_fd, STDOUT_FILENO);
-            close(node->out_fd);
-        }
-        if (pid == 0)
-        {
-            if (vtr->exec.count_pipes >= 1)
-            {
-                dup2(next_pipe[1], STDOUT_FILENO);
-                close(next_pipe[1]);
-                execute_forked_command(hashtable, node->left);
-                exit(0);
-            }
-            else
-                execute_forked_command(hashtable, node->left); 
-        }
-        else
-        {
-            wait(NULL);
-            close(prev_pipe[1]);
-            if (vtr->exec.count_pipes >= 1)
-            {
-                close(next_pipe[1]);
-                vtr->exec.count_pipes--;
-                pipe_from_redirect(hashtable, vtr, node->right, next_pipe);
-            }
-        }
-        if (node->type == TYPE_REDIRECT && node->right->type == TYPE_LOGICAL)
-        {
-            waitpid(node->pid, &node->left->exit_status, 0);
-            simple_logical(vtr, hashtable, node->right, node->left->exit_status);
-        }
-        
-    }
+static void	redirect_fds(t_ast *node, int *prev_pipe)
+{
+	if (*prev_pipe != -1)
+	{
+		dup2(prev_pipe[0], STDIN_FILENO);
+		close(prev_pipe[0]);
+	}
+	if (node->in_fd != -1)
+	{
+		dup2(node->in_fd, STDIN_FILENO);
+		close(node->in_fd);
+	}
+	if (node->out_fd != -1)
+	{
+		dup2(node->out_fd, STDOUT_FILENO);
+		close(node->out_fd);
+	}
+}
+
+static void	child_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
+		int *next_pipe)
+{
+	if (node->type == TYPE_REDIRECT)
+	{
+		if (vtr->exec.count_pipes >= 1)
+		{
+			dup2(next_pipe[1], STDOUT_FILENO);
+			close(next_pipe[1]);
+			execute_command(vtr, hashtable, node->left);
+			exit(0);
+		}
+		else
+			execute_command(vtr, hashtable, node->left);
+	}
+}
+
+static void	check_pipe(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
+		int *next_pipe)
+{
+	if (vtr->exec.count_pipes >= 1)
+	{
+		vtr->exec.count_pipes--;
+		close(next_pipe[1]);
+		pipe_from_redirect(hashtable, vtr, node->right, next_pipe);
+	}
 }
