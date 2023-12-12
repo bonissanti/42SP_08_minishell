@@ -31,7 +31,7 @@ void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
 	if (root->type == TYPE_REDIRECT && root->weight != OP_HEREDOC)
 	{
 		handle_redirects(vtr, root);
-		simple_redirect(vtr, hashtable, root);
+		analyze_redirect(vtr, hashtable, root);
 	}
 	if (root->type == TYPE_REDIRECT && root->weight == OP_HEREDOC)
 		handle_heredoc(vtr, root, hashtable, root->delim);

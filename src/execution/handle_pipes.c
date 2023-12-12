@@ -120,7 +120,7 @@ static void	handle_other(t_vector *vtr, t_hashtable *hash, t_ast *node,
 	if (node->type == TYPE_REDIRECT)
 	{
 		handle_redirects(vtr, node);
-		redirect_execution(vtr, hash, node, prev_pipe);
+		simple_redirect_out(vtr, hash, node, prev_pipe);
 	}
 	else if (node->type == TYPE_LOGICAL)
 		logical_pipe(vtr, hash, node, prev_pipe);

@@ -37,7 +37,19 @@ void	handle_redirects(t_vector *vtr, t_ast *node)
 	}
 }
 
-void	redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
+void	analyze_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
+{
+	if (node->type == TYPE_REDIRECT)
+	{
+		if (ft_strncmp(node->cmds, ">", 1) == 0 || ft_strncmp(node->cmds, ">>", 2) == 0)
+			simple_redirect_in(vtr, hashtable, node);
+		else
+			simple_redirect_out(vtr, hashtable, node, NULL);
+	}
+}
+
+
+void	simple_redirect_out(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
 		int *prev_pipe)
 {
 	int	next_pipe[2];
@@ -50,13 +62,22 @@ void	redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
 		redirect_fds(node, prev_pipe);
 		if (node->pid == 0)
 		{
-			child_redirect(vtr, hashtable, node, next_pipe);
+			if (node->type == TYPE_REDIRECT)
+			{
+				if (node->in_fd != -1 && vtr->exec.count_pipes >= 1)
+				{
+					dup2(next_pipe[1], STDOUT_FILENO);
+					close(next_pipe[1]);
+				}
+				execute_command(vtr, hashtable, node->left);			
+				exit(0);
+			}
 		}
 		else
 		{
 			restore_fd(vtr->exec.old_stdin, vtr->exec.old_stdout);
-			if (vtr->exec.count_pipes >= 1 && node->in_fd != 0)
-				close(prev_pipe[1]);
+			// if (vtr->exec.count_pipes >= 1 && node->in_fd != 0)
+			// 	close(prev_pipe[1]);
 			check_pipe(vtr, hashtable, node, next_pipe);
 		}
 	}
@@ -69,7 +90,7 @@ void	redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
 
 static void	redirect_fds(t_ast *node, int *prev_pipe)
 {
-	if (*prev_pipe != -1)
+	if (prev_pipe != NULL)
 	{
 		dup2(prev_pipe[0], STDIN_FILENO);
 		close(prev_pipe[0]);
@@ -86,21 +107,11 @@ static void	redirect_fds(t_ast *node, int *prev_pipe)
 	}
 }
 
-static void	child_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
-		int *next_pipe)
-{
-	if (node->type == TYPE_REDIRECT)
-	{
-		if (node->in_fd != -1)
-		{
-			dup2(next_pipe[1], STDOUT_FILENO);
-			close(next_pipe[1]);
-		}
-		ft_fprintf(2, "husahuasuha\n");
-		execute_command(vtr, hashtable, node->left);			
-		exit(0);
-	}
-}
+// static void	child_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
+// 		int *next_pipe)
+// {
+	
+// }
 
 static void	check_pipe(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
 		int *next_pipe)
