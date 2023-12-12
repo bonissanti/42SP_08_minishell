@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:50:54 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 18:51:02 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:43:47 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/hash.h"
-#include "../include/segments.h"
+#include "../include/minishell.h"
 
 size_t	ft_strcspn(const char *str, char *delim1)
 {

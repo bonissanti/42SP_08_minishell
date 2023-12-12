@@ -1,18 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   export_utils.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/11 11:18:18 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 11:25:25 by brunrodr         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../include/builtins.h"
-#include "../include/hash.h"
-#include "../include/segments.h"
+#include "../include/minishell.h"
 
 void	bubble_sort(char **array, int size)
 {

@@ -6,14 +6,11 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/27 17:17:21 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:43:47 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ast.h"
-#include "../include/builtins.h"
-#include "../include/exec.h"
-#include "../include/hash.h"
+#include "../include/minishell.h"
 
 void	handle_error(t_ast *node, int result)
 {

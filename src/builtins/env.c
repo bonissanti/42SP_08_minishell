@@ -1,17 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/11 11:19:55 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 11:19:57 by brunrodr         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../include/builtins.h"
-#include "../include/hash.h"
+#include "../include/minishell.h"
 
 void	ft_env(t_hashtable *hashtable, char **args)
 {

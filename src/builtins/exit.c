@@ -1,17 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/11 11:19:24 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 11:19:27 by brunrodr         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../include/builtins.h"
-#include "../include/hash.h"
+#include "../include/minishell.h"
 
 void	free_for_exit(t_hashtable *hash_table, char **args, int argc);
 

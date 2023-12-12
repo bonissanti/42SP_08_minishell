@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
 /*   Updated: 2023/12/11 19:08:25 by brunrodr         ###   ########.fr       */

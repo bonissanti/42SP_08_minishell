@@ -6,11 +6,25 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 18:22:03 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/16 23:22:59 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:43:47 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../include/minishell.h"
+
+/**
+ * Function: tkn_list_size
+ * -----------------
+ * The tkn_list_size function counts the amount of nodes 
+ * in a t_tkn_list type struct.
+ * 
+ * @param: *tkn_list: The command list.
+ * @var: total: The total nodes accounted from the given list.
+ * @var: *head: A pointer to hold the
+ * 
+ * @return: int.
+ * 
+*/
 
 int tkn_list_size(t_tkn_list *tkn_list)
 {
@@ -26,6 +40,17 @@ int tkn_list_size(t_tkn_list *tkn_list)
 	}
 	return (total);
 }
+
+/**
+ * Function: new_tkn_list
+ * -----------------
+ * The new_tkn_list function creates a new node
+ * in a t_tkn_list type struct.
+ * 
+ * @param: node: A compound literal that is going to feed the new_node.
+ * 
+ * @return: t_tkn_list *.
+*/
 
 t_tkn_list	*new_tkn_list(char *content, t_tkn_type type)
 {
@@ -43,6 +68,17 @@ t_tkn_list	*new_tkn_list(char *content, t_tkn_type type)
 	node->prev = NULL;
 	return (node);
 }
+/**
+ * Function: last_tkn_list
+ * -----------------
+ * The last_tkn_list function returns the last node
+ * of a t_tkn_list type struct.
+ * 
+ * @param: *tkn_list: The command list.
+ * 
+ * @return t_tkn_list *.
+ * 
+*/
 
 t_tkn_list *last_tkn_list(t_tkn_list *tkn_list)
 {
@@ -50,6 +86,18 @@ t_tkn_list *last_tkn_list(t_tkn_list *tkn_list)
 		tkn_list = tkn_list->next;
 	return(tkn_list);
 }
+
+/**
+ * Function: add_tkn_list
+ * -----------------
+ * The add_tkn_list function adds a new node
+ * to the end of a t_tkn_list type struct.
+ * 
+ * @param: new_list: A node usually created by the new_tkn_list function.
+ * 
+ * @return: void.
+ * 
+*/
 
 void add_tkn_list(t_global *g_global, t_tkn_list *new_list)
 {
@@ -64,6 +112,18 @@ void add_tkn_list(t_global *g_global, t_tkn_list *new_list)
 		last->next->prev = last;
 	}
 }
+
+/**
+ * Function: free_tkn_list
+ * -----------------
+ * The free_tkn_list function frees the memory
+ * allocated for a t_tkn_list type struct.
+ * 
+ * @param: *tkn_list: The command list.
+ * 
+ * @return: void.
+ * 
+*/
 
 void free_tkn_list(t_tkn_list *tkn_list)
 {

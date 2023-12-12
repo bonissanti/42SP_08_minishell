@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:39:43 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/15 23:43:01 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/11 17:10:46 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,23 @@
 # define MINISHELL_H
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include "./libft/libft.h"
-#include "./parser/env.h"
-#include "./parser/parser.h"
+#include <errno.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+#include "./structs.h"
+#include "./segments.h"
+#include "./parser.h"
+#include "./ast.h"
+#include "./hash.h"
+#include "./exec.h"
+#include "./builtins.h"
 
-void		prompt(t_hashtable *env);
+extern t_global g_global;
+
+void		prompt(t_hashtable *env, t_vector vtr);
 
 #endif

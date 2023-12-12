@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser_debug_helpers.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 22:27:30 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/22 17:43:09 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:43:47 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../include/minishell.h"
 
 char *tkn_type_string(t_tkn_type type)
 {
@@ -43,8 +43,10 @@ char *cmd_type_string(t_type type)
 {
 	if(type == TYPE_COMMAND)
 		return ("TYPE_COMMAND");
-	else if(type == TYPE_OPERATOR)
-		return ("TYPE_OPERATOR");
+	else if(type == TYPE_LOGICAL)
+		return ("TYPE_LOGICAL");
+	else if(type == TYPE_PIPE)
+		return ("TYPE_PIPE");
 	else if(type == TYPE_FILE)
 		return ("TYPE_FILE");
 	else 
@@ -69,24 +71,30 @@ void print_cmd_list(t_cmd_list *cmd_list)
 	ft_printf("---CMD_LIST---\n");
 	while(cmd_list->next != NULL)
 	{
-		ft_printf("Type: %s\nArgs: %s\nweight: %d\n",
-		cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->weight);
-		if(cmd_list->infile)
-			ft_printf("Infile: %s\n", cmd_list->infile);
-		if(cmd_list->outfile)
-			ft_printf("Outfile: %s\n", cmd_list->outfile);
-		if(cmd_list->here_doc_fd)
-			ft_printf("Here_doc: %d\n", cmd_list->here_doc_fd);
-		ft_printf("----------\n");
-		cmd_list = cmd_list->next;
+		if(cmd_list->type == TYPE_COMMAND)
+		{
+			ft_printf("Type: %s\nArgs: %s\nweight: %d\n",
+			cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->weight);
+			// if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->infile)
+			// 	ft_printf("Infile: %s\n", cmd_list->infile);
+			// if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->outfile)
+			// 	ft_printf("Outfile: %s\n", cmd_list->outfile);
+			// if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->here_doc_fd)
+			// 	ft_printf("Here_doc: %d\n", cmd_list->here_doc_fd);
+			// ft_printf("----------\n");
+		}
+			cmd_list = cmd_list->next;			
 	}
-	ft_printf("Type: %s\nArgs: %s\nweight: %d\n", 
-	cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->weight);
-	if(cmd_list->infile)
-		ft_printf("Infile: %s\n", cmd_list->infile);
-	if(cmd_list->outfile)
-		ft_printf("Outfile: %s\n", cmd_list->outfile);
-	if(cmd_list->here_doc_fd)
-		ft_printf("Here_doc: %d\n", cmd_list->here_doc_fd);
-	ft_printf("----------\n");
+	if(cmd_list->type == TYPE_COMMAND)
+	{
+		ft_printf("Type: %s\nArgs: %s\nweight: %d\n", 
+		cmd_type_string(cmd_list->type), cmd_list->args, cmd_list->weight);
+		// if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->infile)
+		// 	ft_printf("Infile: %s\n", cmd_list->infile);
+		// if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->outfile)
+		// 	ft_printf("Outfile: %s\n", cmd_list->outfile);
+		// if(cmd_list && cmd_list->type == TYPE_COMMAND && cmd_list->here_doc_fd)
+		// 	ft_printf("Here_doc: %d\n", cmd_list->here_doc_fd);
+		// ft_printf("----------\n");		
+	}
 }

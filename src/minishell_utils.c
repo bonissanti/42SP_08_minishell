@@ -1,5 +1,16 @@
-#include "./include/builtins.h"
-#include "./include/hash.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/22 16:52:18 by aperis-p          #+#    #+#             */
+/*   Updated: 2023/12/11 14:40:17 by aperis-p         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "./include/minishell.h"
 
 void init_structs(void *structs, int type, size_t struct_size)
 {
@@ -45,4 +56,3 @@ void	safe_free(void **ptr)
 		*ptr = NULL;
 	}
 }
-

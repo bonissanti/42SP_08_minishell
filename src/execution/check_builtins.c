@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   check_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:00:37 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/06 17:26:25 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:43:47 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ast.h"
-#include "../include/builtins.h"
-#include "../include/exec.h"
-#include "../include/hash.h"
+#include "../include/minishell.h"
 
 t_bool	execute_if_builtin(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {

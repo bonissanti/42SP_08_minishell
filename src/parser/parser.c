@@ -3,14 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/11/24 17:08:48 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/11 16:27:41 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "../include/minishell.h"
+
+/**
+ * Function: command_consistency
+ * -----------------
+ * The command_consistency function checks if the tkn_list
+ * has an operator or a wrong parentesis at the beggining 
+ * or at the end of the list.
+ * 
+ * @param: *tokenized: A pointer to the tokenized list.
+ * 
+ * @return: int.
+ * 
+*/
 
 int	command_consistency(t_tkn_list *tokenized)
 {
@@ -25,14 +38,30 @@ int	command_consistency(t_tkn_list *tokenized)
 		ft_printf("syntax error near unexpected token `%s'\n", tkn_type_converter(head->type));
 		exit(2);
 	}
-	else if (tail->type == OR || tail->type == AND 
-	|| tail->type == PIPE || tail->type == O_PARENTESIS)
+	else if (tail->type == O_PARENTESIS || is_redirect(tail->type))
 	{
-		ft_printf("syntax error near unexpected token `%s'\n", tkn_type_converter(tail->type));
+		if (tail->type == O_PARENTESIS)
+			ft_printf("syntax error near unexpected token `%s'\n", tkn_type_converter(tail->type));
+		else
+			ft_printf("syntax error near unexpected token `newline'\n");
 		exit(2);
 	}
 	return (1);
 }
+
+/**
+ * Function: rewind_list
+ * -----------------
+ * The rewind_list function checks if the current head
+ * is actually the first node of the list, if it is not
+ * it iterates through the list until it finds the first
+ * node.
+ * 
+ * @param: **cmd_list: A pointer to the cmd_list
+ * 
+ * @return: t_cmd_list *.
+ * 
+*/
 
 t_cmd_list *rewind_list(t_cmd_list **cmd_list)
 {
@@ -41,50 +70,25 @@ t_cmd_list *rewind_list(t_cmd_list **cmd_list)
 	else
 	{
 		while((*cmd_list)->prev != NULL)
-			*cmd_list = (*cmd_list)->prev; // infinite loop here
+			*cmd_list = (*cmd_list)->prev;
 	}
 	return(*cmd_list);
 }
 
-void set_cmd_input(t_cmd_list **cmd_list, t_cmd_list *head)
-{
-	while((*cmd_list)->type != TYPE_COMMAND)
-		*cmd_list = (*cmd_list)->next;
-	if (!head->here_doc && head->next->type == TYPE_FILE)
-	{
-		(*cmd_list)->infile = head->next->args;
-		(*cmd_list)->here_doc_fd = 0;
-	}
-	else if	(head->here_doc)
-	{
-		(*cmd_list)->infile = NULL;
-		(*cmd_list)->here_doc_fd = 42;
-	}
-}
-
-void set_cmd_output(t_cmd_list **cmd_list, t_cmd_list *head)
-{
-	while((*cmd_list)->type != TYPE_COMMAND)
-		*cmd_list = (*cmd_list)->next;
-	(*cmd_list)->outfile = head->next->args;
-}
-
-void set_io(t_cmd_list **cmd_list)
-{
-	t_cmd_list *head;
-	t_cmd_list *temp;
-
-	head = rewind_list(cmd_list);
-	while(head)
-	{
-		temp = head->next;
-		if (head->type == TYPE_REDIRECT && (!ft_strncmp(head->args, "<<", 2) || *(*head).args == '<'))
-			set_cmd_input(cmd_list, head);
-		else if (head->type == TYPE_REDIRECT && (!ft_strncmp(head->args, ">>", 2) || *(*head).args == '>'))
-			set_cmd_output(cmd_list, head);
-		head = temp;		
-	}
-}
+/**
+ * Function: join_args
+ * -----------------
+ * The join_args function iterates through the tokenized list
+ * and form a brand new cmd_list by joining tokens that are of
+ * the type IDENTIFIER, EXPAND or WILD, and filling then with
+ * their respective data.
+ * 
+ * @param: *tkn_list: A pointer to the tokenized list.
+ * @var: *current: A pointer to the current node of the list.
+ * 
+ * @return: void.
+ * 
+*/
 
 void	join_args(t_tkn_list *tkn_list)
 {
@@ -96,7 +100,7 @@ void	join_args(t_tkn_list *tkn_list)
 		if (current && (current->type == IDENTIFIER
 		|| current->type == EXPAND || current->type == WILD))
 			new_cmd_file_node(&current);
-		if (current && handle_redirect(current->type))
+		if (current && is_redirect(current->type))
 			new_redirect_node(&current);
 		if (current && current->type == O_PARENTESIS)
 			new_subshell_node(&current);
@@ -104,20 +108,26 @@ void	join_args(t_tkn_list *tkn_list)
 			new_operator_node(&current);
 	}
 	set_io(&(g_global).cmd_list);
-	rewind_list(&(g_global).cmd_list);
 }
+
+/**
+ * Function: parser
+ * -----------------
+ * The parser function is the main function of the parser.
+ * It calls the command_consistency function to check if the
+ * tkn_list is consistent, then it calls the join_args function
+ * to form the cmd_list.
+ * 
+ * @param: *env: A pointer to the env.
+ * 
+ * @return: void.
+ * 
+*/
 
 void parser(t_hashtable *env)
 {
 	(void)env;
 	command_consistency(g_global.tkn_list);
 	join_args(g_global.tkn_list);
-	// while(g_global.cmd_list->next)
-	// {
-	// 	is_quotes(env, &g_global.cmd_list->args);
-	// 	g_global.cmd_list = g_global.cmd_list->next;
-	// }
-	// is_quotes(env, &g_global.cmd_list->args);
-	// rewind_list(&(g_global).cmd_list);
-	print_cmd_list(g_global.cmd_list);
+	// print_cmd_list(g_global.cmd_list);
 }

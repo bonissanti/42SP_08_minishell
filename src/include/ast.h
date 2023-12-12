@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 17:48:25 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/12 16:12:26 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,11 @@ typedef struct s_ast
 
 //############################### AST #########################################
 
-t_ast 				*create_node(t_type type, char *cmds, t_op weight);
+t_ast 				*create_node(t_cmd_list *cmd_list, t_hashtable *env);
 void 				insert_ast(t_ast **head, t_ast *new_node, t_exec *exec);
 void				delete_node(t_ast *head);
 void				pre_order_traversal(t_ast *head); // Remover depois
+t_ast				*init_ast(t_cmd_list *cmd_list, t_exec *exec, t_hashtable *env);
 
 //############################### UTILS #######################################
 

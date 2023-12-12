@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollar.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:33:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/22 12:48:47 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/11 14:43:46 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/hash.h"
-#include "../include/segments.h"
+#include "../include/minishell.h"
 
 void	expand_variable(t_lex *quote, t_segment **head, size_t *len)
 {

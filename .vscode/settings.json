@@ -9,7 +9,8 @@
 		"exec.h": "c",
 		"stdlib.h": "c",
 		"minunit.h": "c",
-		"type_traits": "c",
-		"signal.h": "c"
+		"minishell.h": "c",
+		"errno.h": "c",
+		"structs.h": "c"
 	}
 }

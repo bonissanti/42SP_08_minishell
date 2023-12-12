@@ -3,17 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirects.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:43:27 by brunrodr          #+#    #+#             */
 /*   Updated: 2023/12/11 18:34:27 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/builtins.h"
-#include "../include/exec.h"
-#include "../include/hash.h"
-#include "../include/segments.h"
+#include "../include/minishell.h"
+
+static void	redirect_fds(t_ast *node, int *prev_pipe);
+static void	check_pipe(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
+				int *next_pipe);
+static void	child_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
+				int *next_pipe);
 
 static void	redirect_fds(t_ast *node, int *prev_pipe);
 static void	check_pipe(t_vector *vtr, t_hashtable *hashtable, t_ast *node,

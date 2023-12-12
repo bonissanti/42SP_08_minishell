@@ -1,17 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   hashtable.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/11 11:20:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 11:20:13 by brunrodr         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../include/builtins.h"
-#include "../include/hash.h"
+#include "../include/minishell.h"
 
 /**
  * Function: Create_hashtable

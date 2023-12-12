@@ -1,30 +1,7 @@
-# include "../include/hash.h"
-# include "../include/builtins.h"
-# include "../include/ast.h"
-# include <sys/wait.h>
+#ifndef EXEC_H
+# define EXEC_H
 
-struct s_exec;
-
-typedef struct s_cmd
-{
-	char	*name;
-	char	*cmd;
-	void	(*function)(t_hashtable *hash_table, char **args);
-}		t_cmd;
-
-typedef struct s_redirect
-{
-	char	*name;
-	void	(*function)(t_ast *node, char *filename);
-}		t_redirect;
-
-typedef struct s_vector
-{
-	t_exec		exec;
-	t_redirect  redirect[5];
-    t_cmd	    builtins[2];
-}		t_vector;
-
+#include "./minishell.h"
 
 //############################### VECTOR #####################################//
 
@@ -73,3 +50,5 @@ void    close_all_fds(int *fd);
 // void print_pipe_contents(int *pipefd); // Remover depois
 
 void ft_printf_fd(int fd);
+
+#endif

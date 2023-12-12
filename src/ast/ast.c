@@ -3,27 +3,60 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 18:48:18 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/12 19:18:15 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ast.h"
-#include "../include/builtins.h"
-#include "../include/exec.h"
+#include "../include/minishell.h"
 
-static void	prepare_ast(t_ast *new_node, char *cmds, t_type type)
+t_ast *init_ast(t_cmd_list *cmd_list, t_exec *exec, t_hashtable *env)
 {
-	new_node->args = ast_split(cmds, ' ');
-	if (type == TYPE_REDIRECT)
+	t_ast *ast;
+	t_cmd_list *head;
+
+	// ast = ft_calloc(1, sizeof(t_ast));
+	ast = NULL;
+	head = cmd_list;
+	while(head)
+	{
+		insert_ast(&ast, create_node(head, env), exec);
+		head = head->next;
+	}
+	return(ast);
+}
+
+static void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list, t_hashtable *env)
+{
+	new_node->args = ast_split(cmd_list->args, ' ');
+	
+	if (cmd_list->type == TYPE_COMMAND)
+	{
+		analyzing_quotes(env, &new_node->args[0]); //is_quotes here?
+		new_node->cmds = new_node->args[0];
+		if(cmd_list->here_doc)
+			new_node->delim = cmd_list->infile;
+		else
+			new_node->infile = cmd_list->infile;
+		new_node->outfile = cmd_list->outfile;
+		new_node->weight = cmd_list->weight;
+		new_node->type = cmd_list->type;
+	}
+	else if (cmd_list->type == TYPE_SUBSHELL)
 	{
 		new_node->cmds = new_node->args[0];
-		new_node->delim = new_node->args[1];
+		new_node->subshell = true;
+		new_node->weight = cmd_list->weight;
+		new_node->type = cmd_list->type;
 	}
 	else
+	{
 		new_node->cmds = new_node->args[0];
+		new_node->weight = cmd_list->weight;
+		new_node->type = cmd_list->type;
+	}			
 }
 
 /**
@@ -46,20 +79,20 @@ static void	prepare_ast(t_ast *new_node, char *cmds, t_type type)
  *
  */
 
-t_ast	*create_node(t_type type, char *cmds, t_op weight)
+t_ast	*create_node(t_cmd_list *cmd_list, t_hashtable *env)
 {
 	t_ast	*new_node;
 
 	new_node = (t_ast *)malloc(sizeof(t_ast));
-	prepare_ast(new_node, cmds, type);
+	prepare_ast(new_node, cmd_list, env);
 	new_node->path = NULL;
-	new_node->weight = weight;
-	new_node->type = type;
 	new_node->left = NULL;
 	new_node->right = NULL;
 	new_node->num_status = 0;
 	new_node->in_fd = -1;
 	new_node->out_fd = -1;
+	if(new_node->type != TYPE_SUBSHELL)
+		new_node->subshell = false;
 	return (new_node);
 }
 
@@ -106,8 +139,8 @@ void	insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 	else
 	{
 		current = *head;
-		while (current->right != NULL
-			&& current->right->weight >= new_node->weight)
+		while (current && current->right != NULL
+			&& current->right->weight >= new_node->weight) //SEGFAULT HERE
 			current = current->right;
 		new_node->left = current->right;
 		current->right = new_node;

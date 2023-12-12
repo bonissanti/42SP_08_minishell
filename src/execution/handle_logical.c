@@ -1,21 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   handle_logical.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/11 11:25:55 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 11:25:57 by brunrodr         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../include/ast.h"
-#include "../include/builtins.h"
-#include "../include/exec.h"
-#include "../include/hash.h"
-
-static void	parent_logic(t_vector *vtr, t_ast *node, t_hashtable *hash);
+#include "../include/minishell.h"
 
 void	logical_pipe(t_vector *vtr, t_hashtable *hash, t_ast *node,
 		int *prev_pipe)

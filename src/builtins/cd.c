@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:32:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 11:24:15 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/07 11:52:35 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/builtins.h"
-#include "../include/hash.h"
-
-static void	handle_cd(t_hashtable *hashtable, char **args, int argc);
+#include "../include/minishell.h"
 
 void	ft_cd(t_hashtable *hashtable, char **args)
 {

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 18:59:46 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/07 19:14:54 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ static void	handle_other(t_vector *vtr, t_hashtable *hash, t_ast *node,
 		int *prev_pipe)
 {
 	if (node->type == TYPE_REDIRECT && ft_strncmp(node->cmds, ">", 1) == 0)
-
 	{
 		handle_redirects(vtr, node);
 		simple_redirect_out(vtr, hash, node, prev_pipe);

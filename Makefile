@@ -13,25 +13,26 @@ NAME 		= minishell
 # NAME_BONUS = n/a
 LIBFT 		= ./libft
 MINISHELL 	= ./
-HEADER 		= ./mandatory/
+HEADER 		= ./src/include
 
 ################################ Sources ####################################
 
 SUBDIRS 	= mandatory
-MAND_SRCS 	= 	ast/ast.c ast/ast_split.c \
-				builtins/export.c builtins/export_utils.c builtins/hashtable.c \
-				builtins/hashtable_utils.c builtins/exit.c builtins/env.c builtins/pwd.c \
-				builtins/cd.c builtins/main.c builtins/echo.c builtins/unset.c \
-				handle_segments/quotes_handler.c handle_segments/segments_list.c \
-				handle_segments/segments_utils.c handle_segments/expand_dollar.c \
-				handle_segments/quotes_validater.c \
-				handle_segments/quotes_error.c handle_segments/tilde_handler.c \
-				handle_segments/wildcard_handler.c handle_segments/wildcard_utils.c \
-				execution/find_path.c execution/init.c execution/prepare_exec.c execution/simple_redirect.c \
-				execution/multi_exec_cmds.c execution/multi_exec_cmds_utils.c execution/handle_pipes.c \
-				execution/check_builtins.c execution/handle_redirects.c execution/handle_logical.c \
-				execution/signals.c redirects/redirects.c redirects/heredoc.c redirects/verify_permissions.c \
-				minishell_utils.c
+MAND_SRCS 	= ast/ast_split.c ast/ast.c builtins/backup.c \
+			builtins/cd.c builtins/echo.c builtins/env.c builtins/exit.c \
+			builtins/export_utils.c builtins/export.c builtins/hashtable_utils.c \
+			builtins/hashtable.c builtins/pwd.c builtins/unset.c execution/check_builtins.c \
+			execution/find_path.c execution/handle_logical.c execution/handle_pipes.c \
+			execution/handle_redirects.c execution/init.c execution/multi_exec_cmds_utils.c \
+			execution/multi_exec_cmds.c execution/prepare_exec.c handle_segments/expand_dollar.c \
+			handle_segments/quotes_error.c handle_segments/quotes_handler.c handle_segments/quotes_validater.c \
+			handle_segments/segments_list.c handle_segments/segments_utils.c handle_segments/tilde_handler.c \
+			handle_segments/wildcard_handler.c handle_segments/wildcard_utils.c parser/io_setter.c \
+			parser/node_creation_utils.c parser/node_creation.c parser/parser_cmd_list_utils.c \
+			parser/parser_debug_helpers.c parser/parser_tkn_list_utils.c parser/parser_utils.c \
+			parser/parser.c parser/tokenizer_utils.c parser/tokenizer.c redirects/heredoc.c \
+			redirects/redirects.c redirects/verify_permissions.c minishell_utils.c minishell.c \
+			prompt.c
 		
 SRCS 		= $(addprefix ./src/, $(MAND_SRCS))
 # BONUS_SRCS 	= $(BONUS_SRCS:%.c=bonus/%.c)

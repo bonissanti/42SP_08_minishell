@@ -13,27 +13,10 @@
 #ifndef HASH_H
 # define HASH_H
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <readline/readline.h>
-#include "../../libft/libft.h"
+#include "./minishell.h"
 
 // Hash table size is recommended to be a prime number
 # define HASHSIZE 101
-
-typedef struct t_hash
-{
-	char *key;
-	char *value;
-	struct t_hash *next;
-}			t_hash;	
-
-typedef struct t_hashtable
-{
-	int num_keys;
-	t_hash *buckets[101];
-	t_hash *home;
-}			t_hashtable;
 
 //############################### Hashtable ###################################
 
@@ -53,7 +36,5 @@ void			add_new_key(t_hashtable *hash, char *key_copy, char *value_copy, size_t i
 char			**copy_all_keys(t_hashtable *hash_table);
 char 			*handle_elements(t_hashtable *hash_table, char *arg);
 void			init_hash(t_hashtable *hash_table, char **envp);
-
-
 
 #endif
