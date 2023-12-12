@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/12 16:29:46 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/12 19:18:15 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,14 @@ static void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list, t_hashtable *env)
 	}
 	else if (cmd_list->type == TYPE_SUBSHELL)
 	{
+		new_node->cmds = new_node->args[0];
 		new_node->subshell = true;
 		new_node->weight = cmd_list->weight;
 		new_node->type = cmd_list->type;
 	}
 	else
 	{
+		new_node->cmds = new_node->args[0];
 		new_node->weight = cmd_list->weight;
 		new_node->type = cmd_list->type;
 	}			

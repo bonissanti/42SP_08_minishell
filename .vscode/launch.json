@@ -47,11 +47,11 @@
                     "text": "target remote | /usr/bin/vgdb --pid=193568",
                     "ignoreFailures": true
                 },
-				// {
-				// 	"description": "Set follow-fork-mode to child",
-				// 	"text": "set follow-fork-mode child",
-				// 	"ignoreFailures": false
-				// }
+				{
+					"description": "Set follow-fork-mode to child",
+					"text": "set follow-fork-mode child",
+					"ignoreFailures": false
+				}
 			]
 		}
 	]
