@@ -49,7 +49,9 @@ void	redirect_execution(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
 		node->pid = fork();
 		redirect_fds(node, prev_pipe);
 		if (node->pid == 0)
+		{
 			child_redirect(vtr, hashtable, node, next_pipe);
+		}
 		else
 		{
 			restore_fd(vtr->exec.old_stdin, vtr->exec.old_stdout);
@@ -94,7 +96,8 @@ static void	child_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
 			dup2(next_pipe[1], STDOUT_FILENO);
 			close(next_pipe[1]);
 		}
-		execute_command(vtr, hashtable, node->left);
+		ft_fprintf(2, "husahuasuha\n");
+		execute_command(vtr, hashtable, node->left);			
 		exit(0);
 	}
 }

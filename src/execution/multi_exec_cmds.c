@@ -31,7 +31,7 @@ void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
 	if (root->type == TYPE_REDIRECT && root->weight != OP_HEREDOC)
 	{
 		handle_redirects(vtr, root);
-		redirect_execution(vtr, hashtable, root, initial_pipe);
+		simple_redirect(vtr, hashtable, root);
 	}
 	if (root->type == TYPE_REDIRECT && root->weight == OP_HEREDOC)
 		handle_heredoc(vtr, root, hashtable, root->delim);
@@ -53,17 +53,14 @@ static void    wait_for_children(t_ast *node)
     if (node == NULL)
         return ;
 
-    if (node->type == TYPE_COMMAND)
+    if (node->type == TYPE_COMMAND || node->type == TYPE_PIPE || node->type == TYPE_REDIRECT)
     {
         waitpid(node->pid, &status, 0);
         if (WIFEXITED(status))
             node->num_status = WEXITSTATUS(status);
     }
-    else if (node->type == TYPE_PIPE || node->type == TYPE_REDIRECT)
-    {
-        wait_for_children(node->left);
+    else if (node->right)
         wait_for_children(node->right);
-    }
 }
 
 void	execute_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
@@ -72,7 +69,7 @@ void	execute_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 	int		result;
 
 	result = verify_cmd_permissions(node->cmds);
-	if (result != 0)
+	if (ft_strchr(node->cmds, '/') != NULL && result != 0)
 	{
 		handle_error(node, result);
 		return ;

@@ -63,6 +63,7 @@ void	handle_error(t_ast *node, int result);
 
 //############################# EXECUTION ####################################//
 
+void	simple_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root);
 void 	execute_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 void    close_all_fds(int *fd);
