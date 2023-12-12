@@ -14,6 +14,19 @@
 #include "../include/hash.h"
 #include "../include/segments.h"
 
+t_ast *get_last_left(t_ast *node)
+{
+	t_ast *last_left = NULL;
+
+	while (node != NULL && node->type != TYPE_COMMAND)
+	{
+		if (node->type == TYPE_PIPE || node->type == TYPE_REDIRECT)
+			last_left = node;
+		node = node->left;
+	}
+	return last_left;
+}
+
 char	*check_expansion(t_hashtable *env, char **line, size_t *len)
 {
 	t_lex		*quote;
@@ -71,11 +84,14 @@ void	handle_heredoc(t_vector *vtr, t_ast *node, t_hashtable *hash, char *delim)
 	}
 	close(fd[1]);
 	dup2(fd[0], STDIN_FILENO);
-	if (node->left && node->right == NULL)
+	if (node->left->type == TYPE_COMMAND && node->right == NULL)
 		execute_command(vtr, hash, node->left);
 
+	// if (node->left == NULL && node->right == NULL)
+	// 	return ;
 
-	// função auxiliar
+
+	// Comandos pós heredoc
 	if (node->left->type == TYPE_COMMAND && node->right->type == TYPE_PIPE)
 	{
 		pipe(next_pipe);

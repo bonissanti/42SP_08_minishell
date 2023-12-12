@@ -37,6 +37,7 @@ void	handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node,
 		close(prev_pipe[0]);
 		prev_pipe[0] = next_pipe[0];
 		prev_pipe[1] = next_pipe[1];
+		vtr->exec.count_pipes--;
 		handle_pipes(hash, vtr, node->right, prev_pipe);
 	}
 	else if (node->right == NULL && node->type == TYPE_COMMAND)
@@ -77,6 +78,25 @@ void	execute_pipes(t_hashtable *hashtable, t_vector *vtr, t_ast *node,
 		parent_pipe(&vtr->exec, prev_pipe, next_pipe);
 }
 
+static void	handle_other(t_vector *vtr, t_hashtable *hash, t_ast *node,
+		int *prev_pipe)
+{
+	if (node->type == TYPE_REDIRECT && ft_strncmp(node->cmds, ">", 1) == 0)
+
+	{
+		handle_redirects(vtr, node);
+		simple_redirect_out(vtr, hash, node, prev_pipe);
+	}
+	else if (node->type == TYPE_LOGICAL)
+		logical_pipe(vtr, hash, node, prev_pipe);
+	else
+	{
+		restore_fd(vtr->exec.old_stdin, vtr->exec.old_stdout);
+		exec_multi_cmds(vtr, hash, node);
+	}
+}
+
+
 static void	parent_pipe(t_exec *exec, int *prev_pipe, int *next_pipe)
 {
 	if (prev_pipe && !next_pipe)
@@ -114,14 +134,3 @@ void	pipe_from_redirect(t_hashtable *hash, t_vector *vtr, t_ast *node,
 	close(next_pipe[1]);
 }
 
-static void	handle_other(t_vector *vtr, t_hashtable *hash, t_ast *node,
-		int *prev_pipe)
-{
-	if (node->type == TYPE_REDIRECT)
-	{
-		handle_redirects(vtr, node);
-		simple_redirect_out(vtr, hash, node, prev_pipe);
-	}
-	else if (node->type == TYPE_LOGICAL)
-		logical_pipe(vtr, hash, node, prev_pipe);
-}

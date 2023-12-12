@@ -29,7 +29,7 @@ typedef enum
 typedef enum
 {
 	OP_REDIRECT = 3,
-	OP_HEREDOC = 4,
+	OP_HEREDOC = 3,
 	OP_PIPE = 3,  
 	OP_LOGICAL = 3,
 	DEFAULT = 0,

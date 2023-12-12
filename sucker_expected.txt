@@ -1,11 +1,13 @@
-total 292
-drwxrwxr-x  2 bruno bruno   4096 dez  8 09:34 libft
--rw-rw-r--  1 bruno bruno   2889 dez  8 10:00 Makefile
--rwxrwxr-x  1 bruno bruno 263000 dez  8 10:23 minishell
+total 320
+-rw-r--r--  1 bruno bruno     24 dez 12 17:07 fucker.txt
+drwxrwxr-x  2 bruno bruno   4096 dez 12 16:36 libft
+-rw-rw-r--  1 bruno bruno   3002 dez 12 16:35 Makefile
+-rwxrwxr-x  1 bruno bruno 287544 dez 12 17:07 minishell
 -rw-rw-r--  1 bruno bruno   1021 nov 23 11:13 minishell.c
 -rw-rw-r--  1 bruno bruno   1136 nov 23 11:13 minishell.h
 drwxrwxr-x  3 bruno bruno   4096 nov 30 09:14 minunit
-drwxrwxr-x  3 bruno bruno   4096 dez  8 09:34 objs
+drwxrwxr-x  3 bruno bruno   4096 dez 12 16:36 objs
+-rw-rw-r--  1 bruno bruno      0 dez 12 08:38 outfile.txt
 -rw-rw-r--  1 bruno bruno   1789 nov 23 11:13 prompt.c
-drwxrwxr-x 11 bruno bruno   4096 dez  8 09:04 src
--rw-rw-r--  1 bruno bruno      0 dez  8 10:25 sucker_expected.txt
+drwxrwxr-x 11 bruno bruno   4096 dez 12 12:27 src
+-rw-rw-r--  1 bruno bruno      0 dez 12 17:07 sucker_expected.txt
