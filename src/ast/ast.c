@@ -3,36 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 17:37:01 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/12 16:29:46 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_ast *init_ast(t_cmd_list *cmd_list, t_exec *exec)
+t_ast *init_ast(t_cmd_list *cmd_list, t_exec *exec, t_hashtable *env)
 {
 	t_ast *ast;
 	t_cmd_list *head;
 
-	ast = ft_calloc(1, sizeof(t_ast));
+	// ast = ft_calloc(1, sizeof(t_ast));
+	ast = NULL;
 	head = cmd_list;
 	while(head)
 	{
-		insert_ast(&ast, create_node(head), exec);
+		insert_ast(&ast, create_node(head, env), exec);
 		head = head->next;
 	}
 	return(ast);
 }
 
-static void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list)
+static void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list, t_hashtable *env)
 {
 	new_node->args = ast_split(cmd_list->args, ' ');
 	
 	if (cmd_list->type == TYPE_COMMAND)
 	{
+		analyzing_quotes(env, &new_node->args[0]); //is_quotes here?
 		new_node->cmds = new_node->args[0];
 		if(cmd_list->here_doc)
 			new_node->delim = cmd_list->infile;
@@ -75,12 +77,12 @@ static void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list)
  *
  */
 
-t_ast	*create_node(t_cmd_list *cmd_list)
+t_ast	*create_node(t_cmd_list *cmd_list, t_hashtable *env)
 {
 	t_ast	*new_node;
 
 	new_node = (t_ast *)malloc(sizeof(t_ast));
-	prepare_ast(new_node, cmd_list);
+	prepare_ast(new_node, cmd_list, env);
 	new_node->path = NULL;
 	new_node->left = NULL;
 	new_node->right = NULL;

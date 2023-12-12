@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 14:34:21 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/12 16:12:26 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@
 
 //############################### AST #########################################
 
-t_ast 				*create_node(t_cmd_list *cmd_list);
+t_ast 				*create_node(t_cmd_list *cmd_list, t_hashtable *env);
 void 				insert_ast(t_ast **head, t_ast *new_node, t_exec *exec);
 void				delete_node(t_ast *head);
 void				pre_order_traversal(t_ast *head); // Remover depois
-t_ast				*init_ast(t_cmd_list *cmd_list, t_exec *exec);
+t_ast				*init_ast(t_cmd_list *cmd_list, t_exec *exec, t_hashtable *env);
 
 //############################### UTILS #######################################
 
