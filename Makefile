@@ -18,7 +18,7 @@ HEADER 		= ./src/include
 ################################ Sources ####################################
 
 SUBDIRS 	= mandatory
-MAND_SRCS 	= ast/ast_split.c ast/ast.c builtins/backup.c \
+MAND_SRCS 	= ast/ast_split.c ast/ast.c \
 			builtins/cd.c builtins/echo.c builtins/env.c builtins/exit.c \
 			builtins/export_utils.c builtins/export.c builtins/hashtable_utils.c \
 			builtins/hashtable.c builtins/pwd.c builtins/unset.c execution/check_builtins.c \

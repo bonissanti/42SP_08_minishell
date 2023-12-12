@@ -1,5 +1,7 @@
 #include "../include/minishell.h"
 
+static void	parent_logic(t_vector *vtr, t_ast *node, t_hashtable *hash);
+
 void	logical_pipe(t_vector *vtr, t_hashtable *hash, t_ast *node,
 		int *prev_pipe)
 {

@@ -12,6 +12,8 @@
 
 #include "../include/minishell.h"
 
+static void	handle_cd(t_hashtable *hashtable, char **args, int argc);
+
 void	ft_cd(t_hashtable *hashtable, char **args)
 {
 	char	*oldpwd;

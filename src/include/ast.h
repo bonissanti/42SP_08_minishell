@@ -13,57 +13,7 @@
 #ifndef AST_H
 # define AST_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "../../libft/libft.h"
-// #include "exec.h"
-
-typedef enum
-{
-	TYPE_COMMAND,
-	TYPE_LOGICAL,
-	TYPE_PIPE,
-	TYPE_REDIRECT,
-}	t_type;
-
-typedef enum
-{
-	OP_REDIRECT = 3,
-	OP_HEREDOC = 3,
-	OP_PIPE = 3,  
-	OP_LOGICAL = 3,
-	DEFAULT = 0,
-}	t_op;
-
-typedef struct s_exec
-{
-	int prev[2];
-	int next[2];
-	int	in_fd;
-	int	out_fd;
-	int old_stdin;
-	int old_stdout;
-	int pipes_count;
-	int count_pipes;
-}	t_exec;
-
-typedef struct s_ast
-{
-	
-	char *cmds;
-	char **args;
-	char *path;
-	char *delim;
-	int num_status;
-	int	in_fd;
-	int	out_fd;
-	t_op weight;
-	t_type type;
-	pid_t pid;
-	struct s_ast *left;
-	struct s_ast *right;
-} 	t_ast;
-
+#include "./minishell.h"
 
 //############################### AST #########################################
 

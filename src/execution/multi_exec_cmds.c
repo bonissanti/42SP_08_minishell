@@ -10,11 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ast.h"
-#include "../include/builtins.h"
-#include "../include/exec.h"
-#include "../include/hash.h"
-#include "../include/segments.h"
+#include "../include/minishell.h"
 
 static void    wait_for_children(t_ast *node);
 

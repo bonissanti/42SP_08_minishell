@@ -10,10 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/ast.h"
-#include "../include/builtins.h"
-#include "../include/exec.h"
-#include "../include/hash.h"
+#include "../include/minishell.h"
 
 static void	parent_pipe(t_exec *exec, int *prev_pipe, int *next_pipe);
 void		execute_pipes(t_hashtable *hashtable, t_vector *vtr, t_ast *node,

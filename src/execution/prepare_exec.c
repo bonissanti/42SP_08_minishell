@@ -27,12 +27,6 @@ void	backup_fd(int *old_stdin, int *old_stdout)
 	*old_stdout = dup(STDOUT_FILENO);
 }
 
-void	swap_fd(int new_fd, int system_fd)
-{
-	dup2(new_fd, system_fd);
-	close(new_fd);
-}
-
 void	restore_fd(int reset_stdin, int reset_stdout)
 {
 	dup2(reset_stdin, STDIN_FILENO);

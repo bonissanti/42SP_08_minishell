@@ -71,7 +71,7 @@ typedef struct s_ast
 	char *delim;
 	char *infile;
 	char *outfile;
-	int exit_status;
+	int num_status;
 	int	in_fd;
 	int	out_fd;
 	t_op weight;
