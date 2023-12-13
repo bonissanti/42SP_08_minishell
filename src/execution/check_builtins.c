@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:00:37 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/06 17:26:25 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/13 17:35:45 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,27 @@
 
 t_bool	execute_if_builtin(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {
-	t_cmd	*current;
+	char *cmds;
 
-	current = vtr->builtins;
 	if (ft_strchr(node->cmds, '/') != NULL)
-		current->cmd = ft_strrchr(node->cmds, '/') + 1;
+		cmds = ft_strrchr(node->cmds, '/') + 1;
 	else
-		current->cmd = node->cmds;
-	while (current->name)
-	{
-		if (ft_strcmp(current->cmd, current->name) == 0)
-		{
-			current->function(hashtable, node->args + 1);
-			return (true);
-		}
-		current++;
-	}
-	return (false);
+		cmds = node->cmds;
+
+	if (ft_strcmp(cmds, "echo") == 0)
+		ft_echo(hashtable, node->args + 1);
+	else if (ft_strcmp(cmds, "cd") == 0)
+		ft_cd(hashtable, node->args + 1);
+	else if (ft_strcmp(cmds, "pwd") == 0)
+		ft_pwd(hashtable, node->args + 1);
+	else if (ft_strcmp(cmds, "export") == 0)
+		ft_export(hashtable, node->args + 1);
+	else if (ft_strcmp(cmds, "unset") == 0)
+		ft_unset(hashtable, node->args + 1);
+	else if (ft_strcmp(cmds, "env") == 0)
+		ft_env(hashtable, node->args + 1);
+	else if (ft_strcmp(cmds, "exit") == 0)
+		ft_exit(hashtable, node->args + 1);
+	else
+		return (false);
 }

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 11:20:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 11:20:13 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/13 17:09:54 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ void	init_hash(t_hashtable *hashtable, char **envp)
 void	insert(t_hashtable *hashtable, char *key, char *value)
 {
 	size_t			index;
-	t_hash			*add_env;
 	t_hash			*check_dup;
 	char			*key_copy;
 	char			*value_copy;

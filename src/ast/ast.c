@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 18:48:18 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/13 16:49:15 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 static void	prepare_ast(t_ast *new_node, char *cmds, t_type type)
 {
 	new_node->args = ast_split(cmds, ' ');
-	if (type == TYPE_REDIRECT)
+	if (type == TYPE_HEREDOC || type == TYPE_REDIRECT)
 	{
 		new_node->cmds = new_node->args[0];
 		new_node->delim = new_node->args[1];
@@ -60,6 +60,9 @@ t_ast	*create_node(t_type type, char *cmds, t_op weight)
 	new_node->num_status = 0;
 	new_node->in_fd = -1;
 	new_node->out_fd = -1;
+	new_node->print_hdoc = false;
+	new_node->print_redir = false;
+	new_node->is_freed = false;
 	return (new_node);
 }
 
@@ -112,9 +115,10 @@ void	insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 		new_node->left = current->right;
 		current->right = new_node;
 	}
-	if (new_node->type == TYPE_PIPE && new_node->weight == OP_PIPE)
+	if (new_node->type == TYPE_PIPE)
 		exec->count_pipes++;
 }
+
 
 /**
  * Function: Delete_node
@@ -130,12 +134,13 @@ void	insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 
 void	delete_node(t_ast *head)
 {
-	if (head != NULL)
+	if (head != NULL && !head->is_freed)
 	{
 		delete_node(head->left);
 		delete_node(head->right);
 		free_split(head->args);
 		safe_free((void **)&head->path);
 		free(head);
+		head->is_freed = true;
 	}
 }

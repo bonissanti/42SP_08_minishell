@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 19:08:25 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/13 11:22:39 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root)
 		return ;
 	if (root->type == TYPE_COMMAND)
 		execute_command(vtr, hashtable, root);
-	if (root->type == TYPE_REDIRECT && root->weight != OP_HEREDOC)
+	if (root->type == TYPE_REDIRECT)
 	{
 		handle_redirects(vtr, root);
 		analyze_redirect(vtr, hashtable, root);
 	}
-	if (root->type == TYPE_REDIRECT && root->weight == OP_HEREDOC)
+	if (root->type == TYPE_HEREDOC)
 		handle_heredoc(vtr, root, hashtable, root->delim);
 	if (root->type == TYPE_PIPE)
 	{
@@ -53,7 +53,7 @@ static void    wait_for_children(t_ast *node)
     if (node == NULL)
         return ;
 
-    if (node->type == TYPE_COMMAND || node->type == TYPE_PIPE || node->type == TYPE_REDIRECT)
+    if (node->type == TYPE_COMMAND || node->type == TYPE_PIPE || node->type == TYPE_REDIRECT || node->type == TYPE_HEREDOC)
     {
         waitpid(node->pid, &status, 0);
         if (WIFEXITED(status))

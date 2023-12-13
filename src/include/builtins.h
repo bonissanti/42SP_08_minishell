@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:56:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/24 18:10:31 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/13 16:55:55 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ typedef struct t_env
 
 //############################### Builtins ####################################
 
-// void		ft_export(t_hashtable *hashtable, char **args);
+void		ft_export(t_hashtable *hashtable, char **args);
 void 		ft_echo(t_hashtable *hashtable, char **args);
-// void		ft_exit(t_hashtable *hashtable, char **args);
-// void		ft_cd(t_hashtable *hashtable, char **args);
-// void		ft_pwd(t_hashtable *hashtable, char **args);
-// void 		ft_unset(t_hashtable *hashtable ,char **args);
-// void		ft_env(t_hashtable *hashtable, char **args);
+void		ft_exit(t_hashtable *hashtable, char **args);
+void		ft_cd(t_hashtable *hashtable, char **args);
+void		ft_pwd(t_hashtable *hashtable, char **args);
+void 		ft_unset(t_hashtable *hashtable ,char **args);
+void		ft_env(t_hashtable *hashtable, char **args);
 
 //############################### Utils ########################################
 

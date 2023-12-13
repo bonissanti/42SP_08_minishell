@@ -22,7 +22,7 @@ typedef struct s_vector
 {
 	t_exec		exec;
 	t_redirect  redirect[5];
-    t_cmd	    builtins[2];
+    t_cmd	    builtins[7];
 }		t_vector;
 
 
@@ -61,6 +61,7 @@ void	swap_fd(int new_fd, int system_fd);
 void	restore_fd(int reset_stdin, int reset_stdout);
 char    *build_cmd_path(t_ast *node , char *path);
 void	handle_error(t_ast *node, int result);
+void 	analyze_if_print(t_ast *node, int index);
 
 //############################# EXECUTION ####################################//
 

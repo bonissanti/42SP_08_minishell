@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 17:48:25 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/13 16:49:02 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef enum
 	TYPE_LOGICAL,
 	TYPE_PIPE,
 	TYPE_REDIRECT,
+	TYPE_HEREDOC,
 }	t_type;
 
 typedef enum
@@ -60,6 +61,9 @@ typedef struct s_ast
 	t_op weight;
 	t_type type;
 	pid_t pid;
+	t_bool print_hdoc;
+	t_bool print_redir;
+	t_bool is_freed;
 	struct s_ast *left;
 	struct s_ast *right;
 } 	t_ast;

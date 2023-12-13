@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 11:25:55 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 11:25:57 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/13 11:25:16 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	logical_pipe(t_vector *vtr, t_hashtable *hash, t_ast *node,
 {
 	if (node == NULL)
 		return ;
-	if (node->type == TYPE_LOGICAL && node->weight == OP_LOGICAL)
+	if (node->type == TYPE_LOGICAL)
 	{
 		node->pid = fork();
 		if (*prev_pipe != -1)
