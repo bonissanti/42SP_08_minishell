@@ -61,17 +61,17 @@ int main(int argc, char **argv, char **envp)
     t_ast *root = NULL;
     // t_ast *new_node;
 
-	t_ast *node1 = create_node(TYPE_COMMAND, "echo otario", DEFAULT);
+	t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
     insert_ast(&root, node1, &vtr.exec);
 
-    t_ast *node2 = create_node(TYPE_REDIRECT, "> fucker1.txt", OP_HEREDOC);
+    t_ast *node2 = create_node(TYPE_REDIRECT, "< fucker.txt", OP_HEREDOC);
     insert_ast(&root, node2, &vtr.exec);
 
 
 	// t_ast *node3 = create_node(TYPE_COMMAND, "echo otario", DEFAULT);
     // insert_ast(&root, node3, &vtr.exec);
 
-    t_ast *node4 = create_node(TYPE_REDIRECT, "> fucker2.txt ", OP_HEREDOC);
+    t_ast *node4 = create_node(TYPE_REDIRECT, "< fucker2.txt ", OP_HEREDOC);
     insert_ast(&root, node4, &vtr.exec);
 
     // // // // t_ast *node5 = create_node(TYPE_COMMAND, "echo otario", DEFAULT);
@@ -84,7 +84,7 @@ int main(int argc, char **argv, char **envp)
 
     if (root->type == TYPE_REDIRECT && root->right == NULL)
         root->print_redir = !root->print_redir;
-    // analyze_if_print(root, 1);
+    analyze_if_print(root, 1);
     exec_multi_cmds(&vtr, hashtable, root);
     restore_fd(vtr.exec.old_stdin, vtr.exec.old_stdout);
 

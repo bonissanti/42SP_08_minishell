@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:43:27 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/13 17:59:42 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:22:39 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,26 +36,12 @@ void	handle_redirects(t_vector *vtr, t_ast *node)
 
 void	analyze_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 {		
-	if (node->type == TYPE_REDIRECT)
+    analyze_if_print(node, 1);
+	if (node->type == TYPE_REDIRECT && node->print_redir == true)
 	{
-    	// analyze_if_print(node, 1);
 		if (ft_strncmp(node->cmds, ">", 1) == 0 || ft_strncmp(node->cmds, ">>", 2) == 0)
 			simple_redirect_out(vtr, hashtable, node, NULL);
 		else
 			simple_redirect_in(vtr, hashtable, node);
-	}
-}
-
-
-
-
-static void	check_pipe(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
-		int *next_pipe)
-{
-	if (vtr->exec.count_pipes >= 1)
-	{
-		vtr->exec.count_pipes--;
-		close(next_pipe[1]);
-		pipe_from_redirect(hashtable, vtr, node->right, next_pipe);
 	}
 }

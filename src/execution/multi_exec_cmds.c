@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/13 11:22:39 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:19:08 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	execute_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 		path = search(hashtable, "PATH")->value;
 		node->path = build_cmd_path(node, path);
 	}
+	ft_fprintf(2, "node->path: %s\n", node->path);
 	if (!execute_if_builtin(vtr, hashtable, node))
 		execve(node->path, node->args, NULL);
 }

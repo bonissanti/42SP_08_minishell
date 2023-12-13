@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/13 17:58:39 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:15:59 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,8 @@ void analyze_if_print(t_ast *node, int index)
 		if (node->type == TYPE_REDIRECT && index == 1 && (node->right == NULL || node->right->type != TYPE_REDIRECT))
 		{
 			if (node->left == NULL)
-			{
 				node->left = save_node;
-				node->print_redir = true;
-			}
+			node->print_redir = true;
 		}
         node = node->right;
     }
