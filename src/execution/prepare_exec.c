@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/11/27 17:17:21 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:52:39 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,29 @@
 #include "../include/builtins.h"
 #include "../include/exec.h"
 #include "../include/hash.h"
+
+void analyze_if_print(t_ast *node, int index)
+{
+	t_ast *save_node;
+
+	save_node = node->left;
+    while (node != NULL)
+    {
+        if (node->type == TYPE_HEREDOC && index == 0 && (node->right == NULL || node->right->type != TYPE_HEREDOC))
+		{
+			if (node->left == NULL)
+				node->left = save_node;
+			node->print_hdoc = true;
+		}
+		if (node->type == TYPE_REDIRECT && index == 1 && (node->right == NULL || node->right->type != TYPE_REDIRECT))
+		{
+			if (node->left == NULL)
+				node->left = save_node;
+			node->print_redir = true;
+		}
+        node = node->right;
+    }
+}
 
 void	handle_error(t_ast *node, int result)
 {
@@ -28,12 +51,6 @@ void	backup_fd(int *old_stdin, int *old_stdout)
 {
 	*old_stdin = dup(STDIN_FILENO);
 	*old_stdout = dup(STDOUT_FILENO);
-}
-
-void	swap_fd(int new_fd, int system_fd)
-{
-	dup2(new_fd, system_fd);
-	close(new_fd);
 }
 
 void	restore_fd(int reset_stdin, int reset_stdout)

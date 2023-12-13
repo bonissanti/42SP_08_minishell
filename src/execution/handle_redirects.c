@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:43:27 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/13 18:22:39 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:28:05 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,6 @@ void	analyze_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 		else
 			simple_redirect_in(vtr, hashtable, node);
 	}
+	else
+		exec_multi_cmds(vtr, hashtable, node->right);
 }
