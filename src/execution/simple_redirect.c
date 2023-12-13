@@ -1,7 +1,4 @@
-#include "../include/builtins.h"
-#include "../include/exec.h"
-#include "../include/hash.h"
-#include "../include/segments.h"
+#include "../include/minishell.h"
 
 static void	redirect_fds(t_ast *node, int *prev_pipe)
 {

@@ -17,13 +17,13 @@
 
 //############################### Builtins ####################################
 
-// void		ft_export(t_hashtable *hashtable, char **args);
+void		ft_export(t_hashtable *hashtable, char **args);
 void 		ft_echo(t_hashtable *hashtable, char **args);
-// void		ft_exit(t_hashtable *hashtable, char **args);
-// void		ft_cd(t_hashtable *hashtable, char **args);
-// void		ft_pwd(t_hashtable *hashtable, char **args);
-// void 		ft_unset(t_hashtable *hashtable ,char **args);
-// void		ft_env(t_hashtable *hashtable, char **args);
+void		ft_exit(t_hashtable *hashtable, char **args);
+void		ft_cd(t_hashtable *hashtable, char **args);
+void		ft_pwd(t_hashtable *hashtable, char **args);
+void 		ft_unset(t_hashtable *hashtable ,char **args);
+void		ft_env(t_hashtable *hashtable, char **args);
 
 //############################### Utils ########################################
 

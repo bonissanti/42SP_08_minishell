@@ -24,8 +24,20 @@ void	init_cmd(t_vector *vtr)
 	vtr->builtins[0].cmd = NULL;
 	vtr->builtins[0].name = "echo";
 	vtr->builtins[0].function = ft_echo;
-	vtr->builtins[1].name = NULL;
-	vtr->builtins[1].function = NULL;
+	vtr->builtins[1].name = "cd";
+	vtr->builtins[1].function = ft_cd;
+	vtr->builtins[2].name = "env";
+	vtr->builtins[2].function = ft_env;
+	vtr->builtins[3].name = "export";
+	vtr->builtins[3].function = ft_export;
+	vtr->builtins[4].name = "pwd";
+	vtr->builtins[4].function = ft_pwd;
+	vtr->builtins[5].name = "unset";
+	vtr->builtins[5].function = ft_unset;
+	vtr->builtins[6].name = "exit";
+	vtr->builtins[6].function = ft_exit;
+	vtr->builtins[7].name = NULL;
+	vtr->builtins[7].function = NULL;
 }
 
 void	init_redirects(t_vector *vtr)

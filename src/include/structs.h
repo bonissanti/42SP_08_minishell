@@ -127,7 +127,7 @@ typedef struct s_vector
 {
 	t_exec		exec;
 	t_redirect  redirect[5];
-    t_cmd	    builtins[2];
+    t_cmd	    builtins[7];
 }		t_vector;
 
 //############################### Builtins ###################################
