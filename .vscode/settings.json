@@ -11,6 +11,9 @@
 		"minunit.h": "c",
 		"minishell.h": "c",
 		"errno.h": "c",
-		"structs.h": "c"
+		"structs.h": "c",
+		"*.tcc": "c",
+		"fstream": "c",
+		"cstdlib": "c"
 	}
 }

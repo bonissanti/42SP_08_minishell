@@ -7,7 +7,7 @@
 
 void	init_cmd(t_vector *vtr);
 void	init_exec_vector(t_vector *vtr);
-t_bool	execute_if_builtin(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
+int		execute_if_builtin(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
 void	init_redirects(t_vector *vtr);
 void	handle_redirects(t_vector *vtr, t_ast *node);
 

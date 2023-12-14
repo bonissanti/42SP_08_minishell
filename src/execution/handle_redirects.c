@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:43:27 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 18:34:27 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/13 17:46:43 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,17 @@ static void	check_pipe(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
 static void	child_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
 				int *next_pipe);
 
-void	handle_redirects(t_vector *vtr, t_ast *node)
+void    handle_redirects(t_vector *vtr, t_ast *node)
 {
-	t_redirect	*current;
-
-	current = vtr->redirect;
-	while (current->name)
-	{
-		if (ft_strcmp(current->name, node->cmds) == 0)
-		{
-			current->function(node, node->delim);
-			break ;
-		}
-		current++;
-	}
+    if (node->type == TYPE_REDIRECT)
+    {
+        if (ft_strncmp(node->cmds, ">", 1) == 0)
+            redirect_output(node, node->delim);
+        else if (ft_strncmp(node->cmds, ">>", 2) == 0)
+            redirect_append(node, node->delim);
+        else if (ft_strncmp(node->cmds, "<", 1) == 0)
+            redirect_input(node, node->delim);
+    }
 }
 
 void	analyze_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node)

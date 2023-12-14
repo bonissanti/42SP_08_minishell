@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 19:08:25 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/13 19:30:21 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,11 @@ void	execute_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
 		path = search(hashtable, "PATH")->value;
 		node->path = build_cmd_path(node, path);
 	}
-	if (!execute_if_builtin(vtr, hashtable, node))
-		execve(node->path, node->args, NULL);
+	if (execute_if_builtin(vtr, hashtable, node))
+	{
+		if(execve(node->path, node->args, NULL) == -1)
+			exit(1);
+	}
+	else
+		exit(0);
 }

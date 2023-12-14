@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 19:06:42 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 14:43:47 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:59:51 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_bool	is_flag_n(char *arg);
 
-void	ft_echo(t_hashtable *hashtable, char **args)
+int	ft_echo(t_hashtable *hashtable, char **args)
 {
 	int	i;
 
@@ -28,6 +28,7 @@ void	ft_echo(t_hashtable *hashtable, char **args)
 	}
 	if (!is_flag_n(args[i - 1]))
 		ft_printf("\n");
+	return(0);
 }
 
 t_bool	is_flag_n(char *arg)

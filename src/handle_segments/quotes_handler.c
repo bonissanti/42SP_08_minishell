@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:57 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 14:43:46 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/13 18:11:31 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,8 +179,8 @@ void	final_process(t_lex *quote, t_segment **head, char **args, size_t *len)
 	free(quote->segment);
 	free(quote);
 	*args = join_segments(*head);
-	for (int i = 0; args[i]; i++) // Remover
-		ft_printf("%s ", args[i]);
-	ft_printf("\n");
+	// for (int i = 0; args[i]; i++) // Remover
+	// 	ft_printf("%s ", args[i]);
+	// ft_printf("\n");
 	free_segments(*head);
 }

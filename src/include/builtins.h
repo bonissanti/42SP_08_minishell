@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:56:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 14:34:25 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/13 19:08:50 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,13 @@
 
 //############################### Builtins ####################################
 
-void		ft_export(t_hashtable *hashtable, char **args);
-void 		ft_echo(t_hashtable *hashtable, char **args);
+int		ft_export(t_hashtable *hashtable, char **args);
+int 		ft_echo(t_hashtable *hashtable, char **args);
 void		ft_exit(t_hashtable *hashtable, char **args);
-void		ft_cd(t_hashtable *hashtable, char **args);
-void		ft_pwd(t_hashtable *hashtable, char **args);
-void 		ft_unset(t_hashtable *hashtable ,char **args);
-void		ft_env(t_hashtable *hashtable, char **args);
+int		ft_cd(t_hashtable *hashtable, char **args);
+int		ft_pwd(t_hashtable *hashtable, char **args);
+int 		ft_unset(t_hashtable *hashtable ,char **args);
+int		ft_env(t_hashtable *hashtable, char **args);
 
 //############################### Utils ########################################
 

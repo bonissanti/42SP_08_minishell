@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 14:43:47 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/13 19:01:27 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,11 @@ void	add_env(t_hashtable *hash_table, char **args)
  *
  */
 
-void	ft_export(t_hashtable *hash_table, char **args)
+int	ft_export(t_hashtable *hash_table, char **args)
 {
 	if (args[1] == NULL)
 		print_all_env(hash_table);
 	else
 		add_env(hash_table, args);
+	return(0);
 }

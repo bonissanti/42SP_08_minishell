@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-void	ft_env(t_hashtable *hashtable, char **args)
+int	ft_env(t_hashtable *hashtable, char **args)
 {
 	int		i;
 	int		argc;
@@ -22,4 +22,5 @@ void	ft_env(t_hashtable *hashtable, char **args)
 			ft_fprintf(1, "%s=%s\n", keys[i], value);
 	}
 	free(keys);
+	return(0);
 }
