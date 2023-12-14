@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/07 19:14:54 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/14 13:20:32 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	execute_pipes(t_hashtable *hashtable, t_vector *vtr, t_ast *node,
 		int *prev_pipe, int *next_pipe)
 {
 	node->pid = fork();
+	// ft_printf("FORRRRRRRRRRRRRRRRRRRRRRRRRRRRKED\n");
 	if (node->pid == 0)
 	{
 		if (*prev_pipe != -1)
