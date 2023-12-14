@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/14 18:46:31 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:17:04 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,9 @@ void prompt(t_hashtable *env, t_exec exec)
 		tokenizer(&g_global, g_global.readline_input, env);
 		parser(env);
 		root = init_ast(g_global.cmd_list, &exec, env);
-		free_lists(g_global.tkn_list, g_global.cmd_list);
 		backup_fd(&exec.old_stdin, &exec.old_stdout);
 		exec_multi_cmds(&exec, env, root);
+		free_lists(g_global.tkn_list, g_global.cmd_list);
 		restore_fd(exec.old_stdin, exec.old_stdout);
 		free(g_global.readline_input);
 		g_global.readline_input = NULL;

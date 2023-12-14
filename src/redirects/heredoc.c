@@ -6,21 +6,20 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/14 17:44:11 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:37:16 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 void			analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable, char *delim);
-static void		execute_heredoc(t_exec *exec, t_ast *node, t_hashtable *hash, int *fd);
+static void	execute_heredoc(t_exec *exec, t_ast *node, t_hashtable *hash, char *filename);
 char			*check_expansion(t_hashtable *env, char **line, size_t *len);
-static void 	check_next_node(t_exec *exec, t_hashtable *hashtable, t_ast *node, int *next_pipe);
+static void 	check_next_node(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 static char *generate_filename(int count_hdoc);
 
 void	handle_heredoc(t_exec *exec, t_ast *node, t_hashtable *hash, char *delim)
 {
-	int 	next_pipe[2] = {0};
 	char	*line = NULL;
 	char 	*filename;
 	size_t	len;
@@ -47,7 +46,7 @@ void	handle_heredoc(t_exec *exec, t_ast *node, t_hashtable *hash, char *delim)
 		free(line);
 	}
 	close(node->out_fd);
-	execute_heredoc(exec, node, hash, next_pipe);
+	execute_heredoc(exec, node, hash, filename);
 }
 
 static char *generate_filename(int count_hdoc)
@@ -64,6 +63,31 @@ static char *generate_filename(int count_hdoc)
 	return (filename);
 }
 
+static void	execute_heredoc(t_exec *exec, t_ast *node, t_hashtable *hash, char *filename)
+{
+	int fd;
+
+	if (node->print_hdoc && node->right->type == TYPE_FILE)
+	{
+		node->pid = fork();
+		if (node->pid == 0)
+		{
+			fd = open(filename, O_RDONLY);
+			dup2(fd, STDIN_FILENO);
+			close(fd);
+			execute_command(hash, node->left);
+		}
+		else
+			wait(NULL);
+	}
+	else if (node->right != NULL && node->right->type != TYPE_HEREDOC)
+		check_next_node(exec, hash, node);
+	else
+	{
+		restore_fd(exec->old_stdin, exec->old_stdout);
+		exec_multi_cmds(exec, hash, node->right);
+	}
+}
 
 
 void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable, char *delim)
@@ -104,8 +128,10 @@ char	*check_expansion(t_hashtable *env, char **line, size_t *len)
 	return (expanded);
 }
 
-static void check_next_node(t_exec *exec, t_hashtable *hash, t_ast *node, int *next_pipe)
+static void check_next_node(t_exec *exec, t_hashtable *hash, t_ast *node)
 {
+	int next_pipe[2];
+	
 	if (node->right->type == TYPE_PIPE)
 	{
 		pipe(next_pipe);
@@ -140,31 +166,5 @@ static void check_next_node(t_exec *exec, t_hashtable *hash, t_ast *node, int *n
 			waitpid(node->pid, &node->left->num_status, 0);
 			simple_logical(exec, hash, node->right, node->left->num_status);
 		}
-	}
-}
-
-static void	execute_heredoc(t_exec *exec, t_ast *node, t_hashtable *hash, int *fd)
-{
-	if (node->print_hdoc && node->right == NULL)
-	{
-		node->pid = fork();
-		if (node->pid == 0)
-		{
-			dup2(fd[0], STDIN_FILENO);
-			close(fd[0]);
-			execute_command(hash, node->left);
-		}
-		else
-		{
-			wait(NULL);
-			close(fd[0]);
-		}
-	}
-	else if (node->right != NULL && node->right->type != TYPE_HEREDOC)
-		check_next_node(exec, hash, node, fd);
-	else
-	{
-		restore_fd(exec->old_stdin, exec->old_stdout);
-		exec_multi_cmds(exec, hash, node->right);
 	}
 }
