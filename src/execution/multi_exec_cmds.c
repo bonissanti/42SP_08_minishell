@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/14 18:45:11 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:05:52 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ static void    wait_for_children(t_ast *node)
         waitpid(node->pid, &status, 0);
         if (WIFEXITED(status))
             node->num_status = WEXITSTATUS(status);
-			if (node->num_status == 1)
-				g_global.exit_status = 1;
+		if (node->num_status == 1)
+			g_global.exit_status = 1;
     }
     else if (node->right)
         wait_for_children(node->right);
