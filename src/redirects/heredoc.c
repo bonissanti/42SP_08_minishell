@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/14 14:20:36 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/14 14:23:41 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ static void 	check_next_node(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
 void	handle_heredoc(t_vector *vtr, t_ast *node, t_hashtable *hash, char *delim)
 {
 	int 	next_pipe[2] = {0};
-	int		fd[2] = {0};
 	char	*line = NULL;
 	size_t	len;
 
