@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/14 14:47:58 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/14 15:03:48 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,57 +14,6 @@
 # define AST_H
 
 #include "./minishell.h"
-
-typedef enum
-{
-	TYPE_COMMAND,
-	TYPE_LOGICAL,
-	TYPE_PIPE,
-	TYPE_REDIRECT,
-	TYPE_HEREDOC,
-}	t_type;
-
-typedef enum
-{
-	OP_REDIRECT = 3,
-	OP_HEREDOC = 3,
-	OP_PIPE = 3,  
-	OP_LOGICAL = 3,
-	DEFAULT = 0,
-}	t_op;
-
-typedef struct s_exec
-{
-	int prev[2];
-	int next[2];
-	int	in_fd;
-	int	out_fd;
-	int old_stdin;
-	int old_stdout;
-	int pipes_count;
-	int count_pipes;
-}	t_exec;
-
-typedef struct s_ast
-{
-	
-	char *cmds;
-	char **args;
-	char *path;
-	char *delim;
-	int num_status;
-	int	in_fd;
-	int	out_fd;
-	t_op weight;
-	t_type type;
-	pid_t pid;
-	t_bool print_hdoc;
-	t_bool print_redir;
-	t_bool is_freed;
-	struct s_ast *left;
-	struct s_ast *right;
-} 	t_ast;
-
 
 //############################### AST #########################################
 

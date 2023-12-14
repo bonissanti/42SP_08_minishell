@@ -13,13 +13,14 @@ typedef enum
     TYPE_SUBSHELL,
     TYPE_PIPE,
 	TYPE_FILE,
+	TYPE_HEREDOC,
     TYPE_REDIRECT,
 }    t_type;
 
 typedef enum
 {
 	OP_REDIRECT = 3,
-	OP_HEREDOC = 4,
+	OP_HEREDOC = 3,
 	OP_PIPE = 3,  
 	OP_LOGICAL = 3,
 	DEFAULT = 0,
@@ -77,6 +78,9 @@ typedef struct s_ast
 	t_op weight;
 	t_type type;
 	pid_t pid;
+	t_bool print_hdoc;
+	t_bool print_redir;
+	t_bool is_freed;
 	t_bool subshell;
 	struct s_ast *left;
 	struct s_ast *right;
@@ -84,6 +88,8 @@ typedef struct s_ast
 
 typedef struct s_exec
 {
+	int prev[2];
+	int next[2];
 	int	in_fd;
 	int	out_fd;
 	int old_stdin;
