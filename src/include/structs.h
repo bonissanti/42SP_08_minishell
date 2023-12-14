@@ -26,7 +26,8 @@ typedef enum
 	DEFAULT = 0,
 }	t_op;
 
-typedef enum {
+typedef enum 
+{
 	IDENTIFIER,
 	INFILE,
 	REDIRECT,
@@ -41,7 +42,8 @@ typedef enum {
 	WILD
 } t_tkn_type;
 
-typedef struct s_tkn_list {
+typedef struct s_tkn_list 
+{
 	t_tkn_type			type;
 	char				*content;
 	struct s_tkn_list	*next;
@@ -94,7 +96,7 @@ typedef struct s_exec
 	int	out_fd;
 	int old_stdin;
 	int old_stdout;
-	int pipes_count;
+	int count_hdoc;
 	int count_pipes;
 }	t_exec;
 

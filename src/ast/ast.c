@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/14 16:05:00 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/14 18:54:11 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,9 @@ void	insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 	}
 	if (new_node->type == TYPE_PIPE)
 		exec->count_pipes++;
+
+	else if (new_node->type == TYPE_HEREDOC)
+		exec->count_hdoc++;
 }
 
 

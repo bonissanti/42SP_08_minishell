@@ -3,24 +3,24 @@
 
 # include "./minishell.h"
 
-//############################### VECTOR #####################################//
+//############################### CHECKER ####################################//
 
-void	init_cmd(t_vector *vtr);
-void	init_exec_vector(t_vector *vtr);
-int		execute_if_builtin(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
-void	init_redirects(t_vector *vtr);
-void	handle_redirects(t_vector *vtr, t_ast *node);
+void	init_exec_vector(t_exec *exec);
+t_bool	is_builtin(t_ast *node);
+int		execute_builtin(t_hashtable *hashtable, t_ast *node);
+void	init_redirects(t_exec *exec);
+void    handle_redirects(t_ast *node);
 
 //############################# REDIRECTIONS #################################//
 
 void	redirect_input(t_ast *node, char *filename);
 void	redirect_output(t_ast *node, char *filename);
 void	redirect_append(t_ast *node, char *filename);
-void	analyze_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
-void	simple_redirect_in(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
-void	simple_redirect_out(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
+void	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
+void	simple_redirect_in(t_exec *exec, t_hashtable *hashtable, t_ast *node);
+void	simple_redirect_out(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 			int *prev_pipe);
-void	handle_heredoc(t_vector *vtr, t_ast *node, t_hashtable *env,
+void	handle_heredoc(t_exec *exec, t_ast *node, t_hashtable *env,
 			char *delim);
 char	*check_expansion(t_hashtable *env, char **line, size_t *len);
 t_bool	verify_file_permissions(const char *file);
@@ -28,15 +28,15 @@ int		verify_cmd_permissions(const char *cmd);
 
 //############################# OPERATOR #####################################//
 
-void	handle_pipes(t_hashtable *hash, t_vector *vtr, t_ast *node,
+void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 			int *prev_pipe);
-void	execute_pipes(t_hashtable *hashtable, t_vector *vtr, t_ast *node,
+void	execute_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node,
 			int *prev_pipe, int *next_pipe);
-void	logical_pipe(t_vector *vtr, t_hashtable *hash, t_ast *node,
+void	logical_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
 			int *prev_pipe);
-void	simple_logical(t_vector *vtr, t_hashtable *hash, t_ast *node,
+void	simple_logical(t_exec *exec, t_hashtable *hash, t_ast *node,
 			int status);
-void	pipe_from_redirect(t_hashtable *hash, t_vector *vtr, t_ast *node,
+void	pipe_from_redirect(t_hashtable *hash, t_exec *exec, t_ast *node,
 			int *prev_pipe);
 
 //############################# PREPARE_EXEC #################################//
@@ -50,10 +50,11 @@ void 	analyze_if_print(t_ast *node, int index);
 
 //############################# EXECUTION ####################################//
 
-void	exec_multi_cmds(t_vector *vtr, t_hashtable *hashtable, t_ast *root);
-void	execute_command(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
+int		exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root);
+void	forking(t_exec *exec, t_ast *node, t_hashtable *hashtable);
+int		execute_command(t_hashtable *hashtable, t_ast *node);
 void	close_all_fds(int *fd);
-// void	handle_cmd(t_vector *vtr, t_hashtable *hashtable, t_ast *node); //temp
+// void	handle_cmd(t_exec *exec, t_hashtable *hashtable, t_ast *node); //temp
 
 // void print_pipe_contents(int *pipefd); // Remover depois
 
