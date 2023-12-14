@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hashtable.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/11 11:20:10 by brunrodr          #+#    #+#             */
+/*   Updated: 2023/12/14 14:37:25 by aperis-p         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 /**
@@ -81,7 +93,6 @@ void	init_hash(t_hashtable *hashtable, char **envp)
 void	insert(t_hashtable *hashtable, char *key, char *value)
 {
 	size_t			index;
-	t_hash			*add_env;
 	t_hash			*check_dup;
 	char			*key_copy;
 	char			*value_copy;

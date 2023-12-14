@@ -59,7 +59,7 @@ int main(int argc, char **argv, char **envp)
     init_exec_vector(&vtr);
 
     t_ast *root = NULL;
-    // t_ast *new_node;
+
 
 	t_ast *node1 = create_node(TYPE_COMMAND, "cat", DEFAULT);
     insert_ast(&root, node1, &vtr.exec);
@@ -67,18 +67,17 @@ int main(int argc, char **argv, char **envp)
     t_ast *node2 = create_node(TYPE_HEREDOC, "<< EOF", OP_HEREDOC);
     insert_ast(&root, node2, &vtr.exec);
 
-    t_ast *node3 = create_node(TYPE_HEREDOC, "<< EOF", OP_HEREDOC);
-    insert_ast(&root, node3, &vtr.exec);
+	// t_ast *node3 = create_node(TYPE_COMMAND, "cat", DEFAULT);
+    // insert_ast(&root, node3, &vtr.exec);
 
     t_ast *node4 = create_node(TYPE_HEREDOC, "<< EOF", OP_HEREDOC);
     insert_ast(&root, node4, &vtr.exec);
 
+    // t_ast *node5 = create_node(TYPE_COMMAND, "cat", DEFAULT);
+    // insert_ast(&root, node5, &vtr.exec);
+
     backup_fd(&vtr.exec.old_stdin, &vtr.exec.old_stdout);
-
-    if (root->type == TYPE_REDIRECT && root->right == NULL)
-        root->print_redir = !root->print_redir;
-
-	// analyze_if_print(root, 0);
+    analyze_if_print(root, 0);
     exec_multi_cmds(&vtr, hashtable, root);
     restore_fd(vtr.exec.old_stdin, vtr.exec.old_stdout);
 

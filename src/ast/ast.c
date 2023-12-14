@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/12 19:18:15 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/14 14:35:26 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,9 @@ t_ast	*create_node(t_cmd_list *cmd_list, t_hashtable *env)
 	new_node->out_fd = -1;
 	if(new_node->type != TYPE_SUBSHELL)
 		new_node->subshell = false;
+	new_node->print_hdoc = false;
+	new_node->print_redir = false;
+	new_node->is_freed = false;
 	return (new_node);
 }
 
@@ -145,9 +148,10 @@ void	insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 		new_node->left = current->right;
 		current->right = new_node;
 	}
-	if (new_node->type == TYPE_PIPE && new_node->weight == OP_PIPE)
+	if (new_node->type == TYPE_PIPE)
 		exec->count_pipes++;
 }
+
 
 /**
  * Function: Delete_node
@@ -163,12 +167,13 @@ void	insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 
 void	delete_node(t_ast *head)
 {
-	if (head != NULL)
+	if (head != NULL && !head->is_freed)
 	{
 		delete_node(head->left);
 		delete_node(head->right);
 		free_split(head->args);
 		safe_free((void **)&head->path);
 		free(head);
+		head->is_freed = true;
 	}
 }

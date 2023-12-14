@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   handle_logical.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/11 11:25:55 by brunrodr          #+#    #+#             */
+/*   Updated: 2023/12/14 14:38:43 by aperis-p         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 static void	parent_logic(t_vector *vtr, t_ast *node, t_hashtable *hash);
@@ -7,7 +19,7 @@ void	logical_pipe(t_vector *vtr, t_hashtable *hash, t_ast *node,
 {
 	if (node == NULL)
 		return ;
-	if (node->type == TYPE_LOGICAL && node->weight == OP_LOGICAL)
+	if (node->type == TYPE_LOGICAL)
 	{
 		node->pid = fork();
 		if (*prev_pipe != -1)
