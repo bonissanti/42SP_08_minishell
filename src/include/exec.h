@@ -40,7 +40,6 @@ void	redirect_input(t_ast *node, char *filename);
 void	redirect_output(t_ast *node, char *filename);
 void	redirect_append(t_ast *node, char *filename);
 void	analyze_redirect(t_vector *vtr, t_hashtable *hashtable, t_ast *node);
-void	analyze_heredoc(t_vector *vtr, t_ast *node, t_hashtable *hashtable, char *delim);
 void    simple_redirect_out(t_vector *vtr, t_hashtable *hashtable, t_ast *node, int *prev_pipe);
 void	handle_heredoc(t_vector *vtr, t_ast *node, t_hashtable *env, char *delim);
 char    *check_expansion(t_hashtable *env, char **line, size_t *len);

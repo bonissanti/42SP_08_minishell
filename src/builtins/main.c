@@ -67,21 +67,11 @@ int main(int argc, char **argv, char **envp)
     t_ast *node2 = create_node(TYPE_HEREDOC, "<< EOF", OP_HEREDOC);
     insert_ast(&root, node2, &vtr.exec);
 
-
-	// t_ast *node3 = create_node(TYPE_COMMAND, "echo otario", DEFAULT);
-    // insert_ast(&root, node3, &vtr.exec);
+    t_ast *node3 = create_node(TYPE_HEREDOC, "<< EOF", OP_HEREDOC);
+    insert_ast(&root, node3, &vtr.exec);
 
     t_ast *node4 = create_node(TYPE_HEREDOC, "<< EOF", OP_HEREDOC);
     insert_ast(&root, node4, &vtr.exec);
-
-    // // // // t_ast *node5 = create_node(TYPE_COMMAND, "echo otario", DEFAULT);
-    // // // // insert_ast(&root, node5, &vtr.exec);
-
-    t_ast *node5 = create_node(TYPE_HEREDOC, "<< FUCKER1", OP_HEREDOC);
-    insert_ast(&root, node5, &vtr.exec);
-
-    t_ast *node6 = create_node(TYPE_HEREDOC, "<< FUCKER2", OP_HEREDOC);
-    insert_ast(&root, node6, &vtr.exec);
 
     backup_fd(&vtr.exec.old_stdin, &vtr.exec.old_stdout);
 

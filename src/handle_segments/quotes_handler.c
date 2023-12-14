@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:57 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 11:29:28 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/14 12:28:06 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,8 +180,8 @@ void	final_process(t_lex *quote, t_segment **head, char **args, size_t *len)
 	free(quote->segment);
 	free(quote);
 	*args = join_segments(*head);
-	for (int i = 0; args[i]; i++) // Remover
-		ft_printf("%s ", args[i]);
-	ft_printf("\n");
+	// for (int i = 0; args[i]; i++) // Remover
+	// 	ft_printf("%s ", args[i]);
+	// ft_printf("\n");
 	free_segments(*head);
 }
