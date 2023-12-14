@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/14 14:35:26 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/14 16:05:00 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,13 @@ static void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list, t_hashtable *env)
 	else
 	{
 		new_node->cmds = new_node->args[0];
+		if(cmd_list->type == TYPE_REDIRECT)
+		{
+			new_node->infile = cmd_list->infile;
+			new_node->outfile = cmd_list->outfile;			
+		}
+		else if(cmd_list->type == TYPE_HEREDOC)
+			new_node->delim = cmd_list->infile;
 		new_node->weight = cmd_list->weight;
 		new_node->type = cmd_list->type;
 	}			

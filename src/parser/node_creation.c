@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_creation.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:32:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/12 19:28:29 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/14 16:45:41 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,18 +75,21 @@ void	new_redirect_node(t_tkn_list **current)
 {
 	t_bool has_here_doc;
 	t_op weight;
+	t_type type;
 
 	has_here_doc = false;
-	weight = OP_REDIRECT;		
+	weight = OP_REDIRECT;
+	type = TYPE_REDIRECT;
 	if((*current)->type == HERE_DOC)
 	{
+		type = TYPE_HEREDOC;
 		has_here_doc = true;
 		weight = OP_HEREDOC;
 	}
 	else
 		has_here_doc = false;
 	add_cmd_list((t_cmd_list){
-		.type = TYPE_REDIRECT,
+		.type = type,
 		.args = tkn_type_converter((*current)->type),
 		.weight = weight,
 		.here_doc = has_here_doc,
