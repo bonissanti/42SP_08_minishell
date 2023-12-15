@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 11:20:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 17:06:41 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/15 18:03:59 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ void	init_hash(char **envp)
 {
 	int		i;
 	t_env	env;
-	g_global.hash = create_hashtable();
 
 	i = -1;
 	g_global.hash = create_hashtable();
