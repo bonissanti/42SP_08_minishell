@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/14 19:05:52 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/15 13:25:27 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 	if (root == NULL)
 		return (0);
 	if (root->type == TYPE_COMMAND)
-		forking(exec, root, hashtable);
+		execute_command(hashtable, root);
 	if (root->type == TYPE_REDIRECT)
 	{
 		handle_redirects(root);
@@ -64,37 +64,26 @@ static void    wait_for_children(t_ast *node)
 
 int	execute_command(t_hashtable *hashtable, t_ast *node)
 {
-	char	*path;
-	int		result;
-
-	result = verify_cmd_permissions(node->cmds);
-	if (ft_strchr(node->cmds, '/') != NULL && result != 0)
-	{
-		handle_error(node, result);
-		return (result);
-	}
-	else if (ft_strchr(node->cmds, '/') != NULL && result == 0)
-		node->path = ft_strdup(node->cmds);
-	else
-	{
-		path = search(hashtable, "PATH")->value;
-		node->path = build_cmd_path(node, path);
-	}
+	analyze_cmd(hashtable, node);
 	if (is_builtin(node))
 		g_global.exit_status = execute_builtin(hashtable, node);
 	else
-		g_global.exit_status = execve(node->path, node->args, NULL);
-	exit(g_global.exit_status);
+		g_global.exit_status = forking(node, hashtable);
+	return (g_global.exit_status);
 }
 
-void	forking(t_exec *exec, t_ast *node, t_hashtable *hashtable)
+int	forking(t_ast *node, t_hashtable *hashtable)
 {
 	node->pid = fork();
-	if (node->pid == 0)
+	if (node->type == TYPE_COMMAND)
 	{
-		if (node->type == TYPE_COMMAND)
-			execute_command(hashtable, node);
+		if (node->pid == 0)
+		{
+			g_global.exit_status = execve(node->path, node->args, NULL);
+			exit(g_global.exit_status);
+		}
+		else
+			waitpid(node->pid, &node->num_status, 0);
 	}
-	else
-		exec_multi_cmds(exec, hashtable, node->right);
+	return (g_global.exit_status);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/13 19:01:27 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/15 13:39:54 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	add_env(t_hashtable *hash_table, char **args)
 		if (args[1][ft_strlen(args[i]) - 1] == '=')
 			env_with_equals(hash_table, args, i);
 		else if (env.equals_sign[1] != NULL)
-			env_with_value(hash_table, args, i, len);
+			env_with_value(hash_table, &env, i, len);
 		else if (hash == NULL)
 			insert(hash_table, env.key, NULL);
 		free_split(env.equals_sign);
