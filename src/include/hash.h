@@ -35,6 +35,6 @@ void			handle_value(t_hash *check_dup, char *value, char *value_copy);
 void			add_new_key(t_hashtable *hash, char *key_copy, char *value_copy, size_t index);
 char			**copy_all_keys(t_hashtable *hash_table);
 char 			*handle_elements(t_hashtable *hash_table, char *arg);
-void			init_hash(t_hashtable *hash_table, char **envp);
+void			init_hash(char **envp);
 
 #endif

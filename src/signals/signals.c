@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 18:45:17 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/14 18:49:02 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/15 17:10:57 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,28 @@ void	init_signals(void)
 	signal(SIGPIPE, SIG_IGN);
 }
 
+void	init_hd_signals(int pid, t_ast *node, t_hashtable *hash)
+{
+	if(!pid)
+		signal(SIGINT, hd_quit);
+	else
+		signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGPIPE, SIG_IGN);
+}
+
+void hd_quit(int signal, t_ast *node, t_hashtable *hash)
+{
+	if(signal == SIGINT)
+	{
+		rl_clear_history();
+		free_lists(g_global.tkn_list, g_global.cmd_list);
+		delete_node(g_global.ast);
+    	destroy_hashtable(g_global.hash);
+		exit(130);
+	}
+}
+
 void	refresh_prompt(int signal)
 {
 	if (signal == SIGINT)
@@ -28,4 +50,14 @@ void	refresh_prompt(int signal)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
+}
+
+void	exec_signals(int pid)
+{
+	if (pid == 0)
+		signal(SIGINT, SIG_DFL);
+	else
+		signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGPIPE, SIG_IGN);
 }

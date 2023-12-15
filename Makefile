@@ -30,7 +30,7 @@ MAND_SRCS 	= ast/ast_split.c ast/ast.c \
 			handle_segments/wildcard_handler.c handle_segments/wildcard_utils.c parser/io_setter.c \
 			parser/node_creation_utils.c parser/node_creation.c parser/parser_cmd_list_utils.c \
 			parser/parser_debug_helpers.c parser/parser_tkn_list_utils.c parser/parser_utils.c \
-			parser/parser.c parser/tokenizer_utils.c parser/tokenizer.c redirects/heredoc.c \
+			parser/parser.c parser/tokenizer_utils.c parser/tokenizer.c \
 			redirects/redirects.c redirects/verify_permissions.c minishell_utils.c minishell.c \
 			prompt.c signals/signals.c
 		

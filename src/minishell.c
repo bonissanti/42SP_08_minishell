@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:38:13 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/14 17:45:39 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/15 17:07:04 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,11 @@ int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
 	(void)argv;
-	t_hashtable *hashtable = create_hashtable();
     t_exec exec;
 
-    init_hash(hashtable, envp);
-    init_structs(&exec, 0, sizeof(t_exec));;
-	prompt(hashtable, exec);
+    init_hash(envp);
+    init_structs(&exec, 0, sizeof(t_exec));
+	prompt(g_global.hash, exec);
 	// backup_fd(&vtr.exec.old_stdin, &vtr.exec.old_stdout);
     // exec_multi_cmds(&vtr, hashtable, root);
     // delete_node(root);

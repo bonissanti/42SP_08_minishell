@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/14 21:09:48 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/15 17:00:46 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ void free_lists(t_tkn_list *tkn_list, t_cmd_list *cmd_list)
 
 void prompt(t_hashtable *env, t_exec exec)
 {
-	t_ast *root;
-
 	g_global.readline_input = NULL;
 	while(g_global.exit_status == 0)
 	{
@@ -46,14 +44,14 @@ void prompt(t_hashtable *env, t_exec exec)
 		add_history(g_global.readline_input);
 		tokenizer(&g_global, g_global.readline_input, env);
 		parser(env);
-		root = init_ast(g_global.cmd_list, &exec, env);
+		g_global.ast = init_ast(g_global.cmd_list, &exec, env);
 		backup_fd(&exec.old_stdin, &exec.old_stdout);
-		exec_multi_cmds(&exec, env, root);
+		exec_multi_cmds(&exec, env, g_global.ast);
 		free_lists(g_global.tkn_list, g_global.cmd_list);
 		restore_fd(exec.old_stdin, exec.old_stdout);
 		free(g_global.readline_input);
 		g_global.readline_input = NULL;
 	}
-	delete_node(root);
+	delete_node(g_global.ast);
     destroy_hashtable(env);
 }

@@ -39,6 +39,7 @@ void	simple_redirect_in(t_exec *exec, t_hashtable *hashtable, t_ast *node)
     if (node == NULL)
         return ;
     node->pid = fork();
+	exec_signals(node->pid);
     if (node->pid == 0)
     {
         pipe(next_pipe);
@@ -69,6 +70,7 @@ void	simple_redirect_out(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 	if (node->type == TYPE_REDIRECT)
 	{
 		node->pid = fork();
+		exec_signals(node->pid);
 		redirect_fds(node, prev_pipe);
 		if (node->pid == 0)
 		{

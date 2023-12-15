@@ -208,6 +208,9 @@ typedef struct s_global{
 	t_tkn_list	*tkn_list;
 	t_cmd_list	*cmd_list;
 	int			exit_status;
+	t_hashtable *hash;
+	t_ast		*ast;
+
 } t_global;
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 11:20:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/14 14:37:25 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/15 17:06:41 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,22 +52,24 @@ t_hashtable	*create_hashtable(void)
  *
  */
 
-void	init_hash(t_hashtable *hashtable, char **envp)
+void	init_hash(char **envp)
 {
 	int		i;
 	t_env	env;
+	g_global.hash = create_hashtable();
 
 	i = -1;
-	hashtable->num_keys = 0;
-	hashtable->home = NULL;
+	g_global.hash = create_hashtable();
+	g_global.hash->num_keys = 0;
+	g_global.hash->home = NULL;
 	while (envp[++i] != NULL)
 	{
 		env.equals_sign = ft_split(envp[i], '=');
 		env.key = env.equals_sign[0];
 		env.value = env.equals_sign[1];
-		insert(hashtable, env.key, env.value);
+		insert(g_global.hash, env.key, env.value);
 		if (ft_strcmp(env.key, "HOME") == 0)
-			hashtable->home = search(hashtable, env.key);
+			g_global.hash->home = search(g_global.hash, env.key);
 		free_split(env.equals_sign);
 	}
 }

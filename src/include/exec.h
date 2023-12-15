@@ -25,6 +25,7 @@ void	handle_heredoc(t_exec *exec, t_ast *node, t_hashtable *env,
 char	*check_expansion(t_hashtable *env, char **line, size_t *len);
 t_bool	verify_file_permissions(const char *file);
 int		verify_cmd_permissions(const char *cmd);
+void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable, char *delim);
 
 //############################# OPERATOR #####################################//
 

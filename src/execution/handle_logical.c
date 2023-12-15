@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_logical.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 11:25:55 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 11:47:09 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/15 17:51:52 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	logical_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
 	if (node->type == TYPE_LOGICAL)
 	{
 		node->pid = fork();
+		exec_signals(node->pid);
 		if (*prev_pipe != -1)
 		{
 			dup2(prev_pipe[0], STDIN_FILENO);

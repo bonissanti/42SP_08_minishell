@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 11:47:09 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/15 17:52:17 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	execute_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node,
 		int *prev_pipe, int *next_pipe)
 {
 	node->pid = fork();
+	exec_signals(node->pid);
 	if (node->pid == 0)
 	{
 		if (*prev_pipe != -1)
