@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/14 13:25:36 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:17:36 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void prompt(t_hashtable *env, t_vector vtr)
 	g_global.readline_input = NULL;
 	while(true)
 	{
+		init_signals();
 		while(!prompt_validation(g_global.readline_input))
 			g_global.readline_input = readline("$ ");
 		add_history(g_global.readline_input);

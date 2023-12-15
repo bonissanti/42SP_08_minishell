@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:39:43 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/11 17:10:46 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:12:40 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 #include "./hash.h"
 #include "./exec.h"
 #include "./builtins.h"
+#include "./signals.h"
 
 extern t_global g_global;
 

@@ -32,7 +32,7 @@ MAND_SRCS 	= ast/ast_split.c ast/ast.c \
 			parser/parser_debug_helpers.c parser/parser_tkn_list_utils.c parser/parser_utils.c \
 			parser/parser.c parser/tokenizer_utils.c parser/tokenizer.c redirects/heredoc.c \
 			redirects/redirects.c redirects/verify_permissions.c minishell_utils.c minishell.c \
-			prompt.c
+			prompt.c signals/signals.c
 		
 SRCS 		= $(addprefix ./src/, $(MAND_SRCS))
 # BONUS_SRCS 	= $(BONUS_SRCS:%.c=bonus/%.c)
