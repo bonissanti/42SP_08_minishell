@@ -6,17 +6,17 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/14 19:37:16 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/15 13:26:28 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 void			analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable, char *delim);
-static void	execute_heredoc(t_exec *exec, t_ast *node, t_hashtable *hash, char *filename);
+static void		execute_heredoc(t_exec *exec, t_ast *node, t_hashtable *hash, char *filename);
 char			*check_expansion(t_hashtable *env, char **line, size_t *len);
 static void 	check_next_node(t_exec *exec, t_hashtable *hashtable, t_ast *node);
-static char *generate_filename(int count_hdoc);
+static char 	*generate_filename(int count_hdoc);
 
 void	handle_heredoc(t_exec *exec, t_ast *node, t_hashtable *hash, char *delim)
 {
@@ -46,7 +46,14 @@ void	handle_heredoc(t_exec *exec, t_ast *node, t_hashtable *hash, char *delim)
 		free(line);
 	}
 	close(node->out_fd);
-	execute_heredoc(exec, node, hash, filename);
+	if (node->print_hdoc) // temporario
+		execute_heredoc(exec, node, hash, filename);
+	else // temporario
+	{
+		free(filename);
+		restore_fd(exec->old_stdin, exec->old_stdout);
+		exec_multi_cmds(exec, hash, node->right);
+	}
 }
 
 static char *generate_filename(int count_hdoc)
@@ -67,18 +74,15 @@ static void	execute_heredoc(t_exec *exec, t_ast *node, t_hashtable *hash, char *
 {
 	int fd;
 
-	if (node->print_hdoc && node->right->type == TYPE_FILE)
+	ft_fprintf(2, "node->cmds: %s\n", node->cmds);
+	ft_fprintf(2, "node->right->cmds: %s\n", node->right->cmds);
+	if (node->print_hdoc && node->right && node->right->type == TYPE_FILE)
 	{
-		node->pid = fork();
-		if (node->pid == 0)
-		{
-			fd = open(filename, O_RDONLY);
-			dup2(fd, STDIN_FILENO);
-			close(fd);
-			execute_command(hash, node->left);
-		}
-		else
-			wait(NULL);
+		fd = open(filename, O_RDONLY);
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+		ft_fprintf(2, "node->left->cmds: %s\n", node->left->cmds);
+		execute_command(hash, node->left);
 	}
 	else if (node->right != NULL && node->right->type != TYPE_HEREDOC)
 		check_next_node(exec, hash, node);

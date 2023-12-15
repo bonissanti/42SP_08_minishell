@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/14 14:46:20 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/15 12:50:00 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,27 @@ void analyze_if_print(t_ast *node, int index)
         node = node->right;
     }
 }
+
+void	analyze_cmd(t_hashtable *hashtable, t_ast *node)
+{
+	char	*path;
+	int		result;
+
+	result = verify_cmd_permissions(node->cmds);
+	if (ft_strchr(node->cmds, '/') != NULL && result != 0)
+	{
+		handle_error(node, result);
+		return ;
+	}
+	else if (ft_strchr(node->cmds, '/') != NULL && result == 0)
+		node->path = ft_strdup(node->cmds);
+	else
+	{
+		path = search(hashtable, "PATH")->value;
+		node->path = build_cmd_path(node, path);
+	}
+}
+
 
 void	handle_error(t_ast *node, int result)
 {

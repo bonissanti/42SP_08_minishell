@@ -47,11 +47,13 @@ void	restore_fd(int reset_stdin, int reset_stdout);
 char	*build_cmd_path(t_ast *node, char *path);
 void	handle_error(t_ast *node, int result);
 void 	analyze_if_print(t_ast *node, int index);
+void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable, char *delim);
+void	analyze_cmd(t_hashtable *hashtable, t_ast *node);
 
 //############################# EXECUTION ####################################//
 
 int		exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root);
-void	forking(t_exec *exec, t_ast *node, t_hashtable *hashtable);
+int		forking(t_ast *node, t_hashtable *hashtable);
 int		execute_command(t_hashtable *hashtable, t_ast *node);
 void	close_all_fds(int *fd);
 // void	handle_cmd(t_exec *exec, t_hashtable *hashtable, t_ast *node); //temp

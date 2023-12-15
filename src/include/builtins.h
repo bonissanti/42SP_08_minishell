@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:56:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/14 19:08:59 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/15 13:39:28 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		ft_env(t_hashtable *hashtable, char **args);
 void		print_all_env(t_hashtable *hash_table);
 void		add_env(t_hashtable *hash_table, char **args);
 void	    env_with_equals(t_hashtable *hashtable, char **args, int i);
-void		env_with_value(t_hashtable *hashtable, char **args, int i, size_t len);
+void		env_with_value(t_hashtable *hashtable, t_env *env, int i, size_t len);
 int			ft_count_args(char **args);
 
 //############################### Free #########################################
