@@ -23,7 +23,7 @@ MAND_SRCS 	= ast/ast_split.c ast/ast.c \
 			builtins/export_utils.c builtins/export.c builtins/hashtable_utils.c \
 			builtins/hashtable.c builtins/pwd.c builtins/unset.c execution/check_builtins.c \
 			execution/find_path.c execution/handle_logical.c execution/handle_pipes.c \
-			execution/handle_redirects.c execution/init.c execution/multi_exec_cmds_utils.c execution/simple_redirect.c \
+			execution/handle_redirects.c execution/multi_exec_cmds_utils.c execution/simple_redirect.c \
 			execution/multi_exec_cmds.c execution/prepare_exec.c handle_segments/expand_dollar.c \
 			handle_segments/quotes_error.c handle_segments/quotes_handler.c handle_segments/quotes_validater.c \
 			handle_segments/segments_list.c handle_segments/segments_utils.c handle_segments/tilde_handler.c \

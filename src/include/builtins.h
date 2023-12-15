@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:56:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/14 14:50:47 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/14 19:08:59 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 //############################### Builtins ####################################
 
 int		ft_export(t_hashtable *hashtable, char **args);
-int 		ft_echo(t_hashtable *hashtable, char **args);
-void		ft_exit(t_hashtable *hashtable, char **args);
+int 	ft_echo(t_hashtable *hashtable, char **args);
+int		ft_exit(t_hashtable *hashtable, char **args);
 int		ft_cd(t_hashtable *hashtable, char **args);
 int		ft_pwd(t_hashtable *hashtable, char **args);
-int 		ft_unset(t_hashtable *hashtable ,char **args);
+int 	ft_unset(t_hashtable *hashtable ,char **args);
 int		ft_env(t_hashtable *hashtable, char **args);
 
 //############################### Utils ########################################

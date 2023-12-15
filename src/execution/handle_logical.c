@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   handle_logical.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 11:25:55 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/14 14:38:43 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/14 17:34:01 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void	parent_logic(t_vector *vtr, t_ast *node, t_hashtable *hash);
+static void	parent_logic(t_exec *exec, t_ast *node, t_hashtable *hash);
 
-void	logical_pipe(t_vector *vtr, t_hashtable *hash, t_ast *node,
+void	logical_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
 		int *prev_pipe)
 {
 	if (node == NULL)
@@ -29,28 +29,29 @@ void	logical_pipe(t_vector *vtr, t_hashtable *hash, t_ast *node,
 		}
 		if (node->pid == 0)
 		{
-			execute_command(vtr, hash, node->left);
-			exit(node->left->num_status);
+			g_global.exit_status = execute_command(hash, node->left);
+			exit(g_global.exit_status);
 		}
 		else
-			parent_logic(vtr, node, hash);
+			parent_logic(exec, node, hash);
 	}
 }
 
-static void	parent_logic(t_vector *vtr, t_ast *node, t_hashtable *hash)
+static void	parent_logic(t_exec *exec, t_ast *node, t_hashtable *hash)
 {
 	waitpid(node->pid, &node->left->num_status, 0);
 	if (node->left->num_status == 0 && !ft_strncmp(node->cmds, "&&", 2))
-		exec_multi_cmds(vtr, hash, node->right);
+		exec_multi_cmds(exec, hash, node->right);
 	else if (node->left->num_status != 0 && !ft_strncmp(node->cmds, "||", 2))
-		exec_multi_cmds(vtr, hash, node->right);
+		exec_multi_cmds(exec, hash, node->right);
 }
 
-void	simple_logical(t_vector *vtr, t_hashtable *hash, t_ast *node,
+
+void	simple_logical(t_exec *exec, t_hashtable *hash, t_ast *node,
 		int status)
 {
 	if (status == 0 && !ft_strncmp(node->cmds, "&&", 2))
-		exec_multi_cmds(vtr, hash, node->right);
+		exec_multi_cmds(exec, hash, node->right);
 	else if (status != 0 && !ft_strncmp(node->cmds, "||", 2))
-		exec_multi_cmds(vtr, hash, node->right);
+		exec_multi_cmds(exec, hash, node->right);
 }

@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:39:43 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/14 19:12:40 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/14 21:10:00 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,6 @@
 
 extern t_global g_global;
 
-void		prompt(t_hashtable *env, t_vector vtr);
+void 	prompt(t_hashtable *env, t_exec exec);
 
 #endif

@@ -1,14 +1,14 @@
 #include "../include/minishell.h"
 
 
-static void	check_pipe(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
+static void	check_pipe(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 		int *next_pipe)
 {
-	if (vtr->exec.count_pipes >= 1)
+	if (exec->count_pipes >= 1)
 	{
-		vtr->exec.count_pipes--;
+		exec->count_pipes--;
 		close(next_pipe[1]);
-		pipe_from_redirect(hashtable, vtr, node->right, next_pipe);
+		pipe_from_redirect(hashtable, exec, node->right, next_pipe);
 	}
 }
 
@@ -32,7 +32,7 @@ static void	redirect_fds(t_ast *node, int *prev_pipe)
 	}
 }
 
-void	simple_redirect_in(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
+void	simple_redirect_in(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 {
     int next_pipe[2];
 
@@ -45,26 +45,26 @@ void	simple_redirect_in(t_vector *vtr, t_hashtable *hashtable, t_ast *node)
         dup2(next_pipe[0], STDIN_FILENO);
         close(next_pipe[0]);
         close(next_pipe[1]);
-        handle_pipes(hashtable, vtr, node->right->right, next_pipe);
+        handle_pipes(hashtable, exec, node->right->right, next_pipe);
     }
     else
     {
         if (node->type == TYPE_REDIRECT)
         {
             redirect_fds(node, NULL);
-		    execute_command(vtr, hashtable, node->left);
+		    execute_command(hashtable, node->left);
         }
     }
 }
 
 
 
-void	simple_redirect_out(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
+void	simple_redirect_out(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 		int *prev_pipe)
 {
 	int	next_pipe[2];
 
-	if (vtr->exec.count_pipes >= 1)
+	if (exec->count_pipes >= 1)
 		pipe(next_pipe);
 	if (node->type == TYPE_REDIRECT)
 	{
@@ -74,68 +74,26 @@ void	simple_redirect_out(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
 		{
 			if (node->type == TYPE_REDIRECT)
 			{
-				if (node->in_fd != -1 && vtr->exec.count_pipes >= 1)
+				if (node->in_fd != -1 && exec->count_pipes >= 1)
 				{
 					dup2(next_pipe[1], STDOUT_FILENO);
 					close(next_pipe[1]);
 				}
-				execute_command(vtr, hashtable, node->left);			
+				execute_command(hashtable, node->left);			
 				exit(0);
 			}
 		}
 		else
 		{
-			restore_fd(vtr->exec.old_stdin, vtr->exec.old_stdout);
-			// if (vtr->exec.count_pipes >= 1 && node->in_fd != 0)
+			restore_fd(exec->old_stdin, exec->old_stdout);
+			// if (exec->count_pipes >= 1 && node->in_fd != 0)
 			// 	close(prev_pipe[1]);
-			check_pipe(vtr, hashtable, node, next_pipe);
+			check_pipe(exec, hashtable, node, next_pipe);
 		}
 	}
 	if (node->right && node->type == TYPE_REDIRECT && node->right->type == TYPE_LOGICAL)
 	{
 		waitpid(node->pid, &node->left->num_status, 0);
-		simple_logical(vtr, hashtable, node->right, node->left->num_status);
+		simple_logical(exec, hashtable, node->right, node->left->num_status);
 	}
 }
-
-
-// void	simple_redirect_out(t_vector *vtr, t_hashtable *hashtable, t_ast *node,
-// 		int *prev_pipe)
-// {
-// 	int	next_pipe[2];
-
-// 	if (vtr->exec.count_pipes >= 1)
-// 		pipe(next_pipe);
-// 	if (node->type == TYPE_REDIRECT)
-// 	{
-// 		node->pid = fork();
-// 		redirect_fds(node, prev_pipe);
-// 		if (node->pid == 0)
-// 		{
-// 			if (node->type == TYPE_REDIRECT && node->print_redir == true)
-// 			{
-// 				if (node->in_fd != -1 && vtr->exec.count_pipes >= 1)
-// 				{
-// 					dup2(next_pipe[1], STDOUT_FILENO);
-// 					close(next_pipe[1]);
-// 				}
-// 				execute_command(vtr, hashtable, node->left);			
-// 				exit(0);
-// 			}
-// 		}
-// 		else
-// 		{
-// 			restore_fd(vtr->exec.old_stdin, vtr->exec.old_stdout);
-// 			// if (vtr->exec.count_pipes >= 1 && node->in_fd != 0)
-// 			// 	close(prev_pipe[1]);
-// 			check_pipe(vtr, hashtable, node, next_pipe);
-// 		}
-// 	}
-// 	if (node->right != NULL && node->right->type == TYPE_REDIRECT)
-// 		exec_multi_cmds(vtr, hashtable, node->right);
-// 	else if (node->right && node->type == TYPE_REDIRECT && node->right->type == TYPE_LOGICAL)
-// 	{
-// 		waitpid(node->pid, &node->left->num_status, 0);
-// 		simple_logical(vtr, hashtable, node->right, node->left->num_status);
-// 	}
-// }
