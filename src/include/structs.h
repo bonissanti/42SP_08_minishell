@@ -72,6 +72,7 @@ typedef struct s_ast
 	char **args;
 	char *path;
 	char *delim;
+	char *test;
 	char *infile;
 	char *outfile;
 	int num_status;
@@ -82,7 +83,7 @@ typedef struct s_ast
 	pid_t pid;
 	t_bool print_hdoc;
 	t_bool print_redir;
-	t_bool is_freed;
+	// t_bool is_freed; transferir pra t_cmd_list
 	t_bool subshell;
 	struct s_ast *left;
 	struct s_ast *right;
@@ -208,6 +209,7 @@ typedef struct s_global{
 	t_tkn_list	*tkn_list;
 	t_cmd_list	*cmd_list;
 	int			exit_status;
+	int			cmd_status;
 	t_hashtable *hash;
 	t_ast		*ast;
 

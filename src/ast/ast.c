@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/14 18:54:11 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/15 19:01:23 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list, t_hashtable *env)
 	
 	if (cmd_list->type == TYPE_COMMAND)
 	{
-		analyzing_quotes(env, &new_node->args[0]); //is_quotes here?
+		// analyzing_quotes(env, &new_node->args[0]); //is_quotes here?
 		new_node->cmds = new_node->args[0];
 		if(cmd_list->here_doc)
 			new_node->delim = cmd_list->infile;
@@ -98,11 +98,11 @@ t_ast	*create_node(t_cmd_list *cmd_list, t_hashtable *env)
 	new_node->num_status = 0;
 	new_node->in_fd = -1;
 	new_node->out_fd = -1;
+	new_node->pid = 0;
 	if(new_node->type != TYPE_SUBSHELL)
 		new_node->subshell = false;
 	new_node->print_hdoc = false;
 	new_node->print_redir = false;
-	new_node->is_freed = false;
 	return (new_node);
 }
 
@@ -177,13 +177,12 @@ void	insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 
 void	delete_node(t_ast *head)
 {
-	if (head != NULL && !head->is_freed)
+	if (head != NULL)
 	{
 		delete_node(head->left);
 		delete_node(head->right);
 		free_split(head->args);
 		safe_free((void **)&head->path);
 		free(head);
-		head->is_freed = true;
 	}
 }

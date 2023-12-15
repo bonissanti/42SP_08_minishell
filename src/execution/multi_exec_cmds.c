@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 17:54:31 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/15 20:02:47 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,9 @@ int	execute_command(t_hashtable *hashtable, t_ast *node)
 {
 	analyze_cmd(hashtable, node);
 	if (is_builtin(node))
-		g_global.exit_status = execute_builtin(hashtable, node);
+		execute_builtin(hashtable, node);
 	else
-		g_global.exit_status = forking(node, hashtable);
+		g_global.cmd_status = forking(node, hashtable);
 	return (g_global.exit_status);
 }
 

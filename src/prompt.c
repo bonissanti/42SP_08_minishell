@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/15 17:00:46 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/15 20:01:48 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ void free_lists(t_tkn_list *tkn_list, t_cmd_list *cmd_list)
 void prompt(t_hashtable *env, t_exec exec)
 {
 	g_global.readline_input = NULL;
-	while(g_global.exit_status == 0)
+	g_global.exit_status = -1;
+	while(g_global.exit_status == -1)
 	{
 		init_signals();
 		while(!prompt_validation(g_global.readline_input))

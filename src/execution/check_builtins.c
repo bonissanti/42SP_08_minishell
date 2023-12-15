@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:00:37 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 16:03:24 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/15 18:36:48 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ int	execute_builtin(t_hashtable *hashtable, t_ast *node)
 	else if (ft_strcmp(cmds, "unset") == 0)
 		return (ft_unset(hashtable, node->args));
 	else if (ft_strcmp(cmds, "env") == 0)
-		return (ft_env(hashtable, node->args + 1));
+		return (ft_env(hashtable, node->args));
 	else if (ft_strcmp(cmds, "exit") == 0)
-		ft_exit(hashtable, node->args + 1);
+		ft_exit(hashtable, node->args);
 	else
 		return (1);
-	return (0);
+	return (g_global.exit_status);
 }
 
 t_bool	is_builtin(t_ast *node)

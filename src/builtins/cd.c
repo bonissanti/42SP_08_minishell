@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:32:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 12:11:22 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/15 19:40:11 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	handle_cd(t_hashtable *hashtable, char **args, int argc);
 
-int	ft_cd(t_hashtable *hashtable, char **args)
+void	ft_cd(t_hashtable *hashtable, char **args)
 {
 	char	*oldpwd;
 	char 	*pwd;
@@ -25,7 +25,7 @@ int	ft_cd(t_hashtable *hashtable, char **args)
 	if (argc > 2)
 	{
 		ft_putstr_fd("cd: too many arguments\n", 2);
-		return (1);
+		return ;
 	}
 	oldpwd = search(hashtable, "PWD")->value;
 	insert(hashtable, "OLDPWD", oldpwd);
@@ -34,7 +34,7 @@ int	ft_cd(t_hashtable *hashtable, char **args)
 	cwd = getcwd(NULL, 0);
 	insert(hashtable, "PWD", cwd);
 	free(cwd);
-	return (0);
+	return ;
 }
 
 static void	handle_cd(t_hashtable *hashtable, char **args, int argc)

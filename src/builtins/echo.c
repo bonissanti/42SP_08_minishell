@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 19:06:42 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 12:17:29 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/15 19:50:01 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_bool	is_flag_n(char *arg);
 
-int	ft_echo(t_hashtable *hashtable, char **args)
+void	ft_echo(t_hashtable *hashtable, char **args)
 {
 	int	i;
 
@@ -23,7 +23,7 @@ int	ft_echo(t_hashtable *hashtable, char **args)
 	while (args[++i] != NULL)
 	{
 		if (args[i][0] == '$' && args[i][1] == '?') // função para usar no parser para expandir $?
-			ft_printf("%d", g_global.exit_status);
+			ft_printf("%d", g_global.cmd_status);
 		if (args[i][0] == '-' && is_flag_n(args[i]))
 			continue ;
 		ft_printf("%s", args[i]);
@@ -32,7 +32,7 @@ int	ft_echo(t_hashtable *hashtable, char **args)
 	}
 	if (!is_flag_n(args[i - 1]))
 		ft_printf("\n");
-	return(0);
+	g_global.cmd_status = 0;
 }
 
 t_bool	is_flag_n(char *arg)

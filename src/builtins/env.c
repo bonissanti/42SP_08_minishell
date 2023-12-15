@@ -1,6 +1,6 @@
 #include "../include/minishell.h"
 
-int	ft_env(t_hashtable *hashtable, char **args)
+void	ft_env(t_hashtable *hashtable, char **args)
 {
 	int		i;
 	int		argc;
@@ -13,7 +13,7 @@ int	ft_env(t_hashtable *hashtable, char **args)
 	if (argc > 1)
 	{
 		ft_fprintf(2, "env: %s: No such file or directory\n", args[1]);
-		exit(127);
+		g_global.cmd_status = 127;
 	}
 	while (++i < hashtable->num_keys)
 	{
@@ -22,5 +22,5 @@ int	ft_env(t_hashtable *hashtable, char **args)
 			ft_fprintf(1, "%s=%s\n", keys[i], value);
 	}
 	free(keys);
-	return(0);
+	g_global.cmd_status = 0;
 }

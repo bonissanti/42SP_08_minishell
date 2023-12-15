@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 13:39:54 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/15 19:51:03 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,11 +113,11 @@ void	add_env(t_hashtable *hash_table, char **args)
  *
  */
 
-int	ft_export(t_hashtable *hash_table, char **args)
+void	ft_export(t_hashtable *hash_table, char **args)
 {
 	if (args[1] == NULL)
 		print_all_env(hash_table);
 	else
 		add_env(hash_table, args);
-	return(0);
+	g_global.cmd_status = 0;
 }

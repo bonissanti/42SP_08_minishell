@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:43:27 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/14 17:26:39 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/15 19:05:05 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ void    handle_redirects(t_ast *node)
 	if (node->type == TYPE_REDIRECT)
 	{
 		if (ft_strncmp(node->cmds, ">", 1) == 0)
-			redirect_output(node, node->delim);
+			redirect_output(node, node->outfile);
 		else if (ft_strncmp(node->cmds, ">>", 2) == 0)
-			redirect_append(node, node->delim);
+			redirect_append(node, node->outfile);
 		else if (ft_strncmp(node->cmds, "<", 1) == 0)
-			redirect_input(node, node->delim);
+			redirect_input(node, node->infile);
 	}
 }
 
