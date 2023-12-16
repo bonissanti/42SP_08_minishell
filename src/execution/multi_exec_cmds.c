@@ -94,8 +94,8 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 	}
 	if (root->type == TYPE_LOGICAL)
 		logical_pipe(exec, hashtable, root, initial_pipe);
-	else if (root->right && root->right->type != TYPE_FILE)
-		exec_multi_cmds(exec, hashtable, root->right);
+	// else if (root->right && root->right->type != TYPE_FILE)
+	// 	exec_multi_cmds(exec, hashtable, root->right);
 	wait_for_children(root);
 	return (g_global.exit_status);
 }
@@ -108,10 +108,8 @@ static void    wait_for_children(t_ast *node)
     if (node == NULL)
         return ;
 
-    if (node->type == TYPE_COMMAND || node->type == TYPE_PIPE || node->type == TYPE_REDIRECT || node->type == TYPE_HEREDOC || node->type == TYPE_FILE)
+    if (node->type == TYPE_REDIRECT || node->type == TYPE_COMMAND || node->type == TYPE_PIPE ||  node->type == TYPE_HEREDOC)
     {
-		if (node->type == TYPE_HEREDOC)
-			close(node->out_fd);
         waitpid(node->pid, &status, 0);
         if (WIFEXITED(status))
             g_global.cmd_status = WEXITSTATUS(status);
@@ -143,8 +141,6 @@ int	forking(t_ast *node)
 			g_global.cmd_status = execve(node->path, node->args, NULL);
 			exit(g_global.cmd_status);
 		}
-		else
-			wait(NULL);
 	}
 	return (g_global.cmd_status);
 }

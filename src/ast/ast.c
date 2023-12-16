@@ -22,8 +22,13 @@ t_ast *init_ast(t_cmd_list *cmd_list, t_exec *exec)
 	head = cmd_list;
 	while(head)
 	{
-		insert_ast(&ast, create_node(head), exec);
-		head = head->next;
+		if (head->type == TYPE_FILE)
+			head = head->next;
+		if (head)
+		{
+			insert_ast(&ast, create_node(head), exec);
+			head = head->next;
+		}
 	}
 	return(ast);
 }

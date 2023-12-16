@@ -12,10 +12,9 @@
 
 #include "../include/minishell.h"
 
-void			analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable, char *delim);
-static void 	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node, char *filename);
 char			*check_expansion(t_hashtable *env, char **line, size_t *len);
-static void 	check_next_node(t_exec *exec, t_hashtable *hashtable, t_ast *node);
+static void 	open_execute(t_hashtable *hash, t_ast *node, char *filename);
+// static void 	check_next_node(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 static char 	*generate_filename(int count_hdoc);
 
 static char *generate_filename(int count_hdoc)
@@ -53,10 +52,10 @@ void handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 	}
 	close(node->out_fd);
 	if (node->print_hdoc)
-		open_execute(hash, exec, node, filename);
+		open_execute(hash, node, filename);
 }
 
-static void open_execute(t_hashtable *hash, t_exec *exec, t_ast *node, char *filename)
+static void open_execute(t_hashtable *hash, t_ast *node, char *filename)
 {
 	
 	analyze_cmd(hash, node->left);
@@ -77,7 +76,7 @@ void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable)
 {
 	analyze_if_print(node, 0);
 	if (node->type == TYPE_HEREDOC)
-		handle_heredoc(exec, node, hashtable);
+		handle_heredoc(hashtable, exec, node);
 	else
 		exec_multi_cmds(exec, hashtable, node->right);
 }
@@ -111,43 +110,43 @@ char	*check_expansion(t_hashtable *env, char **line, size_t *len)
 	return (expanded);
 }
 
-static void check_next_node(t_exec *exec, t_hashtable *hash, t_ast *node)
-{
-	int next_pipe[2];
+// static void check_next_node(t_exec *exec, t_hashtable *hash, t_ast *node)
+// {
+// 	int next_pipe[2];
 	
-	if (node->right->type == TYPE_PIPE)
-	{
-		pipe(next_pipe);
-		node->pid = fork();
-		if (node->pid == 0)
-		{
-			dup2(next_pipe[1], STDOUT_FILENO);
-			close(next_pipe[1]);
-			execute_command(hash, node->left);
-		}
-		else
-		{
-			wait(NULL);
-			close(next_pipe[1]);
-			exec->count_pipes--;
-			pipe_from_redirect(hash, exec, node->right, next_pipe);
-		}
-	}
-	else if (node->right->type == TYPE_REDIRECT)
-	{
-		handle_redirects(node->right);
-		dup2(node->right->out_fd, STDOUT_FILENO);
-		execute_command(hash, node->left);
-	}
-	else if (node->right->type == TYPE_LOGICAL)
-	{
-		node->pid = fork();
-		if (node->pid == 0)
-			execute_command(hash, node->left);
-		else
-		{
-			waitpid(node->pid, &node->left->num_status, 0);
-			simple_logical(exec, hash, node->right, node->left->num_status);
-		}
-	}
-}
+// 	if (node->right->type == TYPE_PIPE)
+// 	{
+// 		pipe(next_pipe);
+// 		node->pid = fork();
+// 		if (node->pid == 0)
+// 		{
+// 			dup2(next_pipe[1], STDOUT_FILENO);
+// 			close(next_pipe[1]);
+// 			execute_command(hash, node->left);
+// 		}
+// 		else
+// 		{
+// 			wait(NULL);
+// 			close(next_pipe[1]);
+// 			exec->count_pipes--;
+// 			pipe_from_redirect(hash, exec, node->right, next_pipe);
+// 		}
+// 	}
+// 	else if (node->right->type == TYPE_REDIRECT)
+// 	{
+// 		handle_redirects(node->right);
+// 		dup2(node->right->out_fd, STDOUT_FILENO);
+// 		execute_command(hash, node->left);
+// 	}
+// 	else if (node->right->type == TYPE_LOGICAL)
+// 	{
+// 		node->pid = fork();
+// 		if (node->pid == 0)
+// 			execute_command(hash, node->left);
+// 		else
+// 		{
+// 			waitpid(node->pid, &node->left->num_status, 0);
+// 			simple_logical(exec, hash, node->right, node->left->num_status);
+// 		}
+// 	}
+// }

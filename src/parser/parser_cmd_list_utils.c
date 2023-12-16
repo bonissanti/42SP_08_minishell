@@ -133,23 +133,40 @@ void free_cmd_list(t_cmd_list *cmd_list)
 {
 	t_cmd_list *head;
 	t_cmd_list *temp;
-	char *temp_infile;
-	char *temp_outfile;
-	char *temp_args;
 
 	head = cmd_list;
 	while(head)
 	{
 		temp = head->next;
-		temp_infile = head->infile;
-		temp_outfile = head->outfile;
-		temp_args = head->args;
 		ft_safe_free((void **)&head->args);
 		head->here_doc_fd = 0;
 		ft_safe_free((void **)&head);
-		temp_infile = NULL;
-		temp_outfile = NULL;
-		temp_args = NULL;
 		head = temp;
 	}
 }
+
+
+// void free_cmd_list(t_cmd_list *cmd_list)
+// {
+// 	t_cmd_list *head;
+// 	t_cmd_list *temp;
+// 	char *temp_infile;
+// 	char *temp_outfile;
+// 	char *temp_args;
+
+// 	head = cmd_list;
+// 	while(head)
+// 	{
+// 		temp = head->next;
+// 		temp_infile = head->infile;
+// 		temp_outfile = head->outfile;
+// 		temp_args = head->args;
+// 		ft_safe_free((void **)&head->args);
+// 		head->here_doc_fd = 0;
+// 		ft_safe_free((void **)&head);
+// 		temp_infile = NULL;
+// 		temp_outfile = NULL;
+// 		temp_args = NULL;
+// 		head = temp;
+// 	}
+// }

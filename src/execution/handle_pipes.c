@@ -45,6 +45,7 @@ void	execute_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node,
 	}
 	else
 	{
+		wait(NULL);
 		if (prev_pipe && !next_pipe)
 			close(prev_pipe[1]);
 		if (next_pipe && exec->count_pipes >= 1)

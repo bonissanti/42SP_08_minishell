@@ -32,36 +32,7 @@ static void	redirect_fds(t_ast *node, int *prev_pipe)
 	}
 }
 
-void	simple_redirect_in(t_exec *exec, t_hashtable *hashtable, t_ast *node)
-{
-    int next_pipe[2];
-
-    if (node == NULL)
-        return ;
-    node->pid = fork();
-	exec_signals(node->pid);
-    if (node->pid == 0)
-    {
-        pipe(next_pipe);
-        dup2(next_pipe[0], STDIN_FILENO);
-        close(next_pipe[0]);
-        close(next_pipe[1]);
-        handle_pipes(hashtable, exec, node->right->right, next_pipe);
-    }
-    else
-    {
-        if (node->type == TYPE_REDIRECT)
-        {
-            redirect_fds(node, NULL);
-		    execute_command(hashtable, node->left);
-        }
-    }
-}
-
-
-
-void	simple_redirect_out(t_exec *exec, t_hashtable *hashtable, t_ast *node,
-		int *prev_pipe)
+void	simple_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 {
 	int	next_pipe[2];
 
@@ -71,25 +42,22 @@ void	simple_redirect_out(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 	{
 		node->pid = fork();
 		exec_signals(node->pid);
-		redirect_fds(node, prev_pipe);
+		redirect_fds(node, NULL);
 		if (node->pid == 0)
 		{
-			if (node->type == TYPE_REDIRECT)
+			if (node->in_fd != -1 && exec->count_pipes >= 1)
 			{
-				if (node->in_fd != -1 && exec->count_pipes >= 1)
-				{
-					dup2(next_pipe[1], STDOUT_FILENO);
-					close(next_pipe[1]);
-				}
-				execute_command(hashtable, node->left);			
-				exit(0);
+				dup2(next_pipe[1], STDOUT_FILENO);
+				close(next_pipe[1]);
 			}
+			analyze_cmd(hashtable, node->left);
+			execve(node->left->path, node->left->args, NULL);		
+			exit(0);
 		}
 		else
 		{
+			waitpid(node->pid, &node->left->num_status, 0);
 			restore_fd(exec->old_stdin, exec->old_stdout);
-			// if (exec->count_pipes >= 1 && node->in_fd != 0)
-			// 	close(prev_pipe[1]);
 			check_pipe(exec, hashtable, node, next_pipe);
 		}
 	}

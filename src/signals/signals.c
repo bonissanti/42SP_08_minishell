@@ -19,7 +19,7 @@ void	init_signals(void)
 	signal(SIGPIPE, SIG_IGN);
 }
 
-void	init_hd_signals(int pid, t_hashtable *hash)
+void	init_hd_signals(int pid)
 {
 	if(!pid)
 		signal(SIGINT, hd_quit);

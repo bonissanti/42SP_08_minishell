@@ -1,0 +1,12 @@
+Makefile
+alo.txt
+libft
+minishell
+minishell_tester
+minunit
+objs
+outfile.txt
+readline.supp
+src
+sucker_expected.txt
+test.txt

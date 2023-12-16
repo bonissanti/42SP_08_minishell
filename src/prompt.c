@@ -38,7 +38,6 @@ void prompt(t_hashtable *env, t_exec exec)
 {
 	g_global.readline_input = NULL;
 	g_global.exit_status = -1;
-	struct termios old_termios, new_termios;
 	while(g_global.exit_status == -1)
 	{
 		init_signals();
@@ -47,7 +46,7 @@ void prompt(t_hashtable *env, t_exec exec)
 		add_history(g_global.readline_input);
 		tokenizer(&g_global, g_global.readline_input, env);
 		parser(env);
-		g_global.ast = init_ast(g_global.cmd_list, &exec, env);
+		g_global.ast = init_ast(g_global.cmd_list, &exec);
 		backup_fd(&exec.old_stdin, &exec.old_stdout);
 		exec_multi_cmds(&exec, env, g_global.ast);
 		free_lists(g_global.tkn_list, g_global.cmd_list);

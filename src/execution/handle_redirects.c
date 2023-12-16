@@ -30,10 +30,10 @@ void	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
     analyze_if_print(node, 1);
 	if (node->type == TYPE_REDIRECT && node->print_redir == true)
 	{
-		if (ft_strncmp(node->cmds, ">", 1) == 0 || ft_strncmp(node->cmds, ">>", 2) == 0)
-			simple_redirect_out(exec, hashtable, node, NULL);
-		else
-			simple_redirect_in(exec, hashtable, node);
+		// if (ft_strncmp(node->cmds, ">", 1) == 0 || ft_strncmp(node->cmds, ">>", 2) == 0)
+		// 	simple_redirect_out(exec, hashtable, node, NULL);
+		// else
+		simple_redirect(exec, hashtable, node);
 	}
 	else
 		exec_multi_cmds(exec, hashtable, node->right);
