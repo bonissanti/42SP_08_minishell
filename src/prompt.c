@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
+#include <termios.h>
 
 int prompt_validation(char *readline_input)
 {
@@ -37,6 +38,7 @@ void prompt(t_hashtable *env, t_exec exec)
 {
 	g_global.readline_input = NULL;
 	g_global.exit_status = -1;
+	struct termios old_termios, new_termios;
 	while(g_global.exit_status == -1)
 	{
 		init_signals();
@@ -51,8 +53,8 @@ void prompt(t_hashtable *env, t_exec exec)
 		free_lists(g_global.tkn_list, g_global.cmd_list);
 		restore_fd(exec.old_stdin, exec.old_stdout);
 		free(g_global.readline_input);
+		delete_node(g_global.ast);
 		g_global.readline_input = NULL;
 	}
-	delete_node(g_global.ast);
     destroy_hashtable(env);
 }

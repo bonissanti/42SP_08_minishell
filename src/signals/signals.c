@@ -19,7 +19,7 @@ void	init_signals(void)
 	signal(SIGPIPE, SIG_IGN);
 }
 
-void	init_hd_signals(int pid, t_ast *node, t_hashtable *hash)
+void	init_hd_signals(int pid, t_hashtable *hash)
 {
 	if(!pid)
 		signal(SIGINT, hd_quit);
@@ -29,7 +29,7 @@ void	init_hd_signals(int pid, t_ast *node, t_hashtable *hash)
 	signal(SIGPIPE, SIG_IGN);
 }
 
-void hd_quit(int signal, t_ast *node, t_hashtable *hash)
+void hd_quit(int signal)
 {
 	if(signal == SIGINT)
 	{

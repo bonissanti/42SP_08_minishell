@@ -17,11 +17,10 @@
 
 //############################### AST #########################################
 
-t_ast 				*create_node(t_cmd_list *cmd_list, t_hashtable *env);
+t_ast               *init_ast(t_cmd_list *cmd_list, t_exec *exec);
+t_ast	            *create_node(t_cmd_list *cmd_list);
 void 				insert_ast(t_ast **head, t_ast *new_node, t_exec *exec);
 void				delete_node(t_ast *head);
-void				pre_order_traversal(t_ast *head); // Remover depois
-t_ast				*init_ast(t_cmd_list *cmd_list, t_exec *exec, t_hashtable *env);
 
 //############################### UTILS #######################################
 

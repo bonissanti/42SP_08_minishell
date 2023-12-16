@@ -85,7 +85,7 @@ void	add_env(t_hashtable *hash_table, char **args)
 		if (args[1][ft_strlen(args[i]) - 1] == '=')
 			env_with_equals(hash_table, args, i);
 		else if (env.equals_sign[1] != NULL)
-			env_with_value(hash_table, &env, i, len);
+			env_with_value(hash_table, &env, len);
 		else if (hash == NULL)
 			insert(hash_table, env.key, NULL);
 		free_split(env.equals_sign);

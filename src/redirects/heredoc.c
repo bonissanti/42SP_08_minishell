@@ -13,48 +13,10 @@
 #include "../include/minishell.h"
 
 void			analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable, char *delim);
-static void		execute_heredoc(t_exec *exec, t_ast *node, t_hashtable *hash, char *filename);
+static void 	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node, char *filename);
 char			*check_expansion(t_hashtable *env, char **line, size_t *len);
 static void 	check_next_node(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 static char 	*generate_filename(int count_hdoc);
-
-void	handle_heredoc(t_exec *exec, t_ast *node, t_hashtable *hash, char *delim)
-{
-	char	*line = NULL;
-	char 	*filename;
-	size_t	len;
-
-	if (delim == NULL)
-	{
-		ft_fprintf(2, "minishell: syntax error near unexpected token EOF\n");
-		return ;
-	}
-	filename = generate_filename(exec->count_hdoc);
-	node->out_fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	while (1)
-	{
-		len = 0;
-		line = readline("> ");
-		if (!ft_strcmp(line, delim))
-		{
-			free(line);
-			break ;
-		}
-		line = check_expansion(hash, &line, &len);
-		if (node->print_hdoc)
-			ft_putendl_fd(line, node->out_fd);
-		free(line);
-	}
-	close(node->out_fd);
-	if (node->print_hdoc) // temporario
-		execute_heredoc(exec, node, hash, filename);
-	else // temporario
-	{
-		free(filename);
-		restore_fd(exec->old_stdin, exec->old_stdout);
-		exec_multi_cmds(exec, hash, node->right);
-	}
-}
 
 static char *generate_filename(int count_hdoc)
 {
@@ -70,35 +32,52 @@ static char *generate_filename(int count_hdoc)
 	return (filename);
 }
 
-static void	execute_heredoc(t_exec *exec, t_ast *node, t_hashtable *hash, char *filename)
+void handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
-	int fd;
+	char *line;
+	char *filename;
 
-	ft_fprintf(2, "node->cmds: %s\n", node->cmds);
-	ft_fprintf(2, "node->right->cmds: %s\n", node->right->cmds);
-	if (node->print_hdoc && node->right && node->right->type == TYPE_FILE)
+	filename = generate_filename(exec->count_hdoc);
+	node->out_fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	while (1)
 	{
-		fd = open(filename, O_RDONLY);
-		dup2(fd, STDIN_FILENO);
-		close(fd);
-		ft_fprintf(2, "node->left->cmds: %s\n", node->left->cmds);
-		execute_command(hash, node->left);
+		line = readline("> ");
+		if (!ft_strcmp(line, node->delim))
+		{
+			free(line);
+			break ;
+		}
+		if (node->print_hdoc)
+			ft_putendl_fd(line, node->out_fd);
+		free(line);
 	}
-	else if (node->right != NULL && node->right->type != TYPE_HEREDOC)
-		check_next_node(exec, hash, node);
-	else
-	{
-		restore_fd(exec->old_stdin, exec->old_stdout);
-		exec_multi_cmds(exec, hash, node->right);
-	}
+	close(node->out_fd);
+	if (node->print_hdoc)
+		open_execute(hash, exec, node, filename);
 }
 
+static void open_execute(t_hashtable *hash, t_exec *exec, t_ast *node, char *filename)
+{
+	
+	analyze_cmd(hash, node->left);
+	node->pid = fork();
+	if (node->pid == 0)
+	{
+		node->in_fd = open(filename, O_RDONLY);
+		dup2(node->in_fd, STDIN_FILENO);
+		close(node->in_fd);
+		execve(node->left->path, node->left->args, NULL);
+		exit(0);
+	}
+	else
+		wait(NULL);
+}
 
-void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable, char *delim)
+void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable)
 {
 	analyze_if_print(node, 0);
 	if (node->type == TYPE_HEREDOC)
-		handle_heredoc(exec, node, hashtable, delim);
+		handle_heredoc(exec, node, hashtable);
 	else
 		exec_multi_cmds(exec, hashtable, node->right);
 }

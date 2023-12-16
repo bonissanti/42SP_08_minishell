@@ -80,7 +80,7 @@ void expand_all(t_tkn_list *tkn_list, t_hashtable *env)
 	current = tkn_list;
 	while(current)
 	{
-		if(current->type == EXPAND || current->type == WILD)
+		if(current->type == EXPAND || current->type == WILD || current->type == IDENTIFIER)
 		{
 			if(!ft_strncmp(current->content, "$?", 2))
 				return ;

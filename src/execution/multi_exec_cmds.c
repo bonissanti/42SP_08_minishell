@@ -13,6 +13,62 @@
 #include "../include/minishell.h"
 
 static void    wait_for_children(t_ast *node);
+// static void open_execute(t_hashtable *hash, t_exec *exec, t_ast *node, char *filename);
+
+// static char *generate_filename(int count_hdoc)
+// {
+// 	char *template;
+// 	char *count_str;
+// 	char *filename;
+	
+// 	template = "/tmp/heredocXXX-";
+// 	count_str = ft_itoa(count_hdoc);
+// 	filename = ft_strjoin(template, count_str);
+
+// 	free(count_str);
+// 	return (filename);
+// }
+
+// static void test_looping(t_hashtable *hash, t_exec *exec, t_ast *node)
+// {
+// 	char *line;
+// 	char *filename;
+
+// 	filename = generate_filename(exec->count_hdoc);
+// 	node->out_fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
+// 	while (1)
+// 	{
+// 		line = readline("> ");
+// 		if (!ft_strcmp(line, "exit"))
+// 		{
+// 			free(line);
+// 			break ;
+// 		}
+// 		if (node->print_hdoc)
+// 			ft_putendl_fd(line, node->out_fd);
+// 		free(line);
+// 	}
+// 	close(node->out_fd);
+// 	if (node->print_hdoc)
+// 		open_execute(hash, exec, node, filename);
+// }
+
+// static void open_execute(t_hashtable *hash, t_exec *exec, t_ast *node, char *filename)
+// {
+	
+// 	analyze_cmd(hash, node->left);
+// 	node->pid = fork();
+// 	if (node->pid == 0)
+// 	{
+// 		node->in_fd = open(filename, O_RDONLY);
+// 		dup2(node->in_fd, STDIN_FILENO);
+// 		close(node->in_fd);
+// 		execve(node->left->path, node->left->args, NULL);
+// 		exit(0);
+// 	}
+// 	else
+// 		wait(NULL);
+// }
 
 int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 {
@@ -30,7 +86,7 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 		analyze_redirect(exec, hashtable, root);
 	}
 	if (root->type == TYPE_HEREDOC)
-		analyze_heredoc(exec, root, hashtable, root->delim);
+		analyze_heredoc(exec, root, hashtable);
 	if (root->type == TYPE_PIPE)
 	{
 		handle_pipes(hashtable, exec, root, initial_pipe);
@@ -38,6 +94,8 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 	}
 	if (root->type == TYPE_LOGICAL)
 		logical_pipe(exec, hashtable, root, initial_pipe);
+	else if (root->right && root->right->type != TYPE_FILE)
+		exec_multi_cmds(exec, hashtable, root->right);
 	wait_for_children(root);
 	return (g_global.exit_status);
 }
@@ -50,13 +108,15 @@ static void    wait_for_children(t_ast *node)
     if (node == NULL)
         return ;
 
-    if (node->type == TYPE_COMMAND || node->type == TYPE_PIPE || node->type == TYPE_REDIRECT || node->type == TYPE_HEREDOC)
+    if (node->type == TYPE_COMMAND || node->type == TYPE_PIPE || node->type == TYPE_REDIRECT || node->type == TYPE_HEREDOC || node->type == TYPE_FILE)
     {
+		if (node->type == TYPE_HEREDOC)
+			close(node->out_fd);
         waitpid(node->pid, &status, 0);
         if (WIFEXITED(status))
-            node->num_status = WEXITSTATUS(status);
-		if (node->num_status == 1)
-			g_global.exit_status = 1;
+            g_global.cmd_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			g_global.cmd_status = WTERMSIG(status);
     }
     else if (node->right)
         wait_for_children(node->right);
@@ -64,26 +124,27 @@ static void    wait_for_children(t_ast *node)
 
 int	execute_command(t_hashtable *hashtable, t_ast *node)
 {
-	analyze_cmd(hashtable, node);
+	if (!analyze_cmd(hashtable, node))
+		return (g_global.cmd_status);
 	if (is_builtin(node))
 		execute_builtin(hashtable, node);
 	else
-		g_global.cmd_status = forking(node, hashtable);
+		g_global.cmd_status = forking(node);
 	return (g_global.exit_status);
 }
 
-int	forking(t_ast *node, t_hashtable *hashtable)
+int	forking(t_ast *node)
 {
 	node->pid = fork();
 	if (node->type == TYPE_COMMAND)
 	{
 		if (node->pid == 0)
 		{
-			g_global.exit_status = execve(node->path, node->args, NULL);
-			exit(g_global.exit_status);
+			g_global.cmd_status = execve(node->path, node->args, NULL);
+			exit(g_global.cmd_status);
 		}
 		else
-			waitpid(node->pid, &node->num_status, 0);
+			wait(NULL);
 	}
-	return (g_global.exit_status);
+	return (g_global.cmd_status);
 }

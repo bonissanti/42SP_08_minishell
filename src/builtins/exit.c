@@ -1,10 +1,7 @@
 #include "../include/minishell.h"
 
-void	free_for_exit(t_hashtable *hash_table, char **args, int argc);
-
-int	ft_exit(t_hashtable *hash_table, char **args)
+int	ft_exit(char **args)
 {
-	long int	exit_code;
 	int			argc;
 
 	g_global.exit_status = 0;

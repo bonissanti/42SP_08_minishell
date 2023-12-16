@@ -35,16 +35,28 @@ void analyze_if_print(t_ast *node, int index)
     }
 }
 
-void	analyze_cmd(t_hashtable *hashtable, t_ast *node)
+t_bool	is_empty_cmd(char *cmd)
+{
+	if (cmd == NULL)
+		return (true);
+	if (cmd[0] == '\0')
+		return (true);
+	return (false);
+}
+
+t_bool	analyze_cmd(t_hashtable *hashtable, t_ast *node)
 {
 	char	*path;
 	int		result;
+
+	if (is_empty_cmd(node->cmds))
+		return (false);
 
 	result = verify_cmd_permissions(node->cmds);
 	if (ft_strchr(node->cmds, '/') != NULL && result != 0)
 	{
 		handle_error(node, result);
-		return ;
+		return (false);
 	}
 	else if (ft_strchr(node->cmds, '/') != NULL && result == 0)
 		node->path = ft_strdup(node->cmds);
@@ -52,7 +64,13 @@ void	analyze_cmd(t_hashtable *hashtable, t_ast *node)
 	{
 		path = search(hashtable, "PATH")->value;
 		node->path = build_cmd_path(node, path);
+		if (node->path == NULL && ft_strcmp(node->cmds, "exit") != 0)
+		{
+			handle_error(node, 126);
+			return (false);
+		}
 	}
+	return (true);
 }
 
 

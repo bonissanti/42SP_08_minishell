@@ -19,7 +19,7 @@
 
 void		ft_export(t_hashtable *hashtable, char **args);
 void 		ft_echo(t_hashtable *hashtable, char **args);
-void		ft_exit(t_hashtable *hashtable, char **args);
+int			ft_exit(char **args);
 void		ft_cd(t_hashtable *hashtable, char **args);
 void		ft_pwd(t_hashtable *hashtable, char **args);
 void 		ft_unset(t_hashtable *hashtable ,char **args);
@@ -30,7 +30,7 @@ void		ft_env(t_hashtable *hashtable, char **args);
 void		print_all_env(t_hashtable *hash_table);
 void		add_env(t_hashtable *hash_table, char **args);
 void	    env_with_equals(t_hashtable *hashtable, char **args, int i);
-void		env_with_value(t_hashtable *hashtable, t_env *env, int i, size_t len);
+void	    env_with_value(t_hashtable *hashtable, t_env *env, size_t len);
 int			ft_count_args(char **args);
 
 //############################### Free #########################################

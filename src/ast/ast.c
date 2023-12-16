@@ -12,7 +12,7 @@
 
 #include "../include/minishell.h"
 
-t_ast *init_ast(t_cmd_list *cmd_list, t_exec *exec, t_hashtable *env)
+t_ast *init_ast(t_cmd_list *cmd_list, t_exec *exec)
 {
 	t_ast *ast;
 	t_cmd_list *head;
@@ -22,13 +22,13 @@ t_ast *init_ast(t_cmd_list *cmd_list, t_exec *exec, t_hashtable *env)
 	head = cmd_list;
 	while(head)
 	{
-		insert_ast(&ast, create_node(head, env), exec);
+		insert_ast(&ast, create_node(head), exec);
 		head = head->next;
 	}
 	return(ast);
 }
 
-static void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list, t_hashtable *env)
+static void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list)
 {
 	new_node->args = ast_split(cmd_list->args, ' ');
 	
@@ -86,12 +86,12 @@ static void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list, t_hashtable *env)
  *
  */
 
-t_ast	*create_node(t_cmd_list *cmd_list, t_hashtable *env)
+t_ast	*create_node(t_cmd_list *cmd_list)
 {
 	t_ast	*new_node;
 
 	new_node = (t_ast *)malloc(sizeof(t_ast));
-	prepare_ast(new_node, cmd_list, env);
+	prepare_ast(new_node, cmd_list);
 	new_node->path = NULL;
 	new_node->left = NULL;
 	new_node->right = NULL;

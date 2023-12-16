@@ -21,19 +21,19 @@ int	execute_builtin(t_hashtable *hashtable, t_ast *node)
 	else
 		cmds = node->cmds;
 	if (ft_strcmp(cmds, "echo") == 0)
-		return (ft_echo(hashtable, node->args + 1));
+		ft_echo(hashtable, node->args + 1);
 	else if (ft_strcmp(cmds, "cd") == 0)
-		return (ft_cd(hashtable, node->args));
+		ft_cd(hashtable, node->args);
 	else if (ft_strcmp(cmds, "pwd") == 0)
-		return (ft_pwd(hashtable, node->args));
+		ft_pwd(hashtable, node->args);
 	else if (ft_strcmp(cmds, "export") == 0)
-		return (ft_export(hashtable, node->args));
+		ft_export(hashtable, node->args);
 	else if (ft_strcmp(cmds, "unset") == 0)
-		return (ft_unset(hashtable, node->args));
+		ft_unset(hashtable, node->args);
 	else if (ft_strcmp(cmds, "env") == 0)
-		return (ft_env(hashtable, node->args));
+		ft_env(hashtable, node->args);
 	else if (ft_strcmp(cmds, "exit") == 0)
-		ft_exit(hashtable, node->args);
+		return (ft_exit(node->args));
 	else
 		return (1);
 	return (g_global.exit_status);

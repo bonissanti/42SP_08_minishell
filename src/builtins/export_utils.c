@@ -62,7 +62,7 @@ void	env_with_equals(t_hashtable *hashtable, char **args, int i)
 }
 
 // checar se expandimos aqui ou se vem do parser
-void	env_with_value(t_hashtable *hashtable, t_env *env, int i, size_t len)
+void	env_with_value(t_hashtable *hashtable, t_env *env, size_t len)
 {
 	char		*key;
 	char		*value;

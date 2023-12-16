@@ -1,0 +1,16 @@
+#executables
+.out
+.exe
+.bin
+minishell
+
+#object files
+.o
+.txt
+
+#libraries
+.a
+.lib
+
+#folders
+./objs

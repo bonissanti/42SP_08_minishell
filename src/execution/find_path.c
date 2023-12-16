@@ -29,14 +29,13 @@ char	*build_cmd_path(t_ast *node, char *path)
 		free(slash);
 		result = verify_cmd_permissions(full_path);
 		if (result == 0)
+		{
+			free_split(temp_bkp);
 			return (full_path);
+		}
 		free(full_path);
 		temp++;
 	}
 	free_split(temp_bkp);
-	// if (result == 127)
-	// 	ft_fprintf(2, "minishell: %s: command not found\n", node->cmds);
-	// else if (result == 126)
-	// 	ft_fprintf(2, "minishell: %s: %s\n", node->cmds, strerror(errno));
 	return (NULL);
 }

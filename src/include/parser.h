@@ -20,7 +20,7 @@ void		tokenizer(t_global *g_global, char *cmd, t_hashtable *env);
 void 		skip_spaces(char **str);
 int			isdelimiter(char *cmd);
 t_tkn_list	*new_tkn_list(char *content, t_tkn_type type);
-void		handle_token(t_global *g_global, char *str);
+void	    handle_token(t_global *g_global, char *str);
 t_tkn_list	*last_tkn_list(t_tkn_list *tkn_list);
 void		add_tkn_list(t_global *g_global, t_tkn_list *new_list);
 void		print_tkn_list(t_tkn_list *tkn_list);   //DELETE THIS BEFORE DELIVERY 
