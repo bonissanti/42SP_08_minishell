@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 18:45:17 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/16 22:04:09 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/17 17:27:22 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,9 @@ void hd_quit(int signal)
 {
 	if(signal == SIGINT)
 	{
-		rl_clear_history();
-		free_lists(g_global.tkn_list, g_global.cmd_list);
-		delete_node(g_global.ast);
+		free_lists();		
     	destroy_hashtable(g_global.hash);
+		rl_clear_history();
 		exit(130);
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:38:13 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/15 20:01:43 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/17 19:56:29 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,5 @@ int	main(int argc, char **argv, char **envp)
     init_hash(envp);
     init_structs(&exec, 0, sizeof(t_exec));
 	prompt(g_global.hash, exec);
-	// backup_fd(&vtr.exec.old_stdin, &vtr.exec.old_stdout);
-    // exec_multi_cmds(&vtr, hashtable, root);
-    // delete_node(root);
-    // destroy_hashtable(hashtable);
     return (g_global.exit_status);
 }

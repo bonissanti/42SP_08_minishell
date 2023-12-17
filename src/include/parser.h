@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/15 15:21:00 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/17 20:12:27 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@
 
 #include "./minishell.h"
 
-void		tokenizer(t_global *g_global, char *cmd, t_hashtable *env);
+void		tokenizer(t_hashtable *env);
 void 		skip_spaces(char **str);
 int			isdelimiter(char *cmd);
 t_tkn_list	*new_tkn_list(char *content, t_tkn_type type);
-void	    handle_token(t_global *g_global, char *str);
+void	    handle_token(char *str);
 t_tkn_list	*last_tkn_list(t_tkn_list *tkn_list);
-void		add_tkn_list(t_global *g_global, t_tkn_list *new_list);
+void		add_tkn_list(t_tkn_list *new_list);
 void		print_tkn_list(t_tkn_list *tkn_list);   //DELETE THIS BEFORE DELIVERY 
 void		print_cmd_list(t_cmd_list *cmd_list);	//DELETE THIS BEFORE DELIVERY
 char		*tkn_type_string(t_tkn_type type);      //DELETE THIS BEFORE DELIVERY
@@ -55,6 +55,6 @@ t_cmd_list	*find_command(t_cmd_list *cmd_list);
 void		append_expand(t_tkn_list **current);
 void		expand_all(t_tkn_list *tkn_list, t_hashtable *env);
 int			is_redirect(t_tkn_type tkn);
-void		free_lists(t_tkn_list *tkn_list, t_cmd_list *cmd_list);
+void		free_lists(void);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/16 21:32:56 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/17 20:08:56 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,27 +76,27 @@ int	crop_delimiter_tkn(char **cmd)
  * @return: int.
  */
 
-int	crop_quote_tkn_validator(int *i, char **cmd)
-{
-	char quote;
+// int	crop_quote_tkn_validator(int *i, char **cmd)
+// {
+// 	char quote;
 	
-	quote = **cmd;
-	if (**cmd == '\'' || **cmd == '"')
-		quote = **cmd;
-	else if (!isdelimiter(*cmd) && **cmd && **cmd != 32)
-	{
-		while (**cmd && **cmd != 32)
-		{
-			(*i)++;
-			(*cmd)++;
-		}
-	}
-	else
-		return (false);
-	(*i)++;
-	(*cmd)++;
-	return (true);
-}
+// 	quote = **cmd;
+// 	if (**cmd == '\'' || **cmd == '"')
+// 		quote = **cmd;
+// 	else if (!isdelimiter(*cmd) && **cmd && **cmd != 32)
+// 	{
+// 		while (**cmd && **cmd != 32)
+// 		{
+// 			(*i)++;
+// 			(*cmd)++;
+// 		}
+// 	}
+// 	else
+// 		return (false);
+// 	(*i)++;
+// 	(*cmd)++;
+// 	return (true);
+// }
 
 
 /**
@@ -120,9 +120,9 @@ int	crop_quote_tkn_validator(int *i, char **cmd)
 int	crop_quote_tkn(char **cmd)
 {
 	int		i;
-	char	quote;
+	// char	quote;
 
-	quote = **cmd;
+	// quote = **cmd;
 	i = 1;
 	(*cmd)++;
 	while (**cmd && **cmd != 32 && **cmd != '<' && **cmd != '>')
@@ -206,21 +206,21 @@ char	*crop_tkn(char **cmd, t_hashtable *env)
  *
  */
 
-void	tokenizer(t_global *g_global, char *cmd, t_hashtable *env)
+void	tokenizer(t_hashtable *env)
 {
 	char	*actual_cmd;
 
-	actual_cmd = cmd;
-	g_global->tkn_list = NULL;
+	actual_cmd = g_global.readline_input;
+	g_global.tkn_list = NULL;
 	while (*actual_cmd)
 	{
 		if (ft_isspace(*actual_cmd))
 			skip_spaces(&actual_cmd);
 		if (!(*actual_cmd))
 			return ;
-		handle_token(g_global, crop_tkn(&actual_cmd, env));
+		handle_token(crop_tkn(&actual_cmd, env));
 	}
-	expand_all(g_global->tkn_list, env);
+	expand_all(g_global.tkn_list, env);
 }
 
 // int	main(int argc, char **argv, char **envp)
