@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/14 17:58:27 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/16 21:56:36 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void expand_all(t_tkn_list *tkn_list, t_hashtable *env)
 			if(!ft_strncmp(current->content, "$?", 2))
 				return ;
 			else if(*current->content == '$' || *current->content == '\\'
-			|| *current->content == '\'' || *current->content == '"')
+			|| *current->content == '\'' || *current->content == '"' || current->type == IDENTIFIER)
 				analyzing_quotes(env, &current->content);
 			else if(*current->content == '~')
 				expand_tilde(env, current->content);
