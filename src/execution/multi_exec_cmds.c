@@ -106,7 +106,6 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 	}
 	// if (root->type == TYPE_LOGICAL)
 	// 	logical_pipe(exec, hashtable, root, initial_pipe);
-	wait_for_children(root);
 	return (g_global.exit_status);
 }
 

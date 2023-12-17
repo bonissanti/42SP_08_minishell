@@ -43,6 +43,7 @@ void prompt(t_hashtable *env, t_exec exec)
 	while(g_global.exit_status == -1)
 	{
 		init_signals();
+    	init_structs(&exec, 0, sizeof(t_exec));
 		while(!prompt_validation(g_global.readline_input))
 			g_global.readline_input = readline("$ ");
 		add_history(g_global.readline_input);

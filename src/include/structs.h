@@ -99,6 +99,7 @@ typedef struct s_exec
 	int old_stdout;
 	int count_hdoc;
 	int count_pipes;
+	int count_redir;
 }	t_exec;
 
 //############################### Hash ###################################

@@ -16,7 +16,7 @@ void    handle_redirects(t_ast *node);
 void	redirect_input(t_ast *node, char *filename);
 void	redirect_output(t_ast *node, char *filename);
 void	redirect_append(t_ast *node, char *filename);
-void	redirect_fds(t_ast *node, int *prev_pipe);
+void	redirect_fds(t_ast *node);
 void	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 void	simple_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 void	simple_redirect_out(t_exec *exec, t_hashtable *hashtable, t_ast *node, int *prev_pipe);
@@ -30,6 +30,8 @@ int		verify_cmd_permissions(const char *cmd);
 
 void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 			int *prev_pipe);
+void	handle_other(t_exec *exec, t_hashtable *hash, t_ast *node,
+		int *prev_pipe);
 void	execute_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node,
 			int *prev_pipe, int *next_pipe);
 void	logical_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,

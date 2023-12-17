@@ -19,7 +19,6 @@ int	main(int argc, char **argv, char **envp)
     t_exec exec;
 
     init_hash(envp);
-    init_structs(&exec, 0, sizeof(t_exec));
 	prompt(g_global.hash, exec);
 	// backup_fd(&vtr.exec.old_stdin, &vtr.exec.old_stdout);
     // exec_multi_cmds(&vtr, hashtable, root);
