@@ -78,11 +78,8 @@ int	crop_delimiter_tkn(char **cmd)
 
 int	crop_quote_tkn_validator(int *i, char **cmd)
 {
-	char quote;
-	
-	quote = **cmd;
 	if (**cmd == '\'' || **cmd == '"')
-		quote = **cmd;
+		;
 	else if (!isdelimiter(*cmd) && **cmd && **cmd != 32)
 	{
 		while (**cmd && **cmd != 32)
@@ -97,7 +94,6 @@ int	crop_quote_tkn_validator(int *i, char **cmd)
 	(*cmd)++;
 	return (true);
 }
-
 
 /**
  * Function: crop_quote_tkn
@@ -120,32 +116,46 @@ int	crop_quote_tkn_validator(int *i, char **cmd)
 int	crop_quote_tkn(char **cmd)
 {
 	int		i;
-	char	quote;
 
-	quote = **cmd;
 	i = 1;
 	(*cmd)++;
 	while (**cmd && **cmd != 32 && **cmd != '<' && **cmd != '>')
 	{
-		// while (**cmd != quote && **cmd)
-		// {
-		// 	i++;
-		// 	(*cmd)++;
-		// }
-		// i++;
-		// (*cmd)++;
-		// if (crop_quote_tkn_validator(&i, cmd) && (**cmd == '\''
-		// 		|| **cmd == '"'))
-		// 	quote = **cmd;
-		// else
-		// 	return (i);
 		i++;
 		(*cmd)++;
 	}
-	// i++;
-	// (*cmd)++;
 	return (i);
 }
+
+// int	crop_quote_tkn(char **cmd)
+// {
+// 	int		i;
+// 	char	quote;
+
+// 	quote = **cmd;
+// 	i = 1;
+// 	(*cmd)++;
+// 	while (**cmd && **cmd != 32 && **cmd != '<' && **cmd != '>')
+// 	{
+// 		// while (**cmd != quote && **cmd)
+// 		// {
+// 		// 	i++;
+// 		// 	(*cmd)++;
+// 		// }
+// 		// i++;
+// 		// (*cmd)++;
+// 		// if (crop_quote_tkn_validator(&i, cmd) && (**cmd == '\''
+// 		// 		|| **cmd == '"'))
+// 		// 	quote = **cmd;
+// 		// else
+// 		// 	return (i);
+// 		i++;
+// 		(*cmd)++;
+// 	}
+// 	// i++;
+// 	// (*cmd)++;
+// 	return (i);
+// }
 
 /**
  * Function: crop_tkn

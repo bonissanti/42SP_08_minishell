@@ -16,6 +16,7 @@ void    handle_redirects(t_ast *node);
 void	redirect_input(t_ast *node, char *filename);
 void	redirect_output(t_ast *node, char *filename);
 void	redirect_append(t_ast *node, char *filename);
+void	redirect_fds(t_ast *node, int *prev_pipe);
 void	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 void	simple_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 void	simple_redirect_out(t_exec *exec, t_hashtable *hashtable, t_ast *node, int *prev_pipe);

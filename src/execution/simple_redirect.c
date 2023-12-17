@@ -12,7 +12,7 @@ static void	check_pipe(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 	}
 }
 
-static void	redirect_fds(t_ast *node, int *prev_pipe)
+void	redirect_fds(t_ast *node, int *prev_pipe)
 {
 	if (prev_pipe != NULL)
 	{
@@ -50,11 +50,13 @@ void	simple_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 				close(next_pipe[1]);
 			}
 			exec_simple(hashtable, node->left);
+			// exec_forked_cmd(hashtable, node->right->left);
+			// testar com aquele TYPE_REDIRECT ADICIONAL
 			exit(0);
 		}
 		else
 		{
-			waitpid(node->pid, &node->left->num_status, 0);
+			wait_for_children(node);
 			restore_fd(exec->old_stdin, exec->old_stdout);
 			check_pipe(exec, hashtable, node, next_pipe);
 		}
