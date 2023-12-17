@@ -36,6 +36,8 @@ void free_lists(t_tkn_list *tkn_list, t_cmd_list *cmd_list)
 
 void prompt(t_hashtable *env, t_exec exec)
 {
+	int to_exec;
+
 	g_global.readline_input = NULL;
 	g_global.exit_status = -1;
 	while(g_global.exit_status == -1)
@@ -45,14 +47,15 @@ void prompt(t_hashtable *env, t_exec exec)
 			g_global.readline_input = readline("$ ");
 		add_history(g_global.readline_input);
 		tokenizer(&g_global, g_global.readline_input, env);
-		parser(env);
+		to_exec = parser(env);
 		g_global.ast = init_ast(g_global.cmd_list, &exec);
 		backup_fd(&exec.old_stdin, &exec.old_stdout);
-		exec_multi_cmds(&exec, env, g_global.ast);
+		if (to_exec != 2)
+			exec_multi_cmds(&exec, env, g_global.ast);
+		delete_node(g_global.ast);
 		free_lists(g_global.tkn_list, g_global.cmd_list);
 		restore_fd(exec.old_stdin, exec.old_stdout);
 		free(g_global.readline_input);
-		delete_node(g_global.ast);
 		g_global.readline_input = NULL;
 	}
     destroy_hashtable(env);

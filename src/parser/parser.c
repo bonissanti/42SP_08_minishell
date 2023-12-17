@@ -36,7 +36,7 @@ int	command_consistency(t_tkn_list *tokenized)
 	|| head->type == PIPE || head->type == C_PARENTESIS)
 	{
 		ft_printf("syntax error near unexpected token `%s'\n", tkn_type_converter(head->type));
-		exit(2);
+		return (2);
 	}
 	else if (tail->type == O_PARENTESIS || is_redirect(tail->type))
 	{
@@ -44,7 +44,7 @@ int	command_consistency(t_tkn_list *tokenized)
 			ft_printf("syntax error near unexpected token `%s'\n", tkn_type_converter(tail->type));
 		else
 			ft_printf("syntax error near unexpected token `newline'\n");
-		exit(2);
+		return (2);
 	}
 	return (1);
 }
@@ -124,10 +124,13 @@ void	join_args(t_tkn_list *tkn_list)
  * 
 */
 
-void parser(t_hashtable *env)
+int parser(t_hashtable *env)
 {
+	int to_exec;
+
 	(void)env;
-	command_consistency(g_global.tkn_list);
+	to_exec = command_consistency(g_global.tkn_list);
 	join_args(g_global.tkn_list);
 	// print_cmd_list(g_global.cmd_list);
+	return (to_exec);
 }

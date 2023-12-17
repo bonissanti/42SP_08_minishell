@@ -39,13 +39,12 @@ void	execute_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node,
 			close(next_pipe[0]);
 			close(next_pipe[1]);
 		}
-		analyze_cmd(hashtable, node);
-		execve(node->path, node->args, NULL);
+		exec_simple(hashtable, node);
 		exit(0);
 	}
 	else
 	{
-		wait(NULL);
+		// wait_for_children(node);
 		if (prev_pipe && !next_pipe)
 			close(prev_pipe[1]);
 		if (next_pipe && exec->count_pipes >= 1)
@@ -110,6 +109,7 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 
 	if (node == NULL)
 		return ;
+
 	if (node->type == TYPE_PIPE)
 	{
 		pipe(next_pipe);

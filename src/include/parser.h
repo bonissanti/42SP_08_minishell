@@ -26,7 +26,7 @@ void		add_tkn_list(t_global *g_global, t_tkn_list *new_list);
 void		print_tkn_list(t_tkn_list *tkn_list);   //DELETE THIS BEFORE DELIVERY 
 void		print_cmd_list(t_cmd_list *cmd_list);	//DELETE THIS BEFORE DELIVERY
 char		*tkn_type_string(t_tkn_type type);      //DELETE THIS BEFORE DELIVERY
-void		parser(t_hashtable *env);
+int         parser(t_hashtable *env);
 int			command_consistency(t_tkn_list *tokenized);
 int			handle_redirect(t_tkn_type tkn);
 void		join_args(t_tkn_list *tkn_list);

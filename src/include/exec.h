@@ -51,10 +51,12 @@ void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable);
 
 //############################# EXECUTION ####################################//
 
+int		exec_simple(t_hashtable *hash, t_ast *node);
 int		exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root);
 int		forking(t_ast *node);
-int		execute_command(t_hashtable *hashtable, t_ast *node);
+int		exec_forked_cmd(t_hashtable *hashtable, t_ast *node);
 void	close_all_fds(int *fd);
+void    wait_for_children(t_ast *node);
 // void	handle_cmd(t_exec *exec, t_hashtable *hashtable, t_ast *node); //temp
 
 // void print_pipe_contents(int *pipefd); // Remover depois

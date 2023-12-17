@@ -35,17 +35,20 @@ void handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
 	char *line;
 	char *filename;
+	size_t len;
 
 	filename = generate_filename(exec->count_hdoc);
 	node->out_fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	while (1)
 	{
+		len = 0;
 		line = readline("> ");
 		if (!ft_strcmp(line, node->delim))
 		{
 			free(line);
 			break ;
 		}
+		line = check_expansion(hash, &line, &len);
 		if (node->print_hdoc)
 			ft_putendl_fd(line, node->out_fd);
 		free(line);
@@ -53,23 +56,31 @@ void handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 	close(node->out_fd);
 	if (node->print_hdoc)
 		open_execute(hash, node, filename);
+	else
+	{
+		free(filename);
+		node->left = NULL;
+		exec_multi_cmds(exec, hash, node->right);
+	}
 }
 
 static void open_execute(t_hashtable *hash, t_ast *node, char *filename)
 {
 	
-	analyze_cmd(hash, node->left);
 	node->pid = fork();
 	if (node->pid == 0)
 	{
 		node->in_fd = open(filename, O_RDONLY);
 		dup2(node->in_fd, STDIN_FILENO);
 		close(node->in_fd);
-		execve(node->left->path, node->left->args, NULL);
+		exec_simple(hash, node->left);
 		exit(0);
 	}
 	else
+	{
 		wait(NULL);
+		free(filename);
+	}
 }
 
 void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable)
@@ -122,7 +133,7 @@ char	*check_expansion(t_hashtable *env, char **line, size_t *len)
 // 		{
 // 			dup2(next_pipe[1], STDOUT_FILENO);
 // 			close(next_pipe[1]);
-// 			execute_command(hash, node->left);
+// 			exec_simple(hash, node->left);
 // 		}
 // 		else
 // 		{
@@ -136,13 +147,13 @@ char	*check_expansion(t_hashtable *env, char **line, size_t *len)
 // 	{
 // 		handle_redirects(node->right);
 // 		dup2(node->right->out_fd, STDOUT_FILENO);
-// 		execute_command(hash, node->left);
+// 		exec_forked_cmd(hash, node->left);
 // 	}
 // 	else if (node->right->type == TYPE_LOGICAL)
 // 	{
 // 		node->pid = fork();
 // 		if (node->pid == 0)
-// 			execute_command(hash, node->left);
+// 			exec_forked_cmd(hash, node->left);
 // 		else
 // 		{
 // 			waitpid(node->pid, &node->left->num_status, 0);

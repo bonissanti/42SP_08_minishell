@@ -30,7 +30,7 @@ void	logical_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
 		}
 		if (node->pid == 0)
 		{
-			g_global.exit_status = execute_command(hash, node->left);
+			g_global.exit_status = exec_forked_cmd(hash, node->left);
 			exit(g_global.exit_status);
 		}
 		else

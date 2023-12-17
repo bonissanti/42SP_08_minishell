@@ -64,7 +64,7 @@ t_bool	analyze_cmd(t_hashtable *hashtable, t_ast *node)
 	{
 		path = search(hashtable, "PATH")->value;
 		node->path = build_cmd_path(node, path);
-		if (node->path == NULL && ft_strcmp(node->cmds, "exit") != 0)
+		if (node->path == NULL && ft_strcmp(node->cmds, "exit") != 0 && ft_strcmp(node->cmds, "cd") != 0)
 		{
 			handle_error(node, 126);
 			return (false);

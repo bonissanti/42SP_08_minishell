@@ -12,7 +12,6 @@ static void	check_pipe(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 	}
 }
 
-
 static void	redirect_fds(t_ast *node, int *prev_pipe)
 {
 	if (prev_pipe != NULL)
@@ -50,8 +49,7 @@ void	simple_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 				dup2(next_pipe[1], STDOUT_FILENO);
 				close(next_pipe[1]);
 			}
-			analyze_cmd(hashtable, node->left);
-			execve(node->left->path, node->left->args, NULL);		
+			exec_simple(hashtable, node->left);
 			exit(0);
 		}
 		else

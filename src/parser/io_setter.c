@@ -32,7 +32,7 @@ void set_command_input(t_cmd_list **cmd_list, t_cmd_list *head)
 		*cmd_list = (*cmd_list)->next;
 	if(*cmd_list && (*cmd_list)->type == TYPE_COMMAND)
 	{
-		if (!head->here_doc && head->next->type == TYPE_FILE)
+		if (!head->here_doc && head->next && head->next->type == TYPE_FILE)
 		{
 			(*cmd_list)->infile = head->next->args;
 			(*cmd_list)->here_doc_fd = 0;

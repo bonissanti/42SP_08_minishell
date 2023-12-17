@@ -29,3 +29,17 @@ void	ft_printf_fd(int fd)
 	}
 	ft_fprintf(2, "____________________\n");
 }
+
+int	exec_simple(t_hashtable *hash, t_ast *node)
+{
+	if (!analyze_cmd(hash, node))
+		return (g_global.cmd_status);
+	if (is_builtin(node))
+		execute_builtin(hash, node);
+	else
+		g_global.cmd_status = execve(node->path, node->args, NULL);
+	delete_node(g_global.ast);
+	destroy_hashtable(hash);
+	free_lists(g_global.tkn_list, g_global.cmd_list);
+	return (g_global.exit_status);
+}

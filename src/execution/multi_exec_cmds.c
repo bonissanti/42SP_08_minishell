@@ -12,7 +12,6 @@
 
 #include "../include/minishell.h"
 
-static void    wait_for_children(t_ast *node);
 // static void open_execute(t_hashtable *hash, t_exec *exec, t_ast *node, char *filename);
 
 // static char *generate_filename(int count_hdoc)
@@ -70,6 +69,18 @@ static void    wait_for_children(t_ast *node);
 // 		wait(NULL);
 // }
 
+// static t_bool valid_node(t_ast *node)
+// {
+// 	if ((node->type == TYPE_COMMAND || node->type == TYPE_REDIRECT || node->type == TYPE_PIPE 
+// 		|| node->type == TYPE_HEREDOC || node->type == TYPE_LOGICAL)
+// 		&& (node->left == NULL && node->right == NULL))
+// 	{
+// 		g_global.cmd_status = 2;
+// 		return (true);
+// 	}
+// 	return (false);
+// }
+
 int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 {
 	int	initial_pipe[2];
@@ -78,8 +89,9 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 	initial_pipe[1] = -1;
 	if (root == NULL)
 		return (0);
+
 	if (root->type == TYPE_COMMAND)
-		execute_command(hashtable, root);
+		exec_forked_cmd(hashtable, root);
 	if (root->type == TYPE_REDIRECT)
 	{
 		handle_redirects(root);
@@ -94,13 +106,11 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 	}
 	if (root->type == TYPE_LOGICAL)
 		logical_pipe(exec, hashtable, root, initial_pipe);
-	// else if (root->right && root->right->type != TYPE_FILE)
-	// 	exec_multi_cmds(exec, hashtable, root->right);
 	wait_for_children(root);
 	return (g_global.exit_status);
 }
 
-static void    wait_for_children(t_ast *node)
+void    wait_for_children(t_ast *node)
 {
     int status;
 
@@ -120,7 +130,7 @@ static void    wait_for_children(t_ast *node)
         wait_for_children(node->right);
 }
 
-int	execute_command(t_hashtable *hashtable, t_ast *node)
+int	exec_forked_cmd(t_hashtable *hashtable, t_ast *node)
 {
 	if (!analyze_cmd(hashtable, node))
 		return (g_global.cmd_status);

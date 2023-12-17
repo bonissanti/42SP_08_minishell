@@ -24,7 +24,7 @@
 // 	}
 // }
 
-// static void execute_command(t_hashtable *hashtable, t_ast *node)
+// static void exec_forked_cmd(t_hashtable *hashtable, t_ast *node)
 // {
 // 	char *path;
 // 	int result;
