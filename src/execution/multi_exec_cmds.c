@@ -104,8 +104,8 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 		handle_pipes(hashtable, exec, root, initial_pipe);
 		restore_fd(exec->old_stdin, exec->old_stdout);
 	}
-	if (root->type == TYPE_LOGICAL)
-		logical_pipe(exec, hashtable, root, initial_pipe);
+	// if (root->type == TYPE_LOGICAL)
+	// 	logical_pipe(exec, hashtable, root, initial_pipe);
 	wait_for_children(root);
 	return (g_global.exit_status);
 }
