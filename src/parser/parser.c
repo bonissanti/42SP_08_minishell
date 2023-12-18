@@ -27,21 +27,23 @@
 
 int	command_consistency(t_tkn_list *tokenized)
 {
-	t_tkn_list *head;
-	t_tkn_list *tail;
+	t_tkn_list	*head;
+	t_tkn_list	*tail;
 
 	head = tokenized;
 	tail = last_tkn_list(tokenized);
-	if(head->type ==  OR || head->type == AND
-	|| head->type == PIPE || head->type == C_PARENTESIS)
+	if (head->type == OR || head->type == AND || head->type == PIPE
+		|| head->type == C_PARENTESIS)
 	{
-		ft_printf("syntax error near unexpected token `%s'\n", tkn_type_converter(head->type));
+		ft_printf("syntax error near unexpected token `%s'\n",
+			tkn_type_converter(head->type));
 		return (2);
 	}
 	else if (tail->type == O_PARENTESIS || is_redirect(tail->type))
 	{
 		if (tail->type == O_PARENTESIS)
-			ft_printf("syntax error near unexpected token `%s'\n", tkn_type_converter(tail->type));
+			ft_printf("syntax error near unexpected token `%s'\n",
+				tkn_type_converter(tail->type));
 		else
 			ft_printf("syntax error near unexpected token `newline'\n");
 		return (2);
@@ -63,16 +65,16 @@ int	command_consistency(t_tkn_list *tokenized)
  * 
 */
 
-t_cmd_list *rewind_list(t_cmd_list **cmd_list)
+t_cmd_list	*rewind_list(t_cmd_list **cmd_list)
 {
-	if((*cmd_list)->prev == NULL)
+	if ((*cmd_list)->prev == NULL)
 		return (*cmd_list);
 	else
 	{
-		while((*cmd_list)->prev != NULL)
+		while ((*cmd_list)->prev != NULL)
 			*cmd_list = (*cmd_list)->prev;
 	}
-	return(*cmd_list);
+	return (*cmd_list);
 }
 
 /**
@@ -93,12 +95,12 @@ t_cmd_list *rewind_list(t_cmd_list **cmd_list)
 void	join_args(t_tkn_list *tkn_list)
 {
 	t_tkn_list	*current;
-	
+
 	current = tkn_list;
-	while(current)
+	while (current)
 	{
-		if (current && (current->type == IDENTIFIER
-		|| current->type == EXPAND || current->type == WILD))
+		if (current && (current->type == IDENTIFIER || current->type == EXPAND
+				|| current->type == WILD))
 			new_cmd_file_node(&current);
 		if (current && is_redirect(current->type))
 			new_redirect_node(&current);
@@ -124,13 +126,12 @@ void	join_args(t_tkn_list *tkn_list)
  * 
 */
 
-int parser(t_hashtable *env)
+int	parser(t_hashtable *env)
 {
-	int to_exec;
+	int	to_exec;
 
 	(void)env;
 	to_exec = command_consistency(g_global.tkn_list);
 	join_args(g_global.tkn_list);
-	// print_cmd_list(g_global.cmd_list);
 	return (to_exec);
 }

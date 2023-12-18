@@ -24,22 +24,22 @@
  * 
  * @return: t_cmd_list *.
  * 
-*/
+ */
 
-t_cmd_list *find_command(t_cmd_list *cmd_list)
+t_cmd_list	*find_command(t_cmd_list *cmd_list)
 {
-	t_cmd_list *current_command;
-	
+	t_cmd_list	*current_command;
+
 	current_command = NULL;
-	while(cmd_list)
+	while (cmd_list)
 	{
-		if(cmd_list->type == TYPE_COMMAND)
+		if (cmd_list->type == TYPE_COMMAND)
 			current_command = cmd_list;
-		else if(cmd_list->type == TYPE_LOGICAL || cmd_list->type == TYPE_PIPE)
+		else if (cmd_list->type == TYPE_LOGICAL || cmd_list->type == TYPE_PIPE)
 			current_command = NULL;
 		cmd_list = cmd_list->next;
 	}
-	return(current_command);
+	return (current_command);
 }
 
 /**
@@ -55,19 +55,22 @@ t_cmd_list *find_command(t_cmd_list *cmd_list)
  * 
 */
 
-void append_expand(t_tkn_list **current)
+void	append_expand(t_tkn_list **current)
 {
-	while(*current && ((*current)->type == IDENTIFIER || (*current)->type == EXPAND || (*current)->type == WILD))
-	{			
-		if(!*current)
+	while (*current && ((*current)->type == IDENTIFIER
+			|| (*current)->type == EXPAND || (*current)->type == WILD))
+	{
+		if (!*current)
 			return ;
-		if((*current)->type != IDENTIFIER && (*current)->type != EXPAND && (*current)->type != WILD)
-			return ;	
+		if ((*current)->type != IDENTIFIER && (*current)->type != EXPAND
+			&& (*current)->type != WILD)
+			return ;
 		else
 		{
 			g_global.cmd_list = find_command(g_global.cmd_list);
 			g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, " ");
-			g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args, (*current)->content);
+			g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args,
+					(*current)->content);
 		}
 		*current = (*current)->next;
 	}

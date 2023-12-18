@@ -26,14 +26,14 @@
  * 
 */
 
-int tkn_list_size(t_tkn_list *tkn_list)
+int	tkn_list_size(t_tkn_list *tkn_list)
 {
-	int total;
-	t_tkn_list * head;
+	int			total;
+	t_tkn_list	*head;
 
 	total = 0;
 	head = tkn_list;
-	while(head)
+	while (head)
 	{
 		head = head->next;
 		total++;
@@ -60,7 +60,7 @@ t_tkn_list	*new_tkn_list(char *content, t_tkn_type type)
 	if (!node)
 		return (NULL);
 	node->type = type;
-	if(type == IDENTIFIER || type == WILD || type == EXPAND)
+	if (type == IDENTIFIER || type == WILD || type == EXPAND)
 		node->content = content;
 	else
 		node->content = NULL;
@@ -80,11 +80,11 @@ t_tkn_list	*new_tkn_list(char *content, t_tkn_type type)
  * 
 */
 
-t_tkn_list *last_tkn_list(t_tkn_list *tkn_list)
+t_tkn_list	*last_tkn_list(t_tkn_list *tkn_list)
 {
-	while(tkn_list->next != NULL)
+	while (tkn_list->next != NULL)
 		tkn_list = tkn_list->next;
-	return(tkn_list);
+	return (tkn_list);
 }
 
 /**
@@ -99,11 +99,11 @@ t_tkn_list *last_tkn_list(t_tkn_list *tkn_list)
  * 
 */
 
-void add_tkn_list(t_tkn_list *new_list)
+void	add_tkn_list(t_tkn_list *new_list)
 {
-	t_tkn_list *last;
+	t_tkn_list	*last;
 
-	if(!tkn_list_size(g_global.tkn_list))
+	if (!tkn_list_size(g_global.tkn_list))
 		g_global.tkn_list = new_list;
 	else
 	{
@@ -125,21 +125,13 @@ void add_tkn_list(t_tkn_list *new_list)
  * 
 */
 
-void free_tkn_list(t_tkn_list *tkn_list)
+void	free_tkn_list(t_tkn_list *tkn_list)
 {
-	t_tkn_list *temp;
+	t_tkn_list	*temp;
 
-	while(tkn_list)
+	while (tkn_list)
 	{
 		temp = tkn_list->next;
-		// ft_printf("free &tkn_list->content: %p\n", &tkn_list->content);
-		// ft_printf("free tkn_list->content: %p\n", tkn_list->content);
-		// ft_printf("free tkn_list: %p\n", tkn_list);
-		// ft_printf("free *tkn_list: %p\n", *tkn_list);
-		// free(&tkn_list->content);
-		// tkn_list = NULL;
-		// free(&tkn_list);
-		// tkn_list = NULL;
 		ft_safe_free((void **)&tkn_list->content);
 		ft_safe_free((void **)&tkn_list);
 		tkn_list = temp;

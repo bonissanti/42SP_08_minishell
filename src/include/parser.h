@@ -22,7 +22,6 @@ t_tkn_list	*new_tkn_list(char *content, t_tkn_type type);
 void		handle_token(char *str);
 t_tkn_list	*last_tkn_list(t_tkn_list *tkn_list);
 void		add_tkn_list(t_tkn_list *new_list);
-
 int			parser(t_hashtable *env);
 int			command_consistency(t_tkn_list *tokenized);
 int			handle_redirect(t_tkn_type tkn);

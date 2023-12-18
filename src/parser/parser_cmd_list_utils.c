@@ -26,14 +26,14 @@
  * 
 */
 
-int cmd_list_size(t_cmd_list *cmd_list)
+int	cmd_list_size(t_cmd_list *cmd_list)
 {
-	int total;
-	t_cmd_list * head;
+	int			total;
+	t_cmd_list	*head;
 
 	total = 0;
 	head = cmd_list;
-	while(head)
+	while (head)
 	{
 		head = head->next;
 		total++;
@@ -59,16 +59,16 @@ t_cmd_list	*new_cmd_list(t_cmd_list node)
 	if (!new_node)
 		return (NULL);
 	new_node->type = node.type;
-	if(node.args)
-    	new_node->args = ft_strdup(node.args);
-    new_node->weight = node.weight;
-	if(node.infile)
-    	new_node->infile = ft_strdup(node.infile);
-	if(node.outfile)
-    	new_node->outfile = ft_strdup(node.outfile);
-   	new_node->here_doc = node.here_doc;
-    new_node->next = NULL;
-    new_node->prev = NULL;
+	if (node.args)
+		new_node->args = ft_strdup(node.args);
+	new_node->weight = node.weight;
+	if (node.infile)
+		new_node->infile = ft_strdup(node.infile);
+	if (node.outfile)
+		new_node->outfile = ft_strdup(node.outfile);
+	new_node->here_doc = node.here_doc;
+	new_node->next = NULL;
+	new_node->prev = NULL;
 	return (new_node);
 }
 
@@ -84,11 +84,11 @@ t_cmd_list	*new_cmd_list(t_cmd_list node)
  * 
 */
 
-t_cmd_list *last_cmd_list(t_cmd_list *cmd_list)
+t_cmd_list	*last_cmd_list(t_cmd_list *cmd_list)
 {
-	while(cmd_list->next != NULL)
+	while (cmd_list->next != NULL)
 		cmd_list = cmd_list->next;
-	return(cmd_list);
+	return (cmd_list);
 }
 
 /**
@@ -103,11 +103,11 @@ t_cmd_list *last_cmd_list(t_cmd_list *cmd_list)
  * 
 */
 
-void add_cmd_list(t_cmd_list new_list)
+void	add_cmd_list(t_cmd_list new_list)
 {
-	t_cmd_list *last;
+	t_cmd_list	*last;
 
-	if(!cmd_list_size(g_global.cmd_list))
+	if (!cmd_list_size(g_global.cmd_list))
 		g_global.cmd_list = new_cmd_list(new_list);
 	else
 	{
@@ -129,11 +129,11 @@ void add_cmd_list(t_cmd_list new_list)
  * 
 */
 
-void free_cmd_list(t_cmd_list *cmd_list)
+void	free_cmd_list(t_cmd_list *cmd_list)
 {
-	t_cmd_list *temp;
+	t_cmd_list	*temp;
 
-	while(cmd_list)
+	while (cmd_list)
 	{
 		temp = cmd_list->next;
 		ft_safe_free((void **)&cmd_list->args);
@@ -142,29 +142,3 @@ void free_cmd_list(t_cmd_list *cmd_list)
 		cmd_list = temp;
 	}
 }
-
-
-// void free_cmd_list(t_cmd_list *cmd_list)
-// {
-// 	t_cmd_list *head;
-// 	t_cmd_list *temp;
-// 	char *temp_infile;
-// 	char *temp_outfile;
-// 	char *temp_args;
-
-// 	head = cmd_list;
-// 	while(head)
-// 	{
-// 		temp = head->next;
-// 		temp_infile = head->infile;
-// 		temp_outfile = head->outfile;
-// 		temp_args = head->args;
-// 		ft_safe_free((void **)&head->args);
-// 		head->here_doc_fd = 0;
-// 		ft_safe_free((void **)&head);
-// 		temp_infile = NULL;
-// 		temp_outfile = NULL;
-// 		temp_args = NULL;
-// 		head = temp;
-// 	}
-// }

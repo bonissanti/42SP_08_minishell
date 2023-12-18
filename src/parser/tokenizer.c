@@ -114,9 +114,9 @@ int	crop_quote_tkn(char **cmd)
 		closed = true;
 		i++;
 		(*cmd)++;
-		if((**cmd == '<' || **cmd == '>') && closed)
-			return(i);
-		else if(**cmd == '\'' || **cmd == '"')
+		if ((**cmd == '<' || **cmd == '>') && closed)
+			return (i);
+		else if (**cmd == '\'' || **cmd == '"')
 		{
 			quote = **cmd;
 			closed = false;

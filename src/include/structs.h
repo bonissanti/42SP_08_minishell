@@ -1,32 +1,32 @@
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-#include "../../libft/libft.h"
-#include <dirent.h>
+# include "../../libft/libft.h"
+# include <dirent.h>
 
 //############################### Parser ###################################
 
-typedef enum
+typedef enum t_type
 {
-    TYPE_COMMAND,
-    TYPE_LOGICAL,
-    TYPE_SUBSHELL,
-    TYPE_PIPE,
+	TYPE_COMMAND,
+	TYPE_LOGICAL,
+	TYPE_SUBSHELL,
+	TYPE_PIPE,
 	TYPE_FILE,
 	TYPE_HEREDOC,
-    TYPE_REDIRECT,
-}    t_type;
+	TYPE_REDIRECT,
+}						t_type;
 
-typedef enum
+typedef enum t_op
 {
 	OP_REDIRECT = 3,
 	OP_HEREDOC = 3,
-	OP_PIPE = 3,  
+	OP_PIPE = 3,
 	OP_LOGICAL = 3,
 	DEFAULT = 0,
-}	t_op;
+}						t_op;
 
-typedef enum 
+typedef enum t_tkn_type
 {
 	IDENTIFIER,
 	INFILE,
@@ -40,113 +40,113 @@ typedef enum
 	OR,
 	EXPAND,
 	WILD
-} t_tkn_type;
+}						t_tkn_type;
 
-typedef struct s_tkn_list 
+typedef struct s_tkn_list
 {
 	t_tkn_type			type;
 	char				*content;
 	struct s_tkn_list	*next;
 	struct s_tkn_list	*prev;
-} t_tkn_list;
+}						t_tkn_list;
 
 typedef struct s_cmd_list
-{    
-    t_type 	type;
-    char *args;
-    t_op	weight;
-    char *infile;
-    char *outfile;
-	int	here_doc_fd;
-	t_bool here_doc;
+{
+	t_type				type;
+	char				*args;
+	t_op				weight;
+	char				*infile;
+	char				*outfile;
+	int					here_doc_fd;
+	t_bool				here_doc;
 	struct s_cmd_list	*next;
 	struct s_cmd_list	*prev;
-} t_cmd_list;
+}						t_cmd_list;
 
 //############################### Ast ###################################
 
 typedef struct s_ast
 {
-	char *cmds;
-	char **args;
-	char *path;
-	char *delim;
-	char *test;
-	char *infile;
-	char *outfile;
-	int num_status;
-	int	in_fd;
-	int	out_fd;
-	t_op weight;
-	t_type type;
-	pid_t pid;
-	t_bool print_hdoc;
-	t_bool print_redir;
-	t_bool subshell;
-	struct s_ast *left;
-	struct s_ast *right;
-} 	t_ast;
+	char				*cmds;
+	char				**args;
+	char				*path;
+	char				*delim;
+	char				*test;
+	char				*infile;
+	char				*outfile;
+	int					num_status;
+	int					in_fd;
+	int					out_fd;
+	t_op				weight;
+	t_type				type;
+	pid_t				pid;
+	t_bool				print_hdoc;
+	t_bool				print_redir;
+	t_bool				subshell;
+	struct s_ast		*left;
+	struct s_ast		*right;
+}						t_ast;
 
 typedef struct s_exec
 {
-	int prev[2];
-	int next[2];
-	int	in_fd;
-	int	out_fd;
-	int old_stdin;
-	int old_stdout;
-	int count_hdoc;
-	int count_pipes;
-}	t_exec;
+	int					prev[2];
+	int					next[2];
+	int					in_fd;
+	int					out_fd;
+	int					old_stdin;
+	int					old_stdout;
+	int					count_hdoc;
+	int					count_pipes;
+}						t_exec;
 
 //############################### Hash ###################################
 
 typedef struct s_hash
 {
-	char *key;
-	char *value;
-	struct s_hash *next;
-}			t_hash;	
+	char				*key;
+	char				*value;
+	struct s_hash		*next;
+}						t_hash;
 
 typedef struct s_hashtable
 {
-	int num_keys;
-	t_hash *buckets[101];
-	t_hash *home;
-}			t_hashtable;
+	int					num_keys;
+	t_hash				*buckets[101];
+	t_hash				*home;
+}						t_hashtable;
 
 //############################### Exec ###################################
 
 typedef struct s_cmd
 {
-	char	*name;
-	char	*cmd;
-	void	(*function)(t_hashtable *hash_table, char **args);
-}		t_cmd;
+	char				*name;
+	char				*cmd;
+	void				(*function)(t_hashtable *hash_table, char **args);
+}						t_cmd;
 
 typedef struct s_redirect
 {
-	char	*name;
-	void	(*function)(t_ast *node, char *filename);
-}		t_redirect;
+	char				*name;
+	void				(*function)(t_ast *node, char *filename);
+}						t_redirect;
 
 typedef struct s_vector
 {
-	t_exec		exec;
-	t_redirect  redirect[5];
-    t_cmd	    builtins[7];
-}		t_vector;
+	t_exec				exec;
+	t_redirect			redirect[5];
+	t_cmd				builtins[7];
+}						t_vector;
 
 //############################### Builtins ###################################
 
 typedef struct s_env
 {
-	char	*key;
-	char	**env;
-	char	*value;
-	char	**equals_sign;
-	int		num_env;
-}			t_env;
+	char				*key;
+	char				**env;
+	char				*value;
+	char				**equals_sign;
+	int					num_env;
+}						t_env;
 
 //############################### Segments ###################################
 
@@ -202,15 +202,16 @@ typedef struct s_lex
 
 //############################### Global ###################################
 
-typedef struct s_global{
-	char		*readline_input;
-	t_tkn_list	*tkn_list;
-	t_cmd_list	*cmd_list;
-	int			exit_status;
-	int			cmd_status;
-	t_hashtable *hash;
-	t_ast		*ast;
+typedef struct s_global
+{
+	char				*readline_input;
+	t_tkn_list			*tkn_list;
+	t_cmd_list			*cmd_list;
+	int					exit_status;
+	int					cmd_status;
+	t_hashtable			*hash;
+	t_ast				*ast;
 
-} t_global;
+}						t_global;
 
 #endif

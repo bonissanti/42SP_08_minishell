@@ -13,25 +13,25 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <errno.h>
-#include <sys/wait.h>
-#include <sys/stat.h>
-#include "./structs.h"
-#include "./segments.h"
-#include "./parser.h"
-#include "./ast.h"
-#include "./hash.h"
-#include "./exec.h"
-#include "./builtins.h"
-#include "./signals.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <errno.h>
+# include <sys/wait.h>
+# include <sys/stat.h>
+# include "./structs.h"
+# include "./segments.h"
+# include "./parser.h"
+# include "./ast.h"
+# include "./hash.h"
+# include "./exec.h"
+# include "./builtins.h"
+# include "./signals.h"
 
-extern t_global g_global;
+extern t_global	g_global;
 
-void 	prompt(t_hashtable *env, t_exec exec);
+void			prompt(t_hashtable *env, t_exec exec);
 
 #endif

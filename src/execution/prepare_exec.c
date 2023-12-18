@@ -21,6 +21,32 @@ t_bool	is_empty_cmd(char *cmd)
 	return (false);
 }
 
+t_ast	*find_heredoc(t_ast *root)
+{
+	if (root == NULL)
+		return (NULL);
+
+	while (root)
+	{
+		if (root->type == TYPE_HEREDOC)
+			return (root);
+		else if (root->right)
+			root = root->right;
+		else
+			break ;
+	}
+	return (NULL);
+}
+
+void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable)
+{
+	analyze_if_print(node, 0);
+	if (node->type == TYPE_HEREDOC)
+		handle_heredoc(hashtable, exec, node);
+	else
+		exec_multi_cmds(exec, hashtable, node->right);
+}
+
 t_bool	analyze_cmd(t_hashtable *hashtable, t_ast *node)
 {
 	char	*path;
@@ -63,18 +89,4 @@ void	handle_error(t_ast *node, int result)
 		ft_fprintf(2, "minishell: %s: %s\n", node->cmds, strerror(errno));
 	}
 	return ;
-}
-
-void	backup_fd(int *old_stdin, int *old_stdout)
-{
-	*old_stdin = dup(STDIN_FILENO);
-	*old_stdout = dup(STDOUT_FILENO);
-}
-
-void	restore_fd(int reset_stdin, int reset_stdout)
-{
-	dup2(reset_stdin, STDIN_FILENO);
-	dup2(reset_stdout, STDOUT_FILENO);
-	close(reset_stdin);
-	close(reset_stdout);
 }

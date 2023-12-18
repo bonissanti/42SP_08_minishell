@@ -25,11 +25,11 @@
  * 
 */
 
-int is_expander(char x)
+int	is_expander(char x)
 {
-	if(x == '$' || x == '*' || x == '~')
+	if (x == '$' || x == '*' || x == '~')
 		return (true);
-	return(false);
+	return (false);
 }
 
 /**
@@ -49,13 +49,13 @@ int is_expander(char x)
  * 
 */
 
-char *append_expanded(char *cmd, char **exp, t_hashtable *env, int index)
+char	*append_expanded(char *cmd, char **exp, t_hashtable *env, int index)
 {
-	char *to_expand;
+	char	*to_expand;
 
 	to_expand = ft_substr(*exp, 0, crop_delimiter_tkn(exp));
 	analyzing_quotes(env, &to_expand);
-	return(gnl_strjoin(ft_substr(cmd, 0, index), to_expand));
+	return (gnl_strjoin(ft_substr(cmd, 0, index), to_expand));
 }
 
 /**
@@ -73,23 +73,25 @@ char *append_expanded(char *cmd, char **exp, t_hashtable *env, int index)
  * 
 */
 
-void expand_all(t_tkn_list *tkn_list, t_hashtable *env)
+void	expand_all(t_tkn_list *tkn_list, t_hashtable *env)
 {
-	t_tkn_list *current;
-	
+	t_tkn_list	*current;
+
 	current = tkn_list;
-	while(current)
+	while (current)
 	{
-		if(current->type == EXPAND || current->type == WILD || current->type == IDENTIFIER)
+		if (current->type == EXPAND || current->type == WILD
+			|| current->type == IDENTIFIER)
 		{
-			if(!ft_strncmp(current->content, "$?", 2))
+			if (!ft_strncmp(current->content, "$?", 2))
 				return ;
-			else if(*current->content == '$' || *current->content == '\\'
-			|| *current->content == '\'' || *current->content == '"' || current->type == IDENTIFIER)
+			else if (*current->content == '$' || *current->content == '\\'
+				|| *current->content == '\'' || *current->content == '"'
+				|| current->type == IDENTIFIER)
 				analyzing_quotes(env, &current->content);
-			else if(*current->content == '~')
+			else if (*current->content == '~')
 				expand_tilde(env, current->content);
-			else if(*current->content == '*')
+			else if (*current->content == '*')
 				handle_wildcard(&current->content);
 		}
 		current = current->next;
@@ -110,29 +112,29 @@ void expand_all(t_tkn_list *tkn_list, t_hashtable *env)
  * 
 */
 
-void handle_token(char *str)
+void	handle_token(char *str)
 {
-	if(*str == '(')
+	if (*str == '(')
 		add_tkn_list(new_tkn_list(str, O_PARENTESIS));
-	else if(*str == ')')
+	else if (*str == ')')
 		add_tkn_list(new_tkn_list(str, C_PARENTESIS));
-	else if(!ft_strncmp(str, ">>", 2))
+	else if (!ft_strncmp(str, ">>", 2))
 		add_tkn_list(new_tkn_list(str, APPEND));
-	else if(*str == '>')
+	else if (*str == '>')
 		add_tkn_list(new_tkn_list(str, REDIRECT));
-	else if(!ft_strncmp(str, "<<", 2))
+	else if (!ft_strncmp(str, "<<", 2))
 		add_tkn_list(new_tkn_list(str, HERE_DOC));
-	else if(*str == '<')
+	else if (*str == '<')
 		add_tkn_list(new_tkn_list(str, INFILE));
-	else if(!ft_strncmp(str, "||", 2))
+	else if (!ft_strncmp(str, "||", 2))
 		add_tkn_list(new_tkn_list(str, OR));
-	else if(*str == '|')
+	else if (*str == '|')
 		add_tkn_list(new_tkn_list(str, PIPE));
-	else if(!ft_strncmp(str, "&&", 2))
+	else if (!ft_strncmp(str, "&&", 2))
 		add_tkn_list(new_tkn_list(str, AND));
-	else if(*str == '$')
+	else if (*str == '$')
 		add_tkn_list(new_tkn_list(str, EXPAND));
-	else if(*str == '*' || *str == '~')
+	else if (*str == '*' || *str == '~')
 		add_tkn_list(new_tkn_list(str, WILD));
 	else
 		add_tkn_list(new_tkn_list(str, IDENTIFIER));

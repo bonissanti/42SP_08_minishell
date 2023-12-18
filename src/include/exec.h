@@ -40,7 +40,6 @@ void	simple_logical(t_exec *exec, t_hashtable *hash, t_ast *node,
 //############################# PREPARE_EXEC #################################//
 
 void	backup_fd(int *old_stdin, int *old_stdout);
-void	swap_fd(int new_fd, int system_fd);
 void	restore_fd(int reset_stdin, int reset_stdout);
 char	*build_cmd_path(t_ast *node, char *path);
 void	handle_error(t_ast *node, int result);
@@ -48,6 +47,10 @@ void	analyze_if_print(t_ast *node, int index);
 t_bool	analyze_cmd(t_hashtable *hashtable, t_ast *node);
 void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable);
 t_ast	*find_heredoc(t_ast *root);
+char	*generate_filename(int count_hdoc);
+void 	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node, char *filename);
+void 	next_is_pipe(t_exec *exec, t_hashtable *hash, t_ast *node, char *filename);
+void 	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node, int *next_pipe);
 
 //############################# EXECUTION ####################################//
 
@@ -55,7 +58,6 @@ int		exec_simple(t_hashtable *hash, t_ast *node);
 int		exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root);
 int		forking(t_ast *node);
 int		exec_forked_cmd(t_hashtable *hash, t_ast *node);
-void	close_all_fds(int *fd);
 void	wait_for_children(t_ast *node);
 
 void	ft_printf_fd(int fd);

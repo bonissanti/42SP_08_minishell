@@ -24,23 +24,23 @@
  * 
 */
 
-char *tkn_type_converter(t_tkn_type type)
+char	*tkn_type_converter(t_tkn_type type)
 {
-	if(type == INFILE)
+	if (type == INFILE)
 		return ("<");
-	else if(type == REDIRECT)
+	else if (type == REDIRECT)
 		return (">");
-	else if(type == HERE_DOC)
+	else if (type == HERE_DOC)
 		return ("<<");
 	else if (type == APPEND)
 		return (">>");
-	else if(type == O_PARENTESIS)
+	else if (type == O_PARENTESIS)
 		return ("(");
-	else if(type == C_PARENTESIS)
+	else if (type == C_PARENTESIS)
 		return (")");
-	else if(type == AND)
+	else if (type == AND)
 		return ("&&");
-	else if(type == OR)
+	else if (type == OR)
 		return ("||");
 	else
 		return ("|");
@@ -74,14 +74,14 @@ void	skip_spaces(char **str)
  * @return: int.
  * 
 */
-int isdelimiter(char *cmd)
+int	isdelimiter(char *cmd)
 {
-	if(*cmd == '(' || *cmd == ')' || !ft_strncmp(cmd, "||", 2)
-	|| *cmd == '|' || !ft_strncmp(cmd, "&&", 2) || !ft_strncmp(cmd, "<<", 2)
-	|| *cmd == '<' || !ft_strncmp(cmd, ">>", 2) || *cmd == '>' || *cmd == '*'
-	|| *cmd == '~' || *cmd == '$')
-		return(1);
-	return(0);
+	if (*cmd == '(' || *cmd == ')' || !ft_strncmp(cmd, "||", 2) || *cmd == '|'
+		|| !ft_strncmp(cmd, "&&", 2) || !ft_strncmp(cmd, "<<", 2) || *cmd == '<'
+		|| !ft_strncmp(cmd, ">>", 2) || *cmd == '>' || *cmd == '*'
+		|| *cmd == '~' || *cmd == '$')
+		return (1);
+	return (0);
 }
 
 /**
@@ -95,9 +95,9 @@ int isdelimiter(char *cmd)
  * 
 */
 
-int is_operator(t_tkn_type tkn)
+int	is_operator(t_tkn_type tkn)
 {
-	if(tkn == PIPE || tkn == AND || tkn == OR)
+	if (tkn == PIPE || tkn == AND || tkn == OR)
 		return (true);
 	return (false);
 }
@@ -113,10 +113,9 @@ int is_operator(t_tkn_type tkn)
  * 
 */
 
-int is_redirect(t_tkn_type tkn)
+int	is_redirect(t_tkn_type tkn)
 {
-	if(tkn == INFILE || tkn == REDIRECT
-	|| tkn == HERE_DOC || tkn == APPEND)
+	if (tkn == INFILE || tkn == REDIRECT || tkn == HERE_DOC || tkn == APPEND)
 		return (true);
 	return (false);
 }
