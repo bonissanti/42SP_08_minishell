@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_tkn_list_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 18:22:03 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/11 14:43:47 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/17 23:20:44 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,15 +99,15 @@ t_tkn_list *last_tkn_list(t_tkn_list *tkn_list)
  * 
 */
 
-void add_tkn_list(t_global *g_global, t_tkn_list *new_list)
+void add_tkn_list(t_tkn_list *new_list)
 {
 	t_tkn_list *last;
 
-	if(!tkn_list_size(g_global->tkn_list))
-		g_global->tkn_list = new_list;
+	if(!tkn_list_size(g_global.tkn_list))
+		g_global.tkn_list = new_list;
 	else
 	{
-		last = last_tkn_list(g_global->tkn_list);
+		last = last_tkn_list(g_global.tkn_list);
 		last->next = new_list;
 		last->next->prev = last;
 	}
@@ -127,15 +127,21 @@ void add_tkn_list(t_global *g_global, t_tkn_list *new_list)
 
 void free_tkn_list(t_tkn_list *tkn_list)
 {
-	t_tkn_list *head;
 	t_tkn_list *temp;
 
-	head = tkn_list;
-	while(head)
+	while(tkn_list)
 	{
-		temp = head->next;
-		ft_safe_free((void **)&head->content);
-		ft_safe_free((void **)&head);
-		head = temp;
+		temp = tkn_list->next;
+		// ft_printf("free &tkn_list->content: %p\n", &tkn_list->content);
+		// ft_printf("free tkn_list->content: %p\n", tkn_list->content);
+		// ft_printf("free tkn_list: %p\n", tkn_list);
+		// ft_printf("free *tkn_list: %p\n", *tkn_list);
+		// free(&tkn_list->content);
+		// tkn_list = NULL;
+		// free(&tkn_list);
+		// tkn_list = NULL;
+		ft_safe_free((void **)&tkn_list->content);
+		ft_safe_free((void **)&tkn_list);
+		tkn_list = temp;
 	}
 }

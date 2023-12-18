@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/16 21:56:36 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/17 23:21:42 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,30 +110,30 @@ void expand_all(t_tkn_list *tkn_list, t_hashtable *env)
  * 
 */
 
-void handle_token(t_global *g_global, char *str)
+void handle_token(char *str)
 {
 	if(*str == '(')
-		add_tkn_list(g_global, new_tkn_list(str, O_PARENTESIS));
+		add_tkn_list(new_tkn_list(str, O_PARENTESIS));
 	else if(*str == ')')
-		add_tkn_list(g_global, new_tkn_list(str, C_PARENTESIS));
+		add_tkn_list(new_tkn_list(str, C_PARENTESIS));
 	else if(!ft_strncmp(str, ">>", 2))
-		add_tkn_list(g_global, new_tkn_list(str, APPEND));
+		add_tkn_list(new_tkn_list(str, APPEND));
 	else if(*str == '>')
-		add_tkn_list(g_global, new_tkn_list(str, REDIRECT));
+		add_tkn_list(new_tkn_list(str, REDIRECT));
 	else if(!ft_strncmp(str, "<<", 2))
-		add_tkn_list(g_global, new_tkn_list(str, HERE_DOC));
+		add_tkn_list(new_tkn_list(str, HERE_DOC));
 	else if(*str == '<')
-		add_tkn_list(g_global, new_tkn_list(str, INFILE));
+		add_tkn_list(new_tkn_list(str, INFILE));
 	else if(!ft_strncmp(str, "||", 2))
-		add_tkn_list(g_global, new_tkn_list(str, OR));
+		add_tkn_list(new_tkn_list(str, OR));
 	else if(*str == '|')
-		add_tkn_list(g_global, new_tkn_list(str, PIPE));
+		add_tkn_list(new_tkn_list(str, PIPE));
 	else if(!ft_strncmp(str, "&&", 2))
-		add_tkn_list(g_global, new_tkn_list(str, AND));
+		add_tkn_list(new_tkn_list(str, AND));
 	else if(*str == '$')
-		add_tkn_list(g_global, new_tkn_list(str, EXPAND));
+		add_tkn_list(new_tkn_list(str, EXPAND));
 	else if(*str == '*' || *str == '~')
-		add_tkn_list(g_global, new_tkn_list(str, WILD));
+		add_tkn_list(new_tkn_list(str, WILD));
 	else
-		add_tkn_list(g_global, new_tkn_list(str, IDENTIFIER));
+		add_tkn_list(new_tkn_list(str, IDENTIFIER));
 }

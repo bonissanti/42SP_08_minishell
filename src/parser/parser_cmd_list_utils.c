@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_list_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 17:12:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/11 14:43:47 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/17 19:49:49 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,17 +131,15 @@ void add_cmd_list(t_cmd_list new_list)
 
 void free_cmd_list(t_cmd_list *cmd_list)
 {
-	t_cmd_list *head;
 	t_cmd_list *temp;
 
-	head = cmd_list;
-	while(head)
+	while(cmd_list)
 	{
-		temp = head->next;
-		ft_safe_free((void **)&head->args);
-		head->here_doc_fd = 0;
-		ft_safe_free((void **)&head);
-		head = temp;
+		temp = cmd_list->next;
+		ft_safe_free((void **)&cmd_list->args);
+		cmd_list->here_doc_fd = 0;
+		ft_safe_free((void **)&cmd_list);
+		cmd_list = temp;
 	}
 }
 
