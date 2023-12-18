@@ -51,12 +51,12 @@ void	simple_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 		else
 		{
 			wait(NULL);
-			if (node->in_fd != -1 && exec->count_pipes >= 1)
+			if (exec->count_pipes >= 1)
 				close(next_pipe[1]);
 			restore_fd(exec->old_stdin, exec->old_stdout);
 			if (node->right)
 				node = node->right;
-			if (node->in_fd != -1 && exec->count_pipes >= 1)
+			if (exec->count_pipes >= 1)
 				handle_pipes(hashtable, exec, node->right, next_pipe);
 		}
 	}
