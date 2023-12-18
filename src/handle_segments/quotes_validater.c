@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_validater.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:29 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 14:43:46 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/17 23:22:08 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 void	analyzing_quotes(t_hashtable *env, char **args)
 {
 	t_segment	*head;
-
+	
 	head = NULL;
 	if (!even_close_quotes(*args))
 	{

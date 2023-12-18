@@ -38,7 +38,6 @@ void	add_segments(t_segment **head, char *str)
 	}
 }
 
-// Merece uma atenção ao dar free, precisa ser fora da função
 char	*join_segments(t_segment *head)
 {
 	t_segment	*current;

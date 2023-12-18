@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 18:22:03 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/17 20:11:34 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/17 23:20:44 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,11 +61,7 @@ t_tkn_list	*new_tkn_list(char *content, t_tkn_type type)
 		return (NULL);
 	node->type = type;
 	if(type == IDENTIFIER || type == WILD || type == EXPAND)
-	{
-		node->content = ft_strdup(content);
-		free(content);
-		// node->content = content;
-	}
+		node->content = content;
 	else
 		node->content = NULL;
 	node->next = NULL;
@@ -136,6 +132,14 @@ void free_tkn_list(t_tkn_list *tkn_list)
 	while(tkn_list)
 	{
 		temp = tkn_list->next;
+		// ft_printf("free &tkn_list->content: %p\n", &tkn_list->content);
+		// ft_printf("free tkn_list->content: %p\n", tkn_list->content);
+		// ft_printf("free tkn_list: %p\n", tkn_list);
+		// ft_printf("free *tkn_list: %p\n", *tkn_list);
+		// free(&tkn_list->content);
+		// tkn_list = NULL;
+		// free(&tkn_list);
+		// tkn_list = NULL;
 		ft_safe_free((void **)&tkn_list->content);
 		ft_safe_free((void **)&tkn_list);
 		tkn_list = temp;

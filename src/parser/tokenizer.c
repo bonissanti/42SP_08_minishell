@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/17 20:08:56 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/18 09:32:41 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,27 +120,38 @@ int	crop_delimiter_tkn(char **cmd)
 int	crop_quote_tkn(char **cmd)
 {
 	int		i;
-	// char	quote;
+	char	quote;
+	t_bool	closed;
 
-	// quote = **cmd;
 	i = 1;
+	quote = **cmd;
+	closed = false;
 	(*cmd)++;
-	while (**cmd && **cmd != 32 && **cmd != '<' && **cmd != '>')
+	// && **cmd != '<' && **cmd != '>'
+	while (**cmd && **cmd != 32)
 	{
-		// while (**cmd != quote && **cmd)
-		// {
-		// 	i++;
-		// 	(*cmd)++;
-		// }
-		// i++;
-		// (*cmd)++;
+		while (**cmd != quote && **cmd)
+		{
+			i++;
+			(*cmd)++;
+		}
+		closed = true;
+		i++;
+		(*cmd)++;
+		if((**cmd == '<' || **cmd == '>') && closed)
+			return(i);
+		else if(**cmd == '\'' || **cmd == '"')
+		{
+			quote = **cmd;
+			closed = false;
+		}
 		// if (crop_quote_tkn_validator(&i, cmd) && (**cmd == '\''
 		// 		|| **cmd == '"'))
 		// 	quote = **cmd;
 		// else
 		// 	return (i);
-		i++;
-		(*cmd)++;
+		// i++;
+		// (*cmd)++;
 	}
 	// i++;
 	// (*cmd)++;
