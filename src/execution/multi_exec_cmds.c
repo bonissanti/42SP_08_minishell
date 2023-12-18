@@ -32,9 +32,17 @@ static void	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 	}
 }
 
-static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root,
-		int *initial_pipe)
+// static void teste_maldito(t_exec *exec, t_hashtable *hash, t_ast *root)
+// {
+
+// }
+
+static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 {
+	int	initial_pipe[2];
+
+	initial_pipe[0] = -1;
+	initial_pipe[1] = -1;
 	if (root->type == TYPE_COMMAND)
 		exec_forked_cmd(hash, root);
 	if (root->type == TYPE_REDIRECT)
@@ -58,14 +66,10 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root,
 
 int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 {
-	int	initial_pipe[2];
-
-	initial_pipe[0] = -1;
-	initial_pipe[1] = -1;
 	if (root == NULL)
 		return (0);
 	heredoc_first(exec, hashtable, root);
-	handle_cmd(exec, hashtable, root, initial_pipe);
+	handle_cmd(exec, hashtable, root);
 	wait_for_children(root);
 	return (g_global.exit_status);
 }

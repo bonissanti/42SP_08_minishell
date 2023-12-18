@@ -48,7 +48,12 @@ void prompt(t_hashtable *env, t_exec exec)
 		init_signals();
     	init_structs(&exec, 0, sizeof(t_exec));
 		while(!prompt_validation(g_global.readline_input, env))
-			g_global.readline_input = readline("$ ");
+		{
+			if (isatty(STDIN_FILENO))
+				g_global.readline_input = readline("$ ");
+			else
+				g_global.readline_input = readline("");
+		}
 		add_history(g_global.readline_input);
 		tokenizer(env);
 		to_exec = parser(env);

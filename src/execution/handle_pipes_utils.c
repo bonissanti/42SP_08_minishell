@@ -10,7 +10,7 @@ static void	parent_pipe(int *prev_pipe, int *next_pipe)
 
 static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
 {
-	if (prev_pipe)
+	if (*prev_pipe != -1)
 	{
 		dup2(prev_pipe[0], STDIN_FILENO);
 		close(prev_pipe[0]);
