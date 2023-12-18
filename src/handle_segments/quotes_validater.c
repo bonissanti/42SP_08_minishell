@@ -31,7 +31,7 @@
 void	analyzing_quotes(t_hashtable *env, char **args)
 {
 	t_segment	*head;
-	
+
 	head = NULL;
 	if (!even_close_quotes(*args))
 	{

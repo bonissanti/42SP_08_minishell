@@ -2,7 +2,7 @@
 
 int	ft_exit(char **args)
 {
-	int			argc;
+	int	argc;
 
 	g_global.exit_status = 0;
 	argc = ft_count_args(args);

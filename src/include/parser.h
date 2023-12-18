@@ -10,23 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #ifndef PARSER_H
 # define PARSER_H
 
-#include "./minishell.h"
+# include "./minishell.h"
 
 void		tokenizer(t_hashtable *env);
-void 		skip_spaces(char **str);
+void		skip_spaces(char **str);
 int			isdelimiter(char *cmd);
 t_tkn_list	*new_tkn_list(char *content, t_tkn_type type);
-void	    handle_token(char *str);
+void		handle_token(char *str);
 t_tkn_list	*last_tkn_list(t_tkn_list *tkn_list);
 void		add_tkn_list(t_tkn_list *new_list);
-void		print_tkn_list(t_tkn_list *tkn_list);   //DELETE THIS BEFORE DELIVERY 
-void		print_cmd_list(t_cmd_list *cmd_list);	//DELETE THIS BEFORE DELIVERY
-char		*tkn_type_string(t_tkn_type type);      //DELETE THIS BEFORE DELIVERY
-int         parser(t_hashtable *env);
+
+int			parser(t_hashtable *env);
 int			command_consistency(t_tkn_list *tokenized);
 int			handle_redirect(t_tkn_type tkn);
 void		join_args(t_tkn_list *tkn_list);
@@ -42,7 +39,8 @@ void		new_redirect_node(t_tkn_list **current);
 void		new_subshell_node(t_tkn_list **current);
 void		new_operator_node(t_tkn_list **current);
 int			is_expander(char x);
-char		*append_expanded(char *cmd, char **exp, t_hashtable *env, int index);
+char		*append_expanded(char *cmd, char **exp, t_hashtable *env,
+				int index);
 int			is_operator(t_tkn_type tkn);
 int			crop_delimiter_tkn(char **cmd);
 void		free_tkn_list(t_tkn_list *tkn_list);

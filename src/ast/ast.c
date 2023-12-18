@@ -12,15 +12,14 @@
 
 #include "../include/minishell.h"
 
-t_ast *init_ast(t_cmd_list *cmd_list, t_exec *exec)
+t_ast	*init_ast(t_cmd_list *cmd_list, t_exec *exec)
 {
-	t_ast *ast;
-	t_cmd_list *head;
+	t_ast		*ast;
+	t_cmd_list	*head;
 
-	// ast = ft_calloc(1, sizeof(t_ast));
 	ast = NULL;
 	head = cmd_list;
-	while(head)
+	while (head)
 	{
 		if (head->type == TYPE_FILE)
 			head = head->next;
@@ -30,45 +29,7 @@ t_ast *init_ast(t_cmd_list *cmd_list, t_exec *exec)
 			head = head->next;
 		}
 	}
-	return(ast);
-}
-
-static void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list)
-{
-	new_node->args = ast_split(cmd_list->args, ' ');
-	
-	if (cmd_list->type == TYPE_COMMAND)
-	{
-		// analyzing_quotes(env, &new_node->args[0]); //is_quotes here?
-		new_node->cmds = new_node->args[0];
-		if(cmd_list->here_doc)
-			new_node->delim = cmd_list->infile;
-		else
-			new_node->infile = cmd_list->infile;
-		new_node->outfile = cmd_list->outfile;
-		new_node->weight = cmd_list->weight;
-		new_node->type = cmd_list->type;
-	}
-	else if (cmd_list->type == TYPE_SUBSHELL)
-	{
-		new_node->cmds = new_node->args[0];
-		new_node->subshell = true;
-		new_node->weight = cmd_list->weight;
-		new_node->type = cmd_list->type;
-	}
-	else
-	{
-		new_node->cmds = new_node->args[0];
-		if(cmd_list->type == TYPE_REDIRECT)
-		{
-			new_node->infile = cmd_list->infile;
-			new_node->outfile = cmd_list->outfile;			
-		}
-		else if(cmd_list->type == TYPE_HEREDOC)
-			new_node->delim = cmd_list->infile;
-		new_node->weight = cmd_list->weight;
-		new_node->type = cmd_list->type;
-	}			
+	return (ast);
 }
 
 /**
@@ -104,7 +65,7 @@ t_ast	*create_node(t_cmd_list *cmd_list)
 	new_node->in_fd = -1;
 	new_node->out_fd = -1;
 	new_node->pid = 0;
-	if(new_node->type != TYPE_SUBSHELL)
+	if (new_node->type != TYPE_SUBSHELL)
 		new_node->subshell = false;
 	new_node->print_hdoc = false;
 	new_node->print_redir = false;
@@ -155,18 +116,16 @@ void	insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 	{
 		current = *head;
 		while (current && current->right != NULL
-			&& current->right->weight >= new_node->weight) //SEGFAULT HERE
+			&& current->right->weight >= new_node->weight)
 			current = current->right;
 		new_node->left = current->right;
 		current->right = new_node;
 	}
 	if (new_node->type == TYPE_PIPE)
 		exec->count_pipes++;
-
 	else if (new_node->type == TYPE_HEREDOC)
 		exec->count_hdoc++;
 }
-
 
 /**
  * Function: Delete_node

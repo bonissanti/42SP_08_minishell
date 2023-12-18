@@ -14,7 +14,7 @@
 
 t_bool	is_valid_identifier(char *arg)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if ((!arg || !ft_isalpha(arg[0])) && (arg[0] != '_'))
@@ -41,7 +41,8 @@ void	ft_unset(t_hashtable *hash_table, char **args)
 			if (is_valid_identifier(args[i]))
 				delete_hash(hash_table, args[i]);
 			else
-				ft_fprintf(2, "minishell: unset: `%s': not a valid identifier\n", args[i]);	
+				ft_fprintf(2, "minishell: unset: `%s': not a \
+					valid identifier\n", args[i]);
 		}
 	}
 	g_global.cmd_status = 0;

@@ -86,7 +86,6 @@ void handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 		}
 		else
 		{
-			wait(NULL);
 			if (exec->count_pipes >= 1)
 				close(next_pipe[1]);
 			free(filename);
@@ -139,10 +138,7 @@ static void open_execute(t_hashtable *hash, t_ast *node, char *filename)
 		exit(0);
 	}
 	else
-	{
-		wait(NULL);
 		free(filename);
-	}
 }
 
 void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable)

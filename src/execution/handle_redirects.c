@@ -12,7 +12,7 @@
 
 #include "../include/minishell.h"
 
-void    handle_redirects(t_ast *node)
+void	handle_redirects(t_ast *node)
 {
 	if (node->type == TYPE_REDIRECT)
 	{
@@ -26,16 +26,17 @@ void    handle_redirects(t_ast *node)
 }
 
 void	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
-{	
-	t_bool rdir_in;
-	t_bool rdir_out;
+{
+	t_bool	rdir_in;
+	t_bool	rdir_out;
 
 	rdir_in = false;
 	rdir_out = false;
-    analyze_if_print(node, 1);
-	if (node->type == TYPE_REDIRECT && node->right && node->right->type == TYPE_REDIRECT)
+	analyze_if_print(node, 1);
+	if (node->type == TYPE_REDIRECT && node->right
+		&& node->right->type == TYPE_REDIRECT)
 	{
-		if (ft_strncmp (node->cmds, node->right->cmds, 1) != 0)
+		if (ft_strncmp(node->cmds, node->right->cmds, 1) != 0)
 		{
 			rdir_in = true;
 			rdir_out = true;

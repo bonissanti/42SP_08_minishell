@@ -17,7 +17,7 @@ t_bool	is_flag_n(char *arg);
 void	ft_echo(t_hashtable *hashtable, char **args)
 {
 	int	i;
-	int newline;
+	int	newline;
 
 	i = -1;
 	newline = 1;
@@ -40,16 +40,18 @@ void	ft_echo(t_hashtable *hashtable, char **args)
 	g_global.cmd_status = 0;
 }
 
-t_bool is_flag_n(char *arg)
+t_bool	is_flag_n(char *arg)
 {
-    if (arg[0] != '-')
-        return false;
+	size_t	i;
 
-    for (size_t i = 1; arg[i] != '\0'; i++)
-    {
-        if (arg[i] != 'n')
-            return false;
-    }
-
-    return true;
+	i = 1;
+	if (arg[0] != '-')
+		return (false);
+	while (arg[i] != '\0')
+	{
+		if (arg[i] != 'n')
+			return (false);
+		i++;
+	}
+	return (true);
 }

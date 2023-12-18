@@ -12,68 +12,62 @@
 
 #include "../include/minishell.h"
 
-int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
+static void	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 {
-	int	initial_pipe[2];
-	t_ast *heredoc_node;
-	t_bool heredoc_executed;
+	t_bool	heredoc_executed;
+	t_ast	*heredoc_node;
 
-	initial_pipe[0] = -1;
-	initial_pipe[1] = -1;
 	heredoc_executed = false;
 	if (root == NULL)
-		return (0);
-
+		return ;
+	heredoc_node = find_heredoc(root);
 	if (root->type != TYPE_HEREDOC)
 	{
 		heredoc_node = find_heredoc(root);
 		if (heredoc_node && !heredoc_executed)
 		{
-			analyze_heredoc(exec, heredoc_node, hashtable);
+			analyze_heredoc(exec, heredoc_node, hash);
 			heredoc_executed = true;
 		}
 	}
+}
+
+static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root,
+		int *initial_pipe)
+{
 	if (root->type == TYPE_COMMAND)
-		exec_forked_cmd(hashtable, root);
+		exec_forked_cmd(hash, root);
 	if (root->type == TYPE_REDIRECT)
 	{
 		handle_redirects(root);
-		analyze_redirect(exec, hashtable, root);
+		analyze_redirect(exec, hash, root);
 	}
 	if (root->type == TYPE_HEREDOC)
-		analyze_heredoc(exec, root, hashtable);
+		analyze_heredoc(exec, root, hash);
 	if (root->type == TYPE_PIPE)
 	{
-		handle_pipes(hashtable, exec, root, initial_pipe);
+		handle_pipes(hash, exec, root, initial_pipe);
 		restore_fd(exec->old_stdin, exec->old_stdout);
 	}
 	if (root->type == TYPE_LOGICAL)
 	{
-		handle_logical(exec, hashtable, root);
+		handle_logical(exec, hash, root);
 		restore_fd(exec->old_stdin, exec->old_stdout);
 	}
-	return (g_global.exit_status);
 }
 
-void    wait_for_children(t_ast *node)
+int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 {
-    int status;
+	int	initial_pipe[2];
 
-    status = 0;
-    if (node == NULL)
-        return ;
-
-    if (node->type == TYPE_REDIRECT || node->type == TYPE_COMMAND || node->type == TYPE_PIPE ||  node->type == TYPE_HEREDOC
-		|| node->type == TYPE_LOGICAL)
-    {
-        waitpid(node->pid, &status, 0);
-        if (WIFEXITED(status))
-            g_global.cmd_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			g_global.cmd_status = WTERMSIG(status);
-    }
-    else if (node->right)
-        wait_for_children(node->right);
+	initial_pipe[0] = -1;
+	initial_pipe[1] = -1;
+	if (root == NULL)
+		return (0);
+	heredoc_first(exec, hashtable, root);
+	handle_cmd(exec, hashtable, root, initial_pipe);
+	wait_for_children(root);
+	return (g_global.exit_status);
 }
 
 int	exec_forked_cmd(t_hashtable *hash, t_ast *node)
@@ -84,7 +78,6 @@ int	exec_forked_cmd(t_hashtable *hash, t_ast *node)
 		execute_builtin(hash, node);
 	else
 		g_global.cmd_status = forking(node);
-	
 	return (g_global.exit_status);
 }
 
@@ -96,11 +89,9 @@ int	forking(t_ast *node)
 		if (node->pid == 0)
 		{
 			if (execve(node->path, node->args, NULL) == -1)
-				g_global.cmd_status = 127;
+				g_global.cmd_status = 2;
 			exit(g_global.cmd_status);
 		}
-		else
-			waitpid(node->pid, &g_global.cmd_status, 0);
 	}
 	return (g_global.cmd_status);
 }

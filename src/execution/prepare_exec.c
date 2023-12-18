@@ -12,31 +12,6 @@
 
 #include "../include/minishell.h"
 
-void analyze_if_print(t_ast *node, int index)
-{
-	t_ast *save_node;
-
-	save_node = node->left;
-    while (node != NULL)
-    {
-        if (node->type == TYPE_HEREDOC && index == 0 && (node->right == NULL 
-			|| node->right->type != TYPE_HEREDOC))
-		{
-			if (node->left == NULL)
-				node->left = save_node;
-			node->print_hdoc = true;
-		}
-		if (node->type == TYPE_REDIRECT && index == 1 && (node->right == NULL 
-			|| node->right->type != TYPE_REDIRECT))
-		{
-			if (node->left == NULL)
-				node->left = save_node;
-			node->print_redir = true;
-		}
-        node = node->right;
-    }
-}
-
 t_bool	is_empty_cmd(char *cmd)
 {
 	if (cmd == NULL)
@@ -53,7 +28,6 @@ t_bool	analyze_cmd(t_hashtable *hashtable, t_ast *node)
 
 	if (is_empty_cmd(node->cmds))
 		return (false);
-
 	result = verify_cmd_permissions(node->cmds);
 	if (ft_strchr(node->cmds, '/') != NULL && result != 0)
 	{
@@ -66,7 +40,8 @@ t_bool	analyze_cmd(t_hashtable *hashtable, t_ast *node)
 	{
 		path = search(hashtable, "PATH")->value;
 		node->path = build_cmd_path(node, path);
-		if (node->path == NULL && ft_strcmp(node->cmds, "exit") != 0 && ft_strcmp(node->cmds, "cd") != 0)
+		if (node->path == NULL && ft_strcmp(node->cmds, "exit") != 0
+			&& ft_strcmp(node->cmds, "cd") != 0)
 		{
 			handle_error(node, 126);
 			return (false);
@@ -75,13 +50,18 @@ t_bool	analyze_cmd(t_hashtable *hashtable, t_ast *node)
 	return (true);
 }
 
-
 void	handle_error(t_ast *node, int result)
 {
 	if (result == 126)
+	{
+		g_global.cmd_status = 126;
 		ft_fprintf(2, "minishell: %s: command not found\n", node->cmds);
+	}
 	else if (result == 127)
+	{
+		g_global.cmd_status = 127;
 		ft_fprintf(2, "minishell: %s: %s\n", node->cmds, strerror(errno));
+	}
 	return ;
 }
 

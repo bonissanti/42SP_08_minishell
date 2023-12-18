@@ -23,16 +23,13 @@ void	handle_logical(t_exec *exec, t_hashtable *hash, t_ast *node)
 			exit(0);
 		}
 		else
-		{
-			waitpid(node->pid, &node->num_status, 0);
 			simple_logical(exec, hash, node, node->num_status);
-		}
 	}
 }
 
-void	simple_logical(t_exec *exec, t_hashtable *hash, t_ast *node,
-		int status)
+void	simple_logical(t_exec *exec, t_hashtable *hash, t_ast *node, int status)
 {
+	wait_for_children(node);
 	if (status == 0 && !ft_strncmp(node->cmds, "&&", 2))
 		exec_multi_cmds(exec, hash, node->right);
 	else if (status != 0 && !ft_strncmp(node->cmds, "||", 2))
