@@ -15,15 +15,18 @@ int main(int argc, char **argv)
 		char *trimmed_input = ft_strtrim(input, "\n");
 		free(input);
 
-		if (ft_strcmp(trimmed_input, "exit") == 0)
+		char **num_args = ft_split(trimmed_input, ' ');
+		free(trimmed_input);
+
+		// if (ft_strcmp(trimmed_input, "exit") == 0)
+		// {
+		// 	free(trimmed_input);
+		// 	exit(0);
+		// }
+		if (ft_strcmp(num_args[0], "*.c") == 0)
 		{
-			free(trimmed_input);
-			exit(0);
-		}
-		else if (ft_strcmp(trimmed_input, "*.c") == 0)
-		{
-			handle_wildcard(trimmed_input);
-			free(trimmed_input);
+			handle_wildcard(num_args);
+			free_split(num_args);
 		}
 	}
 

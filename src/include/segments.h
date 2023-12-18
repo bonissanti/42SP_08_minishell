@@ -95,8 +95,8 @@ t_bool					is_whitespace(char c);
 //############################### WILDCARD ###################################
 
 void					init_structs(void *structs, size_t struct_size);
-void					handle_wildcard(char *pattern);
+void					handle_wildcard(char **args);
 char					*ft_strtok(char *str, const char *delim);
-void 					finish_wildcard(t_segment *head, t_file *file);
+void 					finish_wildcard(t_segment *head, t_file *file, char **args);
 
 #endif
