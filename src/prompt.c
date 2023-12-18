@@ -60,9 +60,9 @@ void prompt(t_hashtable *env, t_exec exec)
 		backup_fd(&exec.old_stdin, &exec.old_stdout);
 		if (to_exec != 2)
 			exec_multi_cmds(&exec, env, g_global.ast);
-		delete_node(g_global.ast);
 		free_lists();
 		restore_fd(exec.old_stdin, exec.old_stdout);
+		g_global.readline_input = NULL;
 	}
     destroy_hashtable(env);
 }

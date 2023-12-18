@@ -40,6 +40,6 @@ int	exec_simple(t_hashtable *hash, t_ast *node)
 		g_global.cmd_status = execve(node->path, node->args, NULL);
 	delete_node(g_global.ast);
 	destroy_hashtable(hash);
-	free_lists(g_global.tkn_list, g_global.cmd_list);
+	free_lists();
 	return (g_global.exit_status);
 }
