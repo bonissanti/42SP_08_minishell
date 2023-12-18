@@ -107,7 +107,7 @@ char	*generate_results(t_segment *segments, t_file *file)
  * 
  */
 
-char	*handle_wildcard(char *pattern)
+void	handle_wildcard(char *pattern)
 {
 	t_file		*file;
 	t_segment	*head;
@@ -119,8 +119,8 @@ char	*handle_wildcard(char *pattern)
 	file->dir = opendir(file->directory);
 	if (!file->dir)
 	{
-		printf("Error: %s\n", strerror(errno));
-		return (NULL);
+		ft_fprintf(2, "Error: %s\n", strerror(errno));
+		return ;
 	}
 	file->entry = readdir(file->dir);
 	while (file->entry)
@@ -132,7 +132,7 @@ char	*handle_wildcard(char *pattern)
 			add_segments(&head, file->entry->d_name);
 		file->entry = readdir(file->dir);
 	}
-	return (generate_results(head, file));
+	finish_wildcard(head, file);
 }
 
 /**

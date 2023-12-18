@@ -17,7 +17,6 @@ int prompt_validation(char *readline_input, t_hashtable *env)
 {
 	if (ft_strcmp(g_global.readline_input, "exit") == 0)
 	{
-		ft_putstr_fd("exit\n", 1);
 		free_lists();
 		rl_clear_history();
     	destroy_hashtable(env);

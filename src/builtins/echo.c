@@ -26,6 +26,11 @@ void	ft_echo(t_hashtable *hashtable, char **args)
 	{
 		if (args[i][0] == '$' && args[i][1] == '?')
 			ft_printf("%d", g_global.cmd_status);
+		// else if (args[i][0] == '*')
+		// {
+		// 	handle_wildcard(args[i]);
+		// 	ft_printf("%s", expanded);
+		// }
 		else if (is_flag_n(args[i]))
 			newline = 0;
 		else
@@ -40,15 +45,16 @@ void	ft_echo(t_hashtable *hashtable, char **args)
 	g_global.cmd_status = 0;
 }
 
-t_bool	is_flag_n(char *arg)
+t_bool is_flag_n(char *arg)
 {
-	size_t	i;
+    if (arg[0] != '-')
+        return false;
 
-	i = 0;
-	while (arg[++i] != '\0')
-	{
-		if (arg[i] != 'n')
-			return (false);
-	}
-	return (true);
+    for (size_t i = 1; arg[i] != '\0'; i++)
+    {
+        if (arg[i] != 'n')
+            return false;
+    }
+
+    return true;
 }
