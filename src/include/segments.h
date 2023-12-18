@@ -46,10 +46,10 @@ size_t 					ft_strcspn(const char *str, char *delim1);
 
 //############################### WILDCARD ###################################
 
-void				handle_wildcard(char *pattern);
+void					handle_wildcard(char **args);
 char					*ft_strtok(char *str, const char *delim);
-void 					finish_wildcard(t_segment *head, t_file *file);
-char					*generate_results(t_segment *segments, t_file *file);
+void					finish_wildcard(t_segment *head, t_file *file, char **args);
+char					*generate_results(t_segment *segments);
 
 //############################### SIGNALS ####################################
 

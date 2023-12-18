@@ -26,11 +26,6 @@ void	ft_echo(t_hashtable *hashtable, char **args)
 	{
 		if (args[i][0] == '$' && args[i][1] == '?')
 			ft_printf("%d", g_global.cmd_status);
-		// else if (args[i][0] == '*')
-		// {
-		// 	handle_wildcard(args[i]);
-		// 	ft_printf("%s", expanded);
-		// }
 		else if (is_flag_n(args[i]))
 			newline = 0;
 		else

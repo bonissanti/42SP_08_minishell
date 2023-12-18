@@ -95,9 +95,12 @@ int	forking(t_ast *node)
 	{
 		if (node->pid == 0)
 		{
-			g_global.cmd_status = execve(node->path, node->args, NULL);
+			if (execve(node->path, node->args, NULL) == -1)
+				g_global.cmd_status = 127;
 			exit(g_global.cmd_status);
 		}
+		else
+			waitpid(node->pid, &g_global.cmd_status, 0);
 	}
 	return (g_global.cmd_status);
 }

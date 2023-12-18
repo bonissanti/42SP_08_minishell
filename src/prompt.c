@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
-#include <termios.h>
 
 int prompt_validation(char *readline_input, t_hashtable *env)
 {

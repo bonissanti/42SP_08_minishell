@@ -89,8 +89,8 @@ void expand_all(t_tkn_list *tkn_list, t_hashtable *env)
 				analyzing_quotes(env, &current->content);
 			else if(*current->content == '~')
 				expand_tilde(env, current->content);
-			// else if(*current->content == '*')
-			// 	current->content = handle_wildcard(current->content);
+			else if(*current->content == '*')
+				handle_wildcard(&current->content);
 		}
 		current = current->next;
 	}

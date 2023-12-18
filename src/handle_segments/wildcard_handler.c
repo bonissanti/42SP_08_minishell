@@ -30,19 +30,11 @@ static t_bool	wildcard_match(char *file, char *pattern);
  * 
  */
 
-inline void	finish_wildcard(t_segment *head, t_file *file)
+inline void	finish_wildcard(t_segment *head, t_file *file, char **args)
 {
-	t_segment	*tmp;
-
-	tmp = head;
-	while (tmp)
-	{
-		if (file->directory[0] == '.')
-			ft_printf("%s\n", tmp->str);
-		else
-			ft_printf("%s%s\n", file->directory, tmp->str);
-		tmp = tmp->next;
-	}
+	if (!head)
+		return ;
+	*args = generate_results(head);
 	free_segments(head);
 	safe_free((void **)&file->directory);
 	closedir(file->dir);
@@ -65,7 +57,7 @@ inline void	finish_wildcard(t_segment *head, t_file *file)
  * 
 */
 
-char	*generate_results(t_segment *segments, t_file *file)
+char	*generate_results(t_segment *segments)
 {
 	char	*result;
 
@@ -81,7 +73,6 @@ char	*generate_results(t_segment *segments, t_file *file)
 		}
 		segments = segments->next;
 	}
-	finish_wildcard(segments, file);
 	return (result);
 }
 
@@ -107,7 +98,7 @@ char	*generate_results(t_segment *segments, t_file *file)
  * 
  */
 
-void	handle_wildcard(char *pattern)
+void	handle_wildcard(char **args)
 {
 	t_file		*file;
 	t_segment	*head;
@@ -115,7 +106,7 @@ void	handle_wildcard(char *pattern)
 	head = NULL;
 	file = malloc(sizeof(t_file));
 	init_structs(file, 0, sizeof(t_file));
-	get_dir_and_token(file, pattern);
+	get_dir_and_token(file, *args);
 	file->dir = opendir(file->directory);
 	if (!file->dir)
 	{
@@ -132,7 +123,7 @@ void	handle_wildcard(char *pattern)
 			add_segments(&head, file->entry->d_name);
 		file->entry = readdir(file->dir);
 	}
-	finish_wildcard(head, file);
+	finish_wildcard(head, file, args);
 }
 
 /**
