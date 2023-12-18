@@ -54,14 +54,77 @@ void handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 		free(line);
 	}
 	close(node->out_fd);
-	if (node->print_hdoc)
+	if (node->print_hdoc && !node->right)
 		open_execute(hash, node, filename);
-	else
+
+
+	else if (node->right && node->right->type == TYPE_HEREDOC)
 	{
 		free(filename);
 		node->left = NULL;
 		exec_multi_cmds(exec, hash, node->right);
 	}
+	else if (node->right && (node->right->type == TYPE_PIPE || node->right->type == TYPE_LOGICAL))
+	{
+		int next_pipe[2];
+
+		if (exec->count_pipes >= 1)
+			pipe(next_pipe);
+		node->pid = fork();
+		if (node->pid == 0)
+		{
+			node->in_fd = open(filename, O_RDONLY);
+			dup2(node->in_fd, STDIN_FILENO);
+			close(node->in_fd);
+			if (exec->count_pipes >= 1)
+			{
+				dup2(next_pipe[1], STDOUT_FILENO);
+				close(next_pipe[1]);
+			}
+			exec_simple(hash, node->left);
+			exit(0);
+		}
+		else
+		{
+			wait(NULL);
+			if (exec->count_pipes >= 1)
+				close(next_pipe[1]);
+			free(filename);
+			restore_fd(exec->old_stdin, exec->old_stdout);
+			node = node->right;
+			if (exec->count_pipes >= 1)
+				handle_pipes(hash, exec, node->right, next_pipe);
+		}
+	}
+	else if (node->right && node->right->type == TYPE_REDIRECT)
+	{
+		node->pid = fork();
+		if (node->pid == 0)
+		{
+			node->in_fd = open(filename, O_RDONLY);
+			dup2(node->in_fd, STDIN_FILENO);
+			close(node->in_fd);
+			handle_redirects(node->right);
+			dup2(node->right->out_fd, STDOUT_FILENO);
+			exec_simple(hash, node->left);
+			exit(0);
+		}
+		else
+		{
+			wait(NULL);
+			free(filename);
+			restore_fd(exec->old_stdin, exec->old_stdout);
+			if (node->right)
+				node = node->right;
+			exec_multi_cmds(exec, hash, node->right);
+		}
+	}
+	if (node->type == TYPE_LOGICAL)
+	{
+		waitpid(node->pid, &node->num_status, 0);
+		simple_logical(exec, hash, node, node->num_status);
+	}
+	
 }
 
 static void open_execute(t_hashtable *hash, t_ast *node, char *filename)
@@ -121,6 +184,10 @@ char	*check_expansion(t_hashtable *env, char **line, size_t *len)
 	return (expanded);
 }
 
+// static void check_next_node(t_exec *exec, t_hashtable *hash, t_ast *node)
+// {
+
+// }
 // static void check_next_node(t_exec *exec, t_hashtable *hash, t_ast *node)
 // {
 // 	int next_pipe[2];

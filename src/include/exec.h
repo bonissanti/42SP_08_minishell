@@ -19,7 +19,7 @@ void	redirect_append(t_ast *node, char *filename);
 void	redirect_fds(t_ast *node);
 void	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 void	simple_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
-void	simple_redirect_out(t_exec *exec, t_hashtable *hashtable, t_ast *node, int *prev_pipe);
+void	double_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 void 	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node);
 char	*check_expansion(t_hashtable *env, char **line, size_t *len);
 t_bool	verify_file_permissions(const char *file);
@@ -34,12 +34,9 @@ void	handle_other(t_exec *exec, t_hashtable *hash, t_ast *node,
 		int *prev_pipe);
 void	execute_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node,
 			int *prev_pipe, int *next_pipe);
-void	logical_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
-			int *prev_pipe);
+void	handle_logical(t_exec *exec, t_hashtable *hash, t_ast *node);
 void	simple_logical(t_exec *exec, t_hashtable *hash, t_ast *node,
 			int status);
-void	pipe_from_redirect(t_hashtable *hash, t_exec *exec, t_ast *node,
-			int *prev_pipe);
 
 //############################# PREPARE_EXEC #################################//
 
@@ -57,12 +54,9 @@ void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable);
 int		exec_simple(t_hashtable *hash, t_ast *node);
 int		exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root);
 int		forking(t_ast *node);
-int		exec_forked_cmd(t_hashtable *hashtable, t_ast *node);
+int		exec_forked_cmd(t_hashtable *hash, t_ast *node);
 void	close_all_fds(int *fd);
 void    wait_for_children(t_ast *node);
-// void	handle_cmd(t_exec *exec, t_hashtable *hashtable, t_ast *node); //temp
-
-// void print_pipe_contents(int *pipefd); // Remover depois
 
 void	ft_printf_fd(int fd);
 

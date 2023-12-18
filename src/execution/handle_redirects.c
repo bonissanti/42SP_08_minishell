@@ -26,15 +26,28 @@ void    handle_redirects(t_ast *node)
 }
 
 void	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
-{		
+{	
+	t_bool rdir_in;
+	t_bool rdir_out;
+
+	rdir_in = false;
+	rdir_out = false;
     analyze_if_print(node, 1);
-	if (node->type == TYPE_REDIRECT && node->print_redir == true)
+	if (node->type == TYPE_REDIRECT && node->right && node->right->type == TYPE_REDIRECT)
 	{
-		// if (ft_strncmp(node->cmds, ">", 1) == 0 || ft_strncmp(node->cmds, ">>", 2) == 0)
-		// 	simple_redirect_out(exec, hashtable, node, NULL);
-		// else
-		simple_redirect(exec, hashtable, node);
+		if (ft_strncmp (node->cmds, node->right->cmds, 1) != 0)
+		{
+			rdir_in = true;
+			rdir_out = true;
+		}
 	}
+	if (rdir_in && rdir_out)
+		double_redirect(exec, hashtable, node);
+	else if (node->type == TYPE_REDIRECT && node->print_redir == true)
+		simple_redirect(exec, hashtable, node);
 	else
+	{
+		node->left = NULL;
 		exec_multi_cmds(exec, hashtable, node->right);
+	}
 }

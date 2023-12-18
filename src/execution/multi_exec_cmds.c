@@ -104,8 +104,11 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 		handle_pipes(hashtable, exec, root, initial_pipe);
 		restore_fd(exec->old_stdin, exec->old_stdout);
 	}
-	// if (root->type == TYPE_LOGICAL)
-	// 	logical_pipe(exec, hashtable, root, initial_pipe);
+	if (root->type == TYPE_LOGICAL)
+	{
+		handle_logical(exec, hashtable, root);
+		restore_fd(exec->old_stdin, exec->old_stdout);
+	}
 	return (g_global.exit_status);
 }
 
@@ -129,14 +132,15 @@ void    wait_for_children(t_ast *node)
         wait_for_children(node->right);
 }
 
-int	exec_forked_cmd(t_hashtable *hashtable, t_ast *node)
+int	exec_forked_cmd(t_hashtable *hash, t_ast *node)
 {
-	if (!analyze_cmd(hashtable, node))
+	if (!analyze_cmd(hash, node))
 		return (g_global.cmd_status);
 	if (is_builtin(node))
-		execute_builtin(hashtable, node);
+		execute_builtin(hash, node);
 	else
 		g_global.cmd_status = forking(node);
+	
 	return (g_global.exit_status);
 }
 
@@ -150,6 +154,8 @@ int	forking(t_ast *node)
 			g_global.cmd_status = execve(node->path, node->args, NULL);
 			exit(g_global.cmd_status);
 		}
+		else
+			wait_for_children(node);
 	}
 	return (g_global.cmd_status);
 }

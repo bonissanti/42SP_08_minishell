@@ -67,7 +67,6 @@ typedef struct s_cmd_list
 
 typedef struct s_ast
 {
-	
 	char *cmds;
 	char **args;
 	char *path;
@@ -83,7 +82,6 @@ typedef struct s_ast
 	pid_t pid;
 	t_bool print_hdoc;
 	t_bool print_redir;
-	// t_bool is_freed; transferir pra t_cmd_list
 	t_bool subshell;
 	struct s_ast *left;
 	struct s_ast *right;
@@ -99,7 +97,6 @@ typedef struct s_exec
 	int old_stdout;
 	int count_hdoc;
 	int count_pipes;
-	int count_redir;
 }	t_exec;
 
 //############################### Hash ###################################

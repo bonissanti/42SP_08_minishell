@@ -61,67 +61,21 @@ void	execute_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node,
 
 
 
-// void	handle_other(t_exec *exec, t_hashtable *hash, t_ast *node,
-// 		int *prev_pipe)
-// {
-// 	if (node->type == TYPE_REDIRECT && ft_strncmp(node->cmds, ">", 1) == 0)
-// 	{
-// 		handle_redirects(node);
-// 		node->pid = fork();
-// 		if (node->pid == 0)
-// 		{
-// 			redirect_fds(node);
-// 			exec_simple(hash, node->left);
-// 			exit(0);
-// 		}
-// 		else
-// 		{
-// 			wait_for_children(node);
-// 			restore_fd(exec->old_stdin, exec->old_stdout);
-// 		}
-// 	}
-// 	else if (node->type == TYPE_LOGICAL)
-// 	{
-// 		execute_pipes(hash, exec, node->left, prev_pipe, NULL);
-// 		simple_logical(exec, hash, node, node->left->num_status);
-// 	}
-// 	else
-// 	{
-// 		restore_fd(exec->old_stdin, exec->old_stdout);
-// 		exec_multi_cmds(exec, hash, node);
-// 	}
-// }
+void	handle_other(t_exec *exec, t_hashtable *hash, t_ast *node,
+		int *prev_pipe)
+{
+	if (node->type == TYPE_LOGICAL)
+	{
+		execute_pipes(hash, exec, node->left, prev_pipe, NULL);
+		simple_logical(exec, hash, node, node->left->num_status);
+	}
+	else
+	{
+		restore_fd(exec->old_stdin, exec->old_stdout);
+		exec_multi_cmds(exec, hash, node);
+	}
+}
 
-// void	pipe_from_redirect(t_hashtable *hash, t_exec *exec, t_ast *node,
-// 		int *prev_pipe)
-// {
-// 	int	next_pipe[2];
-
-// 	pipe(next_pipe);
-// 	if (node == NULL)
-// 		return ;
-// 	if (exec->count_pipes == 0)
-// 	{
-// 		execute_pipes(hash, exec, node->right, prev_pipe, NULL);
-// 		if (prev_pipe)
-// 		{
-// 			close(prev_pipe[0]);
-// 			close(prev_pipe[1]);
-// 		}
-// 		if (node->right && node->right->type != TYPE_PIPE)
-// 			handle_other(exec, hash, node->right, prev_pipe);
-// 	}
-// 	if (node->type == TYPE_PIPE && node->left)
-// 	{
-// 		handle_pipes(hash, exec, node, prev_pipe);
-// 		exec->count_pipes--;
-// 		close(prev_pipe[0]);
-// 	}
-// 	else if (node->right->type == TYPE_PIPE)
-// 		pipe_from_redirect(hash, exec, node->right, prev_pipe);
-// 	close(next_pipe[0]);
-// 	close(next_pipe[1]);
-// }
 
 void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 		int *prev_pipe)
@@ -134,8 +88,8 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 	if (node->type == TYPE_PIPE)
 	{
 		pipe(next_pipe);
-		execute_pipes(hash, exec, node->left, prev_pipe, next_pipe);
-		// close(prev_pipe[0]); utilizado pelo pipe_from_redirect
+		if (node->left)
+			execute_pipes(hash, exec, node->left, prev_pipe, next_pipe);
 		prev_pipe[0] = next_pipe[0];
 		prev_pipe[1] = next_pipe[1];
 		exec->count_pipes--;
@@ -160,7 +114,6 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 			close(prev_pipe[1]);
 		}
 	}
-	// 	handle_other(exec, hash, node, prev_pipe);
-	else 
-		handle_pipes(hash, exec, node->right, prev_pipe);
+	else if (node->type != TYPE_PIPE && node->type != TYPE_REDIRECT)
+		handle_other(exec, hash, node, prev_pipe);
 }

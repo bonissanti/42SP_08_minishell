@@ -165,8 +165,6 @@ void	insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 
 	else if (new_node->type == TYPE_HEREDOC)
 		exec->count_hdoc++;
-	else if (new_node->type == TYPE_REDIRECT)
-		exec->count_redir++;
 }
 
 
@@ -186,6 +184,8 @@ void	delete_node(t_ast *head)
 {
 	if (head != NULL)
 	{
+		if (head->type == TYPE_REDIRECT || head->type == TYPE_HEREDOC)
+			head->left = NULL;
 		delete_node(head->left);
 		delete_node(head->right);
 		free_split(head->args);

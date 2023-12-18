@@ -12,43 +12,23 @@
 
 #include "../include/minishell.h"
 
-// static void	parent_logic(t_exec *exec, t_ast *node, t_hashtable *hash);
-
-// void	logical_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
-// 		int *prev_pipe)
-// {
-// 	if (node == NULL)
-// 		return ;
-// 	if (node->type == TYPE_LOGICAL)
-// 	{
-// 		node->pid = fork();
-// 		exec_signals(node->pid);
-// 		if (*prev_pipe != -1)
-// 		{
-// 			dup2(prev_pipe[0], STDIN_FILENO);
-// 			close(prev_pipe[0]);
-// 		}
-// 		if (node->pid == 0)
-// 		{
-// 			g_global.exit_status = exec_forked_cmd(hash, node->left);
-// 			exit(g_global.exit_status);
-// 		}
-// 		else
-// 		{
-// 			wait_for_children(node);
-// 			parent_logic(exec, node, hash);
-// 		}
-// 	}
-// }
-
-// static void	parent_logic(t_exec *exec, t_ast *node, t_hashtable *hash)
-// {
-// 	if (node->left->num_status == 0 && !ft_strncmp(node->cmds, "&&", 2))
-// 		exec_multi_cmds(exec, hash, node->right);
-// 	else if (node->left->num_status != 0 && !ft_strncmp(node->cmds, "||", 2))
-// 		exec_multi_cmds(exec, hash, node->right);
-// }
-
+void	handle_logical(t_exec *exec, t_hashtable *hash, t_ast *node)
+{
+	if (node->type == TYPE_LOGICAL)
+	{
+		node->pid = fork();
+		if (node->pid == 0)
+		{
+			exec_simple(hash, node->left);
+			exit(0);
+		}
+		else
+		{
+			waitpid(node->pid, &node->num_status, 0);
+			simple_logical(exec, hash, node, node->num_status);
+		}
+	}
+}
 
 void	simple_logical(t_exec *exec, t_hashtable *hash, t_ast *node,
 		int status)

@@ -19,13 +19,15 @@ void analyze_if_print(t_ast *node, int index)
 	save_node = node->left;
     while (node != NULL)
     {
-        if (node->type == TYPE_HEREDOC && index == 0 && (node->right == NULL || node->right->type != TYPE_HEREDOC))
+        if (node->type == TYPE_HEREDOC && index == 0 && (node->right == NULL 
+			|| node->right->type != TYPE_HEREDOC))
 		{
 			if (node->left == NULL)
 				node->left = save_node;
 			node->print_hdoc = true;
 		}
-		if (node->type == TYPE_REDIRECT && index == 1 && (node->right == NULL || node->right->type != TYPE_REDIRECT))
+		if (node->type == TYPE_REDIRECT && index == 1 && (node->right == NULL 
+			|| node->right->type != TYPE_REDIRECT))
 		{
 			if (node->left == NULL)
 				node->left = save_node;
