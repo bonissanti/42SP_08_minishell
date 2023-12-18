@@ -143,8 +143,6 @@ void	delete_node(t_ast *head)
 {
 	if (head != NULL)
 	{
-		if (head->type == TYPE_REDIRECT || head->type == TYPE_HEREDOC)
-			head->left = NULL;
 		delete_node(head->left);
 		delete_node(head->right);
 		free_split(head->args);

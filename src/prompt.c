@@ -29,8 +29,6 @@ int prompt_validation(char *readline_input, t_hashtable *env)
 
 void free_lists(void)
 {
-	delete_node(g_global.ast);
-	g_global.ast = NULL;
 	free_cmd_list(g_global.cmd_list);
 	g_global.cmd_list = NULL;
 	free_tkn_list(g_global.tkn_list);
@@ -58,6 +56,7 @@ void prompt(t_hashtable *env, t_exec exec)
 		backup_fd(&exec.old_stdin, &exec.old_stdout);
 		if (to_exec != 2)
 			exec_multi_cmds(&exec, env, g_global.ast);
+		delete_node(g_global.ast);
 		free_lists();
 		restore_fd(exec.old_stdin, exec.old_stdout);
 		g_global.readline_input = NULL;
