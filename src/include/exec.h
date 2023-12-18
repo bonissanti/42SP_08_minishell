@@ -48,6 +48,7 @@ void	handle_error(t_ast *node, int result);
 void 	analyze_if_print(t_ast *node, int index);
 t_bool	analyze_cmd(t_hashtable *hashtable, t_ast *node);
 void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable);
+t_ast    *find_heredoc(t_ast *root);
 
 //############################# EXECUTION ####################################//
 

@@ -17,20 +17,25 @@ t_bool	is_flag_n(char *arg);
 void	ft_echo(t_hashtable *hashtable, char **args)
 {
 	int	i;
+	int newline;
 
 	i = -1;
+	newline = 1;
 	(void)hashtable;
 	while (args[++i] != NULL)
 	{
-		if (args[i][0] == '$' && args[i][1] == '?') // função para usar no parser para expandir $?
+		if (args[i][0] == '$' && args[i][1] == '?')
 			ft_printf("%d", g_global.cmd_status);
-		if (args[i][0] == '-' && is_flag_n(args[i]))
-			continue ;
-		ft_printf("%s", args[i]);
-		if (args[i + 1] != NULL && !is_flag_n(args[i + 1]))
-			ft_printf(" ");
+		else if (is_flag_n(args[i]))
+			newline = 0;
+		else
+		{
+			ft_printf("%s", args[i]);
+			if (args[i + 1] != NULL)
+				ft_printf(" ");
+		}
 	}
-	if (!is_flag_n(args[i - 1]))
+	if (newline)
 		ft_printf("\n");
 	g_global.cmd_status = 0;
 }

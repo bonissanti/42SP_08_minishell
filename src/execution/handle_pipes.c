@@ -51,15 +51,13 @@ void	execute_pipes(t_hashtable *hashtable, t_exec *exec, t_ast *node,
 	}
 	else
 	{
-		wait_for_children(node);
+		waitpid(node->pid, &node->num_status, 0);
 		if (prev_pipe && !next_pipe)
 			close(prev_pipe[1]);
 		if (next_pipe)
 			close(next_pipe[1]);
 	}
 }
-
-
 
 void	handle_other(t_exec *exec, t_hashtable *hash, t_ast *node,
 		int *prev_pipe)
@@ -75,7 +73,6 @@ void	handle_other(t_exec *exec, t_hashtable *hash, t_ast *node,
 		exec_multi_cmds(exec, hash, node);
 	}
 }
-
 
 void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 		int *prev_pipe)
@@ -114,6 +111,6 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 			close(prev_pipe[1]);
 		}
 	}
-	else if (node->type != TYPE_PIPE && node->type != TYPE_REDIRECT)
+	else if (node->type != TYPE_PIPE && node->type != TYPE_REDIRECT && node->type != TYPE_HEREDOC)
 		handle_other(exec, hash, node, prev_pipe);
 }

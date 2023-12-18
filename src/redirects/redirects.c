@@ -12,16 +12,27 @@
 
 #include "../include/minishell.h"
 
-void	redirect_input(t_ast *node, char *filename)
+void redirect_input(t_ast *node, char *filename)
 {
-	if (filename == NULL)
-	{
-		ft_fprintf(2, "minishell: syntax error near unexpected token EOF\n");
-		return ;
-	}
-	node->in_fd = open(filename, O_RDONLY);
-	if (!verify_file_permissions(filename))
-		return ;
+    int tmp_fd;
+    char *tmp_filename = "/tmp/minishell_tmp_file";
+
+    if (filename == NULL)
+    {
+        ft_fprintf(2, "minishell: syntax error near unexpected token EOF\n");
+        return ;
+    }
+    node->in_fd = open(filename, O_RDONLY);
+    if (node->in_fd == -1 || !verify_file_permissions(filename))
+    {
+        tmp_fd = open(tmp_filename, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+        if (tmp_fd != -1)
+        {
+            close(tmp_fd);
+			ft_fprintf(2, "minishell: %s: %s\n", filename, strerror(errno));
+            node->in_fd = open(tmp_filename, O_RDONLY);
+        }
+    }
 }
 
 void	redirect_output(t_ast *node, char *filename)

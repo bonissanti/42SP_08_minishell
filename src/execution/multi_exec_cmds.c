@@ -15,12 +15,22 @@
 int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 {
 	int	initial_pipe[2];
+	t_ast *heredoc_node;
+	t_bool heredoc_executed;
 
 	initial_pipe[0] = -1;
 	initial_pipe[1] = -1;
+	heredoc_executed = false;
 	if (root == NULL)
 		return (0);
 
+
+	heredoc_node = find_heredoc(root);
+	if (heredoc_node && !heredoc_executed)
+	{
+		analyze_heredoc(exec, heredoc_node, hashtable);
+		heredoc_executed = true;
+	}
 	if (root->type == TYPE_COMMAND)
 		exec_forked_cmd(hashtable, root);
 	if (root->type == TYPE_REDIRECT)
@@ -28,7 +38,7 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 		handle_redirects(root);
 		analyze_redirect(exec, hashtable, root);
 	}
-	if (root->type == TYPE_HEREDOC)
+	if (root->type == TYPE_HEREDOC && heredoc_executed)
 		analyze_heredoc(exec, root, hashtable);
 	if (root->type == TYPE_PIPE)
 	{

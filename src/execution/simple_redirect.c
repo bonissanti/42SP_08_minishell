@@ -68,9 +68,6 @@ void	simple_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 }
 
 
-
-
-
 void	redirect_fds(t_ast *node)
 {
 	if (node->in_fd != -1)

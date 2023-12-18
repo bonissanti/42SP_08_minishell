@@ -124,7 +124,6 @@ void handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 		waitpid(node->pid, &node->num_status, 0);
 		simple_logical(exec, hash, node, node->num_status);
 	}
-	
 }
 
 static void open_execute(t_hashtable *hash, t_ast *node, char *filename)
