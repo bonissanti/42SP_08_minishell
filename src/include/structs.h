@@ -205,6 +205,7 @@ typedef struct s_lex
 typedef struct s_global
 {
 	char				*readline_input;
+	t_list				*readline_input_to_free;
 	t_tkn_list			*tkn_list;
 	t_cmd_list			*cmd_list;
 	int					exit_status;

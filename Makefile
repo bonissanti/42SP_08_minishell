@@ -32,7 +32,7 @@ MAND_SRCS 	= ast/ast_split.c ast/ast.c ast/prepare_ast.c \
 			parser/parser_debug_helpers.c parser/parser_tkn_list_utils.c parser/parser_utils.c \
 			parser/parser.c parser/tokenizer_utils.c parser/tokenizer.c redirects/heredoc.c redirects/heredoc_utils.c \
 			redirects/redirects.c redirects/verify_permissions.c redirects/backup_and_restore.c minishell_utils.c minishell.c \
-			prompt.c signals/signals.c
+			prompt.c cleaners.c signals/signals.c
 		
 SRCS 		= $(addprefix ./src/, $(MAND_SRCS))
 # BONUS_SRCS 	= $(BONUS_SRCS:%.c=bonus/%.c)
@@ -46,7 +46,7 @@ OBJDIR 		= ./objs
 ################################# Compilate #################################
 
 CC = cc 
-CFLAGS = -Wall -Wextra -g3
+CFLAGS = -Wall -Wextra -Werror -g3
 
 LIBFT_MAKE = $(MAKE) -C $(LIBFT) --no-print-directory
 LIBFT_LIB = $(LIBFT)/libft.a
