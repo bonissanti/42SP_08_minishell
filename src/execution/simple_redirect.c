@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   simple_redirect.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/19 13:17:33 by brunrodr          #+#    #+#             */
+/*   Updated: 2023/12/19 13:18:51 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 void	double_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
@@ -75,7 +87,6 @@ void	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node)
 {
 	if (node == NULL)
 		return ;
-
 	node->pid = fork();
 	if (node->pid == 0)
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 17:54:43 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/19 16:31:12 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ t_ast	*find_heredoc(t_ast *root)
 {
 	if (root == NULL)
 		return (NULL);
-
 	while (root)
 	{
 		if (root->type == TYPE_HEREDOC)
@@ -67,7 +66,7 @@ int	analyze_cmd(t_hashtable *hashtable, t_ast *node)
 		path = search(hashtable, "PATH")->value;
 		node->path = build_cmd_path(node, path);
 		if (node->path == NULL && ft_strcmp(node->cmds, "exit") != 0
-			&& ft_strcmp(node->cmds, "cd") != 0)
+			&& ft_strcmp(node->cmds, "cd") != 0 && ft_strcmp(node->cmds, "export") != 0)
 		{
 			handle_error(node, 127);
 			return (127);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/18 09:32:41 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/19 16:37:16 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,22 +61,6 @@ int	crop_delimiter_tkn(char **cmd)
 }
 
 /**
- * Function: crop_quote_tkn_validator
- * -----------------
- * This is auxiliary function for the crop_quote_tkn function,
- * it helps keep the code clean and organized as it
- * increments i and also modify the string that is being
- * parsed by the function.
- *
- * @param: *i: A pointer to the number of chars that were passed
- * until the delimiter was reached.
- * @param: **cmd: A pointer to the string.
- * @var: quote: The current quote.
- *
- * @return: int.
- */
-
-/**
  * Function: crop_quote_tkn
  * -----------------
  * The crop_quote_tkn function iterates
@@ -93,6 +77,23 @@ int	crop_delimiter_tkn(char **cmd)
  *
  */
 
+static int	process_quote(char **cmd, char quote, t_bool *closed)
+{
+	int		i;
+
+	i = 1;
+	(*cmd)++;
+	while (**cmd != quote && **cmd)
+	{
+		i++;
+		(*cmd)++;
+	}
+	*closed = true;
+	i++;
+	(*cmd)++;
+	return (i);
+}
+
 int	crop_quote_tkn(char **cmd)
 {
 	int		i;
@@ -102,18 +103,9 @@ int	crop_quote_tkn(char **cmd)
 	i = 1;
 	quote = **cmd;
 	closed = false;
-	i = 1;
-	(*cmd)++;
 	while (**cmd && **cmd != 32)
 	{
-		while (**cmd != quote && **cmd)
-		{
-			i++;
-			(*cmd)++;
-		}
-		closed = true;
-		i++;
-		(*cmd)++;
+		i += process_quote(cmd, quote, &closed);
 		if ((**cmd == '<' || **cmd == '>') && closed)
 			return (i);
 		else if (**cmd == '\'' || **cmd == '"')

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 18:45:17 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/17 17:27:22 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/19 11:57:19 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	init_signals(void)
 
 void	init_hd_signals(int pid)
 {
-	if(!pid)
+	if (!pid)
 		signal(SIGINT, hd_quit);
 	else
 		signal(SIGINT, SIG_IGN);
@@ -29,12 +29,12 @@ void	init_hd_signals(int pid)
 	signal(SIGPIPE, SIG_IGN);
 }
 
-void hd_quit(int signal)
+void	hd_quit(int signal)
 {
-	if(signal == SIGINT)
+	if (signal == SIGINT)
 	{
-		free_lists();		
-    	destroy_hashtable(g_global.hash);
+		free_lists();
+		destroy_hashtable(g_global.hash);
 		rl_clear_history();
 		exit(130);
 	}

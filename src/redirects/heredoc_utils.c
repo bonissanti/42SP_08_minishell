@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/19 12:01:00 by brunrodr          #+#    #+#             */
+/*   Updated: 2023/12/19 12:01:02 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/minishell.h"
 
 char	*generate_filename(int count_hdoc)
@@ -42,7 +54,8 @@ char	*check_expansion(t_hashtable *env, char **line, size_t *len)
 	return (expanded);
 }
 
-void next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node, char *filename)
+void	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node,
+		char *filename)
 {
 	node->pid = fork();
 	if (node->pid == 0)
@@ -63,9 +76,10 @@ void next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node, char *filename)
 	}
 }
 
-void next_is_pipe(t_exec *exec, t_hashtable *hash, t_ast *node, char *filename)
+void	next_is_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
+		char *filename)
 {
-	int next_pipe[2];
+	int	next_pipe[2];
 
 	if (exec->count_pipes >= 1)
 		pipe(next_pipe);

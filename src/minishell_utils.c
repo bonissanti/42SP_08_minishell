@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:52:18 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/11 14:40:17 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/19 11:54:03 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./include/minishell.h"
 
-void init_structs(void *structs, int type, size_t struct_size)
+void	init_structs(void *structs, int type, size_t struct_size)
 {
 	ft_memset(structs, type, struct_size);
 }
@@ -27,21 +27,21 @@ int	ft_count_args(char **args)
 	return (count);
 }
 
-void free_split(char **split)
+void	free_split(char **split)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (split[i] != NULL)
 	{
-		if(split[i] != NULL)
+		if (split[i] != NULL)
 		{
 			free(split[i]);
 			split[i] = NULL;
 		}
 		i++;
 	}
-	if(split != NULL)
+	if (split != NULL)
 	{
 		free(split);
 		split = NULL;

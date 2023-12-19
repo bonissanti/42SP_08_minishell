@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 17:56:06 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/19 16:31:21 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node, char *filename); 
+static void	after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
+				char *filename);
 static void	open_execute(t_hashtable *hash, t_ast *node, char *filename);
 
 void	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
@@ -51,14 +52,16 @@ static void	open_execute(t_hashtable *hash, t_ast *node, char *filename)
 		node->in_fd = open(filename, O_RDONLY);
 		dup2(node->in_fd, STDIN_FILENO);
 		close(node->in_fd);
-		exec_simple(hash, node->left);
+		if (node->left)
+			exec_simple(hash, node->left);
 		exit(0);
 	}
 	else
 		free(filename);
 }
 
-static void after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node, char *filename)
+static void	after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
+		char *filename)
 {
 	if (node->right && node->right->type == TYPE_HEREDOC)
 	{
@@ -68,8 +71,8 @@ static void after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node, char *filen
 	}
 	else if (node->right && node->right->type == TYPE_REDIRECT)
 		next_is_rdir(exec, hash, node, filename);
-	else if (node->right && (node->right->type == TYPE_PIPE 
-		|| node->right->type == TYPE_LOGICAL))
+	else if (node->right && (node->right->type == TYPE_PIPE
+			|| node->right->type == TYPE_LOGICAL))
 		next_is_pipe(exec, hash, node, filename);
 	if (node->type == TYPE_LOGICAL)
 	{
@@ -78,7 +81,8 @@ static void after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node, char *filen
 	}
 }
 
-void parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node, int *next_pipe)
+void	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
+		int *next_pipe)
 {
 	if (exec->count_pipes >= 1)
 		close(next_pipe[1]);

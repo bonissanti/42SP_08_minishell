@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/12/19 12:32:11 by brunrodr          #+#    #+#             */
+/*   Updated: 2023/12/19 12:32:13 by brunrodr         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef EXEC_H
 # define EXEC_H
 
@@ -48,13 +60,16 @@ int		analyze_cmd(t_hashtable *hashtable, t_ast *node);
 void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable);
 t_ast	*find_heredoc(t_ast *root);
 char	*generate_filename(int count_hdoc);
-void 	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node, char *filename);
-void 	next_is_pipe(t_exec *exec, t_hashtable *hash, t_ast *node, char *filename);
-void 	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node, int *next_pipe);
+void	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node,
+			char *filename);
+void	next_is_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
+			char *filename);
+void	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
+			int *next_pipe);
 
 //############################# EXECUTION ####################################//
 
-void 	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node);
+void	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node);
 int		exec_simple(t_hashtable *hash, t_ast *node);
 int		exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root);
 int		forking(t_ast *node);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/17 23:21:42 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/19 14:38:11 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ int	is_expander(char x)
 char	*append_expanded(char *cmd, char **exp, t_hashtable *env, int index)
 {
 	char	*to_expand;
-
+	
 	to_expand = ft_substr(*exp, 0, crop_delimiter_tkn(exp));
-	analyzing_quotes(env, &to_expand);
+	analyzing_quotes(env, exp);
 	return (gnl_strjoin(ft_substr(cmd, 0, index), to_expand));
 }
 

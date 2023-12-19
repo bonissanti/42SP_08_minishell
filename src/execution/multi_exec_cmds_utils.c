@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/14 14:44:00 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/19 17:15:38 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,21 +72,17 @@ void	redirect_fds(t_ast *node)
 void	wait_for_children(t_ast *node)
 {
 	int	status;
+	pid_t pid;
 
 	status = 0;
 	if (node == NULL)
 		return ;
-	if (node->type == TYPE_REDIRECT || node->type == TYPE_COMMAND
-		|| node->type == TYPE_PIPE || node->type == TYPE_HEREDOC
-		|| node->type == TYPE_LOGICAL)
+	while ((pid = waitpid(-1, &status, 0)) > 0)
 	{
-		waitpid(node->pid, &status, 0);
 		if (WIFEXITED(status) && g_global.cmd_status == 0)
 			g_global.cmd_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status) && g_global.cmd_status == 0)
 			g_global.cmd_status = WTERMSIG(status);
 	}
-	else if (node->right)
-		wait_for_children(node->right);
 }
 

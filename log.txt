@@ -1,0 +1,29 @@
+
+export PATH=/nfs/homes/brunrodr/bin:/nfs/homes/brunrodr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/nfs/homes/brunrodr/09.MINISHELL/V_atual/42SP_08_minishell/directory1:/nfs/homes/brunrodr/09.MINISHELL/V_atual/42SP_08_minishell/directory2
+=80634== Invalid free() / delete / delete[] / realloc()
+==80634==    at 0x483CA3F: free (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==80634==    by 0x404D0D: final_process (quotes_handler.c:181)
+==80634==    by 0x404AE6: handle_quotes (quotes_handler.c:66)
+==80634==    by 0x404D99: analyzing_quotes (quotes_validater.c:41)
+==80634==    by 0x407159: append_expanded (tokenizer_utils.c:57)
+==80634==    by 0x407A1D: crop_tkn (tokenizer.c:159)
+==80634==    by 0x407ABD: tokenizer (tokenizer.c:196)
+==80634==    by 0x408861: prompt (prompt.c:54)
+==80634==    by 0x4086FF: main (minishell.c:20)
+==80634==  Address 0x4b22c48 is 8 bytes inside a block of size 158 alloc'd
+==80634==    at 0x483B7F3: malloc (in /usr/lib/x86_64-linux-gnu/valgrind/vgpreload_memcheck-amd64-linux.so)
+==80634==    by 0x489E00C: xmalloc (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==80634==    by 0x48772AB: readline_internal_teardown (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==80634==    by 0x4878504: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.0)
+==80634==    by 0x4087F8: prompt (prompt.c:48)
+==80634==    by 0x4086FF: main (minishell.c:20)
+
+env
+==81482== Conditional jump or move depends on uninitialised value(s)
+==81482==    at 0x403D40: wait_for_children (multi_exec_cmds_utils.c:82)
+==81482==    by 0x404195: exec_multi_cmds (multi_exec_cmds.c:73)
+==81482==    by 0x4088BA: prompt (prompt.c:59)
+==81482==    by 0x4086FF: main (minishell.c:20)
+==81482==  Uninitialised value was created by a stack allocation
+==81482==    at 0x403CB0: wait_for_children (multi_exec_cmds_utils.c:73)
+==81482== 

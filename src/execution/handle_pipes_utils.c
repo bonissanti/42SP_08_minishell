@@ -30,6 +30,7 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 	exec_signals(node->pid);
 	if (node->pid == 0)
 	{
+		signal(SIGPIPE, SIG_IGN);
 		redirect_pipes(exec, prev_pipe, next_pipe);
 		if (node->type == TYPE_REDIRECT)
 		{
