@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/17 20:07:13 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/19 09:22:55 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int prompt_validation(char *readline_input, t_hashtable *env)
 {
-	if (ft_strcmp(g_global.readline_input, "exit") == 0)
+	if (ft_strcmp(g_global.readline_input, "exit") == 0 || !g_global.readline_input)
 	{
+		ft_putstr_fd("exit\n", 1);
 		free_lists();
-		rl_clear_history();
-    	destroy_hashtable(env);
+		final_wipeout(env);
 		exit(0);
 	}
 	if(ft_strlen(readline_input) != 0)
@@ -27,32 +27,25 @@ int prompt_validation(char *readline_input, t_hashtable *env)
 		return(false);
 }
 
-void free_lists(void)
-{
-	free_cmd_list(g_global.cmd_list);
-	g_global.cmd_list = NULL;
-	free_tkn_list(g_global.tkn_list);
-	g_global.tkn_list = NULL;
-	free(g_global.readline_input);
-	g_global.readline_input = NULL;
-}
-
 void prompt(t_hashtable *env, t_exec exec)
 {
 	int to_exec;
 
-	g_global.readline_input = NULL;
 	g_global.exit_status = -1;
 	while(g_global.exit_status == -1)
 	{
 		init_signals();
     	init_structs(&exec, 0, sizeof(t_exec));
-		while(!prompt_validation(g_global.readline_input, env))
+		while(1)
 		{
 			if (isatty(STDIN_FILENO))
-				g_global.readline_input = readline("$ ");
+				g_global.readline_input = readline_trash_can(readline("$ "));
 			else
-				g_global.readline_input = readline("");
+				g_global.readline_input = readline_trash_can(readline(""));
+			if(!prompt_validation(g_global.readline_input, env))
+				continue;
+			else
+				break;
 		}
 		add_history(g_global.readline_input);
 		tokenizer(env);
@@ -64,7 +57,6 @@ void prompt(t_hashtable *env, t_exec exec)
 		delete_node(g_global.ast);
 		free_lists();
 		restore_fd(exec.old_stdin, exec.old_stdout);
-		g_global.readline_input = NULL;
 	}
-    destroy_hashtable(env);
+	final_wipeout(env);
 }

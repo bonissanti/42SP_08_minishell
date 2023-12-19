@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 18:22:03 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/17 23:20:44 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/19 09:53:08 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ t_tkn_list	*new_tkn_list(char *content, t_tkn_type type)
 	if (type == IDENTIFIER || type == WILD || type == EXPAND)
 		node->content = content;
 	else
+	{
+		free(content);
 		node->content = NULL;
+	}
 	node->next = NULL;
 	node->prev = NULL;
 	return (node);
