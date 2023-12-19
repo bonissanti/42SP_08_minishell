@@ -27,14 +27,14 @@ void	handle_redirects(t_ast *node)
 
 int	get_index_redirect(t_ast *node)
 {
-	int index;
+	int	index;
 
 	if (node->type == TYPE_REDIRECT && node->right
 		&& node->right->type == TYPE_REDIRECT)
-		{
-			if (ft_strncmp(node->cmds, node->right->cmds, 1) != 0)
-				index = 3;
-		}
+	{
+		if (ft_strncmp(node->cmds, node->right->cmds, 1) != 0)
+			index = 3;
+	}
 	else
 	{
 		if (ft_strncmp(node->cmds, ">>", 2) == 0)
@@ -49,7 +49,7 @@ int	get_index_redirect(t_ast *node)
 
 void	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 {
-	int index;
+	int	index;
 
 	analyze_if_print(node, 1);
 	index = get_index_redirect(node);

@@ -132,6 +132,8 @@ int	parser(t_hashtable *env)
 
 	(void)env;
 	to_exec = command_consistency(g_global.tkn_list);
+	if (to_exec == 2)
+		g_global.cmd_status = 2;
 	join_args(g_global.tkn_list);
 	return (to_exec);
 }

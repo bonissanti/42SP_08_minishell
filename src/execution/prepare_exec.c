@@ -47,18 +47,18 @@ void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable)
 		exec_multi_cmds(exec, hashtable, node->right);
 }
 
-t_bool	analyze_cmd(t_hashtable *hashtable, t_ast *node)
+int	analyze_cmd(t_hashtable *hashtable, t_ast *node)
 {
 	char	*path;
 	int		result;
 
 	if (is_empty_cmd(node->cmds))
-		return (false);
+		return (0);
 	result = verify_cmd_permissions(node->cmds);
 	if (ft_strchr(node->cmds, '/') != NULL && result != 0)
 	{
 		handle_error(node, result);
-		return (false);
+		return (result);
 	}
 	else if (ft_strchr(node->cmds, '/') != NULL && result == 0)
 		node->path = ft_strdup(node->cmds);
@@ -69,23 +69,23 @@ t_bool	analyze_cmd(t_hashtable *hashtable, t_ast *node)
 		if (node->path == NULL && ft_strcmp(node->cmds, "exit") != 0
 			&& ft_strcmp(node->cmds, "cd") != 0)
 		{
-			handle_error(node, 126);
-			return (false);
+			handle_error(node, 127);
+			return (127);
 		}
 	}
-	return (true);
+	return (0);
 }
 
 void	handle_error(t_ast *node, int result)
 {
-	if (result == 126)
-	{
-		g_global.cmd_status = 126;
-		ft_fprintf(2, "minishell: %s: command not found\n", node->cmds);
-	}
-	else if (result == 127)
+	if (result == 127)
 	{
 		g_global.cmd_status = 127;
+		ft_fprintf(2, "minishell: %s: command not found\n", node->cmds);
+	}
+	else if (result == 126)
+	{
+		g_global.cmd_status = 126;
 		ft_fprintf(2, "minishell: %s: %s\n", node->cmds, strerror(errno));
 	}
 	return ;

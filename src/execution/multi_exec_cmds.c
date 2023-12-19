@@ -49,7 +49,6 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 	{
 		handle_redirects(root);
 		analyze_redirect(exec, hash, root);
-		// redirect_out(exec, hash, root);
 	}
 	if (root->type == TYPE_HEREDOC)
 		analyze_heredoc(exec, root, hash);
@@ -77,7 +76,7 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 
 int	exec_forked_cmd(t_hashtable *hash, t_ast *node)
 {
-	if (!analyze_cmd(hash, node))
+	if (analyze_cmd(hash, node) != 0)
 		return (g_global.cmd_status);
 	if (is_builtin(node))
 		execute_builtin(hash, node);

@@ -14,7 +14,7 @@
 
 int	exec_simple(t_hashtable *hash, t_ast *node)
 {
-	if (!analyze_cmd(hash, node))
+	if (analyze_cmd(hash, node) != 0)
 		return (g_global.cmd_status);
 	if (is_builtin(node))
 		execute_builtin(hash, node);
@@ -81,11 +81,12 @@ void	wait_for_children(t_ast *node)
 		|| node->type == TYPE_LOGICAL)
 	{
 		waitpid(node->pid, &status, 0);
-		if (WIFEXITED(status))
+		if (WIFEXITED(status) && g_global.cmd_status == 0)
 			g_global.cmd_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
+		else if (WIFSIGNALED(status) && g_global.cmd_status == 0)
 			g_global.cmd_status = WTERMSIG(status);
 	}
 	else if (node->right)
 		wait_for_children(node->right);
 }
+
