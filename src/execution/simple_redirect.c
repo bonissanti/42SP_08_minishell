@@ -49,7 +49,7 @@ static void	parent_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 		handle_pipes(hashtable, exec, node->right, next_pipe);
 }
 
-void	simple_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
+void	redirect_in(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 {
 	int	next_pipe[2];
 
@@ -68,5 +68,24 @@ void	simple_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 	{
 		waitpid(node->pid, &node->num_status, 0);
 		simple_logical(exec, hashtable, node, node->num_status);
+	}
+}
+
+void	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node)
+{
+	if (node == NULL)
+		return ;
+
+	node->pid = fork();
+	if (node->pid == 0)
+	{
+		handle_redirects(node);
+		redirect_fds(node);
+		exec_simple(hash, node->left);
+	}
+	else
+	{
+		if (node->num_status == 0)
+			exec_multi_cmds(exec, hash, node->right);
 	}
 }

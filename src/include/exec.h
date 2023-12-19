@@ -18,7 +18,7 @@ void	redirect_output(t_ast *node, char *filename);
 void	redirect_append(t_ast *node, char *filename);
 void	redirect_fds(t_ast *node);
 void	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
-void	simple_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
+void	redirect_in(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 void	double_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 void	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node);
 char	*check_expansion(t_hashtable *env, char **line, size_t *len);
@@ -54,6 +54,7 @@ void 	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node, int *next_pipe);
 
 //############################# EXECUTION ####################################//
 
+void 	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node);
 int		exec_simple(t_hashtable *hash, t_ast *node);
 int		exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root);
 int		forking(t_ast *node);

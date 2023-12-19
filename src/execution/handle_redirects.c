@@ -16,36 +16,49 @@ void	handle_redirects(t_ast *node)
 {
 	if (node->type == TYPE_REDIRECT)
 	{
-		if (ft_strncmp(node->cmds, ">", 1) == 0)
-			redirect_output(node, node->outfile);
-		else if (ft_strncmp(node->cmds, ">>", 2) == 0)
+		if (ft_strncmp(node->cmds, ">>", 2) == 0)
 			redirect_append(node, node->outfile);
+		else if (ft_strncmp(node->cmds, ">", 1) == 0)
+			redirect_output(node, node->outfile);
 		else if (ft_strncmp(node->cmds, "<", 1) == 0)
 			redirect_input(node, node->infile);
 	}
 }
 
-void	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
+int	get_index_redirect(t_ast *node)
 {
-	t_bool	rdir_in;
-	t_bool	rdir_out;
+	int index;
 
-	rdir_in = false;
-	rdir_out = false;
-	analyze_if_print(node, 1);
 	if (node->type == TYPE_REDIRECT && node->right
 		&& node->right->type == TYPE_REDIRECT)
-	{
-		if (ft_strncmp(node->cmds, node->right->cmds, 1) != 0)
 		{
-			rdir_in = true;
-			rdir_out = true;
+			if (ft_strncmp(node->cmds, node->right->cmds, 1) != 0)
+				index = 3;
 		}
+	else
+	{
+		if (ft_strncmp(node->cmds, ">>", 2) == 0)
+			index = 0;
+		else if (ft_strncmp(node->cmds, ">", 1) == 0)
+			index = 1;
+		else if (ft_strncmp(node->cmds, "<", 1) == 0)
+			index = 2;
 	}
-	if (rdir_in && rdir_out)
+	return (index);
+}
+
+void	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
+{
+	int index;
+
+	analyze_if_print(node, 1);
+	index = get_index_redirect(node);
+	if ((index == 0 || index == 1) && (node->print_redir == true))
+		redirect_out(exec, hashtable, node);
+	else if ((index == 2) && (node->print_redir == true))
+		redirect_in(exec, hashtable, node);
+	else if (index == 3)
 		double_redirect(exec, hashtable, node);
-	else if (node->type == TYPE_REDIRECT && node->print_redir == true)
-		simple_redirect(exec, hashtable, node);
 	else
 	{
 		node->left = NULL;

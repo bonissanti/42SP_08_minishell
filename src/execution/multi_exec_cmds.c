@@ -32,7 +32,7 @@ static void	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 	}
 }
 
-// static void teste_maldito(t_exec *exec, t_hashtable *hash, t_ast *root)
+// static void redirect_out(t_exec *exec, t_hashtable *hash, t_ast *root)
 // {
 
 // }
@@ -49,6 +49,7 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 	{
 		handle_redirects(root);
 		analyze_redirect(exec, hash, root);
+		// redirect_out(exec, hash, root);
 	}
 	if (root->type == TYPE_HEREDOC)
 		analyze_heredoc(exec, root, hash);
