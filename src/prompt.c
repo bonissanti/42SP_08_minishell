@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/19 09:22:55 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/19 10:54:34 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@ int prompt_validation(char *readline_input, t_hashtable *env)
 		return(false);
 }
 
-void prompt(t_hashtable *env, t_exec exec)
+void prompt(t_hashtable *env)
 {
 	int to_exec;
+	t_exec exec;
 
 	g_global.exit_status = -1;
 	while(g_global.exit_status == -1)

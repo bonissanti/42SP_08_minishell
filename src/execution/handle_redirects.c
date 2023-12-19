@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:43:27 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 19:05:05 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/19 10:52:19 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	get_index_redirect(t_ast *node)
 {
 	int	index;
 
+	index = -1;
 	if (node->type == TYPE_REDIRECT && node->right
 		&& node->right->type == TYPE_REDIRECT)
 	{
