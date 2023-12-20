@@ -30,11 +30,6 @@ void	handle_other(t_exec *exec, t_hashtable *hash, t_ast *node,
 static void	last_pipe(t_exec *exec, t_ast *node, int *prev_pipe)
 {
 	execute_pipes(exec, node, prev_pipe, NULL);
-	if (prev_pipe)
-	{
-		close(prev_pipe[0]);
-		close(prev_pipe[1]);
-	}
 }
 
 void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
@@ -62,20 +57,3 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 		handle_other(exec, hash, node, prev_pipe);
 }
 
-// void	teste_pipeto(t_hashtable *hash, t_exec *exec, t_ast *node,
-// 		int *initial_pipe)
-// {
-// 	int med_pipe[2];
-// 	int final_pipe[2];
-
-// 	if (node == NULL)
-// 		return ;
-
-// 	pipe(med_pipe);
-// 	first_cmd(exec, node, initial_pipe, med_pipe);
-// 	pipe(final_pipe);
-// 	second_cmd(exec, node, med_pipe, final_pipe);
-// 	pipe(med_pipe);
-// 	third_cmd(exec, node, final_pipe, med_pipe);
-	
-// }

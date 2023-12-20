@@ -12,6 +12,8 @@
 
 #include "./include/minishell.h"
 
+
+
 int	prompt_validation(char *readline_input, t_hashtable *env)
 {
 	if (ft_strcmp(g_global.readline_input, "exit") == 0

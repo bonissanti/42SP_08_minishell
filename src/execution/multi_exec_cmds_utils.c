@@ -12,6 +12,8 @@
 
 #include "../include/minishell.h"
 
+
+
 int	exec_simple(t_hashtable *hash, t_ast *node)
 {
 	if (analyze_cmd(hash, node) != 0)
@@ -69,22 +71,76 @@ void	redirect_fds(t_ast *node)
 	}
 }
 
-void	wait_for_children(t_ast *node)
+// temp
+void fechar_todos_fds(void) {
+    int max_fds = getdtablesize();
+    for (int i = 3; i < max_fds; i++) {
+        close(i);
+    }
+}
+
+// temp
+int status_do_filho(int status) 
+{
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGINT)
+		{
+			ft_fprintf(1, "\n");
+			return (130);
+		}
+		if (WTERMSIG(status) == SIGQUIT)
+		{
+			ft_fprintf(1, "QUIT\n");
+			return (131);
+		}
+	}
+	return (0);
+}
+
+
+int	wait_for_children(t_ast *node)
 {
 	int	status;
 	pid_t pid;
 
 	status = 0;
 	if (node == NULL)
-		return ;
-	while ((pid = waitpid(-1, &status, 0)) > 0)
+		return (0);
+	while ((pid = waitpid(-1, &status, WUNTRACED)) > 0)
 	{
-		if (WIFEXITED(status) && g_global.cmd_status == 0)
+		if (WIFEXITED(status))
 			g_global.cmd_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status) && g_global.cmd_status == 0)
 			g_global.cmd_status = WTERMSIG(status);
 	}
+	fechar_todos_fds();
+	return (status_do_filho(status));
 }
+
+// void	wait_for_children(t_ast *node)
+// {
+// 	int	status;
+// 	pid_t pid;
+
+// 	status = 0;
+// 	if (node == NULL)
+// 		return ;
+// 	while ((pid = waitpid(-1, &status, 0)) > 0)
+// 	{
+// 		if (WIFEXITED(status) && g_global.cmd_status == 0)
+// 			g_global.cmd_status = WEXITSTATUS(status);
+// 		else if (WIFSIGNALED(status) && g_global.cmd_status == 0)
+// 			g_global.cmd_status = WTERMSIG(status);
+// 	}
+// 	fechar_todos_fds();
+// }
+
+
+
+
 
 void	ft_printf_fd(int fd)
 {

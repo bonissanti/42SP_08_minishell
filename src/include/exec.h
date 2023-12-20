@@ -74,7 +74,8 @@ int		exec_simple(t_hashtable *hash, t_ast *node);
 int		exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root);
 int		forking(t_ast *node);
 int		exec_forked_cmd(t_hashtable *hash, t_ast *node);
-void	wait_for_children(t_ast *node);
+int		wait_for_children(t_ast *node);
+void fechar_todos_fds(void);
 
 void	ft_printf_fd(int fd);
 

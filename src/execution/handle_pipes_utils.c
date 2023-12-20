@@ -25,13 +25,19 @@ static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
 	}
 }
 
+
 void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 {
 	node->pid = fork();
+	// ft_printf("pid: %d\n", node->pid);
 	exec_signals(node->pid);
 	if (node->pid == 0)
 	{
 		redirect_pipes(exec, prev_pipe, next_pipe);
+		if (prev_pipe)
+			close(prev_pipe[0]);
+		if (next_pipe)
+			close(next_pipe[0]);
 		if (node->type == TYPE_REDIRECT)
 		{
 			handle_redirects(node);
@@ -44,5 +50,11 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 		exit(0);
 	}
 	else
+	{
 		parent_pipe(prev_pipe, next_pipe);
+		if (prev_pipe)
+			close(prev_pipe[1]);
+		if (next_pipe)
+			close(next_pipe[1]);
+	}
 }

@@ -28,6 +28,7 @@ void	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 	{
 		len = 0;
 		line = readline("> ");
+		exec_signals(node->pid);
 		if (!ft_strcmp(line, node->delim))
 		{
 			free(line);

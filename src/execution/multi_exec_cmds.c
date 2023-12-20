@@ -32,9 +32,38 @@ static void	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 	}
 }
 
-// static void redirect_out(t_exec *exec, t_hashtable *hash, t_ast *root)
+// void	fucker(t_exec *exec, t_hashtable *hash, t_ast *node, t_bool write_on_pipe)
 // {
+// 	int next_pipe[2];
+// 	int prev_pipe[2];
+// 	if (node == NULL)
+// 		return ;
 
+// 	if (write_on_pipe == true)
+// 		pipe(next_pipe);
+
+// 	if (write_on_pipe == false)
+// 		pipe(prev_pipe);
+// 	node->pid = fork();
+// 	if (node->pid == 0)
+// 	{
+// 		if (write_on_pipe == true)
+// 		{
+// 			dup2(next_pipe[1], STDOUT_FILENO);
+// 			close(next_pipe[1]);
+// 			close(next_pipe[0]);
+// 		}
+// 		analyze_cmd(hash, node);
+// 		execve(node->path, node->args, NULL);
+// 		exit(0);
+// 	}
+// 	else
+// 	{
+// 		prev_pipe[0] = next_pipe[0];
+// 		prev_pipe[1] = next_pipe[1];
+// 		if (write_on_pipe == true)
+// 			close(next_pipe[1]);
+// 	}
 // }
 
 static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
@@ -54,6 +83,8 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 		analyze_heredoc(exec, root, hash);
 	if (root->type == TYPE_PIPE)
 	{
+		// fucker(exec, hash, root->right, false);
+		// fucker(exec, hash, root->left, true);
 		handle_pipes(hash, exec, root, initial_pipe);
 		restore_fd(exec->old_stdin, exec->old_stdout);
 	}
