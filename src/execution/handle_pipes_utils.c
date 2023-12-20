@@ -50,11 +50,5 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 		exit(0);
 	}
 	else
-	{
 		parent_pipe(prev_pipe, next_pipe);
-		if (prev_pipe)
-			close(prev_pipe[1]);
-		if (next_pipe)
-			close(next_pipe[1]);
-	}
 }
