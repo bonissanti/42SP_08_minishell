@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/19 16:57:44 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/15 17:52:17 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,3 +61,21 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 		&& node->type != TYPE_HEREDOC)
 		handle_other(exec, hash, node, prev_pipe);
 }
+
+// void	teste_pipeto(t_hashtable *hash, t_exec *exec, t_ast *node,
+// 		int *initial_pipe)
+// {
+// 	int med_pipe[2];
+// 	int final_pipe[2];
+
+// 	if (node == NULL)
+// 		return ;
+
+// 	pipe(med_pipe);
+// 	first_cmd(exec, node, initial_pipe, med_pipe);
+// 	pipe(final_pipe);
+// 	second_cmd(exec, node, med_pipe, final_pipe);
+// 	pipe(med_pipe);
+// 	third_cmd(exec, node, final_pipe, med_pipe);
+	
+// }
