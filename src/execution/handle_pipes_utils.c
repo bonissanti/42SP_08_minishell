@@ -34,10 +34,6 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 	if (node->pid == 0)
 	{
 		redirect_pipes(exec, prev_pipe, next_pipe);
-		if (prev_pipe)
-			close(prev_pipe[0]);
-		if (next_pipe)
-			close(next_pipe[0]);
 		if (node->type == TYPE_REDIRECT)
 		{
 			handle_redirects(node);
