@@ -25,7 +25,7 @@
  * 
 */
 
-int	command_consistency(t_tkn_list *tokenized)
+void	command_consistency(t_tkn_list *tokenized)
 {
 	t_tkn_list	*head;
 	t_tkn_list	*tail;
@@ -37,7 +37,7 @@ int	command_consistency(t_tkn_list *tokenized)
 	{
 		ft_printf("syntax error near unexpected token `%s'\n",
 			tkn_type_converter(head->type));
-		return (2);
+		g_global.to_exec = 2;
 	}
 	else if (tail->type == O_PARENTESIS || is_redirect(tail->type))
 	{
@@ -46,9 +46,8 @@ int	command_consistency(t_tkn_list *tokenized)
 				tkn_type_converter(tail->type));
 		else
 			ft_printf("syntax error near unexpected token `newline'\n");
-		return (2);
+		g_global.to_exec = 2;
 	}
-	return (1);
 }
 
 /**
@@ -126,14 +125,11 @@ void	join_args(t_tkn_list *tkn_list)
  * 
 */
 
-int	parser(t_hashtable *env)
+void	parser(t_hashtable *env)
 {
-	int	to_exec;
-
 	(void)env;
-	to_exec = command_consistency(g_global.tkn_list);
-	if (to_exec == 2)
+	command_consistency(g_global.tkn_list);
+	if (g_global.to_exec == 2)
 		g_global.cmd_status = 2;
 	join_args(g_global.tkn_list);
-	return (to_exec);
 }

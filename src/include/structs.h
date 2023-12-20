@@ -109,6 +109,7 @@ typedef struct s_exec
 	int					old_stdout;
 	int					count_hdoc;
 	int					count_pipes;
+	int					error_call;
 }						t_exec;
 
 //############################### Hash ###################################
@@ -221,6 +222,7 @@ typedef struct s_global
 	t_tkn_list			*tkn_list;
 	t_cmd_list			*cmd_list;
 	int					exit_status;
+	int					to_exec;
 	int					cmd_status;
 	t_hashtable			*hash;
 	t_ast				*ast;

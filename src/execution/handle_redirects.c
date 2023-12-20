@@ -12,17 +12,21 @@
 
 #include "../include/minishell.h"
 
-void	handle_redirects(t_ast *node)
+int	handle_redirects(t_ast *node)
 {
-	if (node->type == TYPE_REDIRECT)
+	int ok_to_redirect;
+
+	ok_to_redirect = 1;
+	if (node->type == TYPE_REDIRECT && node->left)
 	{
 		if (ft_strncmp(node->cmds, ">>", 2) == 0)
-			redirect_append(node, node->outfile);
+			ok_to_redirect = redirect_append(node, node->outfile);
 		else if (ft_strncmp(node->cmds, ">", 1) == 0)
-			redirect_output(node, node->outfile);
+			ok_to_redirect = redirect_output(node, node->outfile);
 		else if (ft_strncmp(node->cmds, "<", 1) == 0)
-			redirect_input(node, node->infile);
+			ok_to_redirect = redirect_input(node, node->infile);
 	}
+	return (ok_to_redirect);
 }
 
 int	get_index_redirect(t_ast *node)
@@ -48,21 +52,27 @@ int	get_index_redirect(t_ast *node)
 	return (index);
 }
 
-void	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
+int	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 {
 	int	index;
 
-	analyze_if_print(node, 1);
-	index = get_index_redirect(node);
-	if ((index == 0 || index == 1) && (node->print_redir == true))
-		redirect_out(exec, hashtable, node);
-	else if ((index == 2) && (node->print_redir == true))
-		redirect_in(exec, hashtable, node);
-	else if (index == 3)
-		double_redirect(exec, hashtable, node);
+	if (exec->error_call == 1)
+		return (1);
 	else
 	{
-		node->left = NULL;
-		exec_multi_cmds(exec, hashtable, node->right);
+		analyze_if_print(node, 1);
+		index = get_index_redirect(node);
+		if ((index == 0 || index == 1) && (node->print_redir == true))
+			redirect_out(exec, hashtable, node);
+		else if ((index == 2) && (node->print_redir == true))
+			redirect_in(exec, hashtable, node);
+		else if (index == 3)
+			double_redirect(exec, hashtable, node);
+		else
+		{
+			node->left = NULL;
+			exec_multi_cmds(exec, hashtable, node->right);
+		}
 	}
+	return (0);
 }

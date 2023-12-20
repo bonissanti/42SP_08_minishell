@@ -1,0 +1,16 @@
+Makefile
+directory1
+directory2
+libft
+log.txt
+log2.txt
+minishell
+objs
+otario.txt
+outfile
+outfile.txt
+readline.supp
+readline_2.supp
+src
+test
+tst

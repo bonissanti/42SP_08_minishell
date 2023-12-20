@@ -36,6 +36,7 @@ void	analyzing_quotes(t_hashtable *env, char **args)
 	if (!even_close_quotes(*args))
 	{
 		ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
+		g_global.to_exec = 2;
 		return ;
 	}
 	handle_quotes(env, head, args);

@@ -45,17 +45,18 @@ static void	init_global_structs(void)
 	g_global.readline_input = NULL;
 	g_global.readline_input_to_free = NULL;
 	g_global.tkn_list = NULL;
+	g_global.to_exec = 0;
 }
 
 void	prompt(t_hashtable *env)
 {
-	int		to_exec;
 	t_exec	exec;
 
 	init_global_structs();
 	while (g_global.exit_status == -1)
 	{
 		init_signals();
+		g_global.to_exec = 0;
 		init_structs(&exec, 0, sizeof(t_exec));
 		if (isatty(STDIN_FILENO))
 			g_global.readline_input = readline_trash_can(readline("$ "));
@@ -65,10 +66,10 @@ void	prompt(t_hashtable *env)
 			continue ;
 		add_history(g_global.readline_input);
 		tokenizer(env);
-		to_exec = parser(env);
+		parser(env);
 		g_global.ast = init_ast(g_global.cmd_list, &exec);
 		backup_fd(&exec.old_stdin, &exec.old_stdout);
-		if (to_exec != 2)
+		if (g_global.to_exec != 2)
 			exec_multi_cmds(&exec, env, g_global.ast);
 		delete_node(g_global.ast);
 		free_lists();

@@ -2,7 +2,6 @@
 
 static void	parent_pipe(int *prev_pipe, int *next_pipe)
 {
-	// wait(NULL);
 	if (prev_pipe && !next_pipe)
 		close(prev_pipe[1]);
 	if (next_pipe)
@@ -29,7 +28,6 @@ static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
 void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 {
 	node->pid = fork();
-	// ft_printf("pid: %d\n", node->pid);
 	exec_signals(node->pid);
 	if (node->pid == 0)
 	{

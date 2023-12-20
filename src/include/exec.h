@@ -21,15 +21,15 @@ void	init_exec_vector(t_exec *exec);
 t_bool	is_builtin(t_ast *node);
 int		execute_builtin(t_hashtable *hashtable, t_ast *node);
 void	init_redirects(t_exec *exec);
-void	handle_redirects(t_ast *node);
+int		handle_redirects(t_ast *node);
 
 //############################# REDIRECTIONS #################################//
 
-void	redirect_input(t_ast *node, char *filename);
-void	redirect_output(t_ast *node, char *filename);
-void	redirect_append(t_ast *node, char *filename);
+int		redirect_input(t_ast *node, char *filename);
+int		redirect_output(t_ast *node, char *filename);
+int		redirect_append(t_ast *node, char *filename);
 void	redirect_fds(t_ast *node);
-void	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
+int		analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 void	redirect_in(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 void	double_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 void	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node);

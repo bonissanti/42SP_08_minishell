@@ -29,6 +29,7 @@ void	handle_other(t_exec *exec, t_hashtable *hash, t_ast *node,
 
 static void	last_pipe(t_exec *exec, t_ast *node, int *prev_pipe)
 {
+	signal(SIGPIPE, SIG_IGN);
 	execute_pipes(exec, node, prev_pipe, NULL);
 }
 

@@ -12,7 +12,7 @@
 
 #include "../include/minishell.h"
 
-void	redirect_input(t_ast *node, char *filename)
+int	redirect_input(t_ast *node, char *filename)
 {
 	int		tmp_fd;
 	char	*tmp_filename;
@@ -21,7 +21,7 @@ void	redirect_input(t_ast *node, char *filename)
 	if (filename == NULL)
 	{
 		ft_fprintf(2, "minishell: syntax error near unexpected token EOF\n");
-		return ;
+		return (-1);
 	}
 	node->in_fd = open(filename, O_RDONLY);
 	if (node->in_fd == -1 || !verify_file_permissions(filename))
@@ -32,30 +32,35 @@ void	redirect_input(t_ast *node, char *filename)
 			close(tmp_fd);
 			ft_fprintf(2, "minishell: %s: %s\n", filename, strerror(errno));
 			node->in_fd = open(tmp_filename, O_RDONLY);
+			unlink(tmp_filename);
+			return (0);
 		}
 	}
+	return (0);
 }
 
-void	redirect_output(t_ast *node, char *filename)
+int	redirect_output(t_ast *node, char *filename)
 {
 	if (filename == NULL)
 	{
 		ft_fprintf(2, "minishell: syntax error near unexpected token EOF\n");
-		return ;
+		return (1);
 	}
 	node->out_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (!verify_file_permissions(filename))
-		return ;
+		return (1);
+	return (0);
 }
 
-void	redirect_append(t_ast *node, char *filename)
+int	redirect_append(t_ast *node, char *filename)
 {
 	if (filename == NULL)
 	{
 		ft_fprintf(2, "minishell: syntax error near unexpected token EOF\n");
-		return ;
+		return (1);
 	}
 	node->out_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (!verify_file_permissions(filename))
-		return ;
+		return (1);
+	return (0);
 }

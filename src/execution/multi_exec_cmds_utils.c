@@ -120,24 +120,6 @@ int	wait_for_children(t_ast *node)
 	return (status_do_filho(status));
 }
 
-// void	wait_for_children(t_ast *node)
-// {
-// 	int	status;
-// 	pid_t pid;
-
-// 	status = 0;
-// 	if (node == NULL)
-// 		return ;
-// 	while ((pid = waitpid(-1, &status, 0)) > 0)
-// 	{
-// 		if (WIFEXITED(status) && g_global.cmd_status == 0)
-// 			g_global.cmd_status = WEXITSTATUS(status);
-// 		else if (WIFSIGNALED(status) && g_global.cmd_status == 0)
-// 			g_global.cmd_status = WTERMSIG(status);
-// 	}
-// 	fechar_todos_fds();
-// }
-
 
 
 
