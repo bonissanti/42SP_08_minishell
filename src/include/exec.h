@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:11 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/19 12:32:13 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/21 12:41:25 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 //############################# EXECUTION ####################################//
 
 void	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node);
-int		exec_simple(t_hashtable *hash, t_ast *node);
+int		exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node);
 int		exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root);
 int		forking(t_ast *node);
 int		exec_forked_cmd(t_hashtable *hash, t_ast *node);

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/21 11:50:54 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/21 12:48:36 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,33 +29,36 @@ void	handle_other(t_exec *exec, t_hashtable *hash, t_ast *node,
 
 static void	last_pipe(t_exec *exec, t_ast *node, int *prev_pipe)
 {
-	signal(SIGPIPE, SIG_IGN);
 	execute_pipes(exec, node, prev_pipe, NULL);
-}
-
-void handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node, int *prev_pipe)
-{
-    int next_pipe[2];
-    t_ast *current_node = node;
-
-    while (current_node != NULL) 
+	if (prev_pipe)
 	{
-        if (current_node->type == TYPE_PIPE) 
-		{
-            pipe(next_pipe);
-            if (current_node->left)
-                execute_pipes(exec, current_node->left, prev_pipe, next_pipe);
-            prev_pipe[0] = next_pipe[0];
-            prev_pipe[1] = next_pipe[1];
-            exec->count_pipes--;
-        } 
-		else if (current_node->right == NULL && (current_node->type == TYPE_COMMAND || current_node->type == TYPE_REDIRECT))
-            last_pipe(exec, current_node, prev_pipe);
-		else if (current_node->type != TYPE_PIPE && current_node->type != TYPE_REDIRECT && current_node->type != TYPE_HEREDOC)
-            handle_other(exec, hash, current_node, prev_pipe);
-        current_node = current_node->right;
-    }
-	fechar_todos_fds();
+		close(prev_pipe[0]);
+		close(prev_pipe[1]);
+	}
 }
 
+void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
+		int *prev_pipe)
+{
+	int	next_pipe[2];
+
+	if (node == NULL)
+		return ;
+	if (node->type == TYPE_PIPE)
+	{
+		pipe(next_pipe);
+		if (node->left)
+			execute_pipes(exec, node->left, prev_pipe, next_pipe);
+		prev_pipe[0] = next_pipe[0];
+		prev_pipe[1] = next_pipe[1];
+		exec->count_pipes--;
+		handle_pipes(hash, exec, node->right, prev_pipe);
+	}
+	else if (node->right == NULL && (node->type == TYPE_COMMAND
+			|| node->type == TYPE_REDIRECT))
+		last_pipe(exec, node, prev_pipe);
+	else if (node->type != TYPE_PIPE && node->type != TYPE_REDIRECT
+		&& node->type != TYPE_HEREDOC)
+		handle_other(exec, hash, node, prev_pipe);
+}
 

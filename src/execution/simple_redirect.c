@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:17:33 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/19 13:18:51 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/21 13:13:38 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	double_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 			redirect_fds(node);
 			handle_redirects(node->right);
 			redirect_fds(node->right);
-			exec_simple(hashtable, node->right->left);
+			exec_simple(hashtable, exec, node->right->left);
 			exit(0);
 		}
 		else
@@ -45,7 +45,7 @@ static void	child_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 		dup2(next_pipe[1], STDOUT_FILENO);
 		close(next_pipe[1]);
 	}
-	exec_simple(hashtable, node->left);
+	exec_simple(hashtable, exec, node->left);
 	exit(0);
 }
 
@@ -92,7 +92,7 @@ void	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node)
 	{
 		handle_redirects(node);
 		redirect_fds(node);
-		exec_simple(hash, node->left);
+		exec_simple(hash, exec, node->left);
 	}
 	else
 	{

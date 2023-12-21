@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_logical.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 11:25:55 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 17:51:52 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/21 13:12:48 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	handle_logical(t_exec *exec, t_hashtable *hash, t_ast *node)
 		node->pid = fork();
 		if (node->pid == 0)
 		{
-			exec_simple(hash, node->left);
+			exec_simple(hash, exec, node->left);
 			exit(0);
 		}
 		else

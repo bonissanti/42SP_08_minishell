@@ -19,11 +19,10 @@ static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
 	if (next_pipe && exec->count_pipes >= 1)
 	{
 		dup2(next_pipe[1], STDOUT_FILENO);
-		close(next_pipe[0]);
 		close(next_pipe[1]);
+		close(next_pipe[0]);
 	}
 }
-
 
 void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 {
@@ -36,11 +35,13 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 		{
 			handle_redirects(node);
 			redirect_fds(node);
-			exec_simple(g_global.hash, node->left);
+			exec_simple(g_global.hash, exec, node->left);
 			restore_fd(exec->old_stdin, exec->old_stdout);
 			exit(0);
 		}
-		exec_simple(g_global.hash, node);
+		exec_simple(g_global.hash, exec, node);
+		close(1);
+		close(0);
 		exit(0);
 	}
 	else

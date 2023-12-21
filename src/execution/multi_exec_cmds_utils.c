@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/19 17:15:38 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/21 12:41:54 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 
 
-int	exec_simple(t_hashtable *hash, t_ast *node)
+int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
 	if (analyze_cmd(hash, node) != 0)
 		return (g_global.cmd_status);
@@ -29,6 +29,8 @@ int	exec_simple(t_hashtable *hash, t_ast *node)
 	delete_node(g_global.ast);
 	destroy_hashtable(hash);
 	free_lists();
+	empty_trash_can();
+	restore_fd(exec->old_stdin, exec->old_stdout);
 	return (g_global.exit_status);
 }
 
@@ -74,7 +76,7 @@ void	redirect_fds(t_ast *node)
 // temp
 void fechar_todos_fds(void) {
     int max_fds = getdtablesize();
-    for (int i = 3; i < max_fds; i++) {
+    for (int i = 2; i < max_fds; i++) {
         close(i);
     }
 }

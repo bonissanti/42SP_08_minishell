@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:01:00 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/19 12:01:02 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/21 13:15:12 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node,
 		close(node->in_fd);
 		handle_redirects(node->right);
 		dup2(node->right->out_fd, STDOUT_FILENO);
-		exec_simple(hash, node->left);
+		exec_simple(hash, exec, node->left);
 		exit(0);
 	}
 	else
@@ -94,7 +94,7 @@ void	next_is_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
 			dup2(next_pipe[1], STDOUT_FILENO);
 			close(next_pipe[1]);
 		}
-		exec_simple(hash, node->left);
+		exec_simple(hash, exec, node->left);
 		exit(0);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:34:49 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/19 12:34:50 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/21 14:05:07 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,11 +83,13 @@ void	free_segments(t_segment *head)
 	t_segment	*next;
 
 	current = head;
+	if (!current)
+		return ;
 	while (current)
 	{
 		next = current->next;
-		free(current->str);
-		free(current);
+		safe_free((void **)&current->str);
+		safe_free((void **)&current);
 		current = next;
 	}
 }

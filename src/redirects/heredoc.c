@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/19 16:31:21 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/21 13:14:50 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 				char *filename);
-static void	open_execute(t_hashtable *hash, t_ast *node, char *filename);
+static void	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node, char *filename);
 
 void	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
@@ -41,11 +41,11 @@ void	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 	}
 	close(node->out_fd);
 	if (node->print_hdoc && !node->right)
-		open_execute(hash, node, filename);
+		open_execute(hash, exec, node, filename);
 	after_hdoc(exec, hash, node, filename);
 }
 
-static void	open_execute(t_hashtable *hash, t_ast *node, char *filename)
+static void	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node, char *filename)
 {
 	node->pid = fork();
 	if (node->pid == 0)
@@ -54,7 +54,7 @@ static void	open_execute(t_hashtable *hash, t_ast *node, char *filename)
 		dup2(node->in_fd, STDIN_FILENO);
 		close(node->in_fd);
 		if (node->left)
-			exec_simple(hash, node->left);
+			exec_simple(hash, exec, node->left);
 		exit(0);
 	}
 	else

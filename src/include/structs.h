@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/19 12:33:09 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/21 12:35:15 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ typedef struct s_exec
 	int					next[2];
 	int					in_fd;
 	int					out_fd;
+	int					env;
 	int					old_stdin;
 	int					old_stdout;
 	int					count_hdoc;
