@@ -1,1 +1,0 @@
-lopp guliver

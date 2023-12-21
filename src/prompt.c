@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/19 16:22:38 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/21 00:05:28 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	prompt_validation(char *readline_input, t_hashtable *env)
 	if (ft_strcmp(g_global.readline_input, "exit") == 0
 		|| !g_global.readline_input)
 	{
+		ft_putstr_fd("exit\n", 1);
 		free_lists();
 		final_wipeout(env);
 		exit(0);
@@ -77,3 +78,26 @@ void	prompt(t_hashtable *env)
 	}
 	final_wipeout(env);
 }
+
+// echo "test" : test
+// echo 'test' : test
+// echo "$USER" : allesson
+// echo '$USER' : $USER
+// echo "'"USER"'" : 'USER'
+// echo ""'"USER"'"" : "USER"
+// echo "'"$USER"'" : 'allesson'
+// echo ""'"$USER"'"" : "$USER"
+// echo test "'">USER"'" : cat USER' : test '
+// echo"$USER" : bash: echoallesson: command not found             FAIL
+// echo"$USER: > " : bash: $'echoallesson\n': command not found    FAIL
+// echo *.c : *.c
+// echo ~.c : ~.c 												   FAIL
+// echo ~/.c : /home/allesson/.c
+// echo ./*.c : ./*.c											   result is right but printing two times
+// echo "'>FILE'" : '>FILE'
+// echo "'''>FILE'''" : '''>FILE'''
+// echo "'''">FILE"'''" : cat FILE''' : '''
+// echo ''' : > 												   FAIL "minishell: syntax error: unexpected EOF"
+
+
+

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/19 16:37:16 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/20 23:54:13 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int	process_quote(char **cmd, char quote, t_bool *closed)
 {
 	int		i;
 
-	i = 1;
+	i = 0;
 	(*cmd)++;
 	while (**cmd != quote && **cmd)
 	{

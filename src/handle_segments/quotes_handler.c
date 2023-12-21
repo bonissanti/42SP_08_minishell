@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:57 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/19 14:38:01 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/21 00:25:05 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,7 +178,8 @@ void	final_process(t_lex *quote, t_segment **head, char **args, size_t *len)
 	add_segments(head, quote->segment);
 	free(quote->segment);
 	free(quote);
-	free(*args);
+	if(*args && *len)
+		free(*args);
 	*args = join_segments(*head);
 	free_segments(*head);
 }
