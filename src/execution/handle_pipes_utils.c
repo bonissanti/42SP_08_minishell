@@ -33,6 +33,7 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 		redirect_pipes(exec, prev_pipe, next_pipe);
 		if (node->type == TYPE_REDIRECT)
 		{
+			analyze_if_print(node, 1);
 			handle_redirects(node);
 			redirect_fds(node);
 			exec_simple(g_global.hash, exec, node->left);
