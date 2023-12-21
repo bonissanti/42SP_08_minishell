@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/21 12:48:36 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/21 15:49:29 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	handle_other(t_exec *exec, t_hashtable *hash, t_ast *node,
 static void	last_pipe(t_exec *exec, t_ast *node, int *prev_pipe)
 {
 	execute_pipes(exec, node, prev_pipe, NULL);
-	if (prev_pipe)
+	if (prev_pipe) // broken pipe ou se comentar, enter infinito do cat
 	{
 		close(prev_pipe[0]);
 		close(prev_pipe[1]);
@@ -60,5 +60,6 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 	else if (node->type != TYPE_PIPE && node->type != TYPE_REDIRECT
 		&& node->type != TYPE_HEREDOC)
 		handle_other(exec, hash, node, prev_pipe);
+	fechar_todos_fds();
 }
 
