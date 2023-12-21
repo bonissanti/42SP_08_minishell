@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/21 14:25:20 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/21 19:02:22 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	analyze_cmd(t_hashtable *hashtable, t_ast *node)
 {
 	char	*path;
 	int		result;
+	t_hash	*search_var;
 
 	if (is_empty_cmd(node->cmds))
 		return (0);
@@ -63,7 +64,10 @@ int	analyze_cmd(t_hashtable *hashtable, t_ast *node)
 		node->path = ft_strdup(node->cmds);
 	else
 	{
-		path = search(hashtable, "PATH")->value;
+		search_var = search(hashtable, "PATH");
+		if (search_var == NULL)
+			return (127);
+		path = search_var->value;
 		node->path = build_cmd_path(node, path);
 		if (node->path == NULL && !is_builtin(node))
 		{
