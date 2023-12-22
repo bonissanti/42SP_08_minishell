@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:51:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/19 11:57:45 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/22 17:41:48 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	redirect_input(t_ast *node, char *filename)
 			ft_fprintf(2, "minishell: %s: %s\n", filename, strerror(errno));
 			node->in_fd = open(tmp_filename, O_RDONLY);
 			unlink(tmp_filename);
-			return (0);
+			return (1);
 		}
 	}
 	return (0);
@@ -62,5 +62,25 @@ int	redirect_append(t_ast *node, char *filename)
 	node->out_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (!verify_file_permissions(filename))
 		return (1);
+	return (0);
+}
+
+int	create_files(t_ast *node)
+{
+	static t_ast *root = NULL;
+	int ok_to_create;
+	
+	root = node;
+	ok_to_create = 1;
+	while (root)
+	{
+		if (root->type == TYPE_REDIRECT)
+			ok_to_create = handle_redirects(root);
+		else if (ok_to_create == 0)
+			root = root->right;
+		else
+			return (1);
+		root = root->right;
+	}
 	return (0);
 }

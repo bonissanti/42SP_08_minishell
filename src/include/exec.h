@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:11 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/21 12:41:25 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/22 17:42:27 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_bool	is_builtin(t_ast *node);
 int		execute_builtin(t_hashtable *hashtable, t_ast *node);
 void	init_redirects(t_exec *exec);
 int		handle_redirects(t_ast *node);
+int		create_files(t_ast *node);
 
 //############################# REDIRECTIONS #################################//
 
@@ -58,7 +59,6 @@ void	handle_error(t_ast *node, int result);
 void	analyze_if_print(t_ast *node, int index);
 int		analyze_cmd(t_hashtable *hashtable, t_ast *node);
 void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable);
-t_ast	*find_heredoc(t_ast *root);
 char	*generate_filename(int count_hdoc);
 void	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node,
 			char *filename);

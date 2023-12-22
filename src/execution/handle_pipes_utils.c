@@ -30,12 +30,21 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 	exec_signals(node->pid);
 	if (node->pid == 0)
 	{
+		// node = node->right;
 		redirect_pipes(exec, prev_pipe, next_pipe);
 		if (node->type == TYPE_REDIRECT)
 		{
-			analyze_if_print(node, 1);
-			handle_redirects(node);
-			redirect_fds(node);
+			int ok_to_create = create_files(node);
+			if (ok_to_create == 1)
+				exit(1);
+			t_ast *last_in = get_last_node(node, "<");
+			t_ast *last_out = get_last_node(node, ">");
+			// ft_fprintf(2, "last_out: %d\n", last_out->outfile);
+
+			// analyze_if_print(node, 1);
+			// handle_redirects(node);
+			// redirect_fds(last_in);
+			redirect_fds(last_out);
 			exec_simple(g_global.hash, exec, node->left);
 			restore_fd(exec->old_stdin, exec->old_stdout);
 			exit(0);
@@ -48,3 +57,19 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 	else
 		parent_pipe(prev_pipe, next_pipe);
 }
+
+t_ast *get_last_node(t_ast *node, char *cmd)
+{
+	t_ast *last_node;
+
+	last_node = node;
+	while (node != NULL)
+	{
+		if ((node->type == TYPE_REDIRECT && ft_strcmp(node->cmds, cmd) == 0) && (!node->right || node->right->type != TYPE_REDIRECT))
+			last_node = node;
+		node = node->right;
+	}
+	return (last_node);
+}
+
+//ft_strcmp(node->cmds, cmd) == 0

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:43:27 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/19 10:52:19 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/22 15:41:03 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	handle_redirects(t_ast *node)
 	int ok_to_redirect;
 
 	ok_to_redirect = 1;
-	if (node->type == TYPE_REDIRECT && node->left)
+	if (node->type == TYPE_REDIRECT)
 	{
 		if (ft_strncmp(node->cmds, ">>", 2) == 0)
 			ok_to_redirect = redirect_append(node, node->outfile);
@@ -76,3 +76,9 @@ int	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 	}
 	return (0);
 }
+
+// int analyze_redirect2(t_exec *exec, t_hashtable *hashtable, t_ast *node)
+// {
+// 	analyze_if_print(node, 1);
+	
+// }

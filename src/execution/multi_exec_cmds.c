@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/21 12:56:18 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/22 17:21:59 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ static void	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 	}
 }
 
-
 static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 {
 	int	initial_pipe[2];
@@ -50,6 +49,7 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 		analyze_heredoc(exec, root, hash);
 	if (root->type == TYPE_PIPE)
 		handle_pipes(hash, exec, root, initial_pipe);
+	// execute_pipes(exec, root, NULL, NULL);
 	if (root->type == TYPE_LOGICAL)
 	{
 		handle_logical(exec, hash, root);

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/21 15:49:29 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/22 15:58:31 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 		exec->count_pipes--;
 		handle_pipes(hash, exec, node->right, prev_pipe);
 	}
-	else if (node->right == NULL && (node->type == TYPE_COMMAND
+	else if ((node->right == NULL) || (node->type == TYPE_COMMAND
 			|| node->type == TYPE_REDIRECT))
 		last_pipe(exec, node, prev_pipe);
 	else if (node->type != TYPE_PIPE && node->type != TYPE_REDIRECT
