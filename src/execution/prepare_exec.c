@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/21 19:02:22 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/22 10:07:58 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,5 @@ void	handle_error(t_ast *node, int result)
 		g_global.cmd_status = 126;
 		ft_fprintf(2, "minishell: %s: %s\n", node->cmds, strerror(errno));
 	}
-	delete_node(node);
-	destroy_hashtable(g_global.hash);
-	empty_trash_can();
-	free_lists();
 	return ;
 }

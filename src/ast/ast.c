@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 19:01:23 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/21 22:12:28 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,8 @@ void	delete_node(t_ast *head)
 	{
 		delete_node(head->left);
 		delete_node(head->right);
-		free_split(head->args);
+		if(head)
+			free_split(head->args);
 		safe_free((void **)&head->path);
 		free(head);
 	}

@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/20 23:54:13 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/22 09:55:40 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,12 @@ char	*crop_tkn(char **cmd, t_hashtable *env)
 {
 	char	*cropped;
 	int		i;
+	char	quote;
+	t_bool	closed;
+
 
 	cropped = *cmd;
+	closed = false;
 	i = 0;
 	if (**cmd == '\'' || **cmd == '"')
 		i = crop_quote_tkn(cmd);
@@ -148,10 +152,16 @@ char	*crop_tkn(char **cmd, t_hashtable *env)
 		i = crop_delimiter_tkn(cmd);
 	else
 	{
-		while (**cmd != ' ' && **cmd != '\0' && !isdelimiter(*cmd))
+		while (**cmd != ' ' && **cmd != '\0' && !closed)
 		{
 			i++;
 			(*cmd)++;
+			if ((**cmd == '\'' || **cmd == '"'))
+				quote = **cmd;
+			else if (**cmd == quote)
+				closed = true;
+			else if (isdelimiter(*cmd) && closed == true)
+				return (ft_substr(cropped, 0, i));				
 		}
 		if (is_expander(**cmd))
 			return (append_expanded(cropped, cmd, env, i));

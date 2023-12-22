@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/21 12:34:47 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/22 09:16:18 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,12 @@ void	prompt(t_hashtable *env)
 // echo "'"$USER"'" : 'allesson'
 // echo ""'"$USER"'"" : "$USER"
 // echo test "'">USER"'" : cat USER' : test '
-// echo"$USER" : bash: echoallesson: command not found             FAIL
+// echo"$USER" : bash: echoallesson: command not found             
 // echo"$USER: > " : bash: $'echoallesson\n': command not found    FAIL
 // echo *.c : *.c
 // echo ~.c : ~.c 												   FAIL
 // echo ~/.c : /home/allesson/.c
-// echo ./*.c : ./*.c											   result is right but printing two times
+// echo ./*.c : ./*.c											  
 // echo "'>FILE'" : '>FILE'
 // echo "'''>FILE'''" : '''>FILE'''
 // echo "'''">FILE"'''" : cat FILE''' : '''

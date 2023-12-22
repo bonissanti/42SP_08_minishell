@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/21 12:41:54 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/22 09:54:58 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,6 @@ int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 			g_global.cmd_status = 2;
 		exit(g_global.cmd_status);
 	}
-	delete_node(g_global.ast);
-	destroy_hashtable(hash);
-	free_lists();
-	empty_trash_can();
 	restore_fd(exec->old_stdin, exec->old_stdout);
 	return (g_global.exit_status);
 }
