@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:46:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/22 16:20:34 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/22 18:48:27 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list);
 t_ast	*create_node(t_cmd_list *cmd_list);
 void	insert_ast(t_ast **head, t_ast *new_node, t_exec *exec);
 void	delete_node(t_ast *head);
-t_ast 	*get_last_node(t_ast *node, char *cmd);
 t_ast	*find_heredoc(t_ast *root);
 
 //############################### UTILS #######################################
