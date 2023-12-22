@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:51:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/22 18:43:43 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/22 19:16:50 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	create_files(t_ast *node)
 			ok_to_create = handle_redirects(root);
 			if (ok_to_create == 1)
 			{
-				fechar_todos_fds();
+				// fechar_todos_fds();
 				destroy_hashtable(g_global.hash);
 				delete_node(g_global.ast);
 				free_lists();	

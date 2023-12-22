@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/22 13:14:00 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/22 18:54:25 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,13 @@ int	prompt_validation(char *readline_input, t_hashtable *env)
 		return (false);
 }
 
-static inline void	finish_prompt(t_exec exec)
-{
-	delete_node(g_global.ast);
-	free_lists();
-	restore_fd(exec.old_stdin, exec.old_stdout);
-}
+// Para norma, se precisar economizar linhas
+// static inline void	finish_prompt(t_exec exec)
+// {
+// 	delete_node(g_global.ast);
+// 	free_lists();
+// 	restore_fd(exec.old_stdin, exec.old_stdout);
+// }
 
 static void	init_global_structs(void)
 {

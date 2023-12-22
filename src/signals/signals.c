@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 18:45:17 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/21 19:06:43 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/22 18:52:14 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	init_signals(void)
 
 void handle_sigpipe(int sig)
 {
-
+	(void)sig;
     ft_putendl_fd("\n", 1);
     rl_on_new_line();
     rl_replace_line("", 0);

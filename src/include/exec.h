@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:11 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/22 17:42:27 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/22 18:51:26 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int		exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root);
 int		forking(t_ast *node);
 int		exec_forked_cmd(t_hashtable *hash, t_ast *node);
 int		wait_for_children(t_ast *node);
-void fechar_todos_fds(void);
+void 	fechar_todos_fds(void);
 
 void	ft_printf_fd(int fd);
 

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/22 13:19:00 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/22 18:56:25 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,9 +137,9 @@ int	crop_quote_tkn(char **cmd)
 
 char	*crop_tkn(char **cmd, t_hashtable *env)
 {
-	char	*cropped = NULL;
+	char	*cropped;
 	int		i;
-	char	quote;
+	// char	quote;
 	t_bool	closed;
 
 
