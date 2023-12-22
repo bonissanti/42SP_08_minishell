@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/22 09:54:58 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/22 13:02:34 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 			g_global.cmd_status = 2;
 		exit(g_global.cmd_status);
 	}
+	delete_node(g_global.ast);
+    destroy_hashtable(hash);
+    free_lists();
+    empty_trash_can();
 	restore_fd(exec->old_stdin, exec->old_stdout);
 	return (g_global.exit_status);
 }
@@ -72,7 +76,7 @@ void	redirect_fds(t_ast *node)
 // temp
 void fechar_todos_fds(void) {
     int max_fds = getdtablesize();
-    for (int i = 2; i < max_fds; i++) {
+    for (int i = 3; i < max_fds; i++) {
         close(i);
     }
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/17 20:12:27 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/22 12:23:08 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ char		*append_expanded(char *cmd, char **exp, t_hashtable *env,
 				int index);
 int			is_operator(t_tkn_type tkn);
 int			crop_delimiter_tkn(char **cmd);
+int			crop_quote_tkn(char **cmd);
 void		free_tkn_list(t_tkn_list *tkn_list);
 void		free_cmd_list(t_cmd_list *cmd_list);
 t_cmd_list	*rewind_list(t_cmd_list **cmd_list);

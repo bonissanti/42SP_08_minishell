@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:17:33 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/21 13:13:38 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/22 11:13:07 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node)
 		handle_redirects(node);
 		redirect_fds(node);
 		exec_simple(hash, exec, node->left);
+		exit(0);
 	}
 	else
 	{

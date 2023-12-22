@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:29 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/19 14:32:34 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/22 14:04:26 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
  *
  */
 
-void	analyzing_quotes(t_hashtable *env, char **args)
+void	analyzing_quotes(t_hashtable *env, char **args, int *i)
 {
 	t_segment	*head;
 
@@ -37,7 +37,7 @@ void	analyzing_quotes(t_hashtable *env, char **args)
 	{
 		ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
 		g_global.to_exec = 2;
-		return ;
+		*i += crop_quote_tkn(args);
 	}
 	handle_quotes(env, head, args);
 }
