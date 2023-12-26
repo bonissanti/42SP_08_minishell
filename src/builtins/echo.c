@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 19:06:42 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 19:50:01 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/26 01:03:43 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	ft_echo(t_hashtable *hashtable, char **args)
 {
 	int	i;
 	int	newline;
+	char *temp = *args;
 
 	i = -1;
 	newline = 1;
@@ -25,8 +26,12 @@ void	ft_echo(t_hashtable *hashtable, char **args)
 	while (args[++i] != NULL)
 	{
 		if (args[i][0] == '$' && args[i][1] == '?')
+		{
 			ft_printf("%d", g_global.cmd_status);
-		else if (is_flag_n(args[i]))
+			*args = (*args + 2);
+		}
+		
+		if (is_flag_n(args[i]))
 			newline = 0;
 		else
 		{
@@ -38,6 +43,7 @@ void	ft_echo(t_hashtable *hashtable, char **args)
 	if (newline)
 		ft_printf("\n");
 	g_global.cmd_status = 0;
+	*args = temp;
 }
 
 t_bool	is_flag_n(char *arg)

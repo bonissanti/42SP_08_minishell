@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_validater.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:29 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/22 14:04:26 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/25 12:43:40 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
  *
  */
 
-void	analyzing_quotes(t_hashtable *env, char **args, int *i)
+void	analyzing_quotes(t_hashtable *env, char **args)
 {
 	t_segment	*head;
 
@@ -37,7 +37,7 @@ void	analyzing_quotes(t_hashtable *env, char **args, int *i)
 	{
 		ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
 		g_global.to_exec = 2;
-		*i += crop_quote_tkn(args);
+		return ;
 	}
 	handle_quotes(env, head, args);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/22 12:58:23 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/25 22:12:50 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*append_expanded(char *cmd, char **exp, t_hashtable *env, int index)
 	char	*to_expand;
 	
 	to_expand = ft_substr(*exp, 0, crop_delimiter_tkn(exp));
-	analyzing_quotes(env, exp, 0);
+	analyzing_quotes(env, exp);
 	return (gnl_strjoin(ft_substr(cmd, 0, index), to_expand));
 }
 
@@ -85,10 +85,10 @@ void	expand_all(t_tkn_list *tkn_list, t_hashtable *env)
 		{
 			if (!ft_strncmp(current->content, "$?", 2))
 				return ;
-			// else if (*current->content == '$' || *current->content == '\\'
-			// 	|| *current->content == '\'' || *current->content == '"'
-			// 	|| current->type == IDENTIFIER)
-			// 	analyzing_quotes(env, &current->content, 0);
+			else if (*current->content == '$' || *current->content == '\\'
+				|| *current->content == '\'' || *current->content == '"'
+				|| current->type == IDENTIFIER)
+				analyzing_quotes(env, &current->content);
 			else if (*current->content == '~')
 				expand_tilde(env, current->content);
 			else if (*current->content == '*')

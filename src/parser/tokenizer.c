@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/22 18:56:25 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/25 12:40:03 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ char	*crop_tkn(char **cmd, t_hashtable *env)
 {
 	char	*cropped;
 	int		i;
-	// char	quote;
+	char	quote;
 	t_bool	closed;
 
 
@@ -147,21 +147,21 @@ char	*crop_tkn(char **cmd, t_hashtable *env)
 	closed = false;
 	i = 0;
 	if (**cmd == '\'' || **cmd == '"')
-		analyzing_quotes(env, cmd, &i);
+		i = crop_quote_tkn(cmd);
 	else if (isdelimiter(*cmd))
 		i = crop_delimiter_tkn(cmd);
 	else
 	{
 		while (**cmd != ' ' && **cmd != '\0' && !closed)
 		{
-			// if ((**cmd == '\'' || **cmd == '"'))
-			// 	quote = **cmd;
-			// else if (**cmd == quote)
-			// 	closed = true;
-			if (isdelimiter(*cmd) && closed == true)
-				return (ft_substr(cropped, 0, i));				
-			(*cmd)++;
 			i++;
+			(*cmd)++;
+			if ((**cmd == '\'' || **cmd == '"'))
+				quote = **cmd;
+			else if (**cmd == quote)
+				closed = true;
+			else if (isdelimiter(*cmd) && closed == true)
+				return (ft_substr(cropped, 0, i));				
 		}
 		if (is_expander(**cmd))
 			return (append_expanded(cropped, cmd, env, i));

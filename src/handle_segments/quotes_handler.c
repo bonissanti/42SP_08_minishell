@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:57 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/22 13:20:27 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/26 00:35:39 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ void	handle_quotes(t_hashtable *env, t_segment *head, char **args)
 		if ((*quote->ptr == '\'' && !quote->state.double_open)
 			|| (*quote->ptr == '\"' && !quote->state.single_open))
 			toggle_quote_state(quote);
-		else if (*quote->ptr == '$' && (quote->state.double_open
-				|| (!quote->state.single_open
-					&& !quote->state.double_open)))
+		else if (*quote->ptr == '$' && (quote->ptr[1] == '\'' || quote->ptr[1] == '"'))
+			literal_string(quote, &len);
+		else if (*quote->ptr == '$' && (quote->state.double_open || (!quote->state.single_open && !quote->state.double_open)))
 			expand_variable(quote, &head, &len);
 		else if (quote->state.single_open || quote->state.double_open)
 			char_between_quotes(quote, &head, &len);
