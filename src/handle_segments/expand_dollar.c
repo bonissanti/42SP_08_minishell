@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_dollar.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:33:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 14:43:46 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/26 12:34:56 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,16 @@ void	expand_variable(t_lex *quote, t_segment **head, size_t *len)
 	{
 		key_len = custom_strcspn(quote->ptr, "'");
 		key = ft_strndup(quote->ptr, key_len);
-		hash = search(quote->env, key);
-		if (hash)
-			add_segments(head, hash->value);
+		if(*key == '?')
+			add_segments(head, ft_itoa(g_global.cmd_status));
+		else
+		{
+			hash = search(quote->env, key);
+			if (hash)
+				add_segments(head, hash->value);			
+			quote->ptr += key_len - 1;
+		}
 		free(key);
-		quote->ptr += key_len - 1;
 	}
 	else
 	{

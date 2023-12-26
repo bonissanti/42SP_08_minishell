@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/25 22:12:50 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/26 12:40:01 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,7 @@ void	expand_all(t_tkn_list *tkn_list, t_hashtable *env)
 		if (current->type == EXPAND || current->type == WILD
 			|| current->type == IDENTIFIER)
 		{
-			if (!ft_strncmp(current->content, "$?", 2))
-				return ;
-			else if (*current->content == '$' || *current->content == '\\'
+			if (*current->content == '$' || *current->content == '\\'
 				|| *current->content == '\'' || *current->content == '"'
 				|| current->type == IDENTIFIER)
 				analyzing_quotes(env, &current->content);

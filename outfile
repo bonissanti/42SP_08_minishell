@@ -12,7 +12,7 @@ aspas ->"
 aspas -> " 
 > >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<
 > >> < * ? [ ] | ; [ ] || && ( ) & # $ \ <<
-exit_code -> user ->allesson home -> /home/allesson
+exit_code ->0 user ->allesson home -> /home/allesson
 exit_code ->$? user ->$USER home -> $HOME
 $
 $

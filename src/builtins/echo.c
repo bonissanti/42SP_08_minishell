@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 19:06:42 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/26 01:03:43 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/26 12:16:59 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	ft_echo(t_hashtable *hashtable, char **args)
 	}
 	if (newline)
 		ft_printf("\n");
-	g_global.cmd_status = 0;
 	*args = temp;
+	g_global.cmd_status = 0;
 }
 
 t_bool	is_flag_n(char *arg)

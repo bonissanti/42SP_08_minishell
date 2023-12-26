@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:38:13 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/26 10:11:59 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/26 10:51:44 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	main(int argc, char **argv, char **envp)
 	ft_lstadd_back(&tests, ft_lstnew("echo 'aspas -> \" '"));
 	ft_lstadd_back(&tests, ft_lstnew("echo \"> >> < * ? [ ] | ; [ ] || && ( ) & # $ \\ <<\"")); 
 	ft_lstadd_back(&tests, ft_lstnew("echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \\ <<'")); 
-	ft_lstadd_back(&tests, ft_lstnew("echo \"exit_code ->$? user ->$USER home -> $HOME\"")); //FAIL 
+	ft_lstadd_back(&tests, ft_lstnew("echo \"exit_code ->$? user ->$USER home -> $HOME\"")); //FAIL  // echo "exit_code ->$? user ->$USER home -> $HOME"
 	ft_lstadd_back(&tests, ft_lstnew("echo 'exit_code ->$? user ->$USER home -> $HOME'"));
 	ft_lstadd_back(&tests, ft_lstnew("echo \"$\""));
 	ft_lstadd_back(&tests, ft_lstnew("echo '$'"));
