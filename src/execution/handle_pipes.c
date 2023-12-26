@@ -52,9 +52,10 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 		prev_pipe[0] = next_pipe[0];
 		prev_pipe[1] = next_pipe[1];
 		exec->count_pipes--;
-		handle_pipes(hash, exec, node->right, prev_pipe);
+		if (node->right)
+			handle_pipes(hash, exec, node->right, prev_pipe);
 	}
-	else if ((node->right == NULL) || (node->type == TYPE_COMMAND
+	else if ((node->right == NULL && node->type != TYPE_HEREDOC) || (node->type == TYPE_COMMAND
 			|| node->type == TYPE_REDIRECT))
 		last_pipe(exec, node, prev_pipe);
 	else if (node->type != TYPE_PIPE && node->type != TYPE_REDIRECT
