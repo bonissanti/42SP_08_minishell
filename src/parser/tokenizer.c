@@ -145,6 +145,7 @@ char	*crop_tkn(char **cmd, t_hashtable *env)
 
 	cropped = *cmd;
 	closed = false;
+	ft_memset(&quote, 0, sizeof(quote));
 	i = 0;
 	if (**cmd == '\'' || **cmd == '"')
 		i = crop_quote_tkn(cmd);

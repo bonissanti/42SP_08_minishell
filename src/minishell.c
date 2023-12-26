@@ -16,13 +16,13 @@ int	main(int argc, char **argv, char **envp)
 {
 	(void)argc;
 	(void)argv;
-	t_list *tests;
-	
+	t_list *tests = NULL;
 	ft_lstadd_back(&tests, ft_lstnew("echo hello world"));
 	ft_lstadd_back(&tests, ft_lstnew("echo \"hello world\""));
 	ft_lstadd_back(&tests, ft_lstnew("echo 'hello world'"));
 	ft_lstadd_back(&tests, ft_lstnew("echo hello'world'"));
 	ft_lstadd_back(&tests, ft_lstnew("echo hello\"\"world"));
+	ft_lstadd_back(&tests, ft_lstnew("echo - \"\" \"  \" hello"));
 	ft_lstadd_back(&tests, ft_lstnew("echo ''"));
 	ft_lstadd_back(&tests, ft_lstnew("echo \"$PWD\""));
 	ft_lstadd_back(&tests, ft_lstnew("echo '$PWD'"));
@@ -39,6 +39,77 @@ int	main(int argc, char **argv, char **envp)
 	ft_lstadd_back(&tests, ft_lstnew("echo $"));
 	ft_lstadd_back(&tests, ft_lstnew("echo $?"));
 	ft_lstadd_back(&tests, ft_lstnew("echo $?HELLO"));
+	ft_lstadd_back(&tests, ft_lstnew("echo \"hi\" | cat | cat | cat | cat | cat | cat | cat"));
+	ft_lstadd_back(&tests, ft_lstnew("pwd"));
+	ft_lstadd_back(&tests, ft_lstnew("pwd oi"));
+	ft_lstadd_back(&tests, ft_lstnew("export hello"));
+	ft_lstadd_back(&tests, ft_lstnew("export HELLO=123"));
+	ft_lstadd_back(&tests, ft_lstnew("export A-"));
+	ft_lstadd_back(&tests, ft_lstnew("export HELLO=123 A"));
+	ft_lstadd_back(&tests, ft_lstnew("export HELLO=\"123 A-\""));
+	ft_lstadd_back(&tests, ft_lstnew("export hello world"));
+	ft_lstadd_back(&tests, ft_lstnew("export HELLO-=123 A"));
+	ft_lstadd_back(&tests, ft_lstnew("export ="));
+	ft_lstadd_back(&tests, ft_lstnew("export 123"));
+	ft_lstadd_back(&tests, ft_lstnew("unset"));
+	ft_lstadd_back(&tests, ft_lstnew("unset HELLO"));
+	ft_lstadd_back(&tests, ft_lstnew("unset HELLO1 HELLO2"));
+	ft_lstadd_back(&tests, ft_lstnew("unset HOME"));
+	ft_lstadd_back(&tests, ft_lstnew("unset PATH"));
+	ft_lstadd_back(&tests, ft_lstnew("unset SHELL"));
+	ft_lstadd_back(&tests, ft_lstnew("cd $PATH"));
+	ft_lstadd_back(&tests, ft_lstnew("cd $PATH oi"));
+	ft_lstadd_back(&tests, ft_lstnew("cd 123123"));
+	ft_lstadd_back(&tests, ft_lstnew("exit 123"));
+	ft_lstadd_back(&tests, ft_lstnew("exit 298"));
+	ft_lstadd_back(&tests, ft_lstnew("exit +100"));
+	ft_lstadd_back(&tests, ft_lstnew("exit \"+100\""));
+	ft_lstadd_back(&tests, ft_lstnew("exit -100"));
+	ft_lstadd_back(&tests, ft_lstnew("exit \"-100\""));
+	ft_lstadd_back(&tests, ft_lstnew("exit -\"100\""));
+	ft_lstadd_back(&tests, ft_lstnew("exit hello"));
+	ft_lstadd_back(&tests, ft_lstnew("exit 42 world"));
+	ft_lstadd_back(&tests, ft_lstnew("cat < infile"));
+	ft_lstadd_back(&tests, ft_lstnew("cat < infile | wc"));
+	ft_lstadd_back(&tests, ft_lstnew("cat < infile | sort | wc"));
+	ft_lstadd_back(&tests, ft_lstnew("cat < infile > outfile"));
+	ft_lstadd_back(&tests, ft_lstnew("cat < infile | wc > outfile"));
+	ft_lstadd_back(&tests, ft_lstnew("cat < infile | sort | wc > outfile"));
+
+
+
+
+	
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  	init_hash(envp);
 	prompt(g_global.hash, tests);
 	return (g_global.exit_status);

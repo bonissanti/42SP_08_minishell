@@ -57,14 +57,16 @@ char	*check_expansion(t_hashtable *env, char **line, size_t *len)
 void	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node,
 		char *filename)
 {
+	int ok_to_create;
 	node->pid = fork();
 	if (node->pid == 0)
 	{
 		node->in_fd = open(filename, O_RDONLY);
 		dup2(node->in_fd, STDIN_FILENO);
 		close(node->in_fd);
-		handle_redirects(node->right);
-		dup2(node->right->out_fd, STDOUT_FILENO);
+		ok_to_create = create_files(node->right);
+		if (ok_to_create == 1)
+			exit(0);
 		exec_simple(hash, exec, node->left);
 		exit(0);
 	}

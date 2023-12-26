@@ -12,6 +12,23 @@
 
 #include "../include/minishell.h"
 
+static int	is_valid_identifier(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str == NULL || str[0] == '\0')
+		return (0);
+	if (!ft_isalpha(str[0]) && str[0] != '_')
+		return (0);
+	while (str[++i] != '\0')
+	{
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (0);
+	}
+	return (1);
+}
+
 /**
  * Function: Print_all_env
  * -----------------
@@ -81,6 +98,15 @@ void	add_env(t_hashtable *hash_table, char **args)
 		len = 0;
 		env.equals_sign = ft_split(args[i], '=');
 		env.key = env.equals_sign[0];
+		if (!is_valid_identifier(env.key))
+		{
+			ft_printf("minishell: export: `%s': not a valid identifier\n",
+				args[i]);
+			free_split(env.equals_sign);
+			g_global.cmd_status = 1;
+			i++;
+			continue ;
+		}
 		hash = search(hash_table, env.key);
 		if (args[1][ft_strlen(args[i]) - 1] == '=')
 			env_with_equals(hash_table, args, i);
