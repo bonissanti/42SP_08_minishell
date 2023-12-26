@@ -68,10 +68,10 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 
 int	exec_forked_cmd(t_hashtable *hash, t_ast *node)
 {
-	if (analyze_cmd(hash, node) != 0)
-		return (g_global.cmd_status);
 	if (is_builtin(node))
 		execute_builtin(hash, node);
+	if (analyze_cmd(hash, node) != 0)
+		return (g_global.cmd_status);
 	else
 		g_global.cmd_status = forking(node);
 	return (g_global.exit_status);
