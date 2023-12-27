@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 19:06:42 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/27 11:16:04 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/27 20:22:57 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,9 @@ void	ft_echo(t_hashtable *hashtable, char **args)
 			*args = (*args + 2);
 		}
 		
-		if (is_flag_n(args[i]))
+		// if (is_flag_n(args[i]))
+		// 	newline = 0;
+		if(!ft_strncmp(args[i], "-n", 2))
 			newline = 0;
 		else
 		{
@@ -46,18 +48,18 @@ void	ft_echo(t_hashtable *hashtable, char **args)
 	g_global.cmd_status = 0;
 }
 
-t_bool	is_flag_n(char *arg)
-{
-	size_t	i;
+// t_bool	is_flag_n(char *arg)
+// {
+// 	size_t	i;
 
-	i = 1;
-	if (arg[0] != '-')
-		return (false);
-	while (arg[i] != '\0')
-	{
-		if (arg[i] != 'n')
-			return (false);
-		i++;
-	}
-	return (true);
-}
+// 	i = 1;
+// 	if (arg[0] != '-')
+// 		return (false);
+// 	while (arg[i] != '\0')
+// 	{
+// 		if (arg[i] != 'n')
+// 			return (false);
+// 		i++;
+// 	}
+// 	return (true);
+// }
