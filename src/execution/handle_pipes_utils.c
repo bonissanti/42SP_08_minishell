@@ -35,15 +35,11 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 		{
 			int ok_to_create = create_files(node);
 			if (ok_to_create == 1)
+			{
+				fechar_todos_fds();
+				restore_fd(exec->old_stdin, exec->old_stdout);
 				exit(0);
-			// t_ast *last_in = get_last_node(node, "<");
-			// t_ast *last_out = get_last_node(node, ">");
-			// ft_fprintf(2, "last_out: %d\n", last_out->outfile);
-
-			// analyze_if_print(node, 1);
-			// handle_redirects(node);
-			// redirect_fds(last_in);
-			// redirect_fds(last_out);
+			}
 			exec_simple(g_global.hash, exec, node->left);
 			exit(0);
 		}

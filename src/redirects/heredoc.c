@@ -55,6 +55,8 @@ static void	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node, char *fil
 		close(node->in_fd);
 		if (node->left)
 			exec_simple(hash, exec, node->left);
+		fechar_todos_fds();
+		free(filename);
 		exit(0);
 	}
 	else
@@ -70,15 +72,15 @@ static void	after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 		node->left = NULL;
 		exec_multi_cmds(exec, hash, node->right);
 	}
-	else if (node->right && node->right->type == TYPE_REDIRECT)
+	else if (node->right && (node->right->type == TYPE_REDIRECT))
 		next_is_rdir(exec, hash, node, filename);
-	else if (node->right && (node->right->type == TYPE_PIPE
-			|| node->right->type == TYPE_LOGICAL))
+	else if (node->right && node->right->type == TYPE_PIPE)
 		next_is_pipe(exec, hash, node, filename);
-	if (node->type == TYPE_LOGICAL)
+	if (node->right && node->right->type == TYPE_LOGICAL)
 	{
+		open_execute(hash, exec, node, filename);
 		waitpid(node->pid, &node->num_status, 0);
-		simple_logical(exec, hash, node, node->num_status);
+		simple_logical(exec, hash, node->right, node->num_status);
 	}
 }
 
@@ -87,9 +89,11 @@ void	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 {
 	if (exec->count_pipes >= 1)
 		close(next_pipe[1]);
-	restore_fd(exec->old_stdin, exec->old_stdout);
-	if (node->right)
-		node = node->right;
+
+	if (node->right && exec->count_pipes >= 1)
+		node = find_node(node, TYPE_PIPE);
 	if (exec->count_pipes >= 1)
 		handle_pipes(hash, exec, node->right, next_pipe);
+	restore_fd(exec->old_stdin, exec->old_stdout);
 }
+

@@ -20,10 +20,10 @@ static void	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 	heredoc_executed = false;
 	if (root == NULL)
 		return ;
-	heredoc_node = find_heredoc(root);
+	heredoc_node = find_node(root, TYPE_HEREDOC);
 	if (root->type != TYPE_HEREDOC)
 	{
-		heredoc_node = find_heredoc(root);
+		heredoc_node = find_node(root, TYPE_HEREDOC);
 		if (heredoc_node && !heredoc_executed)
 		{
 			analyze_heredoc(exec, heredoc_node, hash);

@@ -29,6 +29,7 @@ int		create_files(t_ast *node);
 int		redirect_input(t_ast *node, char *filename);
 int		redirect_output(t_ast *node, char *filename);
 int		redirect_append(t_ast *node, char *filename);
+int		get_index_redirect(t_ast *root, t_type type);
 void	redirect_fds(t_ast *node);
 int		analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 void	redirect_in(t_exec *exec, t_hashtable *hashtable, t_ast *node);

@@ -21,13 +21,13 @@ t_bool	is_empty_cmd(char *cmd)
 	return (false);
 }
 
-t_ast	*find_heredoc(t_ast *root)
+t_ast	*find_node(t_ast *root, t_type type)
 {
 	if (root == NULL)
 		return (NULL);
 	while (root)
 	{
-		if (root->type == TYPE_HEREDOC)
+		if (root->type == type)
 			return (root);
 		else if (root->right)
 			root = root->right;
