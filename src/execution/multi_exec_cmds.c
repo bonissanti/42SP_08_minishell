@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/22 19:15:01 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/27 11:18:53 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 int	exec_forked_cmd(t_hashtable *hash, t_ast *node)
 {
 	if (is_builtin(node))
+	{
 		execute_builtin(hash, node);
+		return (g_global.exit_status);
+	}
 	if (analyze_cmd(hash, node) != 0)
 		return (g_global.cmd_status);
 	else

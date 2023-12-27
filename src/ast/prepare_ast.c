@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:35:28 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/19 12:35:29 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/26 20:25:54 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	prepare_redirect_or_heredoc(t_ast *new_node, t_cmd_list *cmd_list)
 		new_node->outfile = cmd_list->outfile;
 	}
 	else if (cmd_list->type == TYPE_HEREDOC)
-		new_node->delim = cmd_list->infile;
+		new_node->delim = cmd_list->next->args;
 	new_node->weight = cmd_list->weight;
 	new_node->type = cmd_list->type;
 }

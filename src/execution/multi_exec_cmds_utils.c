@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/26 12:21:03 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/26 19:28:02 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,10 +119,6 @@ int	wait_for_children(t_ast *node)
 	fechar_todos_fds();
 	return (status_do_filho(status));
 }
-
-
-
-
 
 void	ft_printf_fd(int fd)
 {

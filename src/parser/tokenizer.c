@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/25 12:40:03 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/26 23:41:00 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	crop_delimiter_tkn(char **cmd)
 	{
 		i++;
 		(*cmd)++;
-		while (**cmd != ' ' && **cmd != '\0' && !isdelimiter(*cmd))
+		while ((**cmd != ' ' && **cmd != '\0' && !isdelimiter(*cmd)) || (**cmd == '$'))
 		{
 			i++;
 			(*cmd)++;
