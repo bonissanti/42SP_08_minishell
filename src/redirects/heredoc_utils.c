@@ -73,7 +73,7 @@ void	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node,
 		ok_to_create = create_files(node->right);
 		if (ok_to_create == 1)
 			exit(0);
-		if ((index != 2 || index != 3) && exec->count_pipes >= 1)
+		if ((index != 2 && index != 3) && exec->count_pipes >= 1)
 		{
 			dup2(next_pipe[1], STDOUT_FILENO);
 			close(next_pipe[1]);
@@ -89,30 +89,30 @@ void	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node,
 	}
 }
 
-// void	next_is_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
-// 		char *filename)
-// {
-// 	int	next_pipe[2];
+void	next_is_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
+		char *filename)
+{
+	int	next_pipe[2];
 
-// 	if (exec->count_pipes >= 1)
-// 		pipe(next_pipe);
-// 	node->pid = fork();
-// 	if (node->pid == 0)
-// 	{
-// 		node->in_fd = open(filename, O_RDONLY);
-// 		dup2(node->in_fd, STDIN_FILENO);
-// 		close(node->in_fd);
-// 		if (exec->count_pipes >= 1)
-// 		{
-// 			dup2(next_pipe[1], STDOUT_FILENO);
-// 			close(next_pipe[1]);
-// 		}
-// 		exec_simple(hash, exec, node->left);
-// 		exit(0);
-// 	}
-// 	else
-// 	{
-// 		free(filename);
-// 		parent_hdoc(exec, hash, node, next_pipe);
-// 	}
-// }
+	if (exec->count_pipes >= 1)
+		pipe(next_pipe);
+	node->pid = fork();
+	if (node->pid == 0)
+	{
+		node->in_fd = open(filename, O_RDONLY);
+		dup2(node->in_fd, STDIN_FILENO);
+		close(node->in_fd);
+		if (exec->count_pipes >= 1)
+		{
+			dup2(next_pipe[1], STDOUT_FILENO);
+			close(next_pipe[1]);
+		}
+		exec_simple(hash, exec, node->left);
+		exit(0);
+	}
+	else
+	{
+		free(filename);
+		parent_hdoc(exec, hash, node, next_pipe);
+	}
+}

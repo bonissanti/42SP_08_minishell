@@ -70,11 +70,11 @@ static void	after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 		node->left = NULL;
 		exec_multi_cmds(exec, hash, node->right);
 	}
-	else if (node->right && (node->right->type == TYPE_REDIRECT || node->right->type == TYPE_PIPE))
+	else if (node->right && (node->right->type == TYPE_REDIRECT))
 		next_is_rdir(exec, hash, node, filename);
-	// else if (node->right && (node->right->type == TYPE_PIPE
-	// 		|| node->right->type == TYPE_LOGICAL))
-	// 	next_is_pipe(exec, hash, node, filename);
+	else if (node->right && (node->right->type == TYPE_PIPE
+			|| node->right->type == TYPE_LOGICAL))
+		next_is_pipe(exec, hash, node, filename);
 	if (node->type == TYPE_LOGICAL)
 	{
 		waitpid(node->pid, &node->num_status, 0);
@@ -87,13 +87,11 @@ void	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 {
 	if (exec->count_pipes >= 1)
 		close(next_pipe[1]);
-	
-	if (node->right)
-		node = node->right->right;
+
+	if (node->right && exec->count_pipes >= 1)
+		node = find_node(node, TYPE_PIPE);
 	if (exec->count_pipes >= 1)
 		handle_pipes(hash, exec, node->right, next_pipe);
 	restore_fd(exec->old_stdin, exec->old_stdout);
 }
 
-	// if (node->right && node->right->type == TYPE_PIPE)
-	// 	node = find_node(node, TYPE_PIPE);
