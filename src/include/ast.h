@@ -22,7 +22,7 @@ void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list);
 t_ast	*create_node(t_cmd_list *cmd_list);
 void	insert_ast(t_ast **head, t_ast *new_node, t_exec *exec);
 void	delete_node(t_ast *head);
-t_ast	*find_heredoc(t_ast *root);
+t_ast	*find_node(t_ast *root, t_type type);
 
 //############################### UTILS #######################################
 

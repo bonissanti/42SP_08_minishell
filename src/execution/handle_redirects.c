@@ -40,7 +40,7 @@ int	get_index_redirect(t_ast *node)
 		if (ft_strncmp(node->cmds, node->right->cmds, 1) != 0)
 			index = 3;
 	}
-	else
+	else if (node->type == TYPE_REDIRECT)
 	{
 		if (ft_strncmp(node->cmds, ">>", 2) == 0)
 			index = 0;

@@ -92,7 +92,8 @@ int	create_files(t_ast *node)
 			root = root->right;
 		else
 			return (1);
-		root = root->right;
+		if (root)
+			root = root->right;
 	}
 	return (0);
 }
