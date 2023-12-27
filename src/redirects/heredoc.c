@@ -55,6 +55,8 @@ static void	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node, char *fil
 		close(node->in_fd);
 		if (node->left)
 			exec_simple(hash, exec, node->left);
+		fechar_todos_fds();
+		free(filename);
 		exit(0);
 	}
 	else

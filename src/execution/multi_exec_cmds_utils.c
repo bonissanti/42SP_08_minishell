@@ -16,7 +16,7 @@ int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
 	if (analyze_cmd(hash, node) != 0)
 		return (g_global.cmd_status);
-	if (is_builtin(node))
+	if ((is_builtin(node)) && exec->error_call != 1)
 		execute_builtin(hash, node);
 	else
 	{
