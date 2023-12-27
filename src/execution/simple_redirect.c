@@ -95,10 +95,10 @@ void	redirect_in(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 		else
 			parent_redirect(exec, hashtable, node, next_pipe);
 	}
-	if (node->type == TYPE_LOGICAL)
+	if (node->right->type == TYPE_LOGICAL)
 	{
 		waitpid(node->pid, &node->num_status, 0);
-		simple_logical(exec, hashtable, node, node->num_status);
+		simple_logical(exec, hashtable, node->right, node->num_status);
 	}
 	fechar_todos_fds();
 }

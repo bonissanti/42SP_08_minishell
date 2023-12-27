@@ -122,6 +122,25 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("echo oi > 1 > 2 > 3 > 4"));
 	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc < not_found > 1"));
 	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc > 1 < 1 > 2 < not_found.txt > 3"));
+	// ft_lstadd_back(&tests, ft_lstnew("<"));
+	// ft_lstadd_back(&tests, ft_lstnew("\"<\""));
+	// ft_lstadd_back(&tests, ft_lstnew("\'<\'"));
+	// ft_lstadd_back(&tests, ft_lstnew("<<"));
+	// ft_lstadd_back(&tests, ft_lstnew("\"<<\""));
+	// ft_lstadd_back(&tests, ft_lstnew("\'<<\'"));
+	// ft_lstadd_back(&tests, ft_lstnew(">"));
+	// ft_lstadd_back(&tests, ft_lstnew("\">\""));
+	// ft_lstadd_back(&tests, ft_lstnew("\'>\'"));
+	// ft_lstadd_back(&tests, ft_lstnew("|"));
+	// ft_lstadd_back(&tests, ft_lstnew("\"|\""));
+	// ft_lstadd_back(&tests, ft_lstnew("\'|\'"));
+	// ft_lstadd_back(&tests, ft_lstnew("< \"Makefile\"")); //falhou
+	// ft_lstadd_back(&tests, ft_lstnew("| \"Makefile\""));
+	// ft_lstadd_back(&tests, ft_lstnew("< "Makefile"));
+
+
+
+
 
 
 
