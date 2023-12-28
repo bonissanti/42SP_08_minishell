@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/27 11:18:53 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/28 18:05:22 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 		exec_forked_cmd(exec, hash, root);
 	if (root->type == TYPE_REDIRECT)
 	{
+		if(handle_redirects(root) == 1)
+		{
+			g_global.cmd_status = 2;
+			return ;
+		}
 		exec->error_call = handle_redirects(root);
 		g_global.cmd_status = analyze_redirect(exec, hash, root);
 	}

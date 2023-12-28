@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/22 12:23:08 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/28 19:14:09 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,6 @@ void		append_expand(t_tkn_list **current);
 void		expand_all(t_tkn_list *tkn_list, t_hashtable *env);
 int			is_redirect(t_tkn_type tkn);
 void		free_lists(void);
+int			is_redirect_op(char *cmd);
 
 #endif

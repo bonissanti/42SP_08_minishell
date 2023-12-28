@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:32:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/27 21:37:34 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/28 14:22:40 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	new_redirect_node(t_tkn_list **current)
 	has_here_doc = false;
 	weight = OP_REDIRECT;
 	type = TYPE_REDIRECT;
+
 	if ((*current)->type == HERE_DOC)
 	{
 		type = TYPE_HEREDOC;

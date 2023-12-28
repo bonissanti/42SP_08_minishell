@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:51:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/22 19:16:50 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/28 19:18:59 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,18 @@ int	redirect_input(t_ast *node, char *filename)
 	char	*tmp_filename;
 
 	tmp_filename = "/tmp/minishell_tmp_file";
-	if (filename == NULL)
+	if (filename == NULL || isdelimiter(filename))
 	{
-		ft_fprintf(2, "minishell: syntax error near unexpected token EOF\n");
-		return (-1);
+		if(is_redirect_op(node->right->cmds))	
+		{
+			ft_fprintf(2, "minishell: syntax error near unexpected token `%s'\n", node->right->cmds);
+			return (1);
+		}
+		else
+		{
+			ft_fprintf(2, "minishell: syntax error near unexpected token `%s'\n", filename);
+			return (1);
+		}		
 	}
 	node->in_fd = open(filename, O_RDONLY);
 	if (node->in_fd == -1 || !verify_file_permissions(filename))
@@ -41,10 +49,18 @@ int	redirect_input(t_ast *node, char *filename)
 
 int	redirect_output(t_ast *node, char *filename)
 {
-	if (filename == NULL)
+	if (filename == NULL || isdelimiter(filename))
 	{
-		ft_fprintf(2, "minishell: syntax error near unexpected token EOF\n");
-		return (1);
+		if(is_redirect_op(node->right->cmds))	
+		{
+			ft_fprintf(2, "minishell: syntax error near unexpected token `%s'\n", node->right->cmds);
+			return (1);
+		}
+		else
+		{
+			ft_fprintf(2, "minishell: syntax error near unexpected token `%s'\n", filename);
+			return (1);
+		}
 	}
 	node->out_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (!verify_file_permissions(filename))
@@ -54,10 +70,18 @@ int	redirect_output(t_ast *node, char *filename)
 
 int	redirect_append(t_ast *node, char *filename)
 {
-	if (filename == NULL)
+	if (filename == NULL || isdelimiter(filename))
 	{
-		ft_fprintf(2, "minishell: syntax error near unexpected token EOF\n");
-		return (1);
+		if(is_redirect_op(node->right->cmds))	
+		{
+			ft_fprintf(2, "minishell: syntax error near unexpected token `%s'\n", node->right->cmds);
+			return (1);
+		}
+		else
+		{
+			ft_fprintf(2, "minishell: syntax error near unexpected token `%s'\n", filename);
+			return (1);
+		}
 	}
 	node->out_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (!verify_file_permissions(filename))

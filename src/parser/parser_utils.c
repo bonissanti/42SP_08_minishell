@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 16:39:50 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/19 13:39:33 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/28 19:13:34 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,14 @@ int	isdelimiter(char *cmd)
 		|| !ft_strncmp(cmd, "&&", 2) || !ft_strncmp(cmd, "<<", 2) || *cmd == '<'
 		|| !ft_strncmp(cmd, ">>", 2) || *cmd == '>' || *cmd == '*'
 		|| *cmd == '~' || *cmd == '$')
+		return (1);
+	return (0);
+}
+
+int	is_redirect_op(char *cmd)
+{
+	if (!ft_strncmp(cmd, "<<", 2) || *cmd == '<'
+		|| !ft_strncmp(cmd, ">>", 2) || *cmd == '>')
 		return (1);
 	return (0);
 }
