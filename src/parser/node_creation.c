@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_creation.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:32:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/14 16:45:41 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/27 21:37:34 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ void	new_redirect_node(t_tkn_list **current)
 		.type = type,
 		.args = tkn_type_converter((*current)->type),
 		.weight = weight,
+		.infile = (*current)->next->content,
+		.outfile = (*current)->next->content,
 		.here_doc = has_here_doc,
 	});
 	*current = (*current)->next;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_redirect.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:17:33 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/22 11:13:07 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/27 22:55:01 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	child_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 		close(next_pipe[1]);
 	}
 	if (exec->error_call != 1)
-		exec_simple(hashtable, exec, node->left);
+		exec_simple(hashtable, exec, node->left); // < Makefile2 entra node->left de "<" que eh NULL
 	else
 	{
 			delete_node(g_global.ast);

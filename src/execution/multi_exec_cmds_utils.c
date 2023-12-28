@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/26 19:28:02 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/27 22:55:47 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
-	if (analyze_cmd(hash, node) != 0)
+	if (analyze_cmd(hash, node) != 0) // aqui node que eh NULL vai entrar pro analyzed
 		return (g_global.cmd_status);
 	if ((is_builtin(node)) && exec->error_call != 1)
 		execute_builtin(hash, node);

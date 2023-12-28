@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/22 10:07:58 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/27 22:56:50 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,8 @@ int	analyze_cmd(t_hashtable *hashtable, t_ast *node)
 	char	*path;
 	int		result;
 	t_hash	*search_var;
-
-	if (is_empty_cmd(node->cmds))
+	
+	if (is_empty_cmd(node->cmds)) // e estoura aqui tentando dereferenciar NULL
 		return (0);
 	result = verify_cmd_permissions(node->cmds);
 	if (ft_strchr(node->cmds, '/') != NULL && result != 0)
