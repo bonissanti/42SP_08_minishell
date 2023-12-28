@@ -23,16 +23,13 @@ void	double_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 			redirect_fds(node);
 			handle_redirects(node->right);
 			redirect_fds(node->right);
-			if (exec->error_call != 1)
+			if (exec->error_call != 1 && node->left)
 				exec_simple(hashtable, exec, node->right->left);
-			else
-			{
-				delete_node(g_global.ast);
-				destroy_hashtable(hashtable);
-				free_lists();
-				empty_trash_can();
-				restore_fd(exec->old_stdin, exec->old_stdout);
-			}
+			delete_node(g_global.ast);
+			destroy_hashtable(hashtable);
+			free_lists();
+			empty_trash_can();
+			restore_fd(exec->old_stdin, exec->old_stdout);
 			exit(0);
 		}
 		else
@@ -129,6 +126,7 @@ void	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node)
 	}
 	else
 	{
+		close(node->out_fd);
 		if (node->num_status == 0)
 			exec_multi_cmds(exec, hash, node->right);
 	}
