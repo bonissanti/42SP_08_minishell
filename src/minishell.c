@@ -137,28 +137,6 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("< \"Makefile\"")); //falhou
 	// ft_lstadd_back(&tests, ft_lstnew("| \"Makefile\""));
 	// ft_lstadd_back(&tests, ft_lstnew("< "Makefile"));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	// ft_lstadd_back(&tests, ft_lstnew("ls | wc cat << EOF"));
 	// ft_lstadd_back(&tests, ft_lstnew("echo oi cat << EOF"));
 	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc"));

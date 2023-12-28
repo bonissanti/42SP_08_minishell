@@ -52,7 +52,7 @@ int	analyze_cmd(t_hashtable *hashtable, t_ast *node)
 	int		result;
 	t_hash	*search_var;
 	
-	if (is_empty_cmd(node->cmds)) // e estoura aqui tentando dereferenciar NULL
+	if (is_empty_cmd(node->cmds))
 		return (0);
 	result = verify_cmd_permissions(node->cmds);
 	if (ft_strchr(node->cmds, '/') != NULL && result != 0)

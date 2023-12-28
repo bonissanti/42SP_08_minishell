@@ -1,0 +1,41 @@
+< "Makefile"            - OK
+< Makefile              - OK
+< Makefile | echo oi    - OK
+< | Makefile            - Precisa dar erro de sintaxe
+
+> Makefile              - OK
+> "Makefile"            - OK
+> Makefile | echo oi    - OK
+> | Makefile            - Criou um arquivo |. Precisa dar erro de sintaxe, sem criar arquivo
+
+>> Makefile             - OK
+>> Makefile | echo oi   - OK
+>> "Makefile"           - OK
+>> | Makefile           - Criou um arquivo |. Precisa dar erro de sintaxe, sem criar arquivo
+
+<< Makefile             - OK
+<< EOF cat              - Não funciona
+
+| echo oi               - OK
+| echo oi | echo ola    - OK
+
+$NONECZISTE             - OK
+$NONECZISTE | echo ola  - OK
+
+"echo | ola"            - Ele printa | ola, mas deveria dar erro de sintaxe
+'echo | ola'            - Ele printa | ola, mas deveria dar erro de sintaxe
+"ls -l | wc"            - Dá duas mensagens de erro, mas deveria dar só uma. Não muito grave
+'ls -l | wc'            - Dá duas mensagens de erro, mas deveria dar só uma. Não muito grave
+
+$ echo oi               - OK
+$ | echo oi             - OK
+$ < echo oi             - OK
+$ > echo oi             - OK
+$ >> echo oi            - OK
+
+alou < >                - Printou um erro e deu segmentation fault
+alou |                  - OK
+alou $                  - OK
+alou <<                 - Printou um erro e deu segmentation fault
+alou >>                 - Printou um erro e deu segmentation fault
+alou *.c                - OK    

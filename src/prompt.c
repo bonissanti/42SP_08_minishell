@@ -98,7 +98,7 @@ void	prompt(t_hashtable *env, t_list *tests)
 			continue ;
 		add_history(g_global.readline_input);
 		tokenizer(env);
-			parser(env);
+		parser(env);
 		g_global.ast = init_ast(g_global.cmd_list, &exec);
 		backup_fd(&exec.old_stdin, &exec.old_stdout);
 		if (g_global.to_exec != 2)
