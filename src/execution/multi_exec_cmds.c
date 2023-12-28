@@ -39,7 +39,7 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 	initial_pipe[0] = -1;
 	initial_pipe[1] = -1;
 	if (root->type == TYPE_COMMAND)
-		exec_forked_cmd(hash, root);
+		exec_forked_cmd(exec, hash, root);
 	if (root->type == TYPE_REDIRECT)
 	{
 		exec->error_call = handle_redirects(root);
@@ -66,7 +66,7 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 	return (g_global.exit_status);
 }
 
-int	exec_forked_cmd(t_hashtable *hash, t_ast *node)
+int	exec_forked_cmd(t_exec *exec, t_hashtable *hash, t_ast *node)
 {
 	if (is_builtin(node))
 	{
@@ -76,19 +76,21 @@ int	exec_forked_cmd(t_hashtable *hash, t_ast *node)
 	if (analyze_cmd(hash, node) != 0)
 		return (g_global.cmd_status);
 	else
-		g_global.cmd_status = forking(node);
+		g_global.cmd_status = forking(exec, hash, node);
 	return (g_global.exit_status);
 }
 
-int	forking(t_ast *node)
+int	forking(t_exec *exec, t_hashtable *hash, t_ast *node)
 {
 	node->pid = fork();
 	if (node->type == TYPE_COMMAND)
 	{
 		if (node->pid == 0)
 		{
+			ft_fprintf(2, "node->path: %s\n", node->path);
 			if (execve(node->path, node->args, NULL) == -1)
 				g_global.cmd_status = 2;
+			free_for_finish(exec, hash);
 			exit(g_global.cmd_status);
 		}
 	}

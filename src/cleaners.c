@@ -41,3 +41,12 @@ void	final_wipeout(t_hashtable *env)
 	rl_clear_history();
 	destroy_hashtable(env);
 }
+
+void	free_for_finish(t_exec *exec, t_hashtable *env)
+{
+	delete_node(g_global.ast);
+	destroy_hashtable(env);
+	free_lists();
+	empty_trash_can();
+	restore_fd(exec->old_stdin, exec->old_stdout);
+}
