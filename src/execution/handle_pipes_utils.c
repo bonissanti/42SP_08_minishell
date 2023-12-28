@@ -40,10 +40,12 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 				restore_fd(exec->old_stdin, exec->old_stdout);
 				exit(0);
 			}
-			exec_simple(g_global.hash, exec, node->left);
+			if (node->left)
+				exec_simple(g_global.hash, exec, node->left);
 			exit(0);
 		}
-		exec_simple(g_global.hash, exec, node);
+		if (node)
+			exec_simple(g_global.hash, exec, node);
 		close(1);
 		close(0);
 		exit(0);
@@ -51,7 +53,6 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 	else
 		parent_pipe(prev_pipe, next_pipe);
 }
-
 t_ast *get_last_node(t_ast *node, char *cmd)
 {
 	t_ast *last_node;

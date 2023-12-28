@@ -35,6 +35,7 @@ void	double_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 		else
 		{
 			wait(NULL);
+			close(node->in_fd);
 			node->left = NULL;
 			restore_fd(exec->old_stdin, exec->old_stdout);
 			exec_multi_cmds(exec, hashtable, node->right->right);
@@ -73,6 +74,7 @@ static void	child_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 static void	parent_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 		int *next_pipe)
 {
+	close(node->in_fd);
 	if (exec->count_pipes >= 1)
 		close(next_pipe[1]);
 	restore_fd(exec->old_stdin, exec->old_stdout);

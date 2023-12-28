@@ -28,7 +28,6 @@ void	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 	{
 		len = 0;
 		line = readline("> ");
-		exec_signals(node->pid);
 		if (!ft_strcmp(line, node->delim))
 		{
 			free(line);
@@ -48,6 +47,7 @@ void	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 static void	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node, char *filename)
 {
 	node->pid = fork();
+	exec_signals(node->pid);
 	if (node->pid == 0)
 	{
 		node->in_fd = open(filename, O_RDONLY);

@@ -65,6 +65,7 @@ void	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node,
 	if (exec->count_pipes >= 1)
 		pipe(next_pipe);
 	node->pid = fork();
+	exec_signals(node->pid);
 	if (node->pid == 0)
 	{
 		node->in_fd = open(filename, O_RDONLY);
@@ -87,7 +88,8 @@ void	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node,
 			close(next_pipe[1]);
 			close(next_pipe[0]);
 		}
-		exec_simple(hash, exec, node->left);
+		if (node->left)
+			exec_simple(hash, exec, node->left);
 		fechar_todos_fds();
 		free(filename);
 		exit(0);
@@ -107,6 +109,7 @@ void	next_is_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
 	if (exec->count_pipes >= 1)
 		pipe(next_pipe);
 	node->pid = fork();
+	exec_signals(node->pid);
 	if (node->pid == 0)
 	{
 		node->in_fd = open(filename, O_RDONLY);
@@ -118,7 +121,8 @@ void	next_is_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
 			close(next_pipe[0]);
 			close(next_pipe[1]);
 		}
-		exec_simple(hash, exec, node->left);
+		if (node->left)
+			exec_simple(hash, exec, node->left);
 		fechar_todos_fds();
 		free(filename);
 		exit(0);
