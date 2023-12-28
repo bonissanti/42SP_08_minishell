@@ -90,6 +90,8 @@ void	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node,
 		}
 		if (node->left)
 			exec_simple(hash, exec, node->left);
+		else
+			free_for_finish(exec, hash);
 		fechar_todos_fds();
 		free(filename);
 		exit(0);
@@ -123,6 +125,8 @@ void	next_is_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
 		}
 		if (node->left)
 			exec_simple(hash, exec, node->left);
+		else
+			free_for_finish(exec, hash);
 		fechar_todos_fds();
 		free(filename);
 		exit(0);

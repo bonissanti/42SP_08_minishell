@@ -4,7 +4,7 @@
 < | Makefile            - Precisa dar erro de sintaxe
 
 > Makefile              - OK - 1 leak
-> "Makefile"            - OK - 2 leaks
+> "Makefile"            - OK - 2 leaks e invalid reads
 > Makefile | echo oi    - OK - 2 leaks
 > | Makefile            - Criou um arquivo |. Precisa dar erro de sintaxe, sem criar arquivo
 
