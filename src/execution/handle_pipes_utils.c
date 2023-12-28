@@ -42,10 +42,14 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 			}
 			if (node->left)
 				exec_simple(g_global.hash, exec, node->left);
+			else
+				free_for_finish(exec, g_global.hash);
 			exit(0);
 		}
 		if (node)
 			exec_simple(g_global.hash, exec, node);
+		else
+			free_for_finish(exec, g_global.hash);
 		close(1);
 		close(0);
 		exit(0);

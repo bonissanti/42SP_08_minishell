@@ -74,7 +74,10 @@ int	exec_forked_cmd(t_exec *exec, t_hashtable *hash, t_ast *node)
 		return (g_global.exit_status);
 	}
 	if (analyze_cmd(hash, node) != 0)
+	{
+		free_for_finish(exec, hash);
 		return (g_global.cmd_status);
+	}
 	else
 		g_global.cmd_status = forking(exec, hash, node);
 	return (g_global.exit_status);
