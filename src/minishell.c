@@ -13,17 +13,17 @@
 #include "./include/minishell.h"
 
 int	main(int argc, char **argv, char **envp)
-{
+	{
 	(void)argc;
 	(void)argv;
 	t_list *tests = NULL;
 	ft_lstadd_back(&tests, ft_lstnew("echo 1 hello world"));
-	ft_lstadd_back(&tests, ft_lstnew("echo 2 \"hello world\""));
+	ft_lstadd_back(&tests, ft_lstnew("echo 2 \"hello world\"")); // invalid read
 	ft_lstadd_back(&tests, ft_lstnew("echo 3 'hello world'"));
 	ft_lstadd_back(&tests, ft_lstnew("echo 4 hello'world'"));
 	ft_lstadd_back(&tests, ft_lstnew("echo 5 hello\"\"world"));
-	ft_lstadd_back(&tests, ft_lstnew("echo 6 - \"\" \"  \" hello"));
-	ft_lstadd_back(&tests, ft_lstnew("echo 7 ''"));
+	ft_lstadd_back(&tests, ft_lstnew("echo 6 - \"\" \"  \" hello")); // invalid read
+	ft_lstadd_back(&tests, ft_lstnew("echo 7 ''")); // invalid read
 	ft_lstadd_back(&tests, ft_lstnew("echo 8 \"$PWD\""));
 	ft_lstadd_back(&tests, ft_lstnew("echo 9 '$PWD'"));
 	ft_lstadd_back(&tests, ft_lstnew("echo 10 \"aspas ->'\""));
@@ -40,7 +40,7 @@ int	main(int argc, char **argv, char **envp)
 	ft_lstadd_back(&tests, ft_lstnew("echo 21 $?"));
 	ft_lstadd_back(&tests, ft_lstnew("echo 22 $?HELLO"));
 	ft_lstadd_back(&tests, ft_lstnew("echo 23 $?HE$?LLO$?"));
-	// ft_lstadd_back(&tests, ft_lstnew("echo \"hi\" | cat | cat | cat | cat | cat | cat | cat"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo \"hi\" | cat | cat | cat | cat | cat | cat | cat")); // invalid read
 	// ft_lstadd_back(&tests, ft_lstnew("pwd"));
 	// ft_lstadd_back(&tests, ft_lstnew("pwd oi"));
 	// ft_lstadd_back(&tests, ft_lstnew("export hello"));
@@ -77,16 +77,20 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("cat < infile | wc > outfile"));
 	// ft_lstadd_back(&tests, ft_lstnew("cat < infile | sort | wc > outfile"));
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF"));
-	// ft_lstadd_back(&tests, ft_lstnew("<< EOF"));
-	// ft_lstadd_back(&tests, ft_lstnew("<<"));
+	// ft_lstadd_back(&tests, ft_lstnew("<< EOF")); 			// leaks
+	// ft_lstadd_back(&tests, ft_lstnew("<<"));					// segmenation fault
+	// ft_lstadd_back(&tests, ft_lstnew("<"));					// segmenation fault
+	// ft_lstadd_back(&tests, ft_lstnew(">"));					// segmenation fault
+	// ft_lstadd_back(&tests, ft_lstnew(">>"));					// segmenation fault
 	// ft_lstadd_back(&tests, ft_lstnew("<< EOF cat"));
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF > 1 > 2 > 3 > 4"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo << EOF > 1 > 2 > 3 > 4")); 2 leaks
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF > 1 > 2 > 3 > 4 | wc"));
-	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF > 1 < 1 > 2"));
+	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF > 1 < 1 > 2")); 
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF > 1 < 1 | wc"));
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF < 1 > 1 | wc"));
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF < 1 > 2"));
-	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF < 1"));
+	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF < 1")); // leaks quando o arquivo não existe
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF > otario"));
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF > outfile.txt | wc"));
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF > outfile.txt | ls | wc"));
@@ -120,30 +124,53 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("ls | wc > 1 < 1 > 2 < 2 > 3 < 3 > 4"));
 	// ft_lstadd_back(&tests, ft_lstnew("ls | wc > 1 > 2 > 3 > 4"));
 	// ft_lstadd_back(&tests, ft_lstnew("echo oi > 1 > 2 > 3 > 4"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo oi > 1 < 1 > 2")); // invalid read
 	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc < not_found > 1"));
 	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc > 1 < 1 > 2 < not_found.txt > 3"));
-	// ft_lstadd_back(&tests, ft_lstnew("<"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc > 1 < > 2")); // leaks, conditional jump
+	// ft_lstadd_back(&tests, ft_lstnew("ls | wc > 1 < > 2"));
+	// ft_lstadd_back(&tests, ft_lstnew("<")); // segmenation fault
 	// ft_lstadd_back(&tests, ft_lstnew("\"<\""));
 	// ft_lstadd_back(&tests, ft_lstnew("\'<\'"));
-	// ft_lstadd_back(&tests, ft_lstnew("<<"));
-	// ft_lstadd_back(&tests, ft_lstnew("\"<<\""));
+	// ft_lstadd_back(&tests, ft_lstnew("<<")); // segmenation fault
+	// ft_lstadd_back(&tests, ft_lstnew("\"<<\"")); // invalid read
 	// ft_lstadd_back(&tests, ft_lstnew("\'<<\'"));
-	// ft_lstadd_back(&tests, ft_lstnew(">"));
-	// ft_lstadd_back(&tests, ft_lstnew("\">\""));
+	// ft_lstadd_back(&tests, ft_lstnew(">")); // segmenation fault
+	// ft_lstadd_back(&tests, ft_lstnew("\">\"")); // invalid read
 	// ft_lstadd_back(&tests, ft_lstnew("\'>\'"));
 	// ft_lstadd_back(&tests, ft_lstnew("|"));
 	// ft_lstadd_back(&tests, ft_lstnew("\"|\""));
 	// ft_lstadd_back(&tests, ft_lstnew("\'|\'"));
-	// ft_lstadd_back(&tests, ft_lstnew("< \"Makefile\"")); //falhou
+	// ft_lstadd_back(&tests, ft_lstnew("< \"Makefile\"")); //1 leak e invalid read
 	// ft_lstadd_back(&tests, ft_lstnew("| \"Makefile\""));
-	// ft_lstadd_back(&tests, ft_lstnew("< "Makefile"));
+	// ft_lstadd_back(&tests, ft_lstnew("< 'Makefile')); //1 leak e invalid read
 	// ft_lstadd_back(&tests, ft_lstnew("ls | wc cat << EOF"));
-	// ft_lstadd_back(&tests, ft_lstnew("echo oi cat << EOF"));
-	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo oi cat << EOF")); // leaks e invalid read
+	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc")); // leaks e invalid read
 	// ft_lstadd_back(&tests, ft_lstnew("ls | sort | wc"));
-	// ft_lstadd_back(&tests, ft_lstnew("echo fucker | wc"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo fucker | wc")); // leaks e invalid read
 	// ft_lstadd_back(&tests, ft_lstnew("ls | ls | sort | wc"));
-	// ft_lstadd_back(&tests, ft_lstnew("echo fucker | sort | wc"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo fucker | sort | wc")); // leaks e invalid read
+	// ft_lstadd_back(&tests, ft_lstnew("export otario"));
+	// ft_lstadd_back(&tests, ft_lstnew("export otario=\'"));
+	// ft_lstadd_back(&tests, ft_lstnew("export otario=\""));
+	// ft_lstadd_back(&tests, ft_lstnew("export otario=\"fucker"));
+	// ft_lstadd_back(&tests, ft_lstnew("export otario=\'fucker"));
+	// ft_lstadd_back(&tests, ft_lstnew("export otario="));
+	// ft_lstadd_back(&tests, ft_lstnew("export otario=fucker"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo $otario"));
+	// ft_lstadd_back(&tests, ft_lstnew("export otario=fucker"));
+
+
+	
+
+	
+
+
+
+
+
+
 
 
 

@@ -73,35 +73,15 @@ void	env_with_equals(t_hashtable *hashtable, char **args, int i)
 	free_split(equals_sign);
 }
 
-// checar se expandimos aqui ou se vem do parser
 void	env_with_value(t_hashtable *hashtable, t_env *env, size_t len)
 {
 	char		*key;
 	char		*value;
-	t_lex		*dollar;
-	t_segment	*head;
 
-	dollar = NULL;
 	key = env->equals_sign[0];
 	value = ft_strtrim(env->equals_sign[1], "\"");
 	if (value == NULL)
 		value = "";
-	else if (*value == '$')
-	{
-		dollar = init_lex(hashtable, value);
-		head = NULL;
-		expand_variable(dollar, &head, &len);
-		safe_free((void **)&value);
-		value = join_segments(head);
-		insert(hashtable, key, value);
-		safe_free((void **)&dollar->segment);
-		free_segments(head);
-		safe_free((void **)&dollar->segment);
-		safe_free((void **)&dollar);
-	}
 	insert(hashtable, key, value);
 	safe_free((void **)&value);
-	// safe_free((void **)&dollar->segment);
-	// safe_free((void **)&dollar);
-	free(value);
 }

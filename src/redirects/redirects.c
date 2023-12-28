@@ -17,6 +17,7 @@ int	redirect_input(t_ast *node, char *filename)
 	int		tmp_fd;
 	char	*tmp_filename;
 
+	ft_fprintf(2, "filename: %s\n", filename);
 	tmp_filename = "/tmp/minishell_tmp_file";
 	if (filename == NULL || isdelimiter(filename))
 	{

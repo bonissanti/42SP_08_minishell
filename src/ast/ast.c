@@ -145,7 +145,7 @@ void	delete_node(t_ast *head)
 	{
 		delete_node(head->left);
 		delete_node(head->right);
-		if(head)
+		if (head)
 			free_split(head->args);
 		safe_free((void **)&head->path);
 		free(head);

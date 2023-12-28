@@ -119,6 +119,21 @@ int	crop_quote_tkn(char **cmd)
 	return (i);
 }
 
+char *copy_var_export(char **cmd, t_hashtable *env, t_bool *is_export)
+{
+	int i;
+	char *cropped;
+
+	cropped = *cmd;
+	i = 0;
+	while (**cmd && *is_export)
+	{
+		i++;
+		(*cmd)++;
+	}
+	return (ft_substr(cropped, 0, i));
+}
+
 /**
  * Function: crop_tkn
  * -----------------
@@ -135,7 +150,7 @@ int	crop_quote_tkn(char **cmd)
  *
  */
 
-char	*crop_tkn(char **cmd, t_hashtable *env)
+char	*crop_tkn(char **cmd, t_hashtable *env, t_bool *is_export)
 {
 	char	*cropped;
 	int		i;
@@ -164,11 +179,15 @@ char	*crop_tkn(char **cmd, t_hashtable *env)
 			else if (isdelimiter(*cmd) && closed == true)
 				return (ft_substr(cropped, 0, i));				
 		}
+		if (ft_strncmp(cropped, "export", 6) == 0)
+			*is_export = true;
 		if (is_expander(**cmd))
 			return (append_expanded(cropped, cmd, env, i));
 	}
 	return (ft_substr(cropped, 0, i));
 }
+
+
 
 /**
  * Function: tokenizer
@@ -191,16 +210,25 @@ char	*crop_tkn(char **cmd, t_hashtable *env)
 void	tokenizer(t_hashtable *env)
 {
 	char	*actual_cmd;
+	t_bool 	is_export;
 
+	is_export = false;
 	actual_cmd = g_global.readline_input;
 	g_global.tkn_list = NULL;
 	while (*actual_cmd)
 	{
+		if (is_export)
+		{
+			if (ft_isspace(*actual_cmd))
+				skip_spaces(&actual_cmd);
+			handle_token(copy_var_export(&actual_cmd, env, &is_export));
+			break ;
+		}
 		if (ft_isspace(*actual_cmd))
 			skip_spaces(&actual_cmd);
 		if (!(*actual_cmd))
 			return ;
-		handle_token(crop_tkn(&actual_cmd, env));
+		handle_token(crop_tkn(&actual_cmd, env, &is_export));
 	}
-	expand_all(g_global.tkn_list, env);
+	expand_all(g_global.tkn_list, env, &is_export);
 }

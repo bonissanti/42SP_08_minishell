@@ -73,7 +73,7 @@ char	*append_expanded(char *cmd, char **exp, t_hashtable *env, int index)
  * 
 */
 
-void	expand_all(t_tkn_list *tkn_list, t_hashtable *env)
+void	expand_all(t_tkn_list *tkn_list, t_hashtable *env, t_bool *is_export)
 {
 	t_tkn_list	*current;
 
@@ -83,11 +83,11 @@ void	expand_all(t_tkn_list *tkn_list, t_hashtable *env)
 		if (current->type == EXPAND || current->type == WILD
 			|| current->type == IDENTIFIER)
 		{
-			if (*current->content == '$' || *current->content == '\\'
+			if ((*current->content == '$' || *current->content == '\\' 
 				|| *current->content == '\'' || *current->content == '"'
-				|| current->type == IDENTIFIER)
+				|| current->type == IDENTIFIER) && (!*is_export))
 				analyzing_quotes(env, &current->content);
-			else if (*current->content == '~')
+			if (*current->content == '~')
 				expand_tilde(env, current->content);
 			else if (*current->content == '*')
 				handle_wildcard(&current->content);

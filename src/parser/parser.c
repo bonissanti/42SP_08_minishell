@@ -30,6 +30,11 @@ void	command_consistency(t_tkn_list *tokenized)
 	t_tkn_list	*head;
 	t_tkn_list	*tail;
 
+	if (!tokenized)
+	{
+		g_global.to_exec = 2;
+		return ;
+	}
 	head = tokenized;
 	tail = last_tkn_list(tokenized);
 	if (head->type == OR || head->type == AND || head->type == PIPE
@@ -95,6 +100,8 @@ void	join_args(t_tkn_list *tkn_list)
 {
 	t_tkn_list	*current;
 
+	if (!tkn_list)
+		return ;
 	current = tkn_list;
 	while (current)
 	{
