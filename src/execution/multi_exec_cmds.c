@@ -87,9 +87,13 @@ int	forking(t_exec *exec, t_hashtable *hash, t_ast *node)
 	{
 		if (node->pid == 0)
 		{
-			ft_fprintf(2, "node->path: %s\n", node->path);
-			if (execve(node->path, node->args, NULL) == -1)
-				g_global.cmd_status = 2;
+			if (node->path == NULL)
+				g_global.cmd_status = 127;
+			else
+			{
+				if (execve(node->path, node->args, NULL) == -1)
+					g_global.cmd_status = 2;
+			}
 			free_for_finish(exec, hash);
 			exit(g_global.cmd_status);
 		}

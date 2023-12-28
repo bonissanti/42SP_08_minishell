@@ -14,21 +14,23 @@
 
 int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
-	if (analyze_cmd(hash, node) != 0) // aqui node que eh NULL vai entrar pro analyzed
+	if (analyze_cmd(hash, node) != 0)
 		return (g_global.cmd_status);
-	if ((is_builtin(node)) && exec->error_call != 1)
+	if (is_builtin(node))
 		execute_builtin(hash, node);
 	else
 	{
-		if (execve(node->path, node->args, NULL) == -1)
-			g_global.cmd_status = 2;
+		if (node->path == NULL)
+			g_global.cmd_status = 127;
+		else
+		{
+			if (execve(node->path, node->args, NULL) == -1)
+				g_global.cmd_status = 2;
+		}
+		free_for_finish(exec, hash);
 		exit(g_global.cmd_status);
 	}
-	delete_node(g_global.ast);
-    destroy_hashtable(hash);
-    free_lists();
-    empty_trash_can();
-	restore_fd(exec->old_stdin, exec->old_stdout);
+	free_for_finish(exec, hash);
 	return (g_global.exit_status);
 }
 
