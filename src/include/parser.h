@@ -42,6 +42,7 @@ char		*append_expanded(char *cmd, char **exp, t_hashtable *env,
 				int index);
 int			is_operator(t_tkn_type tkn);
 int			crop_delimiter_tkn(char **cmd);
+t_bool		has_equal(const char *str, t_bool *is_export);
 int			crop_quote_tkn(char **cmd);
 void		free_tkn_list(t_tkn_list *tkn_list);
 void		free_cmd_list(t_cmd_list *cmd_list);

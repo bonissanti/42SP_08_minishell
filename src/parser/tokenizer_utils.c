@@ -137,3 +137,21 @@ void	handle_token(char *str)
 	else
 		add_tkn_list(new_tkn_list(str, IDENTIFIER));
 }
+
+
+t_bool	has_equal(const char *str, t_bool *is_export)
+{
+	if (ft_strncmp(g_global.readline_input, "export", 6) != 0)
+	{
+		*is_export = false;
+		return (false);
+	}
+	while (*str)
+	{
+		if (*str == '=')
+			return (true);
+		str++;
+	}
+	*is_export = false;
+	return (false);
+}

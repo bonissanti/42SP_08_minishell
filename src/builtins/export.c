@@ -91,15 +91,17 @@ void	add_env(t_hashtable *hash_table, char **args)
 	t_env	env;
 	t_hash	*hash;
 	size_t	len;
+	t_bool 	modified;
 	
 
 	i = 1;
+	modified = false;
 	while (args[i] != NULL)
 	{
 		len = 0;
 		env.equals_sign = ft_split(args[i], '=');
 		env.key = env.equals_sign[0];
-		char *temp = env.equals_sign[1];
+		char *temp = ft_strdup(env.equals_sign[1]); // colocar strdup
 		if (temp && !even_close_quotes(env.equals_sign[1]))
 		{
 			g_global.cmd_status = 1;
@@ -110,17 +112,17 @@ void	add_env(t_hashtable *hash_table, char **args)
 			return ;
 		}
 		if (env.equals_sign[1])
+		{
 			analyzing_quotes(hash_table, &env.equals_sign[1]);
+			modified = true;
+		}
 		if (!is_valid_identifier(env.key))
 		{
 			ft_printf("minishell: export: `%s': not a valid identifier\n",
 				args[i]);
 			free_split(env.equals_sign);
-			// if (temp)
-			// {
-			// 	ft_fprintf(2, "vou entrar aqui");
-			// 	// ft_safe_free((void **)&temp);
-			// }
+			if (modified && ft_strcmp(temp, env.equals_sign[1]) != 0)
+				ft_safe_free((void **)&temp);
 			g_global.cmd_status = 1;
 			i++;
 			continue ;
@@ -132,7 +134,8 @@ void	add_env(t_hashtable *hash_table, char **args)
 			env_with_value(hash_table, &env, len);
 		else if (hash == NULL)
 			insert(hash_table, env.key, NULL);
-		// ft_safe_free((void **)&temp);
+		if (modified && ft_strcmp(temp, env.equals_sign[1]) != 0)
+			ft_safe_free((void **)&temp);
 		free_split(env.equals_sign);
 		i++;
 	}
