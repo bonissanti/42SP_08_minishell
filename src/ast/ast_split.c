@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_split.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:47:48 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 14:43:46 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/29 01:20:16 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	**ast_split(char const *s, char c)
 	char		**result;
 	char		**temp;
 
-	result = (char **) malloc((ft_del_count(s, c) + 1) * sizeof(char *));
+	result = (char **) ft_calloc(ft_del_count(s, c) + 1, sizeof(char *));
 	if (result == NULL)
 		return (NULL);
 	temp = result;
@@ -87,7 +87,7 @@ char	**ast_split(char const *s, char c)
 	{
 		if (!is_delimiter(*s, c, false))
 		{
-			*temp = malloc((ft_btw(s, c) + 1) * sizeof(char));
+			*temp = ft_calloc((ft_btw(s, c) + 1), sizeof(char));
 			if (*temp == NULL)
 				return (NULL);
 			ft_strlcpy(*temp++, s, ft_btw(s, c) + 1);

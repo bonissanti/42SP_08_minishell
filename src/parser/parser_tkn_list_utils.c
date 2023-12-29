@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 18:22:03 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/19 09:53:08 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/29 01:07:49 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_tkn_list	*new_tkn_list(char *content, t_tkn_type type)
 {
 	t_tkn_list	*node;
 
-	node = (t_tkn_list *)malloc(sizeof(t_tkn_list));
+	node = (t_tkn_list *)ft_calloc(1, sizeof(t_tkn_list));
 	if (!node)
 		return (NULL);
 	node->type = type;

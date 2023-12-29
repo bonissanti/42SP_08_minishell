@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hashtable_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 12:30:41 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 14:43:47 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/29 01:22:19 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	add_new_key(t_hashtable *hash, char *key_copy, char *value_copy,
 {
 	t_hash	*add_env;
 
-	add_env = (t_hash *)malloc(sizeof(t_hash));
+	add_env = (t_hash *)ft_calloc(1, sizeof(t_hash));
 	add_env->key = key_copy;
 	add_env->value = value_copy;
 	add_env->next = hash->buckets[index];

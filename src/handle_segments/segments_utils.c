@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   segments_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 16:38:47 by allesson          #+#    #+#             */
-/*   Updated: 2023/12/11 14:43:46 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/29 01:26:06 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*ft_strndup(const char *str, size_t num)
 	len = ft_strlen(str);
 	if (num < len)
 		len = num;
-	dup = (char *)malloc(sizeof(char) * (len + 1));
+	dup = (char *)ft_calloc(len + 1, sizeof(char));
 	if (!dup)
 		return (NULL);
 	while (*str && num--)

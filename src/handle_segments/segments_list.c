@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   segments_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:34:49 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/21 14:05:07 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/29 01:24:56 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@ t_lex	*init_lex(t_hashtable *env, char *arg)
 {
 	t_lex	*quote;
 
-	quote = (t_lex *)malloc(sizeof(t_lex));
+	quote = (t_lex *)ft_calloc(1, sizeof(t_lex));
 	quote->ptr = arg;
-	quote->segment = (char *)malloc(sizeof(char) * ft_strlen(arg) + 1);
+	quote->segment = (char *)ft_calloc(ft_strlen(arg) + 1, sizeof(char));
 	quote->env = env;
 	init_structs(&quote->state, false, sizeof(t_quote_bool));
 	init_structs(&quote->dollar, false, sizeof(t_expand));
@@ -29,7 +29,7 @@ t_segment	*new_segments(char *str)
 {
 	t_segment	*cmd;
 
-	cmd = (t_segment *)malloc(sizeof(t_segment));
+	cmd = (t_segment *)ft_calloc(1, sizeof(t_segment));
 	cmd->str = ft_strdup(str);
 	cmd->next = NULL;
 	return (cmd);
@@ -64,7 +64,7 @@ char	*join_segments(t_segment *head)
 		len += ft_strlen(current->str);
 		current = current->next;
 	}
-	str = (char *)malloc(sizeof(char) * len + 1);
+	str = (char *)ft_calloc(len + 1, sizeof(char));
 	ptr = str;
 	current = head;
 	while (current)

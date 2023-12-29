@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:38:13 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/28 14:04:26 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/29 00:59:38 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,29 +17,29 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	t_list *tests = NULL;
-	ft_lstadd_back(&tests, ft_lstnew("echo 1 hello world"));
-	ft_lstadd_back(&tests, ft_lstnew("echo 2 \"hello world\"")); // invalid read
-	ft_lstadd_back(&tests, ft_lstnew("echo 3 'hello world'"));
-	ft_lstadd_back(&tests, ft_lstnew("echo 4 hello'world'"));
-	ft_lstadd_back(&tests, ft_lstnew("echo 5 hello\"\"world"));
-	ft_lstadd_back(&tests, ft_lstnew("echo 6 - \"\" \"  \" hello")); // invalid read
-	ft_lstadd_back(&tests, ft_lstnew("echo 7 ''")); // invalid read
-	ft_lstadd_back(&tests, ft_lstnew("echo 8 \"$PWD\""));
-	ft_lstadd_back(&tests, ft_lstnew("echo 9 '$PWD'"));
-	ft_lstadd_back(&tests, ft_lstnew("echo 10 \"aspas ->'\""));
-	ft_lstadd_back(&tests, ft_lstnew("echo 11 \"aspas -> ' \""));
-	ft_lstadd_back(&tests, ft_lstnew("echo 12 'aspas ->\"'"));
-	ft_lstadd_back(&tests, ft_lstnew("echo 13 'aspas -> \" '"));
-	ft_lstadd_back(&tests, ft_lstnew("echo 14 \"> >> < * ? [ ] | ; [ ] || && ( ) & # $ \\ <<\"")); 
-	ft_lstadd_back(&tests, ft_lstnew("echo 15 '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \\ <<'")); 
-	ft_lstadd_back(&tests, ft_lstnew("echo 16 \"exit_code ->$? user ->$USER home -> $HOME\""));
-	ft_lstadd_back(&tests, ft_lstnew("echo 17 'exit_code ->$? user ->$USER home -> $HOME'"));
-	ft_lstadd_back(&tests, ft_lstnew("echo 18 \"$\""));
-	ft_lstadd_back(&tests, ft_lstnew("echo 19 '$'"));
-	ft_lstadd_back(&tests, ft_lstnew("echo 20 $"));
-	ft_lstadd_back(&tests, ft_lstnew("echo 21 $?"));
-	ft_lstadd_back(&tests, ft_lstnew("echo 22 $?HELLO"));
-	ft_lstadd_back(&tests, ft_lstnew("echo 23 $?HE$?LLO$?"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 1 hello world"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 2 \"hello world\"")); // invalid read
+	// ft_lstadd_back(&tests, ft_lstnew("echo 3 'hello world'"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 4 hello'world'"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 5 hello\"\"world"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 6 - \"\" \"  \" hello")); // invalid read
+	// ft_lstadd_back(&tests, ft_lstnew("echo 7 ''")); // invalid read
+	// ft_lstadd_back(&tests, ft_lstnew("echo 8 \"$PWD\""));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 9 '$PWD'"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 10 \"aspas ->'\""));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 11 \"aspas -> ' \""));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 12 'aspas ->\"'"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 13 'aspas -> \" '"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 14 \"> >> < * ? [ ] | ; [ ] || && ( ) & # $ \\ <<\"")); 
+	// ft_lstadd_back(&tests, ft_lstnew("echo 15 '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \\ <<'")); 
+	// ft_lstadd_back(&tests, ft_lstnew("echo 16 \"exit_code ->$? user ->$USER home -> $HOME\""));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 17 'exit_code ->$? user ->$USER home -> $HOME'"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 18 \"$\""));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 19 '$'"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 20 $"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 21 $?"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 22 $?HELLO"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo 23 $?HE$?LLO$?"));
 	// ft_lstadd_back(&tests, ft_lstnew("echo \"hi\" | cat | cat | cat | cat | cat | cat | cat")); // invalid read
 	// ft_lstadd_back(&tests, ft_lstnew("pwd"));
 	// ft_lstadd_back(&tests, ft_lstnew("pwd oi"));

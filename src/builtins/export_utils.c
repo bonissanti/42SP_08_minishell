@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:20:18 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/19 13:20:19 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/29 01:22:02 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	**copy_all_keys(t_hashtable *hash_table)
 
 	i = -1;
 	index = 0;
-	keys = malloc(sizeof(char *) * (hash_table->num_keys));
+	keys = ft_calloc(hash_table->num_keys, sizeof(char *));
 	if (keys == NULL)
 		return (NULL);
 	while (++i < HASHSIZE)

@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 17:12:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/17 19:49:49 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/29 01:07:10 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_cmd_list	*new_cmd_list(t_cmd_list node)
 {
 	t_cmd_list	*new_node;
 
-	new_node = (t_cmd_list *)malloc(sizeof(t_cmd_list));
+	new_node = (t_cmd_list *)ft_calloc(1, sizeof(t_cmd_list));
 	if (!new_node)
 		return (NULL);
 	new_node->type = node.type;

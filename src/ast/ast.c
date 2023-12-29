@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/22 12:49:30 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/29 01:21:05 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_ast	*create_node(t_cmd_list *cmd_list)
 {
 	t_ast	*new_node;
 
-	new_node = (t_ast *)malloc(sizeof(t_ast));
+	new_node = (t_ast *)ft_calloc(1, sizeof(t_ast));
 	prepare_ast(new_node, cmd_list);
 	new_node->path = NULL;
 	new_node->left = NULL;
