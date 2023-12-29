@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/28 18:05:22 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/29 00:24:38 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static void	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 	t_ast	*heredoc_node;
 
 	heredoc_executed = false;
-	if (root == NULL)
+	if (root == NULL || (root->type == TYPE_REDIRECT && root->right->type == TYPE_HEREDOC))
 		return ;
 	heredoc_node = find_node(root, TYPE_HEREDOC);
 	if (root->type != TYPE_HEREDOC)
