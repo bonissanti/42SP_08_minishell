@@ -91,7 +91,6 @@ void	add_env(t_hashtable *hash_table, char **args)
 	t_env	env;
 	t_hash	*hash;
 	size_t	len;
-	
 
 	i = 1;
 	while (args[i] != NULL)
@@ -105,8 +104,6 @@ void	add_env(t_hashtable *hash_table, char **args)
 			g_global.cmd_status = 1;
 			ft_fprintf(2, "minishell: syntax error: unexpected end of file\n");
 			free_split(env.equals_sign);
-			// if (temp)
-			// 	ft_safe_free((void **)&temp);
 			return ;
 		}
 		if (env.equals_sign[1])
@@ -116,15 +113,11 @@ void	add_env(t_hashtable *hash_table, char **args)
 			ft_printf("minishell: export: `%s': not a valid identifier\n",
 				args[i]);
 			free_split(env.equals_sign);
-			// if (temp)
-			// {
-			// 	ft_fprintf(2, "vou entrar aqui");
-			// 	// ft_safe_free((void **)&temp);
-			// }
 			g_global.cmd_status = 1;
 			i++;
 			continue ;
 		}
+
 		hash = search(hash_table, env.key);
 		if (args[1][ft_strlen(args[i]) - 1] == '=')
 			env_with_equals(hash_table, args, i);
@@ -132,11 +125,76 @@ void	add_env(t_hashtable *hash_table, char **args)
 			env_with_value(hash_table, &env, len);
 		else if (hash == NULL)
 			insert(hash_table, env.key, NULL);
-		// ft_safe_free((void **)&temp);
+		if (temp != env.equals_sign[1])
+		{
+			ft_printf("passando aqui");
+			ft_safe_free((void **)&temp);
+		}
 		free_split(env.equals_sign);
 		i++;
 	}
 }
+
+
+// void	add_env(t_hashtable *hash_table, char **args)
+// {
+// 	int		i;
+// 	t_env	env;
+// 	t_hash	*hash;
+// 	size_t	len;
+// 	char *temp;
+
+// 	i = 1;
+// 	temp = NULL;
+// 	while (args[i] != NULL)
+// 	{
+// 		len = 0;
+// 		env.equals_sign = ft_split(args[i], '=');
+// 		env.key = env.equals_sign[0];
+// 		if (env.equals_sign[1])
+// 			temp = ft_strdup(env.equals_sign[1]);
+
+// 		if (temp && !even_close_quotes(env.equals_sign[1]))
+// 		{
+// 			g_global.cmd_status = 1;
+// 			ft_fprintf(2, "minishell: syntax error: unexpected end of file\n");
+// 			free_split(env.equals_sign);
+// 			// if (temp)
+// 			// 	ft_safe_free((void **)&temp);
+// 			return ;
+// 		}
+// 		char *bkp = temp;
+// 		if (env.equals_sign[1])
+// 		{
+// 			analyzing_quotes(hash_table, &temp);
+// 			env.value = temp;
+// 		}
+// 		if (!is_valid_identifier(env.key))
+// 		{
+// 			ft_printf("minishell: export: `%s': not a valid identifier\n",
+// 				args[i]);
+// 			free_split(env.equals_sign);
+// 			g_global.cmd_status = 1;
+// 			i++;
+// 			continue ;
+// 		}
+// 		hash = search(hash_table, env.key);
+// 		if (args[1][ft_strlen(args[i]) - 1] == '=')
+// 			env_with_equals(hash_table, args, i);
+// 		else if (temp != NULL)
+// 			env_with_value(hash_table, &env, len);
+// 		else if (hash == NULL)
+// 			insert(hash_table, env.key, NULL);
+// 		if (bkp != temp)
+// 		{
+// 			ft_printf("passando aqui");
+// 			ft_safe_free((void **)&temp);
+// 		}
+// 		free_split(env.equals_sign);
+// 		// ft_safe_free((void **)&temp);
+// 		i++;
+// 	}
+// }
 
 /**
  * Function: Export
