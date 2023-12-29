@@ -109,6 +109,7 @@ int status_do_filho(int status)
 int	wait_for_children(t_ast *node)
 {
 	int	status;
+	int error;
 	pid_t pid;
 
 	status = 0;
@@ -117,8 +118,8 @@ int	wait_for_children(t_ast *node)
 	while ((pid = waitpid(-1, &status, WUNTRACED)) > 0)
 	{
 		if (WIFEXITED(status))
-			g_global.cmd_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status) && g_global.cmd_status == 0)
+			error = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status) && error == 0)
 			g_global.cmd_status = WTERMSIG(status);
 	}
 	fechar_todos_fds();
