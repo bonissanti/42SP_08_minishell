@@ -71,6 +71,7 @@ typedef struct s_cmd_list
 	char				*outfile;
 	int					here_doc_fd;
 	t_bool				here_doc;
+	t_bool				anti_split;
 	struct s_cmd_list	*next;
 	struct s_cmd_list	*prev;
 }						t_cmd_list;
