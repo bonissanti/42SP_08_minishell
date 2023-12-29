@@ -103,6 +103,11 @@ void	add_env(t_hashtable *hash_table, char **args)
 		{
 			g_global.cmd_status = 1;
 			ft_fprintf(2, "minishell: syntax error: unexpected end of file\n");
+			if (temp != env.equals_sign[1])
+			{
+				ft_printf("passando aqui\n");
+				free(temp);
+			}
 			free_split(env.equals_sign);
 			return ;
 		}
@@ -115,7 +120,13 @@ void	add_env(t_hashtable *hash_table, char **args)
 		{
 			ft_printf("minishell: export: `%s': not a valid identifier\n",
 				args[i]);
+			if (temp != env.equals_sign[1])
+			{
+				ft_printf("passando aqui\n");
+				free(temp);
+			}
 			free_split(env.equals_sign);
+
 			g_global.cmd_status = 1;
 			i++;
 			continue ;
