@@ -55,11 +55,11 @@ static void	child_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 	}
 	if (exec->error_call != 1 && node->left)
 		exec_simple(hashtable, exec, node->left);
+	close(node->in_fd);
 	delete_node(g_global.ast);
 	destroy_hashtable(hashtable);
 	free_lists();
 	empty_trash_can();
-	close(node->in_fd);
 	restore_fd(exec->old_stdin, exec->old_stdout);
 	fechar_todos_fds();
 	exit(0);
@@ -113,12 +113,12 @@ void	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node)
 		redirect_fds(node);
 		if (node->left)
 			exec_simple(hash, exec, node->left);
+		close(node->out_fd);
 		delete_node(g_global.ast);
 		destroy_hashtable(hash);
 		free_lists();
 		empty_trash_can();
 		restore_fd(exec->old_stdin, exec->old_stdout);
-		close(node->out_fd);
 		fechar_todos_fds();
 		exit(0);
 	}

@@ -79,9 +79,9 @@ void	env_with_value(t_hashtable *hashtable, t_env *env, size_t len)
 	char		*value;
 
 	key = env->equals_sign[0];
-	value = ft_strtrim(env->equals_sign[1], "\"");
+	value = env->value;
 	if (value == NULL)
 		value = "";
 	insert(hashtable, key, value);
-	safe_free((void **)&value);
+	// safe_free((void **)&value);
 }

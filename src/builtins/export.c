@@ -107,7 +107,10 @@ void	add_env(t_hashtable *hash_table, char **args)
 			return ;
 		}
 		if (env.equals_sign[1])
-			analyzing_quotes(hash_table, &env.equals_sign[1]);
+		{
+			analyzing_quotes(hash_table, &temp);
+			env.value = temp;
+		}
 		if (!is_valid_identifier(env.key))
 		{
 			ft_printf("minishell: export: `%s': not a valid identifier\n",
@@ -127,8 +130,8 @@ void	add_env(t_hashtable *hash_table, char **args)
 			insert(hash_table, env.key, NULL);
 		if (temp != env.equals_sign[1])
 		{
-			ft_printf("passando aqui");
-			ft_safe_free((void **)&temp);
+			ft_printf("passando aqui\n");
+			free(temp);
 		}
 		free_split(env.equals_sign);
 		i++;

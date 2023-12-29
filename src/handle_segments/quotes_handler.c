@@ -178,8 +178,6 @@ void	final_process(t_lex *quote, t_segment **head, char **args, size_t *len)
 	add_segments(head, quote->segment);
 	free(quote->segment);
 	free(quote);
-	if(*args && *len)
-		free(*args);
 	*args = join_segments(*head);
 	free_segments(*head);
 }
