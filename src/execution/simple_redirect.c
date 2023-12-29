@@ -54,29 +54,23 @@ static void	child_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 		close(next_pipe[1]);
 	}
 	if (exec->error_call != 1 && node->left)
-		exec_simple(hashtable, exec, node->left); // < Makefile2 entra node->left de "<" que eh NULL
-	// else
-	// {
-	// 		delete_node(g_global.ast);
-    // 		destroy_hashtable(hashtable);
-    // 		free_lists();
-   	// 		empty_trash_can();
-	// 		restore_fd(exec->old_stdin, exec->old_stdout);
-	// }
+		exec_simple(hashtable, exec, node->left);
 	delete_node(g_global.ast);
 	destroy_hashtable(hashtable);
 	free_lists();
 	empty_trash_can();
+	close(node->in_fd);
 	restore_fd(exec->old_stdin, exec->old_stdout);
+	fechar_todos_fds();
 	exit(0);
 }
 
 static void	parent_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 		int *next_pipe)
 {
-	close(node->in_fd);
 	if (exec->count_pipes >= 1)
 		close(next_pipe[1]);
+	close(node->in_fd);
 	restore_fd(exec->old_stdin, exec->old_stdout);
 	if (node->right)
 		node = node->right;
@@ -104,6 +98,7 @@ void	redirect_in(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 		waitpid(node->pid, &node->num_status, 0);
 		simple_logical(exec, hashtable, node->right, node->num_status);
 	}
+	close(node->in_fd);
 	fechar_todos_fds();
 }
 
@@ -123,6 +118,7 @@ void	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node)
 		free_lists();
 		empty_trash_can();
 		restore_fd(exec->old_stdin, exec->old_stdout);
+		close(node->out_fd);
 		fechar_todos_fds();
 		exit(0);
 	}

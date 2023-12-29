@@ -17,7 +17,6 @@ int	redirect_input(t_ast *node, char *filename)
 	int		tmp_fd;
 	char	*tmp_filename;
 
-	ft_fprintf(2, "filename: %s\n", filename);
 	tmp_filename = "/tmp/minishell_tmp_file";
 	if (filename == NULL || isdelimiter(filename))
 	{
@@ -28,7 +27,7 @@ int	redirect_input(t_ast *node, char *filename)
 		}
 		else
 		{
-			ft_fprintf(2, "minishell: syntax error near unexpected token `%s'\n", filename);
+			ft_fprintf(2, "minishell: syntax error near unexpected token\n");
 			return (1);
 		}		
 	}

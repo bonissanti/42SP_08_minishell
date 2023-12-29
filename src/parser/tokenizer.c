@@ -217,13 +217,13 @@ void	tokenizer(t_hashtable *env)
 	g_global.tkn_list = NULL;
 	while (*actual_cmd)
 	{
-		if (is_export)
-		{
-			if (ft_isspace(*actual_cmd))
-				skip_spaces(&actual_cmd);
-			handle_token(copy_var_export(&actual_cmd, env, &is_export));
-			break ;
-		}
+		// if (is_export)
+		// {
+		// 	if (ft_isspace(*actual_cmd))
+		// 		skip_spaces(&actual_cmd);
+		// 	handle_token(copy_var_export(&actual_cmd, env, &is_export));
+		// 	break ;
+		// }
 		if (ft_isspace(*actual_cmd))
 			skip_spaces(&actual_cmd);
 		if (!(*actual_cmd))
