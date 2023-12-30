@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_split.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:47:48 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/29 21:43:31 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/29 22:08:30 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,10 @@ int is_solo(char *c)
 {
 	int i;
 	char left;
-	char middle;
 	char right;
 
 	i = 0;
 	left = *(c + i -1);
-	middle = *c;
 	right = *(c + i + 1);
 
 	if((left != 32 && right != 32) || (left != 32 && right == 32))
@@ -120,16 +118,16 @@ char	**ast_split(char *s, char c)
 	*temp = NULL;
 	return (result);
 }
-int main(void)
-{
-	// char ** result = ast_split("echo um      dois  test", 32);
-	// char ** result = ast_split("echo um dois test", 32);
-	// char ** result = ast_split("echo      um  dois test    ", 32);
-	char ** result = ast_split("echo      um  dois test    #", 32);
-	printf("command: %s\n", result[0]);
-	printf("arg: %s\n", result[1]);
-	printf("arg: %s\n", result[2]);
-	printf("arg: %s\n", result[3]);
-	printf("arg: %s\n", result[4]);
-	return(0);
-}
+// int main(void)
+// {
+// 	// char ** result = ast_split("echo um      dois  test", 32);
+// 	// char ** result = ast_split("echo um dois test", 32);
+// 	// char ** result = ast_split("echo      um  dois test    ", 32);
+// 	char ** result = ast_split("echo      um  dois test    #", 32);
+// 	printf("command: %s\n", result[0]);
+// 	printf("arg: %s\n", result[1]);
+// 	printf("arg: %s\n", result[2]);
+// 	printf("arg: %s\n", result[3]);
+// 	printf("arg: %s\n", result[4]);
+// 	return(0);
+// }

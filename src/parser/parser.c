@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/11 16:27:41 by aperis-p         ###   ########.fr       */
+/*   Updated: 2023/12/30 13:46:45 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,11 @@ void	parser(t_hashtable *env)
 		g_global.cmd_status = 2;
 	if (g_global.to_exec != 2)
 		join_args(g_global.tkn_list);
-	if (g_global.cmd_list->type == TYPE_HEREDOC && g_global.cmd_list->next &&
-		g_global.cmd_list->next->next)
-	move_to_front(&g_global.cmd_list, g_global.cmd_list->next->next);
+	else
+		return ;
+	if (g_global.cmd_list->type == TYPE_HEREDOC && g_global.cmd_list->next)
+	{
+		if(g_global.cmd_list->next->next)
+			move_to_front(&g_global.cmd_list, g_global.cmd_list->next->next);
+	}
 }
