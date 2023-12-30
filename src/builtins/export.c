@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 19:51:03 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/30 18:48:28 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,9 @@ void	add_env(t_hashtable *hash_table, char **args)
 			ft_printf("passando aqui\n");
 			free(temp);
 		}
-		free_split(env.equals_sign);
+		// free_split(env.equals_sign);
+		free(env.equals_sign[0]);
+		free(env.equals_sign);
 		i++;
 	}
 }

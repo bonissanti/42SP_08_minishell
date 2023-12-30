@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaners.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 09:12:32 by allesson          #+#    #+#             */
-/*   Updated: 2023/12/19 12:14:32 by brunrodr         ###   ########.fr       */
+/*   Updated: 2023/12/30 14:30:13 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,16 @@ char	*readline_trash_can(char *readline_input)
 
 void	free_lists(void)
 {
-	free_cmd_list(g_global.cmd_list);
-	g_global.cmd_list = NULL;
-	free_tkn_list(g_global.tkn_list);
-	g_global.tkn_list = NULL;
+	if(g_global.cmd_list)
+	{
+		free_cmd_list(g_global.cmd_list);
+		g_global.cmd_list = NULL;
+	}
+	if(g_global.tkn_list)
+	{
+		free_tkn_list(g_global.tkn_list);
+		g_global.tkn_list = NULL;		
+	}
 }
 
 void	final_wipeout(t_hashtable *env)

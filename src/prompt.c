@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/29 00:13:07 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/30 14:38:20 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ void	prompt(t_hashtable *env, t_list *tests)
 		parser(env);
 		g_global.ast = init_ast(g_global.cmd_list, &exec);
 		backup_fd(&exec.old_stdin, &exec.old_stdout);
-		if (g_global.to_exec != 2)
 			exec_multi_cmds(&exec, env, g_global.ast);
 		delete_node(g_global.ast);
 		free_lists();

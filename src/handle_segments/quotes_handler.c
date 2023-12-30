@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:57 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/26 00:35:39 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/30 18:23:34 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,8 @@ void	final_process(t_lex *quote, t_segment **head, char **args, size_t *len)
 	add_segments(head, quote->segment);
 	free(quote->segment);
 	free(quote);
+	if(*args)
+		free(*args);
 	*args = join_segments(*head);
 	free_segments(*head);
 }
