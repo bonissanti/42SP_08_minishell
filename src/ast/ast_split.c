@@ -3,26 +3,47 @@
 /*                                                        :::      ::::::::   */
 /*   ast_split.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:47:48 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/29 01:20:16 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/29 21:43:31 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static int	is_delimiter(char c, char delimiter, t_bool in_quotes)
+int is_solo(char *c)
 {
-	if (c == delimiter && !in_quotes)
+	int i;
+	char left;
+	char middle;
+	char right;
+
+	i = 0;
+	left = *(c + i -1);
+	middle = *c;
+	right = *(c + i + 1);
+
+	if((left != 32 && right != 32) || (left != 32 && right == 32))
 		return (1);
+	else
+		return (0);
+}
+
+static int	is_delimiter(char *c, char delimiter, t_bool in_quotes)
+{
+	if (*c == delimiter && !in_quotes)
+	{
+		if(is_solo(c))
+			return (1);
+	}
 	return (0);
 }
 
-static size_t	ft_del_count(char const *s, char c)
+static size_t	ft_del_count(char *s, char c)
 {
 	size_t		counter;
-	char const	*ptr;
+	char	*ptr;
 	int			i;
 	t_bool		in_quotes;
 
@@ -32,29 +53,29 @@ static size_t	ft_del_count(char const *s, char c)
 	in_quotes = 0;
 	while (*(ptr + i))
 	{
-		while (is_delimiter(*(ptr + i), c, in_quotes) && *(ptr + i) != '\0')
+		while (is_delimiter((ptr + i), c, in_quotes) && *(ptr + i) != '\0')
 			i++;
-		while (!is_delimiter(*(ptr + i), c, in_quotes) && *(ptr + i) != '\0')
+		while (!is_delimiter((ptr + i), c, in_quotes) && *(ptr + i) != '\0')
 		{
 			if (*(ptr + i) == '\"' || *(ptr + i) == '\'')
 				in_quotes = !in_quotes;
 			i++;
 		}
-		if (*(ptr + i) != '\0' || !is_delimiter(*(ptr + i - 1), c, in_quotes))
+		if (*(ptr + i) != '\0' || !is_delimiter((ptr + i - 1), c, in_quotes))
 			counter++;
 	}
 	return (counter);
 }
 
-static	int	ft_btw(char const *s, char c)
+static	int	ft_btw(char *s, char c)
 {
 	int			counter;
-	char const	*ptr;
+	char		*ptr;
 	int			i;
 	t_bool		in_quotes;
 
 	ptr = s;
-	if (is_delimiter(*(ptr + 0), c, false))
+	if (is_delimiter((ptr + 0), c, false))
 		i = 1;
 	else
 		i = 0;
@@ -62,7 +83,7 @@ static	int	ft_btw(char const *s, char c)
 	in_quotes = false;
 	while (*(ptr + i))
 	{
-		if (is_delimiter(*(ptr + i), c, in_quotes))
+		if (is_delimiter((ptr + i), c, in_quotes))
 		{
 			return (counter);
 		}
@@ -74,7 +95,7 @@ static	int	ft_btw(char const *s, char c)
 	return (counter);
 }
 
-char	**ast_split(char const *s, char c)
+char	**ast_split(char *s, char c)
 {
 	char		**result;
 	char		**temp;
@@ -85,7 +106,7 @@ char	**ast_split(char const *s, char c)
 	temp = result;
 	while (*s)
 	{
-		if (!is_delimiter(*s, c, false))
+		if (!is_delimiter(s, c, false))
 		{
 			*temp = ft_calloc((ft_btw(s, c) + 1), sizeof(char));
 			if (*temp == NULL)
@@ -98,4 +119,17 @@ char	**ast_split(char const *s, char c)
 	}
 	*temp = NULL;
 	return (result);
+}
+int main(void)
+{
+	// char ** result = ast_split("echo um      dois  test", 32);
+	// char ** result = ast_split("echo um dois test", 32);
+	// char ** result = ast_split("echo      um  dois test    ", 32);
+	char ** result = ast_split("echo      um  dois test    #", 32);
+	printf("command: %s\n", result[0]);
+	printf("arg: %s\n", result[1]);
+	printf("arg: %s\n", result[2]);
+	printf("arg: %s\n", result[3]);
+	printf("arg: %s\n", result[4]);
+	return(0);
 }
