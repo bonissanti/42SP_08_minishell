@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/30 18:48:28 by allesson         ###   ########.fr       */
+/*   Updated: 2023/12/30 21:34:26 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,9 +106,11 @@ void	add_env(t_hashtable *hash_table, char **args)
 			if (temp != env.equals_sign[1])
 			{
 				ft_printf("passando aqui\n");
-				free(temp);
+				// free(temp);
 			}
-			free_split(env.equals_sign);
+				free_split(env.equals_sign);
+			// free(env.equals_sign[0]);
+			// free(env.equals_sign);
 			return ;
 		}
 		if (env.equals_sign[1])
@@ -125,8 +127,8 @@ void	add_env(t_hashtable *hash_table, char **args)
 				ft_printf("passando aqui\n");
 				free(temp);
 			}
-			free_split(env.equals_sign);
-
+			free(env.equals_sign[0]);
+			free(env.equals_sign);
 			g_global.cmd_status = 1;
 			i++;
 			continue ;
@@ -144,7 +146,6 @@ void	add_env(t_hashtable *hash_table, char **args)
 			ft_printf("passando aqui\n");
 			free(temp);
 		}
-		// free_split(env.equals_sign);
 		free(env.equals_sign[0]);
 		free(env.equals_sign);
 		i++;
