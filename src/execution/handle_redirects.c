@@ -77,9 +77,3 @@ int	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 	}
 	return (0);
 }
-
-// int analyze_redirect2(t_exec *exec, t_hashtable *hashtable, t_ast *node)
-// {
-// 	analyze_if_print(node, 1);
-	
-// }
