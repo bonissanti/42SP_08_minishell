@@ -102,8 +102,6 @@ typedef struct s_ast
 
 typedef struct s_exec
 {
-	int					prev[2];
-	int					next[2];
 	int					in_fd;
 	int					out_fd;
 	int					env;
@@ -111,6 +109,7 @@ typedef struct s_exec
 	int					old_stdout;
 	int					count_hdoc;
 	int					count_pipes;
+	int					count_redir;
 	int					error_call;
 }						t_exec;
 

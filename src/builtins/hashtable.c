@@ -185,9 +185,11 @@ void	delete_hash(t_hashtable *hashtable, char *key)
 				hashtable->buckets[index] = delete_env->next;
 			else
 				prev_env->next = delete_env->next;
-			free(delete_env->key);
-			free(delete_env->value);
-			free(delete_env);
+			if (hashtable->home == delete_env)
+				hashtable->home = NULL;
+			ft_safe_free((void **)&delete_env->key);
+			ft_safe_free((void **)&delete_env->value);
+			ft_safe_free((void **)&delete_env);
 			hashtable->num_keys--;
 			return ;
 		}

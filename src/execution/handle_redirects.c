@@ -44,6 +44,7 @@ int	get_index_redirect(t_ast *root, t_type type)
 	{
 		if (ft_strncmp(node->cmds, node->right->cmds, 1) != 0)
 			index = 3;
+			
 	}
 	else
 	{
@@ -65,9 +66,9 @@ int	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 	index = get_index_redirect(node, TYPE_REDIRECT);
 	if ((index == 0 || index == 1) && (node->print_redir == true))
 		redirect_out(exec, hashtable, node);
-	else if ((index == 2) && (node->print_redir == true))
+	else if ((index == 2 || (index == 3 && exec->count_redir > 2)) && (node->print_redir == true))
 		redirect_in(exec, hashtable, node);
-	else if (index == 3)
+	else if (index == 3 && exec->count_redir == 2)
 		double_redirect(exec, hashtable, node);
 	else
 	{

@@ -113,6 +113,7 @@ int	wait_for_children(t_ast *node)
 	pid_t pid;
 
 	status = 0;
+	error = 0;
 	if (node == NULL)
 		return (0);
 	while ((pid = waitpid(-1, &status, WUNTRACED)) > 0)

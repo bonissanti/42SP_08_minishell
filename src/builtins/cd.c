@@ -38,11 +38,17 @@ void	ft_cd(t_hashtable *hashtable, char **args)
 
 static void	handle_cd(t_hashtable *hashtable, char **args, int argc)
 {
+
 	if (argc == 1)
 	{
+		if (hashtable->home == NULL)
+		{
+			ft_fprintf(2, "cd: HOME not set\n");
+			return ;
+		}
 		if (chdir(hashtable->home->value) == -1)
 		{
-			ft_fprintf(2, "cd: %s: %s\n", hashtable->home, strerror(errno));
+			ft_fprintf(2, "cd: %s\n", strerror(errno));
 			return ;
 		}
 	}
@@ -55,3 +61,4 @@ static void	handle_cd(t_hashtable *hashtable, char **args, int argc)
 		}
 	}
 }
+
