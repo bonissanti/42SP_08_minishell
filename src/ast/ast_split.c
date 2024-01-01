@@ -12,17 +12,16 @@
 
 #include "../include/minishell.h"
 
-int is_solo(char *c)
+int	is_solo(char *c)
 {
-	int i;
-	char left;
-	char right;
+	int		i;
+	char	left;
+	char	right;
 
 	i = 0;
-	left = *(c + i -1);
+	left = *(c + i - 1);
 	right = *(c + i + 1);
-
-	if((left != 32 && right != 32) || (left != 32 && right == 32))
+	if ((left != 32 && right != 32) || (left != 32 && right == 32))
 		return (1);
 	else
 		return (0);
@@ -32,7 +31,7 @@ static int	is_delimiter(char *c, char delimiter, t_bool in_quotes)
 {
 	if (*c == delimiter && !in_quotes)
 	{
-		if(is_solo(c))
+		if (is_solo(c))
 			return (1);
 	}
 	return (0);
@@ -40,10 +39,10 @@ static int	is_delimiter(char *c, char delimiter, t_bool in_quotes)
 
 static size_t	ft_del_count(char *s, char c)
 {
-	size_t		counter;
+	size_t	counter;
 	char	*ptr;
-	int			i;
-	t_bool		in_quotes;
+	int		i;
+	t_bool	in_quotes;
 
 	ptr = s;
 	counter = 0;
@@ -65,12 +64,12 @@ static size_t	ft_del_count(char *s, char c)
 	return (counter);
 }
 
-static	int	ft_btw(char *s, char c)
+static int	ft_btw(char *s, char c)
 {
-	int			counter;
-	char		*ptr;
-	int			i;
-	t_bool		in_quotes;
+	int		counter;
+	char	*ptr;
+	int		i;
+	t_bool	in_quotes;
 
 	ptr = s;
 	if (is_delimiter((ptr + 0), c, false))
@@ -87,7 +86,7 @@ static	int	ft_btw(char *s, char c)
 		}
 		if (*(ptr + i) == '\"' || *(ptr + i) == '\'')
 			in_quotes = !in_quotes;
-		counter ++;
+		counter++;
 		i++;
 	}
 	return (counter);
@@ -95,10 +94,10 @@ static	int	ft_btw(char *s, char c)
 
 char	**ast_split(char *s, char c)
 {
-	char		**result;
-	char		**temp;
+	char	**result;
+	char	**temp;
 
-	result = (char **) ft_calloc(ft_del_count(s, c) + 1, sizeof(char *));
+	result = (char **)ft_calloc(ft_del_count(s, c) + 1, sizeof(char *));
 	if (result == NULL)
 		return (NULL);
 	temp = result;
@@ -118,16 +117,3 @@ char	**ast_split(char *s, char c)
 	*temp = NULL;
 	return (result);
 }
-// int main(void)
-// {
-// 	// char ** result = ast_split("echo um      dois  test", 32);
-// 	// char ** result = ast_split("echo um dois test", 32);
-// 	// char ** result = ast_split("echo      um  dois test    ", 32);
-// 	char ** result = ast_split("echo      um  dois test    #", 32);
-// 	printf("command: %s\n", result[0]);
-// 	printf("arg: %s\n", result[1]);
-// 	printf("arg: %s\n", result[2]);
-// 	printf("arg: %s\n", result[3]);
-// 	printf("arg: %s\n", result[4]);
-// 	return(0);
-// }
