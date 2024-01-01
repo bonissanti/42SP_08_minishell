@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/30 14:38:20 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/01 13:12:19 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static void	init_global_structs(void)
 // 	init_global_structs();
 // 	while (g_global.exit_status == -1 && tests)
 // 	{
+// 		usleep(200000);
 // 		init_signals();
 // 		g_global.to_exec = 0;
 // 		init_structs(&exec, 0, sizeof(t_exec));
@@ -65,6 +66,7 @@ static void	init_global_structs(void)
 // 		if (!prompt_validation(g_global.readline_input, env))
 // 			continue ;
 // 		add_history(g_global.readline_input);
+// 		ft_printf("test: %s\n", tests->content);
 // 		tokenizer(env);
 // 		parser(env);
 // 		g_global.ast = init_ast(g_global.cmd_list, &exec);

@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:20:18 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/29 01:22:02 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/01 13:54:15 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void	env_with_equals(t_hashtable *hashtable, char **args, int i)
 	free_split(equals_sign);
 }
 
-void	env_with_value(t_hashtable *hashtable, t_env *env, size_t len)
+void	env_with_value(t_hashtable *hashtable, t_env *env)
 {
 	char		*key;
 	char		*value;

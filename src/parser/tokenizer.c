@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/30 17:58:03 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/01 13:56:24 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	crop_quote_tkn(char **cmd)
 	return (i);
 }
 
-char *copy_var_export(char **cmd, t_hashtable *env, t_bool *is_export)
+char *copy_var_export(char **cmd, t_bool *is_export)
 {
 	int i;
 	char *cropped;
@@ -225,7 +225,7 @@ void	tokenizer(t_hashtable *env)
 		{
 			if (ft_isspace(*actual_cmd))
 				skip_spaces(&actual_cmd);
-			handle_token(copy_var_export(&actual_cmd, env, &is_export));
+			handle_token(copy_var_export(&actual_cmd, &is_export));
 			break ;
 		}
 		if (ft_isspace(*actual_cmd))

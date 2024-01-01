@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/30 21:34:26 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/01 16:35:50 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,54 @@ void	print_all_env(t_hashtable *hash_table)
 	free(keys);
 }
 
+int env_syntax_check(t_hashtable *hash_table, char *temp, t_env *env)
+{
+	if (temp && !even_close_quotes((*env).equals_sign[1]))
+	{
+		g_global.cmd_status = 1;
+		ft_fprintf(2, "minishell: syntax error: unexpected end of file\n");
+		free_split((*env).equals_sign); // this frees everything needed when there is odd quotes
+		return (0);
+	}
+	if ((*env).equals_sign[1])
+	{
+		analyzing_quotes(hash_table, &temp);
+		(*env).value = temp;
+	}
+	if (!is_valid_identifier((*env).key)) // it will only enters in this block if theres nothing after the equal sign '='
+	{
+		ft_printf("minishell: export: `%s': not a valid identifier\n",
+			(*env).key);
+		if (temp != (*env).equals_sign[1])
+			free(temp);
+		free((*env).equals_sign[0]);
+		free((*env).equals_sign);
+		g_global.cmd_status = 1;
+		return (2);
+	}
+	return (1);
+}
+
+void env_handler(t_hashtable *hash_table, t_env *env, char **args, int i, char *temp)
+{
+	(void)temp;
+	t_hash *hash;
+	
+	hash = search(hash_table, (*env).key);
+	if (args[1][ft_strlen(args[i]) - 1] == '=')
+		env_with_equals(hash_table, args, i);
+	else if ((*env).equals_sign[1] != NULL)
+		env_with_value(hash_table, env);
+	else if (hash == NULL)
+		insert(hash_table, (*env).key, NULL);
+	if (temp != (*env).equals_sign[1])
+		free(temp);
+	if((*env).value)
+		free((*env).value);
+	free((*env).equals_sign[0]); //doesnt need to free (*env).equal_sign[1] because it was already freed inside final_process 
+	free((*env).equals_sign);
+}
+
 /**
  * Function: add_env
  * -----------------
@@ -89,66 +137,59 @@ void	add_env(t_hashtable *hash_table, char **args)
 {
 	int		i;
 	t_env	env;
-	t_hash	*hash;
-	size_t	len;
+	env.value = NULL;
+	// t_hash	*hash;
+	int		syntax_status;
+	char	*temp;
 
-	i = 1;
-	while (args[i] != NULL)
+	i = 0;
+	while (args[++i] != NULL)
 	{
-		len = 0;
 		env.equals_sign = ft_split(args[i], '=');
 		env.key = env.equals_sign[0];
-		char *temp = env.equals_sign[1];
-		if (temp && !even_close_quotes(env.equals_sign[1]))
-		{
-			g_global.cmd_status = 1;
-			ft_fprintf(2, "minishell: syntax error: unexpected end of file\n");
-			if (temp != env.equals_sign[1])
-			{
-				ft_printf("passando aqui\n");
-				// free(temp);
-			}
-				free_split(env.equals_sign);
-			// free(env.equals_sign[0]);
-			// free(env.equals_sign);
-			return ;
-		}
-		if (env.equals_sign[1])
-		{
-			analyzing_quotes(hash_table, &temp);
-			env.value = temp;
-		}
-		if (!is_valid_identifier(env.key))
-		{
-			ft_printf("minishell: export: `%s': not a valid identifier\n",
-				args[i]);
-			if (temp != env.equals_sign[1])
-			{
-				ft_printf("passando aqui\n");
-				free(temp);
-			}
-			free(env.equals_sign[0]);
-			free(env.equals_sign);
-			g_global.cmd_status = 1;
-			i++;
+		temp = env.equals_sign[1];
+		syntax_status = env_syntax_check(hash_table, temp, &env);
+		if(!syntax_status)
+			return;
+		else if(syntax_status == 2)
 			continue ;
-		}
-
-		hash = search(hash_table, env.key);
-		if (args[1][ft_strlen(args[i]) - 1] == '=')
-			env_with_equals(hash_table, args, i);
-		else if (env.equals_sign[1] != NULL)
-			env_with_value(hash_table, &env, len);
-		else if (hash == NULL)
-			insert(hash_table, env.key, NULL);
-		if (temp != env.equals_sign[1])
-		{
-			ft_printf("passando aqui\n");
-			free(temp);
-		}
-		free(env.equals_sign[0]);
-		free(env.equals_sign);
-		i++;
+		env_handler(hash_table, &env, args, i, temp);
+		// if (temp && !even_close_quotes(env.equals_sign[1]))
+		// {
+		// 	g_global.cmd_status = 1;
+		// 	ft_fprintf(2, "minishell: syntax error: unexpected end of file\n");
+		// 	free_split(env.equals_sign); // this frees everything needed when there is odd quotes
+		// 	return ;
+		// }
+		// if (env.equals_sign[1])
+		// {
+		// 	analyzing_quotes(hash_table, &temp);
+		// 	env.value = temp;
+		// }
+		// if (!is_valid_identifier(env.key)) // it will only enters in this block if theres nothing after the equal sign '='
+		// {
+		// 	ft_printf("minishell: export: `%s': not a valid identifier\n",
+		// 		args[i]);
+		// 	if (temp != env.equals_sign[1])
+		// 		free(temp);
+		// 	free(env.equals_sign[0]);
+		// 	free(env.equals_sign);
+		// 	g_global.cmd_status = 1;
+		// 	i++;
+		// 	continue ;
+		// }
+		// hash = search(hash_table, env.key);
+		// if (args[1][ft_strlen(args[i]) - 1] == '=')
+		// 	env_with_equals(hash_table, args, i);
+		// else if (env.equals_sign[1] != NULL)
+		// 	env_with_value(hash_table, &env);
+		// else if (hash == NULL)
+		// 	insert(hash_table, env.key, NULL);
+		// if (temp != env.equals_sign[1])
+		// 	free(temp);
+		// free(env.equals_sign[0]); //doesnt need to free env.equal_sign[1] because it was already freed inside final_process 
+		// free(env.equals_sign);
+		// i++;
 	}
 }
 

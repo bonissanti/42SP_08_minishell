@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:38:13 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/30 13:30:40 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/01 15:14:33 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,16 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	t_list *tests = NULL;
+	// ft_lstadd_back(&tests, ft_lstnew("export"));
+	// ft_lstadd_back(&tests, ft_lstnew("export="));
+	// ft_lstadd_back(&tests, ft_lstnew("export test"));
+	// ft_lstadd_back(&tests, ft_lstnew("export test="));
+	// ft_lstadd_back(&tests, ft_lstnew("export test=\'"));
+	// ft_lstadd_back(&tests, ft_lstnew("export test=\""));
+	// ft_lstadd_back(&tests, ft_lstnew("export test=123")); leak
+	// ft_lstadd_back(&tests, ft_lstnew("export test=\"456\"")); leak
+	// ft_lstadd_back(&tests, ft_lstnew("export test+="));
+	// ft_lstadd_back(&tests, ft_lstnew("export test-=123"));
 	// ft_lstadd_back(&tests, ft_lstnew("echo 1 hello world"));
 	// ft_lstadd_back(&tests, ft_lstnew("echo 2 \"hello world\"")); // invalid read
 	// ft_lstadd_back(&tests, ft_lstnew("echo 3 'hello world'"));
@@ -160,39 +170,6 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("export otario=fucker"));
 	// ft_lstadd_back(&tests, ft_lstnew("echo $otario"));
 	// ft_lstadd_back(&tests, ft_lstnew("export otario=fucker"));
-
-
-	
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
  	init_hash(envp);
 	prompt(g_global.hash, tests);
 	return (g_global.exit_status);
