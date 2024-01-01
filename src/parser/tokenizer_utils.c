@@ -52,7 +52,7 @@ int	is_expander(char x)
 char	*append_expanded(char *cmd, char **exp, t_hashtable *env, int index)
 {
 	char	*to_expand;
-	
+
 	to_expand = ft_substr(*exp, 0, crop_delimiter_tkn(exp));
 	analyzing_quotes(env, exp);
 	return (gnl_strjoin(ft_substr(cmd, 0, index), to_expand));
@@ -83,9 +83,9 @@ void	expand_all(t_tkn_list *tkn_list, t_hashtable *env, t_bool *is_export)
 		if (current->type == EXPAND || current->type == WILD
 			|| current->type == IDENTIFIER)
 		{
-			if ((*current->content == '$' || *current->content == '\\' 
-				|| *current->content == '\'' || *current->content == '"'
-				|| current->type == IDENTIFIER) && (!*is_export))
+			if ((*current->content == '$' || *current->content == '\\'
+					|| *current->content == '\'' || *current->content == '"'
+					|| current->type == IDENTIFIER) && (!*is_export))
 				analyzing_quotes(env, &current->content);
 			if (*current->content == '~')
 				expand_tilde(env, current->content);
@@ -137,7 +137,6 @@ void	handle_token(char *str)
 	else
 		add_tkn_list(new_tkn_list(str, IDENTIFIER));
 }
-
 
 t_bool	has_equal(const char *str, t_bool *is_export)
 {

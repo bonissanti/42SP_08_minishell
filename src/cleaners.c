@@ -29,15 +29,15 @@ char	*readline_trash_can(char *readline_input)
 
 void	free_lists(void)
 {
-	if(g_global.cmd_list)
+	if (g_global.cmd_list)
 	{
 		free_cmd_list(g_global.cmd_list);
 		g_global.cmd_list = NULL;
 	}
-	if(g_global.tkn_list)
+	if (g_global.tkn_list)
 	{
 		free_tkn_list(g_global.tkn_list);
-		g_global.tkn_list = NULL;		
+		g_global.tkn_list = NULL;
 	}
 }
 

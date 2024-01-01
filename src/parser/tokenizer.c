@@ -40,7 +40,8 @@ int	crop_delimiter_tkn(char **cmd)
 	{
 		i++;
 		(*cmd)++;
-		while ((**cmd != ' ' && **cmd != '\0' && !isdelimiter(*cmd)) || (**cmd == '$'))
+		while ((**cmd != ' ' && **cmd != '\0' && !isdelimiter(*cmd))
+			|| (**cmd == '$'))
 		{
 			i++;
 			(*cmd)++;
@@ -79,7 +80,7 @@ int	crop_delimiter_tkn(char **cmd)
 
 static int	process_quote(char **cmd, char quote, t_bool *closed)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	(*cmd)++;
@@ -88,10 +89,10 @@ static int	process_quote(char **cmd, char quote, t_bool *closed)
 		i++;
 		(*cmd)++;
 	}
-	if(**cmd == quote)
+	if (**cmd == quote)
 		*closed = true;
 	i++;
-	if(**cmd)
+	if (**cmd)
 		(*cmd)++;
 	return (i);
 }
@@ -109,7 +110,7 @@ int	crop_quote_tkn(char **cmd)
 	{
 		i += process_quote(cmd, quote, &closed);
 		if (!(**cmd))
-			return(i);
+			return (i);
 		else if ((**cmd == '<' || **cmd == '>') && closed)
 			return (i);
 		else if (**cmd == '\'' || **cmd == '"')
@@ -123,10 +124,10 @@ int	crop_quote_tkn(char **cmd)
 	return (i);
 }
 
-char *copy_var_export(char **cmd, t_bool *is_export)
+char	*copy_var_export(char **cmd, t_bool *is_export)
 {
-	int i;
-	char *cropped;
+	int		i;
+	char	*cropped;
 
 	cropped = *cmd;
 	i = 0;
@@ -161,7 +162,6 @@ char	*crop_tkn(char **cmd, t_hashtable *env, t_bool *is_export)
 	char	quote;
 	t_bool	closed;
 
-
 	cropped = *cmd;
 	closed = false;
 	ft_memset(&quote, 0, sizeof(quote));
@@ -181,7 +181,7 @@ char	*crop_tkn(char **cmd, t_hashtable *env, t_bool *is_export)
 			else if (**cmd == quote)
 				closed = true;
 			else if (isdelimiter(*cmd) && closed == true)
-				return (ft_substr(cropped, 0, i));				
+				return (ft_substr(cropped, 0, i));
 		}
 		if (ft_strncmp(cropped, "export", 6) == 0)
 			*is_export = true;
@@ -190,8 +190,6 @@ char	*crop_tkn(char **cmd, t_hashtable *env, t_bool *is_export)
 	}
 	return (ft_substr(cropped, 0, i));
 }
-
-
 
 /**
  * Function: tokenizer
@@ -214,7 +212,7 @@ char	*crop_tkn(char **cmd, t_hashtable *env, t_bool *is_export)
 void	tokenizer(t_hashtable *env)
 {
 	char	*actual_cmd;
-	t_bool 	is_export;
+	t_bool	is_export;
 
 	is_export = false;
 	actual_cmd = g_global.readline_input;

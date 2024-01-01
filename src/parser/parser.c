@@ -118,26 +118,28 @@ void	join_args(t_tkn_list *tkn_list)
 	set_io(&(g_global).cmd_list);
 }
 
-void move_to_front(t_cmd_list **head, t_cmd_list *search_node)
+void	move_to_front(t_cmd_list **head, t_cmd_list *search_node)
 {
-    t_cmd_list *prev = NULL;
-    t_cmd_list *cur = *head;
-	
-	if ((*head)->next->type != TYPE_FILE && (*head)->next->next->type != TYPE_COMMAND)
+	t_cmd_list	*prev;
+	t_cmd_list	*cur;
+
+	prev = NULL;
+	cur = *head;
+	if ((*head)->next->type != TYPE_FILE
+		&& (*head)->next->next->type != TYPE_COMMAND)
 		return ;
-
-    while (cur != NULL && cur != search_node) 
+	while (cur != NULL && cur != search_node)
 	{
-        prev = cur;
-        cur = cur->next;
-    }
-    if (cur != NULL) {
-        prev->next = cur->next;
-    }
-    search_node->next = *head;
-    *head = search_node;
+		prev = cur;
+		cur = cur->next;
+	}
+	if (cur != NULL)
+	{
+		prev->next = cur->next;
+	}
+	search_node->next = *head;
+	*head = search_node;
 }
-
 
 /**
  * Function: parser
@@ -165,7 +167,7 @@ void	parser(t_hashtable *env)
 		return ;
 	if (g_global.cmd_list->type == TYPE_HEREDOC && g_global.cmd_list->next)
 	{
-		if(g_global.cmd_list->next->next)
+		if (g_global.cmd_list->next->next)
 			move_to_front(&g_global.cmd_list, g_global.cmd_list->next->next);
 	}
 }

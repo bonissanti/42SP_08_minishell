@@ -29,10 +29,10 @@ MAND_SRCS 	= ast/ast_split.c ast/ast.c ast/prepare_ast.c \
 			handle_segments/segments_list.c handle_segments/segments_utils.c handle_segments/tilde_handler.c \
 			handle_segments/wildcard_handler.c handle_segments/wildcard_utils.c parser/io_setter.c \
 			parser/node_creation_utils.c parser/node_creation.c parser/parser_cmd_list_utils.c \
-			parser/parser_debug_helpers.c parser/parser_tkn_list_utils.c parser/parser_utils.c \
-			parser/parser.c parser/tokenizer_utils.c parser/tokenizer.c redirects/heredoc.c redirects/heredoc_utils.c \
+			parser/parser_debug_helpers.c parser/parser_tkn_list_utils.c parser/parser_utils.c parser/parser.c \
+			parser/tokenizer_utils.c parser/tokenizer.c redirects/heredoc.c redirects/heredoc_utils.c redirects/heredoc_utils2.c \
 			redirects/redirects.c redirects/verify_permissions.c redirects/backup_and_restore.c minishell_utils.c minishell.c \
-			prompt.c cleaners.c signals/signals.c
+			prompt.c cleaners.c signals/signals.c signals/signals_utils.c
 		
 SRCS 		= $(addprefix ./src/, $(MAND_SRCS))
 # BONUS_SRCS 	= $(BONUS_SRCS:%.c=bonus/%.c)

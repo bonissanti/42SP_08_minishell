@@ -54,9 +54,9 @@ char	*check_expansion(t_hashtable *env, char **line, size_t *len)
 	return (expanded);
 }
 
-static void redirect_hdoc(t_exec *exec, t_ast *node, char *filename)
+static void	redirect_hdoc(t_exec *exec, t_ast *node, char *filename)
 {
-	int ok_to_create;
+	int	ok_to_create;
 
 	node->in_fd = open(filename, O_RDONLY);
 	dup2(node->in_fd, STDIN_FILENO);
@@ -74,7 +74,7 @@ static void redirect_hdoc(t_exec *exec, t_ast *node, char *filename)
 	}
 }
 
-static void child_rdir(t_exec *exec, t_ast *node, int *next_pipe, int index)
+static void	child_rdir(t_exec *exec, t_ast *node, int *next_pipe, int index)
 {
 	if (index == 2 && exec->count_pipes >= 1)
 	{
@@ -88,9 +88,6 @@ static void child_rdir(t_exec *exec, t_ast *node, int *next_pipe, int index)
 		free_for_finish(exec, g_global.hash);
 	close_all_fds();
 }
-
-
-
 
 void	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node,
 		char *filename)
@@ -107,41 +104,6 @@ void	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node,
 	{
 		redirect_hdoc(exec, node, filename);
 		child_rdir(exec, node, next_pipe, index);
-		free(filename);
-		exit(0);
-	}
-	else
-	{
-		free(filename);
-		parent_hdoc(exec, hash, node, next_pipe);
-	}
-}
-
-void	next_is_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
-		char *filename)
-{
-	int	next_pipe[2];
-
-	if (exec->count_pipes >= 1)
-		pipe(next_pipe);
-	node->pid = fork();
-	exec_signals(node->pid);
-	if (node->pid == 0)
-	{
-		node->in_fd = open(filename, O_RDONLY);
-		dup2(node->in_fd, STDIN_FILENO);
-		close(node->in_fd);
-		if (exec->count_pipes >= 1)
-		{
-			dup2(next_pipe[1], STDOUT_FILENO);
-			close(next_pipe[0]);
-			close(next_pipe[1]);
-		}
-		if (node->left)
-			exec_simple(hash, exec, node->left);
-		else
-			free_for_finish(exec, hash);
-		close_all_fds();
 		free(filename);
 		exit(0);
 	}

@@ -19,16 +19,6 @@ void	init_signals(void)
 	signal(SIGPIPE, handle_sigpipe);
 }
 
-void handle_sigpipe(int sig)
-{
-	(void)sig;
-    ft_putendl_fd("\n", 1);
-    rl_on_new_line();
-    rl_replace_line("", 0);
-    rl_redisplay();
-}
-
-
 void	init_hd_signals(int pid)
 {
 	if (!pid)

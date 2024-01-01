@@ -84,8 +84,8 @@ static void	init_global_structs(void)
 void	prompt(t_hashtable *env, t_list *tests)
 {
 	t_exec	exec;
+
 	(void)tests;
-	
 	init_global_structs();
 	while (g_global.exit_status == -1)
 	{
@@ -103,7 +103,7 @@ void	prompt(t_hashtable *env, t_list *tests)
 		parser(env);
 		g_global.ast = init_ast(g_global.cmd_list, &exec);
 		backup_fd(&exec.old_stdin, &exec.old_stdout);
-			exec_multi_cmds(&exec, env, g_global.ast);
+		exec_multi_cmds(&exec, env, g_global.ast);
 		delete_node(g_global.ast);
 		free_lists();
 		restore_fd(exec.old_stdin, exec.old_stdout);

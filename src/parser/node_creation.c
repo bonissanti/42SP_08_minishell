@@ -81,7 +81,6 @@ void	new_redirect_node(t_tkn_list **current)
 	has_here_doc = false;
 	weight = OP_REDIRECT;
 	type = TYPE_REDIRECT;
-
 	if ((*current)->type == HERE_DOC)
 	{
 		type = TYPE_HEREDOC;
