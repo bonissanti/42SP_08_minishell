@@ -52,7 +52,8 @@ void		set_command_output(t_cmd_list **cmd_list, t_cmd_list *head);
 void		set_command_input(t_cmd_list **cmd_list, t_cmd_list *head);
 t_cmd_list	*find_command(t_cmd_list *cmd_list);
 void		append_expand(t_tkn_list **current);
-void		expand_all(t_tkn_list *tkn_list, t_hashtable *env, t_bool *is_export);
+void		expand_all(t_tkn_list *tkn_list, t_hashtable *env,
+				t_bool *is_export);
 int			is_redirect(t_tkn_type tkn);
 void		free_lists(void);
 int			is_redirect_op(char *cmd);

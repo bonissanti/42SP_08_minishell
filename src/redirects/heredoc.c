@@ -14,7 +14,8 @@
 
 static void	after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 				char *filename);
-static void	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node, char *filename);
+static void	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node,
+				char *filename);
 
 void	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
@@ -44,7 +45,8 @@ void	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 	after_hdoc(exec, hash, node, filename);
 }
 
-static void	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node, char *filename)
+static void	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node,
+	char *filename)
 {
 	node->pid = fork();
 	exec_signals(node->pid);
@@ -57,7 +59,7 @@ static void	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node, char *fil
 			exec_simple(hash, exec, node->left);
 		else
 			free_for_finish(exec, hash);
-		fechar_todos_fds();
+		close_all_fds();
 		free(filename);
 		exit(0);
 	}
@@ -91,11 +93,9 @@ void	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 {
 	if (exec->count_pipes >= 1)
 		close(next_pipe[1]);
-
 	if (node->right && exec->count_pipes >= 1)
 		node = find_node(node, TYPE_PIPE);
 	if (exec->count_pipes >= 1)
 		handle_pipes(hash, exec, node->right, next_pipe);
 	restore_fd(exec->old_stdin, exec->old_stdout);
 }
-

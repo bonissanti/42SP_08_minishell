@@ -12,6 +12,13 @@
 
 #include "../include/minishell.h"
 
+static void	add_dollar_on_line(t_lex *quote, size_t *len)
+{
+	quote->segment[*len] = '$';
+	(*len)++;
+	quote->ptr--;
+}
+
 void	expand_variable(t_lex *quote, t_segment **head, size_t *len)
 {
 	char	*key;
@@ -26,21 +33,17 @@ void	expand_variable(t_lex *quote, t_segment **head, size_t *len)
 	{
 		key_len = custom_strcspn(quote->ptr, "'");
 		key = ft_strndup(quote->ptr, key_len);
-		if(*key == '?')
+		if (*key == '?')
 			add_segments(head, ft_itoa(g_global.cmd_status));
 		else
 		{
 			hash = search(quote->env, key);
 			if (hash)
-				add_segments(head, hash->value);			
+				add_segments(head, hash->value);
 			quote->ptr += key_len - 1;
 		}
 		free(key);
 	}
 	else
-	{
-		quote->segment[*len] = '$';
-		(*len)++;
-		quote->ptr--;
-	}
+		add_dollar_on_line(quote, len);
 }

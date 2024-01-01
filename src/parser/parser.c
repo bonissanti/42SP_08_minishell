@@ -118,7 +118,7 @@ void	join_args(t_tkn_list *tkn_list)
 	set_io(&(g_global).cmd_list);
 }
 
-void move_to_front(t_cmd_list **head, t_cmd_list *node) 
+void move_to_front(t_cmd_list **head, t_cmd_list *search_node)
 {
     t_cmd_list *prev = NULL;
     t_cmd_list *cur = *head;
@@ -126,7 +126,7 @@ void move_to_front(t_cmd_list **head, t_cmd_list *node)
 	if ((*head)->next->type != TYPE_FILE && (*head)->next->next->type != TYPE_COMMAND)
 		return ;
 
-    while (cur != NULL && cur != node) 
+    while (cur != NULL && cur != search_node) 
 	{
         prev = cur;
         cur = cur->next;
@@ -134,9 +134,8 @@ void move_to_front(t_cmd_list **head, t_cmd_list *node)
     if (cur != NULL) {
         prev->next = cur->next;
     }
-
-    node->next = *head;
-    *head = node;
+    search_node->next = *head;
+    *head = search_node;
 }
 
 

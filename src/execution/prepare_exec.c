@@ -12,15 +12,6 @@
 
 #include "../include/minishell.h"
 
-t_bool	is_empty_cmd(char *cmd)
-{
-	if (cmd == NULL)
-		return (true);
-	if (cmd[0] == '\0')
-		return (true);
-	return (false);
-}
-
 t_ast	*find_node(t_ast *root, t_type type)
 {
 	if (root == NULL)
@@ -44,38 +35,6 @@ void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable)
 		handle_heredoc(hashtable, exec, node);
 	else
 		exec_multi_cmds(exec, hashtable, node->right);
-}
-
-int	analyze_cmd(t_hashtable *hashtable, t_ast *node)
-{
-	char	*path;
-	int		result;
-	t_hash	*search_var;
-	
-	if (is_empty_cmd(node->cmds))
-		return (0);
-	result = verify_cmd_permissions(node->cmds);
-	if (ft_strchr(node->cmds, '/') != NULL && result != 0)
-	{
-		handle_error(node, result);
-		return (result);
-	}
-	else if (ft_strchr(node->cmds, '/') != NULL && result == 0)
-		node->path = ft_strdup(node->cmds);
-	else
-	{
-		search_var = search(hashtable, "PATH");
-		if (search_var == NULL)
-			return (127);
-		path = search_var->value;
-		node->path = build_cmd_path(node, path);
-		if (node->path == NULL && !is_builtin(node))
-		{
-			handle_error(node, 127);
-			return (127);
-		}
-	}
-	return (0);
 }
 
 void	handle_error(t_ast *node, int result)

@@ -26,6 +26,7 @@ void			insert(t_hashtable *hash_table, char *key, char *value);
 t_hash			*search(t_hashtable *hash_table, char *key);
 void			delete_hash(t_hashtable *hash_table, char *key);
 void			destroy_hashtable(t_hashtable *hash_table);
+void			safe_free_hash(t_hash *delete_env);
 
 //############################ Hash Utils ###################################
 

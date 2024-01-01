@@ -54,12 +54,49 @@ char	*check_expansion(t_hashtable *env, char **line, size_t *len)
 	return (expanded);
 }
 
+static void redirect_hdoc(t_exec *exec, t_ast *node, char *filename)
+{
+	int ok_to_create;
+
+	node->in_fd = open(filename, O_RDONLY);
+	dup2(node->in_fd, STDIN_FILENO);
+	close(node->in_fd);
+	if (node->right && node->right->type == TYPE_REDIRECT)
+	{
+		ok_to_create = create_files(node->right, exec);
+		if (ok_to_create == 1 || ok_to_create == -1)
+		{
+			close_all_fds();
+			restore_fd(exec->old_stdin, exec->old_stdout);
+			free(filename);
+			exit(0);
+		}
+	}
+}
+
+static void child_rdir(t_exec *exec, t_ast *node, int *next_pipe, int index)
+{
+	if (index == 2 && exec->count_pipes >= 1)
+	{
+		dup2(next_pipe[1], STDOUT_FILENO);
+		close(next_pipe[1]);
+		close(next_pipe[0]);
+	}
+	if (node->left)
+		exec_simple(g_global.hash, exec, node->left);
+	else
+		free_for_finish(exec, g_global.hash);
+	close_all_fds();
+}
+
+
+
+
 void	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node,
 		char *filename)
 {
-	int next_pipe[2];
-	int ok_to_create;
-	int index;
+	int	next_pipe[2];
+	int	index;
 
 	index = get_index_redirect(node, TYPE_HEREDOC);
 	if (exec->count_pipes >= 1)
@@ -68,31 +105,8 @@ void	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node,
 	exec_signals(node->pid);
 	if (node->pid == 0)
 	{
-		node->in_fd = open(filename, O_RDONLY);
-		dup2(node->in_fd, STDIN_FILENO);
-		close(node->in_fd);
-		if (node->right && node->right->type == TYPE_REDIRECT)
-		{
-			ok_to_create = create_files(node->right);
-			if (ok_to_create == 1)
-			{
-				fechar_todos_fds();
-				restore_fd(exec->old_stdin, exec->old_stdout);
-				free(filename);
-				exit(0);
-			}
-		}
-		if (index == 2 && exec->count_pipes >= 1)
-		{
-			dup2(next_pipe[1], STDOUT_FILENO);
-			close(next_pipe[1]);
-			close(next_pipe[0]);
-		}
-		if (node->left)
-			exec_simple(hash, exec, node->left);
-		else
-			free_for_finish(exec, hash);
-		fechar_todos_fds();
+		redirect_hdoc(exec, node, filename);
+		child_rdir(exec, node, next_pipe, index);
 		free(filename);
 		exit(0);
 	}
@@ -127,7 +141,7 @@ void	next_is_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
 			exec_simple(hash, exec, node->left);
 		else
 			free_for_finish(exec, hash);
-		fechar_todos_fds();
+		close_all_fds();
 		free(filename);
 		exit(0);
 	}

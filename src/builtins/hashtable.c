@@ -187,9 +187,7 @@ void	delete_hash(t_hashtable *hashtable, char *key)
 				prev_env->next = delete_env->next;
 			if (hashtable->home == delete_env)
 				hashtable->home = NULL;
-			ft_safe_free((void **)&delete_env->key);
-			ft_safe_free((void **)&delete_env->value);
-			ft_safe_free((void **)&delete_env);
+			safe_free_hash(delete_env);
 			hashtable->num_keys--;
 			return ;
 		}

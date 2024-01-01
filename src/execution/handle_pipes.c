@@ -30,7 +30,7 @@ void	handle_other(t_exec *exec, t_hashtable *hash, t_ast *node,
 static void	last_pipe(t_exec *exec, t_ast *node, int *prev_pipe)
 {
 	execute_pipes(exec, node, prev_pipe, NULL);
-	if (prev_pipe) // broken pipe ou se comentar, enter infinito do cat
+	if (prev_pipe)
 	{
 		close(prev_pipe[0]);
 		close(prev_pipe[1]);
@@ -55,12 +55,11 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 		if (node->right)
 			handle_pipes(hash, exec, node->right, prev_pipe);
 	}
-	else if ((node->right == NULL && node->type != TYPE_HEREDOC) || (node->type == TYPE_COMMAND
-			|| node->type == TYPE_REDIRECT))
+	else if ((node->right == NULL && node->type != TYPE_HEREDOC)
+		|| (node->type == TYPE_COMMAND || node->type == TYPE_REDIRECT))
 		last_pipe(exec, node, prev_pipe);
 	else if (node->type != TYPE_PIPE && node->type != TYPE_REDIRECT
 		&& node->type != TYPE_HEREDOC)
 		handle_other(exec, hash, node, prev_pipe);
-	fechar_todos_fds();
+	close_all_fds();
 }
-

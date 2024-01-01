@@ -20,7 +20,8 @@ static void	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 	heredoc_executed = false;
 	if (root == NULL || (root && !root->left && !root->right))
 		return ;
-	if (root->type == TYPE_REDIRECT && root->right && root->right->type == TYPE_HEREDOC)
+	if (root->type == TYPE_REDIRECT && root->right
+		&& root->right->type == TYPE_HEREDOC)
 		return ;
 	heredoc_node = find_node(root, TYPE_HEREDOC);
 	if (root->type != TYPE_HEREDOC)
@@ -44,12 +45,11 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 		exec_forked_cmd(exec, hash, root);
 	if (root->type == TYPE_REDIRECT)
 	{
-		if(handle_redirects(root) == 1)
+		if (handle_redirects(root) == 1)
 		{
 			g_global.cmd_status = 2;
 			return ;
 		}
-		// exec->error_call = handle_redirects(root); Acho que isso aqui não é necessário
 		g_global.cmd_status = analyze_redirect(exec, hash, root);
 	}
 	if (root->type == TYPE_HEREDOC)

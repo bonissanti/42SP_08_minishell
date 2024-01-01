@@ -24,51 +24,58 @@ static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
 	}
 }
 
+void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
+{
+	int	ok_to_create;
+
+	redirect_pipes(exec, prev_pipe, next_pipe);
+	if (node->type == TYPE_REDIRECT)
+	{
+		ok_to_create = create_files(node, exec);
+		if (ok_to_create == 1 || ok_to_create == -1)
+		{
+			close_all_fds();
+			restore_fd(exec->old_stdin, exec->old_stdout);
+			exit(0);
+		}
+		if (node->left)
+			exec_simple(g_global.hash, exec, node->left);
+		else
+			free_for_finish(exec, g_global.hash);
+		exit(0);
+	}
+	if (node)
+		exec_simple(g_global.hash, exec, node);
+	else
+		free_for_finish(exec, g_global.hash);
+	close(1);
+	close(0);
+}
+
 void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 {
 	node->pid = fork();
 	exec_signals(node->pid);
 	if (node->pid == 0)
 	{
-		redirect_pipes(exec, prev_pipe, next_pipe);
-		if (node->type == TYPE_REDIRECT)
-		{
-			int ok_to_create = create_files(node);
-			if (ok_to_create == 1)
-			{
-				fechar_todos_fds();
-				restore_fd(exec->old_stdin, exec->old_stdout);
-				exit(0);
-			}
-			if (node->left)
-				exec_simple(g_global.hash, exec, node->left);
-			else
-				free_for_finish(exec, g_global.hash);
-			exit(0);
-		}
-		if (node)
-			exec_simple(g_global.hash, exec, node);
-		else
-			free_for_finish(exec, g_global.hash);
-		close(1);
-		close(0);
+		child_pipe(exec, node, prev_pipe, next_pipe);
 		exit(0);
 	}
 	else
 		parent_pipe(prev_pipe, next_pipe);
 }
-t_ast *get_last_node(t_ast *node, char *cmd)
+
+t_ast	*get_last_node(t_ast *node, char *cmd)
 {
-	t_ast *last_node;
+	t_ast	*last_node;
 
 	last_node = node;
 	while (node != NULL)
 	{
-		if ((node->type == TYPE_REDIRECT && ft_strcmp(node->cmds, cmd) == 0) && (!node->right || node->right->type != TYPE_REDIRECT))
+		if ((node->type == TYPE_REDIRECT && ft_strcmp(node->cmds, cmd) == 0)
+			&& (!node->right || node->right->type != TYPE_REDIRECT))
 			last_node = node;
 		node = node->right;
 	}
 	return (last_node);
 }
-
-//ft_strcmp(node->cmds, cmd) == 0

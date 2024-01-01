@@ -52,9 +52,11 @@ void	handle_quotes(t_hashtable *env, t_segment *head, char **args)
 		if ((*quote->ptr == '\'' && !quote->state.double_open)
 			|| (*quote->ptr == '\"' && !quote->state.single_open))
 			toggle_quote_state(quote);
-		else if (*quote->ptr == '$' && (quote->ptr[1] == '\'' || quote->ptr[1] == '"'))
+		else if (*quote->ptr == '$' && (quote->ptr[1] == '\''
+				|| quote->ptr[1] == '"'))
 			literal_string(quote, &len);
-		else if (*quote->ptr == '$' && (quote->state.double_open || (!quote->state.single_open && !quote->state.double_open)))
+		else if (*quote->ptr == '$' && (quote->state.double_open
+				|| (!quote->state.single_open && !quote->state.double_open)))
 			expand_variable(quote, &head, &len);
 		else if (quote->state.single_open || quote->state.double_open)
 			char_between_quotes(quote, &head, &len);
@@ -178,7 +180,7 @@ void	final_process(t_lex *quote, t_segment **head, char **args, size_t *len)
 	add_segments(head, quote->segment);
 	free(quote->segment);
 	free(quote);
-	if(*args)
+	if (*args)
 		free(*args);
 	*args = join_segments(*head);
 	free_segments(*head);

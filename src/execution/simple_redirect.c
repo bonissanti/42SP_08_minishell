@@ -27,7 +27,7 @@ void	double_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 				exec_simple(hashtable, exec, node->right->left);
 			else
 				free_for_finish(exec, hashtable);
-			fechar_todos_fds();
+			close_all_fds();
 			exit(0);
 		}
 		else
@@ -58,7 +58,7 @@ static void	child_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 		close(node->in_fd);
 		free_for_finish(exec, hashtable);
 	}
-	fechar_todos_fds();
+	close_all_fds();
 	exit(0);
 }
 
@@ -96,7 +96,7 @@ void	redirect_in(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 		simple_logical(exec, hashtable, node->right, node->num_status);
 	}
 	close(node->in_fd);
-	fechar_todos_fds();
+	close_all_fds();
 }
 
 void	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node)
@@ -115,7 +115,7 @@ void	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node)
 			close(node->out_fd);
 			free_for_finish(exec, hash);
 		}
-		fechar_todos_fds();
+		close_all_fds();
 		exit(0);
 	}
 	else

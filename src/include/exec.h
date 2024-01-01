@@ -22,7 +22,7 @@ t_bool	is_builtin(t_ast *node);
 int		execute_builtin(t_hashtable *hashtable, t_ast *node);
 void	init_redirects(t_exec *exec);
 int		handle_redirects(t_ast *node);
-int		create_files(t_ast *node);
+int		create_files(t_ast *node, t_exec *exec);
 
 //############################# REDIRECTIONS #################################//
 
@@ -76,7 +76,7 @@ int		exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root);
 int		forking(t_exec *exec, t_hashtable *hash, t_ast *node);
 int		exec_forked_cmd(t_exec *exec, t_hashtable *hash, t_ast *node);
 int		wait_for_children(t_ast *node);
-void 	fechar_todos_fds(void);
+void	close_all_fds(void);
 
 //############################# UTILS ########################################//
 

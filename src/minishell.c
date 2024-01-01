@@ -33,6 +33,7 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("echo 4 hello'world'")); 						//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo 5 hello\"\"world")); 						//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo 6 - \"\" \"  \" hello")); 				//comeu a letra 'o'
+
 	// ft_lstadd_back(&tests, ft_lstnew("echo 7 ''")); 									//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo 8 \"$PWD\"")); 							//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo 9 '$PWD'")); 								//ok
@@ -50,6 +51,8 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("echo 21 $?")); 								//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo 22 $?HELLO")); 							//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo 23 $?HE$?LLO$?")); 						//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo 24 \"'\"$USER\"'\"")); 					//comeu a ultima aspas
+	// ft_lstadd_back(&tests, ft_lstnew("echo 25 '\"'$USER'\"'")); 						//comeu a ultima aspas
 	// ft_lstadd_back(&tests, ft_lstnew("echo \"hi\" | cat | cat | cat | cat | cat | cat | cat")); //ok
 	// ft_lstadd_back(&tests, ft_lstnew("pwd")); 										//ok
 	// ft_lstadd_back(&tests, ft_lstnew("pwd oi")); 									//ok

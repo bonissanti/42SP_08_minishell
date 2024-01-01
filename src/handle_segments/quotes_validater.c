@@ -48,7 +48,6 @@ size_t	even_close_quotes(char *str)
 
 	if (!str)
 		return (0);
-
 	init_structs(&state, false, sizeof(t_quote_bool));
 	while (*str)
 	{

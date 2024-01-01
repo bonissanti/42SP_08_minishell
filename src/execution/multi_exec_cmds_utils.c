@@ -76,71 +76,32 @@ void	redirect_fds(t_ast *node)
 	}
 }
 
-// temp
-void fechar_todos_fds(void) {
-    int max_fds = getdtablesize();
-    for (int i = 3; i < max_fds; i++) {
-        close(i);
-    }
-}
-
-// temp
-int status_do_filho(int status) 
+void	close_all_fds(void)
 {
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	else if (WIFSIGNALED(status))
+	int	i;
+
+	i = 3;
+	while (i < 4096)
 	{
-		if (WTERMSIG(status) == SIGINT)
-		{
-			ft_fprintf(1, "\n");
-			return (130);
-		}
-		if (WTERMSIG(status) == SIGQUIT)
-		{
-			ft_fprintf(1, "QUIT\n");
-			return (131);
-		}
+		close(i);
+		i++;
 	}
-	return (0);
 }
 
+// void	ft_printf_fd(int fd)
+// {
+// 	char	*line;
 
-int	wait_for_children(t_ast *node)
-{
-	int	status;
-	int error;
-	pid_t pid;
-
-	status = 0;
-	error = 0;
-	if (node == NULL)
-		return (0);
-	while ((pid = waitpid(-1, &status, WUNTRACED)) > 0)
-	{
-		if (WIFEXITED(status))
-			error = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status) && error == 0)
-			g_global.cmd_status = WTERMSIG(status);
-	}
-	fechar_todos_fds();
-	return (status_do_filho(status));
-}
-
-void	ft_printf_fd(int fd)
-{
-	char	*line;
-
-	line = get_next_line(fd);
-	if (!line)
-	{
-		ft_fprintf(2, "fd didn't have any lines to print.\n");
-		return ;
-	}
-	while (line)
-	{
-		ft_fprintf(2, "es: %s", line);
-		line = get_next_line(fd);
-	}
-	ft_fprintf(2, "____________________\n");
-}
+// 	line = get_next_line(fd);
+// 	if (!line)
+// 	{
+// 		ft_fprintf(2, "fd didn't have any lines to print.\n");
+// 		return ;
+// 	}
+// 	while (line)
+// 	{
+// 		ft_fprintf(2, "es: %s", line);
+// 		line = get_next_line(fd);
+// 	}
+// 	ft_fprintf(2, "____________________\n");
+// }
