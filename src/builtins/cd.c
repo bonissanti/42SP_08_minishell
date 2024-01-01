@@ -38,7 +38,6 @@ void	ft_cd(t_hashtable *hashtable, char **args)
 
 static void	handle_cd(t_hashtable *hashtable, char **args, int argc)
 {
-
 	if (argc == 1)
 	{
 		if (hashtable->home == NULL)
@@ -61,4 +60,3 @@ static void	handle_cd(t_hashtable *hashtable, char **args, int argc)
 		}
 	}
 }
-

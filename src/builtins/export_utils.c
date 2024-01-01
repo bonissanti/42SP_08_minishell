@@ -83,5 +83,4 @@ void	env_with_value(t_hashtable *hashtable, t_env *env)
 	if (value == NULL)
 		value = "";
 	insert(hashtable, key, value);
-	// safe_free((void **)&value);
 }
