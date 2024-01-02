@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:56:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/01 13:54:41 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/02 13:07:05 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	print_all_env(t_hashtable *hash_table);
 void	add_env(t_hashtable *hash_table, char **args);
 void	env_with_equals(t_hashtable *hashtable, char **args, int i);
 void	env_with_value(t_hashtable *hashtable, t_env *env);
+int		valid_identifier_export(char *str);
 int		ft_count_args(char **args);
 
 //############################### Free #########################################

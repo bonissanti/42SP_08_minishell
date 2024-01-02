@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 11:25:18 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 11:40:32 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/02 13:01:06 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	handle_sigpipe(int sig)
 	rl_redisplay();
 }
 
-void ctrl_c_handler(int sig)
+void	ctrl_c_handler(int sig)
 {
 	(void)sig;
 	ft_putendl_fd("\n", 1);

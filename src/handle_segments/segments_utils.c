@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   segments_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/10 16:38:47 by allesson          #+#    #+#             */
-/*   Updated: 2023/12/29 01:26:06 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/02 12:57:40 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,11 @@ t_bool	is_whitespace(char c)
 		|| c == '\0')
 		return (true);
 	return (false);
+}
+
+void	free_expansion(t_lex *quote, t_segment *head)
+{
+	free_segments(head);
+	free(quote->segment);
+	free(quote);
 }

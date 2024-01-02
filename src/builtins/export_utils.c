@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:20:18 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/01 13:54:15 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/02 13:06:54 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,21 @@ void	env_with_value(t_hashtable *hashtable, t_env *env)
 	if (value == NULL)
 		value = "";
 	insert(hashtable, key, value);
+}
+
+int	valid_identifier_export(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str == NULL || str[0] == '\0')
+		return (0);
+	if (!ft_isalpha(str[0]) && str[0] != '_' && str[0] != '=')
+		return (0);
+	while (str[++i] != '\0')
+	{
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (0);
+	}
+	return (1);
 }

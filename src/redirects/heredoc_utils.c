@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:01:00 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 11:15:19 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/02 12:58:58 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,7 @@ char	*check_expansion(t_hashtable *env, char **line, size_t *len)
 	quote->segment[*len] = '\0';
 	add_segments(&head, quote->segment);
 	expanded = join_segments(head);
-	free_segments(head);
-	free(quote->segment);
-	free(quote);
+	free_expansion(quote, head);
 	return (expanded);
 }
 

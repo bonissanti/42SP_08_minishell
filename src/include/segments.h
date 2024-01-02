@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   segments.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:34:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/25 12:42:11 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/02 12:58:03 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ char			*ft_strndup(const char *str, size_t num);
 size_t			custom_strcspn(const char *str, char *delim1);
 t_bool			is_whitespace(char c);
 size_t			ft_strcspn(const char *str, char *delim1);
+void			free_expansion(t_lex *quote, t_segment *head);
 
 //############################### WILDCARD ###################################
 

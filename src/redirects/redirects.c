@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:51:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/28 19:18:59 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/02 12:53:24 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int	redirect_input(t_ast *node, char *filename)
 	{
 		if (is_redirect_op(node->right->cmds))
 		{
-			ft_fprintf(2, "minishell: syntax error near unexpected token `%s'\n"
-				, node->right->cmds);
+			ft_fprintf(2, "minishell: syntax error near unexpected "
+				"token `%s'\n", node->right->cmds);
 			return (1);
 		}
 		else
@@ -57,14 +57,14 @@ int	redirect_output(t_ast *node, char *filename)
 	{
 		if (is_redirect_op(node->right->cmds))
 		{
-			ft_fprintf(2, "minishell: syntax error near unexpected token `%s'\n"
-				, node->right->cmds);
+			ft_fprintf(2, "minishell: syntax error near unexpected "
+				"token `%s'\n", node->right->cmds);
 			return (1);
 		}
 		else
 		{
-			ft_fprintf(2, "minishell: syntax error near unexpected token `%s'\n"
-				, filename);
+			ft_fprintf(2, "minishell: syntax error near unexpected "
+				"token `%s'\n", filename);
 			return (1);
 		}
 	}
@@ -80,14 +80,14 @@ int	redirect_append(t_ast *node, char *filename)
 	{
 		if (is_redirect_op(node->right->cmds))
 		{
-			ft_fprintf(2, "minishell: syntax error near unexpected \
-				token `%s'\n", node->right->cmds);
+			ft_fprintf(2, "minishell: syntax error near unexpected "
+				"token `%s'\n", node->right->cmds);
 			return (1);
 		}
 		else
 		{
-			ft_fprintf(2, "minishell: syntax error near unexpected token `%s'\n"
-				, filename);
+			ft_fprintf(2, "minishell: syntax error near unexpected "
+				"token `%s'\n", filename);
 			return (1);
 		}
 	}

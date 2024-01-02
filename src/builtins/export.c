@@ -3,31 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/01 16:35:50 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/02 13:07:20 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-static int	is_valid_identifier(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (str == NULL || str[0] == '\0')
-		return (0);
-	if (!ft_isalpha(str[0]) && str[0] != '_' && str[0] != '=')
-		return (0);
-	while (str[++i] != '\0')
-	{
-		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return (0);
-	}
-	return (1);
-}
 
 /**
  * Function: Print_all_env
@@ -80,7 +63,7 @@ int	env_syntax_check(t_hashtable *hash_table, char *temp, t_env *env)
 		analyzing_quotes(hash_table, &temp);
 		(*env).value = temp;
 	}
-	if (!is_valid_identifier((*env).key))
+	if (!valid_identifier_export((*env).key))
 	{
 		ft_printf("minishell: export: `%s': not a valid identifier\n",
 			(*env).key);
@@ -94,19 +77,18 @@ int	env_syntax_check(t_hashtable *hash_table, char *temp, t_env *env)
 	return (1);
 }
 
-void	env_handler(t_hashtable *hash_table, t_env *env, char **args, int i,
-		char *temp)
+void	env_handler(t_env *env, char **args, int i, char *temp)
 {
 	t_hash	*hash;
 
 	(void)temp;
-	hash = search(hash_table, (*env).key);
+	hash = search(g_global.hash, (*env).key);
 	if (args[1][ft_strlen(args[i]) - 1] == '=')
-		env_with_equals(hash_table, args, i);
+		env_with_equals(g_global.hash, args, i);
 	else if ((*env).equals_sign[1] != NULL)
-		env_with_value(hash_table, env);
+		env_with_value(g_global.hash, env);
 	else if (hash == NULL)
-		insert(hash_table, (*env).key, NULL);
+		insert(g_global.hash, (*env).key, NULL);
 	if (temp != (*env).equals_sign[1])
 		free(temp);
 	if ((*env).value)
@@ -153,7 +135,7 @@ void	add_env(t_hashtable *hash_table, char **args)
 			return ;
 		else if (syntax_status == 2)
 			continue ;
-		env_handler(hash_table, &env, args, i, temp);
+		env_handler(&env, args, i, temp);
 	}
 }
 
