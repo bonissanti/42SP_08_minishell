@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_exec2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:01:56 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 13:01:57 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/02 16:14:58 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,19 @@
 t_bool	is_empty_cmd(char *cmd)
 {
 	if (cmd == NULL)
+	{
+		ft_fprintf(2, "Command '' not found, but can be installed with:\n");
+		ft_fprintf(2, "\n");
+		ft_fprintf(2, "apt install mailutils-mh  # version 1:3.7-2.1, or\n");
+		ft_fprintf(2, "apt install meshio-tools  # version 4.0.4-1\n");
+		ft_fprintf(2, "apt install mmh           # version 0.4-2\n");
+		ft_fprintf(2, "apt install nmh           # version 1.7.1-6\n");
+		ft_fprintf(2, "apt install termtris      # version 1.3-1\n");
+		ft_fprintf(2, "\n");
+		ft_fprintf(2, "Ask your administrator to install one of them.\n");
+		ft_fprintf(2, "\n");
 		return (true);
+	}
 	if (cmd[0] == '\0')
 		return (true);
 	return (false);

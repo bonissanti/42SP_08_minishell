@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/27 22:55:47 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/02 15:06:11 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void	close_all_fds(void)
 	int	i;
 
 	i = 3;
-	while (i < 4096)
+	while (i < 1024)
 	{
 		close(i);
 		i++;

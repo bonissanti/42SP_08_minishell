@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:51:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 12:53:24 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/02 17:46:57 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	create_temp_file(t_ast *node, char *filename)
 		node->in_fd = open(tmp_filename, O_RDONLY);
 		unlink(tmp_filename);
 	}	
-	return (-1);
+	return (1);
 }
 
 int	redirect_input(t_ast *node, char *filename)

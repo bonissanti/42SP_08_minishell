@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:38:13 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/01 15:14:33 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/02 19:55:51 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,25 +95,25 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("cat < infile | wc > outfile")); 				//ok
 	// ft_lstadd_back(&tests, ft_lstnew("cat < infile | sort | wc > outfile")); 		//ok
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF")); 								//ok
-	// ft_lstadd_back(&tests, ft_lstnew("<< EOF")); 									//leaks
+	// ft_lstadd_back(&tests, ft_lstnew("<< EOF")); 									//ok
 	// ft_lstadd_back(&tests, ft_lstnew("<<"));											//ok
 	// ft_lstadd_back(&tests, ft_lstnew("<"));											//ok
 	// ft_lstadd_back(&tests, ft_lstnew(">"));											//ok
 	// ft_lstadd_back(&tests, ft_lstnew(">>"));											//ok
 	// ft_lstadd_back(&tests, ft_lstnew("<< EOF cat"));									//ok
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF > 1 > 2 > 3 > 4")); 				//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo << EOF > 1 > 2 > 3 > 4"));				//leaks
+	// ft_lstadd_back(&tests, ft_lstnew("echo << EOF > 1 > 2 > 3 > 4"));				//ok
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF > 1 > 2 > 3 > 4 | wc")); 			//ok
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF > 1 < 1 > 2"));        				//ok
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF > 1 < 1 | wc"));					//ok
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF < 1 > 1 | wc")); 					//ok
-	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF < 1 > 2"));
-	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF < 1")); // leaks quando o arquivo não existe
+	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF < 1 > 2"));							//ok
+	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF < 1")); 							//ok
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF > otario"));						//ok
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF > outfile.txt | wc"));				//ok
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF > outfile.txt | ls | wc")); 		//ok
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF < infile | wc"));					//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo << EOF < not_found.txt | wc"));			//leaks
+	// ft_lstadd_back(&tests, ft_lstnew("echo << EOF < not_found.txt | wc"));			//ok
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF < infile | sort | wc"));			//ok
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF << EOF << EOF"));					//ok
 	// ft_lstadd_back(&tests, ft_lstnew("cat << EOF | wc"));							//ok
@@ -140,12 +140,12 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("ls | wc > 1 < 1 > 2"));						//ok
 	// ft_lstadd_back(&tests, ft_lstnew("ls | wc > 1 < 1 > 2 < 2 > 3 < 3 > 4")); 		//ok
 	// ft_lstadd_back(&tests, ft_lstnew("ls | wc > 1 > 2 > 3 > 4")); 					//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo oi > 1 > 2 > 3 > 4"));					//leaks
-	// ft_lstadd_back(&tests, ft_lstnew("echo oi > 1 < 1 > 2")); 						//leaks
-	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc < not_found > 1"));				//leaks
-	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc > 1 < 1 > 2 < not_found.txt > 3"));	// leaks
-	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc > 1 < > 2"));						//leaks
-	// ft_lstadd_back(&tests, ft_lstnew("ls | wc > 1 < > 2"));							//leaks
+	// ft_lstadd_back(&tests, ft_lstnew("echo oi > 1 > 2 > 3 > 4"));					//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo oi > 1 < 1 > 2")); 						//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc < not_found > 1"));				//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc > 1 < 1 > 2 < not_found.txt > 3"));	// valgrind e um comportamento inesperado
+	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc > 1 < > 2"));						//ok
+	// ft_lstadd_back(&tests, ft_lstnew("ls | wc > 1 < > 2"));							//ok
 	// ft_lstadd_back(&tests, ft_lstnew("<")); 											//ok
 	// ft_lstadd_back(&tests, ft_lstnew("\"<\""));										//ok
 	// ft_lstadd_back(&tests, ft_lstnew("\'<\'"));										//ok
@@ -158,8 +158,8 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("|"));											//ok
 	// ft_lstadd_back(&tests, ft_lstnew("\"|\""));										//ok
 	// ft_lstadd_back(&tests, ft_lstnew("\'|\'"));										//ok
-	// ft_lstadd_back(&tests, ft_lstnew("< \"Makefile\"")); 							//leak
-	// ft_lstadd_back(&tests, ft_lstnew("| \"Makefile\""));	
+	// ft_lstadd_back(&tests, ft_lstnew("< \"Makefile\"")); 							//ok
+	// ft_lstadd_back(&tests, ft_lstnew("| \"Makefile\""));								//ok
 	// ft_lstadd_back(&tests, ft_lstnew("< 'Makefile')); 								//leaks
 	// ft_lstadd_back(&tests, ft_lstnew("ls | wc cat << EOF"));							//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo oi cat << EOF")); 						//leaks

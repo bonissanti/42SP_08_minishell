@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_list_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 17:12:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/29 01:07:10 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/02 18:34:17 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,24 @@ int	cmd_list_size(t_cmd_list *cmd_list)
 t_cmd_list	*new_cmd_list(t_cmd_list node)
 {
 	t_cmd_list	*new_node;
-
+	
 	new_node = (t_cmd_list *)ft_calloc(1, sizeof(t_cmd_list));
 	if (!new_node)
 		return (NULL);
 	new_node->type = node.type;
 	if (node.args)
 		new_node->args = ft_strdup(node.args);
+	else
+		new_node->args = NULL; 
 	new_node->weight = node.weight;
 	if (node.infile)
-		new_node->infile = ft_strdup(node.infile);
+		new_node->infile = readline_trash_can(ft_strdup(node.infile));
+	else
+		new_node->infile = NULL;
 	if (node.outfile)
-		new_node->outfile = ft_strdup(node.outfile);
+		new_node->outfile = readline_trash_can(ft_strdup(node.outfile));
+	else
+		new_node->outfile = NULL;
 	new_node->here_doc = node.here_doc;
 	new_node->next = NULL;
 	new_node->prev = NULL;
@@ -132,11 +138,14 @@ void	add_cmd_list(t_cmd_list new_list)
 void	free_cmd_list(t_cmd_list *cmd_list)
 {
 	t_cmd_list	*temp;
+	t_bool 		freed;
 
+	freed = false;
 	while (cmd_list)
 	{
 		temp = cmd_list->next;
-		ft_safe_free((void **)&cmd_list->args);
+		if(cmd_list->args)
+			ft_safe_free((void **)&cmd_list->args);
 		cmd_list->here_doc_fd = 0;
 		ft_safe_free((void **)&cmd_list);
 		cmd_list = temp;

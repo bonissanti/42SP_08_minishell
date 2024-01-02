@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/29 00:24:38 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/02 17:52:38 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,11 @@ static void	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 {
 	int	initial_pipe[2];
+	t_bool executed;
 
 	initial_pipe[0] = -1;
 	initial_pipe[1] = -1;
+	executed = false;
 	if (root->type == TYPE_COMMAND)
 		exec_forked_cmd(exec, hash, root);
 	if (root->type == TYPE_REDIRECT)
@@ -48,8 +50,12 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 		if (handle_redirects(root) == 1)
 		{
 			g_global.cmd_status = 2;
-			return ;
+			if (exec_multi_cmds(exec, hash, root->right) == 0)
+				return ;
+			executed = true;
 		}
+		if (executed)
+			return ;
 		g_global.cmd_status = analyze_redirect(exec, hash, root);
 	}
 	if (root->type == TYPE_HEREDOC)
