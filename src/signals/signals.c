@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 18:45:17 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/22 18:52:14 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/02 11:43:01 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	refresh_prompt(int signal)
 {
 	if (signal == SIGINT)
 	{
-		ft_putendl_fd("\n", 1);
+		ft_putendl_fd("", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();

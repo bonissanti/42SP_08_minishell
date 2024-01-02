@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/26 20:12:16 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/02 12:31:07 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 				char *filename);
 static void	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node,
 				char *filename);
+static t_bool	verify(t_ast *node, char *line);
 
 void	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
@@ -25,17 +26,15 @@ void	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 
 	filename = generate_filename(exec->count_hdoc);
 	node->out_fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
+	signal(SIGINT, refresh_prompt);
 	while (1)
 	{
 		len = 0;
 		line = readline("> ");
-		if (!ft_strcmp(line, node->delim))
-		{
-			free(line);
+		if (!verify(node, line))
 			break ;
-		}
 		line = check_expansion(hash, &line, &len);
-		if (node->print_hdoc)
+		if (node->print_hdoc && line)
 			ft_putendl_fd(line, node->out_fd);
 		free(line);
 	}
@@ -61,6 +60,8 @@ static void	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node,
 			free_for_finish(exec, hash);
 		close_all_fds();
 		free(filename);
+		close(0);
+		close(1);
 		exit(0);
 	}
 	else
@@ -98,4 +99,21 @@ void	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 	if (exec->count_pipes >= 1)
 		handle_pipes(hash, exec, node->right, next_pipe);
 	restore_fd(exec->old_stdin, exec->old_stdout);
+}
+
+static t_bool	verify(t_ast *node, char *line)
+{
+	if (!line || *line == '\0')
+	{
+		ft_fprintf(2, "minishell: warning: here-document delimited by end-of-"
+			"file (wanted `%s')\n", node->delim);
+		return (false);
+	}
+
+	if (!ft_strcmp(line, node->delim) || !line)
+	{
+		free(line);
+		return (false);
+	}
+	return (true);
 }
