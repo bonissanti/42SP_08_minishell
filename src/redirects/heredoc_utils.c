@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:01:00 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 12:58:58 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/03 15:33:04 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void	redirect_hdoc(t_exec *exec, t_ast *node, char *filename)
 	close(node->in_fd);
 	if (node->right && node->right->type == TYPE_REDIRECT)
 	{
-		ok_to_create = create_files(node->right, exec);
+		ok_to_create = create_files(node->right, exec, 0);
 		if (ok_to_create == 1 || ok_to_create == -1)
 		{
 			close_all_fds();

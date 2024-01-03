@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 14:40:30 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/03 17:10:56 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 	if (root->type == TYPE_REDIRECT && root->right
 		&& root->right->type == TYPE_HEREDOC)
 		return ;
-	heredoc_node = find_node(root, TYPE_HEREDOC);
+	heredoc_node = find_node(root, TYPE_HEREDOC, "<<");
 	if (root->type != TYPE_HEREDOC)
 	{
 		heredoc_node = find_node(root, TYPE_HEREDOC);
@@ -43,6 +43,7 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 	initial_pipe[0] = -1;
 	initial_pipe[1] = -1;
 	executed = false;
+	
 	if (root->type == TYPE_COMMAND)
 		exec_forked_cmd(exec, hash, root);
 	if (root->type == TYPE_REDIRECT)
@@ -62,7 +63,15 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 	if (root->type == TYPE_HEREDOC)
 		analyze_heredoc(exec, root, hash);
 	if (root->type == TYPE_PIPE)
+	{
+		int ok_to_create = create_files(root, exec, 1);
+		if (ok_to_create == 1 || ok_to_create == -1)
+		{
+			// restore_fd(exec->old_stdin, exec->old_stdout);
+			return ;
+		}
 		handle_pipes(hash, exec, root, initial_pipe);
+	}
 	if (root->type == TYPE_LOGICAL)
 	{
 		handle_logical(exec, hash, root);

@@ -3,22 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/27 22:56:50 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/03 17:11:30 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_ast	*find_node(t_ast *root, t_type type)
+t_ast	*find_node(t_ast *root, t_type type, char *cmds)
 {
 	if (root == NULL)
 		return (NULL);
 	while (root)
 	{
-		if (root->type == type)
+		if (root->type == type && ft_strncmp(root->cmds, cmds,
+				ft_strlen(cmds)) == 0)
 			return (root);
 		else if (root->right)
 			root = root->right;
