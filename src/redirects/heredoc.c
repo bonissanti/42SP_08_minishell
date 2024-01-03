@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 12:54:41 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/03 18:23:40 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 	if (exec->count_pipes >= 1)
 		close(next_pipe[1]);
 	if (node->right && exec->count_pipes >= 1)
-		node = find_node(node, TYPE_PIPE);
+		node = find_node(node, TYPE_PIPE, "|");
 	if (exec->count_pipes >= 1)
 		handle_pipes(hash, exec, node->right, next_pipe);
 	restore_fd(exec->old_stdin, exec->old_stdout);
