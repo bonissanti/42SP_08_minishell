@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 13:07:20 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/03 17:47:15 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	env_syntax_check(t_hashtable *hash_table, char *temp, t_env *env)
 	}
 	if (!valid_identifier_export((*env).key))
 	{
-		ft_printf("minishell: export: `%s': not a valid identifier\n",
+		ft_fprintf(2, "minishell: export: `%s': not a valid identifier\n",
 			(*env).key);
 		if (temp != (*env).equals_sign[1])
 			free(temp);
@@ -92,7 +92,10 @@ void	env_handler(t_env *env, char **args, int i, char *temp)
 	if (temp != (*env).equals_sign[1])
 		free(temp);
 	if ((*env).value)
+	{
 		free((*env).value);
+		(*env).value = NULL;
+	}
 	free((*env).equals_sign[0]);
 	free((*env).equals_sign);
 }
@@ -164,6 +167,10 @@ void	ft_export(t_hashtable *hash_table, char **args)
 	if (args[1] == NULL)
 		print_all_env(hash_table);
 	else
+	{
 		add_env(hash_table, args);
+		if(g_global.cmd_status == 1)
+			return;
+	}
 	g_global.cmd_status = 0;
 }
