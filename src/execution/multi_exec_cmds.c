@@ -6,13 +6,10 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-<<<<<<< Updated upstream
-/*   Updated: 2024/01/03 18:22:40 by aperis-p         ###   ########.fr       */
-=======
-/*   Updated: 2024/01/03 19:15:47 by brunrodr         ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Updated: 2024/01/03 20:11:35 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../include/minishell.h"
 
@@ -30,11 +27,7 @@ static void	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 	heredoc_node = find_node(root, TYPE_HEREDOC, exec, "<<");
 	if (root->type != TYPE_HEREDOC)
 	{
-<<<<<<< Updated upstream
-		heredoc_node = find_node(root, TYPE_HEREDOC, "<<");
-=======
 		heredoc_node = find_node(root, TYPE_HEREDOC, exec, "<<");
->>>>>>> Stashed changes
 		if (heredoc_node && !heredoc_executed)
 		{
 			analyze_heredoc(exec, heredoc_node, hash);
