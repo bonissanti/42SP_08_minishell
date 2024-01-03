@@ -6,23 +6,62 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 17:11:30 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/03 19:10:47 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_ast	*find_node(t_ast *root, t_type type, char *cmds)
+t_ast	*find_node(t_ast *root, t_type type, t_exec *exec, char *cmds)
 {
 	if (root == NULL)
 		return (NULL);
 	while (root)
 	{
 		if (root->type == type && ft_strncmp(root->cmds, cmds,
-				ft_strlen(cmds)) == 0)
+				ft_strlen(cmds)) == 0 && root->type != TYPE_REDIRECT)
 			return (root);
-		else if (root->right)
+		else if (root->type == type && ft_strncmp(root->cmds, cmds,
+				ft_strlen(cmds)) == 0 && (exec->count_in == 0 || exec->count_out == 0))
+			return (root);
+		else if (root->right && root->type != TYPE_REDIRECT)
 			root = root->right;
+		else if (root->right && root->type == TYPE_REDIRECT)
+		{
+			if (ft_strcmp(root->cmds, "<") == 0)
+				exec->count_in--;
+			else if (ft_strcmp(root->cmds, ">") == 0 || ft_strcmp(root->cmds, ">>") == 0)
+				exec->count_out--;
+			root = root->right;
+		}
+		else
+			break ;
+	}
+	return (NULL);
+}
+
+t_ast	*find_last_node(t_ast *root, t_type type, t_exec *exec, char *cmds)
+{
+	if (root == NULL)
+		return (NULL);
+	while (root)
+	{
+		if (root->type == type && ft_strncmp(root->cmds, cmds,
+				ft_strlen(cmds)) == 0 && root->type != TYPE_REDIRECT)
+			return (root);
+		else if (root->type == type && ft_strncmp(root->cmds, cmds,
+				ft_strlen(cmds)) == 0 && (exec->count_in == 0 || exec->count_out == 0))
+			return (root);
+		else if (root->right && root->type != TYPE_REDIRECT)
+			root = root->right;
+		else if (root->right && root->type == TYPE_REDIRECT)
+		{
+			if (ft_strcmp(root->cmds, "<") == 0)
+				exec->count_in--;
+			else if (ft_strcmp(root->cmds, ">") == 0 || ft_strcmp(root->cmds, ">>") == 0)
+				exec->count_out--;
+			root = root->right;
+		}
 		else
 			break ;
 	}

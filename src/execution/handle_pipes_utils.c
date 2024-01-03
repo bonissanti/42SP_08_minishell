@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:01:50 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 17:09:21 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/03 19:12:07 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	parent_pipe(int *prev_pipe, int *next_pipe)
 
 static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
 {
-	if (*prev_pipe != -1)
+	if (*prev_pipe != -1 && !exec->has_input)
 	{
 		dup2(prev_pipe[0], STDIN_FILENO);
 		close(prev_pipe[0]);
@@ -38,23 +38,19 @@ static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
 
 void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 {
-	int	ok_to_create;
-
+	// int	ok_to_create;
 	redirect_pipes(exec, prev_pipe, next_pipe);
 	if (node->type == TYPE_REDIRECT)
 	{
-		close(prev_pipe[0]);
-		close(prev_pipe[1]);
-		ok_to_create = create_files(node, exec, 0);
-		if (ok_to_create == 1 || ok_to_create == -1)
-		{
-			close_all_fds();
-			free_for_finish(exec, g_global.hash);
-			restore_fd(exec->old_stdin, exec->old_stdout);
-			close (0);
-			close (1);
-			return ;
-		}
+		// close(prev_pipe[0]);
+		// close(prev_pipe[1]);
+		t_ast *last_input = find_last_node(node, TYPE_REDIRECT, exec, "<");
+		t_ast *last_output = find_last_node(node, TYPE_REDIRECT, exec, ">");
+		// restore_fd(exec->old_stdin, exec->old_stdout);
+		if (last_output && last_output->out_fd != -1)
+			redirect_fds(last_output);
+		if (last_input && last_input->in_fd != -1)
+			redirect_fds(last_input);
 		if (node->left)
 			node = node->left;
 		else
@@ -64,9 +60,10 @@ void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 		exec_simple(g_global.hash, exec, node);
 	else
 		free_for_finish(exec, g_global.hash);
-	// close_all_fds();
-	// close (0);
-	// close (1);
+	close_all_fds();
+	close (0);
+	close (1);
+	exit (0);
 }
 
 void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)

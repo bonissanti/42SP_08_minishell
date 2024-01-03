@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 14:48:36 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/03 18:28:39 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,22 @@ int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 void	analyze_if_print(t_ast *node, int index)
 {
 	t_ast	*save_node;
-
-	save_node = node->left;
+	
+	if (index == 3)
+		save_node = node->left;
 	while (node != NULL)
 	{
 		if (node->type == TYPE_HEREDOC && index == 0 && (node->right == NULL
 				|| node->right->type != TYPE_HEREDOC))
 		{
-			if (node->left == NULL)
+			if (node->left == NULL && index != 3)
 				node->left = save_node;
 			node->print_hdoc = true;
 		}
-		if (node->type == TYPE_REDIRECT && index == 1 && (node->right == NULL
+		if (node->type == TYPE_REDIRECT && (index == 1 || index == 3) && (node->right == NULL
 				|| node->right->type != TYPE_REDIRECT))
 		{
-			if (node->left == NULL)
+			if (node->left == NULL && index != 3)
 				node->left = save_node;
 			node->print_redir = true;
 		}

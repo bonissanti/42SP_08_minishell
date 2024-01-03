@@ -6,7 +6,11 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
+<<<<<<< Updated upstream
 /*   Updated: 2024/01/03 18:22:40 by aperis-p         ###   ########.fr       */
+=======
+/*   Updated: 2024/01/03 19:15:47 by brunrodr         ###   ########.fr       */
+>>>>>>> Stashed changes
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +27,14 @@ static void	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 	if (root->type == TYPE_REDIRECT && root->right
 		&& root->right->type == TYPE_HEREDOC)
 		return ;
-	heredoc_node = find_node(root, TYPE_HEREDOC, "<<");
+	heredoc_node = find_node(root, TYPE_HEREDOC, exec, "<<");
 	if (root->type != TYPE_HEREDOC)
 	{
+<<<<<<< Updated upstream
 		heredoc_node = find_node(root, TYPE_HEREDOC, "<<");
+=======
+		heredoc_node = find_node(root, TYPE_HEREDOC, exec, "<<");
+>>>>>>> Stashed changes
 		if (heredoc_node && !heredoc_executed)
 		{
 			analyze_heredoc(exec, heredoc_node, hash);
@@ -48,7 +56,7 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 		exec_forked_cmd(exec, hash, root);
 	if (root->type == TYPE_REDIRECT)
 	{
-		if (handle_redirects(root) == 1 && exec->count_pipes == 1)
+		if (handle_redirects(root, exec) == 1 && exec->count_pipes == 1)
 		{
 			g_global.cmd_status = 2;
 			if (exec_multi_cmds(exec, hash, root->right) == 0)
@@ -64,12 +72,17 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 		analyze_heredoc(exec, root, hash);
 	if (root->type == TYPE_PIPE)
 	{
+		exec->count_out = 0;
+		exec->count_in = 0;
 		int ok_to_create = create_files(root, exec, 1);
 		if (ok_to_create == 1 || ok_to_create == -1)
 		{
 			// restore_fd(exec->old_stdin, exec->old_stdout);
 			return ;
 		}
+		analyze_if_print(root, 3);
+		ft_fprintf(2, "count in: %d\n", exec->count_in);
+		ft_fprintf(2, "count out: %d\n", exec->count_out);
 		handle_pipes(hash, exec, root, initial_pipe);
 	}
 	if (root->type == TYPE_LOGICAL)
@@ -83,6 +96,8 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 {
 	if (root == NULL)
 		return (0);
+	exec->count_in = 0;
+	exec->count_out = 0;
 	heredoc_first(exec, hashtable, root);
 	handle_cmd(exec, hashtable, root);
 	wait_for_children(root);

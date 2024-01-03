@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:17:33 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 14:42:49 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/03 17:45:51 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	double_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 		if (node->pid == 0)
 		{
 			redirect_fds(node);
-			handle_redirects(node->right);
+			handle_redirects(node->right, exec);
 			redirect_fds(node->right);
 			if (exec->error_call != 1 && node->left)
 				exec_simple(hashtable, exec, node->right->left);
@@ -104,7 +104,7 @@ void	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node)
 	exec_signals(node->pid);
 	if (node->pid == 0)
 	{
-		handle_redirects(node);
+		handle_redirects(node, exec);
 		redirect_fds(node);
 		if (node->left)
 			exec_simple(hash, exec, node->left);
