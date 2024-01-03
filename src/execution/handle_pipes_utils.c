@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:01:50 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 15:07:53 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/03 17:09:21 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,13 @@ void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 	redirect_pipes(exec, prev_pipe, next_pipe);
 	if (node->type == TYPE_REDIRECT)
 	{
-		ok_to_create = create_files(node, exec);
+		close(prev_pipe[0]);
+		close(prev_pipe[1]);
+		ok_to_create = create_files(node, exec, 0);
 		if (ok_to_create == 1 || ok_to_create == -1)
 		{
-			// close_all_fds();
+			close_all_fds();
+			free_for_finish(exec, g_global.hash);
 			restore_fd(exec->old_stdin, exec->old_stdout);
 			close (0);
 			close (1);
@@ -54,17 +57,16 @@ void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 		}
 		if (node->left)
 			node = node->left;
-		// else
-		// 	free_for_finish(exec, g_global.hash);
-		// close_all_fds();
-		// close (0);
-		// close (1);
-		// exit(0);
+		else
+			free_for_finish(exec, g_global.hash);
 	}
 	if (node)
 		exec_simple(g_global.hash, exec, node);
 	else
 		free_for_finish(exec, g_global.hash);
+	// close_all_fds();
+	// close (0);
+	// close (1);
 }
 
 void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
@@ -76,6 +78,7 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 		child_pipe(exec, node, prev_pipe, next_pipe);
 		close (0);
 		close (1);
+		close_all_fds();
 		exit (0);
 	}
 	else

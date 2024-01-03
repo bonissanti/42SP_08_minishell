@@ -6,29 +6,29 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:51:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 14:11:06 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/03 17:05:03 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	create_temp_file(t_ast *node, char *filename)
-{
-	int		tmp_fd;
-	char	*tmp_filename;
+// int	create_temp_file(t_ast *node, char *filename)
+// {
+// 	int		tmp_fd;
+// 	char	*tmp_filename;
 
-	(void)node;
-	tmp_filename = "/tmp/minishell_tmp_file";
-	tmp_fd = open(tmp_filename, O_CREAT | O_TRUNC | O_WRONLY, 0644);
-	if (tmp_fd != -1)
-	{
-		close(tmp_fd);
-		ft_fprintf(2, "minishell: %s: %s\n", filename, strerror(errno));
-		tmp_fd = open(tmp_filename, O_RDONLY);
-		unlink(tmp_filename);
-	}	
-	return (1);
-}
+// 	(void)node;
+// 	tmp_filename = "/tmp/minishell_tmp_file";
+// 	tmp_fd = open(tmp_filename, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+// 	if (tmp_fd != -1)
+// 	{
+// 		close(tmp_fd);
+// 		ft_fprintf(2, "minishell: %s: %s\n", filename, strerror(errno));
+// 		tmp_fd = open(tmp_filename, O_RDONLY);
+// 		unlink(tmp_filename);
+// 	}	
+// 	return (1);
+// }
 
 int	redirect_input(t_ast *node, char *filename)
 {
@@ -107,35 +107,30 @@ int	redirect_append(t_ast *node, char *filename)
 	return (0);
 }
 
-int	create_files(t_ast *node, t_exec *exec)
+int	create_files(t_ast *node, t_exec *exec, int option)
 {
-	static t_ast	*root;
+	t_ast	*root;
 	int				ok_to_create;
 
 	root = node;
 	ok_to_create = 1;
 	(void)exec;
-	while (root)
+	while (root || root == node)
 	{
 		if (root->type == TYPE_REDIRECT)
 		{
 			ok_to_create = handle_redirects(root);
-			if (ok_to_create == 1 || ok_to_create == -1)
-			{
-				free_for_finish(exec, g_global.hash);
-				close(0);
-				close(1);
-				close_all_fds();
+			if ((ok_to_create == 1 || ok_to_create == -1) && (option == 1))
 				return (1);
-			}
-			redirect_fds(root);
+			if (option != 1)
+				redirect_fds(root);
 		}
-		else if (ok_to_create == 0)
-			root = root->right;
-		else
-			return (1);
 		if (root)
 			root = root->right;
+		// else if (ok_to_create == 0)
+		// 	root = root->right;
+		else
+			return (1);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:11 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 12:58:38 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/03 15:40:41 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_bool	is_builtin(t_ast *node);
 int		execute_builtin(t_hashtable *hashtable, t_ast *node);
 void	init_redirects(t_exec *exec);
 int		handle_redirects(t_ast *node);
-int		create_files(t_ast *node, t_exec *exec);
+int		create_files(t_ast *node, t_exec *exec, int option);
 
 //############################# REDIRECTIONS #################################//
 

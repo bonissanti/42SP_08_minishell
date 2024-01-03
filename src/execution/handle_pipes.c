@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 14:14:47 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/03 16:22:34 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,14 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 
 	if (node == NULL)
 		return ;
+
+	// int ok_to_create = create_files(node, exec, 1);
+	// if (ok_to_create == 1 || ok_to_create == -1)
+	// {
+	// 	restore_fd(exec->old_stdin, exec->old_stdout);
+	// 	return ;
+	// }
+		
 	if (node->type == TYPE_PIPE)
 	{
 		pipe(next_pipe);
