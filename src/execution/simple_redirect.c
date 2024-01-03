@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   simple_redirect.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:17:33 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/27 22:55:01 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/03 14:42:49 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,7 @@ static void	child_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 	if (exec->error_call != 1 && node->left)
 		exec_simple(hashtable, exec, node->left);
 	else
-	{
-		close(node->in_fd);
 		free_for_finish(exec, hashtable);
-	}
 	close_all_fds();
 	exit(0);
 }
@@ -96,7 +93,7 @@ void	redirect_in(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 		simple_logical(exec, hashtable, node->right, node->num_status);
 	}
 	close(node->in_fd);
-	close_all_fds();
+	// close_all_fds();
 }
 
 void	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node)
@@ -104,6 +101,7 @@ void	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node)
 	if (node == NULL)
 		return ;
 	node->pid = fork();
+	exec_signals(node->pid);
 	if (node->pid == 0)
 	{
 		handle_redirects(node);

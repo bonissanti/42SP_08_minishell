@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirects.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:51:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 17:46:57 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/03 14:11:06 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,14 @@ int	create_temp_file(t_ast *node, char *filename)
 	int		tmp_fd;
 	char	*tmp_filename;
 
+	(void)node;
 	tmp_filename = "/tmp/minishell_tmp_file";
 	tmp_fd = open(tmp_filename, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	if (tmp_fd != -1)
 	{
 		close(tmp_fd);
 		ft_fprintf(2, "minishell: %s: %s\n", filename, strerror(errno));
-		node->in_fd = open(tmp_filename, O_RDONLY);
+		tmp_fd = open(tmp_filename, O_RDONLY);
 		unlink(tmp_filename);
 	}	
 	return (1);
@@ -47,7 +48,10 @@ int	redirect_input(t_ast *node, char *filename)
 	}
 	node->in_fd = open(filename, O_RDONLY);
 	if (node->in_fd == -1 || !verify_file_permissions(filename))
-		return (create_temp_file(node, filename));
+	{
+		ft_fprintf(2, "minishell: %s: %s\n", filename, strerror(errno));
+		return (1);
+	}
 	return (0);
 }
 
@@ -70,7 +74,10 @@ int	redirect_output(t_ast *node, char *filename)
 	}
 	node->out_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (!verify_file_permissions(filename))
+	{
+		ft_fprintf(2, "minishell: %s: %s\n", filename, strerror(errno));
 		return (1);
+	}
 	return (0);
 }
 
@@ -93,7 +100,10 @@ int	redirect_append(t_ast *node, char *filename)
 	}
 	node->out_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (!verify_file_permissions(filename))
+	{
+		ft_fprintf(2, "minishell: %s: %s\n", filename, strerror(errno));
 		return (1);
+	}
 	return (0);
 }
 
@@ -104,6 +114,7 @@ int	create_files(t_ast *node, t_exec *exec)
 
 	root = node;
 	ok_to_create = 1;
+	(void)exec;
 	while (root)
 	{
 		if (root->type == TYPE_REDIRECT)
@@ -112,6 +123,9 @@ int	create_files(t_ast *node, t_exec *exec)
 			if (ok_to_create == 1 || ok_to_create == -1)
 			{
 				free_for_finish(exec, g_global.hash);
+				close(0);
+				close(1);
+				close_all_fds();
 				return (1);
 			}
 			redirect_fds(root);

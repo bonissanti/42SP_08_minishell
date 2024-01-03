@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 17:52:38 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/03 14:40:30 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 		exec_forked_cmd(exec, hash, root);
 	if (root->type == TYPE_REDIRECT)
 	{
-		if (handle_redirects(root) == 1)
+		if (handle_redirects(root) == 1 && exec->count_pipes == 1)
 		{
 			g_global.cmd_status = 2;
 			if (exec_multi_cmds(exec, hash, root->right) == 0)
@@ -56,6 +56,7 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 		}
 		if (executed)
 			return ;
+		exec->error_call = 1;
 		g_global.cmd_status = analyze_redirect(exec, hash, root);
 	}
 	if (root->type == TYPE_HEREDOC)

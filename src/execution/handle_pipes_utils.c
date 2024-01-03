@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:01:50 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 13:01:51 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/03 15:07:53 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,22 +46,25 @@ void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 		ok_to_create = create_files(node, exec);
 		if (ok_to_create == 1 || ok_to_create == -1)
 		{
-			close_all_fds();
+			// close_all_fds();
 			restore_fd(exec->old_stdin, exec->old_stdout);
-			exit(0);
+			close (0);
+			close (1);
+			return ;
 		}
 		if (node->left)
-			exec_simple(g_global.hash, exec, node->left);
-		else
-			free_for_finish(exec, g_global.hash);
-		exit(0);
+			node = node->left;
+		// else
+		// 	free_for_finish(exec, g_global.hash);
+		// close_all_fds();
+		// close (0);
+		// close (1);
+		// exit(0);
 	}
 	if (node)
 		exec_simple(g_global.hash, exec, node);
 	else
 		free_for_finish(exec, g_global.hash);
-	close(1);
-	close(0);
 }
 
 void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
@@ -71,7 +74,9 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 	if (node->pid == 0)
 	{
 		child_pipe(exec, node, prev_pipe, next_pipe);
-		exit(0);
+		close (0);
+		close (1);
+		exit (0);
 	}
 	else
 		parent_pipe(prev_pipe, next_pipe);
