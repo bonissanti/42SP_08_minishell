@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:20:18 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 13:06:54 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/03 19:52:48 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	valid_identifier_export(char *str)
 	i = 0;
 	if (str == NULL || str[0] == '\0')
 		return (0);
-	if (!ft_isalpha(str[0]) && str[0] != '_' && str[0] != '=')
+	if (ft_isdigit(str[0]) || (!ft_isalpha(str[0]) && str[0] != '#') || str[0] == '=')
 		return (0);
 	while (str[++i] != '\0')
 	{

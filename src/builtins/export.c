@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 17:47:15 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/03 19:54:46 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,10 @@ void	add_env(t_hashtable *hash_table, char **args)
 	i = 0;
 	while (args[++i] != NULL)
 	{
-		env.equals_sign = ft_split(args[i], '=');
+		if(ft_strlen(args[i]) == 1 && *args[i] == '=')
+			env.equals_sign = ft_split(args[i], '\n');
+		else
+			env.equals_sign = ft_split(args[i], '=');
 		env.key = env.equals_sign[0];
 		temp = env.equals_sign[1];
 		syntax_status = env_syntax_check(hash_table, temp, &env);
@@ -164,7 +167,7 @@ void	add_env(t_hashtable *hash_table, char **args)
 
 void	ft_export(t_hashtable *hash_table, char **args)
 {
-	if (args[1] == NULL)
+	if (args[1] == NULL || *args[1] == '#')
 		print_all_env(hash_table);
 	else
 	{
