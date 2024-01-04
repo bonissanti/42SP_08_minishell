@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/02 14:58:04 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/04 15:40:44 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ char	*copy_var_export(char **cmd, t_bool *is_export)
 
 	cropped = *cmd;
 	i = 0;
-	while (**cmd && *is_export)
+	while (**cmd && *is_export && !isdelimiter(*cmd) && **cmd != '$')
 	{
 		i++;
 		(*cmd)++;
@@ -220,13 +220,13 @@ void	tokenizer(t_hashtable *env)
 	g_global.tkn_list = NULL;
 	while (*actual_cmd)
 	{
-		if (is_export && has_equal(actual_cmd, &is_export))
-		{
-			if (ft_isspace(*actual_cmd))
-				skip_spaces(&actual_cmd);
-			handle_token(copy_var_export(&actual_cmd, &is_export));
-			break ;
-		}
+		// if (is_export && has_equal(actual_cmd, &is_export))
+		// {
+		// 	if (ft_isspace(*actual_cmd))
+		// 		skip_spaces(&actual_cmd);
+		// 	handle_token(copy_var_export(&actual_cmd, &is_export));
+		// 	break ;
+		// }
 		if (ft_isspace(*actual_cmd))
 			skip_spaces(&actual_cmd);
 		if (!(*actual_cmd))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:32:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 19:40:11 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 14:34:13 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	ft_cd(t_hashtable *hashtable, char **args)
 	if (argc > 2)
 	{
 		ft_putstr_fd("cd: too many arguments\n", 2);
+		g_global.cmd_status = 1;
 		return ;
 	}
 	oldpwd = search(hashtable, "PWD")->value;
@@ -33,6 +34,7 @@ void	ft_cd(t_hashtable *hashtable, char **args)
 	cwd = getcwd(NULL, 0);
 	insert(hashtable, "PWD", cwd);
 	free(cwd);
+	// g_global.cmd_status = 0;
 	return ;
 }
 
@@ -43,11 +45,13 @@ static void	handle_cd(t_hashtable *hashtable, char **args, int argc)
 		if (hashtable->home == NULL)
 		{
 			ft_fprintf(2, "cd: HOME not set\n");
+			g_global.cmd_status = 1;
 			return ;
 		}
 		if (chdir(hashtable->home->value) == -1)
 		{
 			ft_fprintf(2, "cd: %s\n", strerror(errno));
+			g_global.cmd_status = 1;
 			return ;
 		}
 	}
@@ -56,6 +60,7 @@ static void	handle_cd(t_hashtable *hashtable, char **args, int argc)
 		if (chdir(args[1]) == -1)
 		{
 			ft_fprintf(2, "cd: %s: %s\n", args[1], strerror(errno));
+			g_global.cmd_status = 1;
 			return ;
 		}
 	}
