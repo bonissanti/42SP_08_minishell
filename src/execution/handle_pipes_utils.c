@@ -6,25 +6,24 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:01:50 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/04 11:12:35 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 12:58:47 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void	parent_pipe(int *prev_pipe, int *next_pipe)
+static void	parent_pipe(t_exec *exec, int *prev_pipe, int *next_pipe)
 {
 	if (prev_pipe && !next_pipe)
 		close(prev_pipe[1]);
 	if (next_pipe)
 		close(next_pipe[1]);
-	// if (node->right && exec->count_pipes >= 1)
-	// 	node = find_node(node->right, TYPE_PIPE, exec, "|");
+	exec->count_pipes--;
 }
 
 static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
 {
-	if (*prev_pipe != -1 && !exec->has_input)
+	if (*prev_pipe != -1)
 	{
 		dup2(prev_pipe[0], STDIN_FILENO);
 		close(prev_pipe[0]);
@@ -48,6 +47,8 @@ void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 		create_files(node, exec, 1);
 		// if (node->right && node->right->type == TYPE_PIPE)
 		// {
+		// 	// close(next_pipe[0]);
+		// 	// close(next_pipe[1]);
 		// 	dup2(next_pipe[1], STDOUT_FILENO);
 		// 	close(next_pipe[1]);
 		// 	close(next_pipe[0]);
@@ -80,7 +81,7 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 		exit (0);
 	}
 	else
-		parent_pipe(prev_pipe, next_pipe);
+		parent_pipe(exec, prev_pipe, next_pipe);
 }
 
 t_ast	*get_last_node(t_ast *node, char *cmd)

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 18:41:13 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 12:51:38 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,6 @@ typedef struct s_exec
 	int					count_pipes;
 	int					count_redir;
 	int					error_call;
-	int					count_in;
-	int					count_out;
 	t_bool				has_input;
 }						t_exec;
 

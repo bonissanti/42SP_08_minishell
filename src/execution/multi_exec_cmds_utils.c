@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/04 11:11:02 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 12:31:43 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,21 +41,20 @@ void	analyze_if_print(t_ast *node, int index)
 {
 	t_ast	*save_node;
 	
-	if (index == 3)
-		save_node = node->left;
+	save_node = node->left;
 	while (node != NULL)
 	{
 		if (node->type == TYPE_HEREDOC && index == 0 && (node->right == NULL
 				|| node->right->type != TYPE_HEREDOC))
 		{
-			if (node->left == NULL && index != 3)
+			if (node->left == NULL)
 				node->left = save_node;
 			node->print_hdoc = true;
 		}
 		if (node->type == TYPE_REDIRECT && (index == 1 || index == 3) && (node->right == NULL
 				|| node->right->type != TYPE_REDIRECT))
 		{
-			if (node->left == NULL && index != 3)
+			if (node->left == NULL)
 				node->left = save_node;
 			node->print_redir = true;
 		}

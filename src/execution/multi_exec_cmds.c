@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/04 10:36:42 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 12:56:11 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ static void	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 	if (root->type == TYPE_REDIRECT && root->right
 		&& root->right->type == TYPE_HEREDOC)
 		return ;
-	heredoc_node = find_node(root, TYPE_HEREDOC, exec, "<<");
+	heredoc_node = find_node(root, TYPE_HEREDOC);
 	if (root->type != TYPE_HEREDOC)
 	{
-		heredoc_node = find_node(root, TYPE_HEREDOC, exec, "<<");
+		heredoc_node = find_node(root, TYPE_HEREDOC);
 		if (heredoc_node && !heredoc_executed)
 		{
 			analyze_heredoc(exec, heredoc_node, hash);
@@ -65,8 +65,6 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 		analyze_heredoc(exec, root, hash);
 	if (root->type == TYPE_PIPE)
 	{
-		exec->count_out = 0;
-		exec->count_in = 0;
 		int ok_to_create = create_files(root, exec, 0);
 		if (ok_to_create == 1 || ok_to_create == -1)
 		{
@@ -89,8 +87,6 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 {
 	if (root == NULL)
 		return (0);
-	exec->count_in = 0;
-	exec->count_out = 0;
 	heredoc_first(exec, hashtable, root);
 	handle_cmd(exec, hashtable, root);
 	wait_for_children(root);
