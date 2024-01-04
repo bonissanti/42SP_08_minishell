@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/29 01:21:05 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/04 18:11:51 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ t_ast	*create_node(t_cmd_list *cmd_list)
 		new_node->subshell = false;
 	new_node->print_hdoc = false;
 	new_node->print_redir = false;
+	new_node->to_exec = true;
 	return (new_node);
 }
 

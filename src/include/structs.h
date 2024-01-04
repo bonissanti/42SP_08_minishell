@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/04 16:29:39 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 18:11:14 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ typedef struct s_ast
 	t_bool				print_hdoc;
 	t_bool				print_redir;
 	t_bool				subshell;
+	t_bool				to_exec;
 	struct s_ast		*left;
 	struct s_ast		*right;
 }						t_ast;

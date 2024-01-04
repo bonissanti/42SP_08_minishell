@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:51:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/04 16:56:35 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 19:01:46 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	redirect_input(t_ast *node, char *filename)
 	if (node->in_fd == -1 || !verify_file_permissions(filename))
 	{
 		ft_fprintf(2, "minishell: %s: %s\n", filename, strerror(errno));
+		node->to_exec = false;
 		return (1);
 	}
 	return (0);
@@ -75,7 +76,7 @@ int	redirect_output(t_ast *node, char *filename)
 	node->out_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (!verify_file_permissions(filename))
 	{
-		ft_fprintf(2, "minishell: %s: %s\n", filename, strerror(errno));
+		node->to_exec = false;
 		return (1);
 	}
 	return (0);
@@ -102,6 +103,7 @@ int	redirect_append(t_ast *node, char *filename)
 	if (!verify_file_permissions(filename))
 	{
 		ft_fprintf(2, "minishell: %s: %s\n", filename, strerror(errno));
+		node->to_exec = false;
 		return (1);
 	}
 	return (0);
@@ -130,8 +132,6 @@ int	create_files(t_ast *node, t_exec *exec, int option)
 		}
 		if (root)
 			root = root->right;
-		// else if (ok_to_create == 0)
-		// 	root = root->right;
 		else
 			return (1);
 	}
