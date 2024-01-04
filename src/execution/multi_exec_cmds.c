@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/04 16:42:29 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:54:52 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 		exec_forked_cmd(exec, hash, root);
 	if (root->type == TYPE_REDIRECT)
 	{
-		exec->error_call = handle_redirects(root, exec);
+		exec->error_call = handle_redirects(root);
 		if (exec->error_call == 1 && exec->count_pipes == 1)
 		{
 			g_global.cmd_status = 2;

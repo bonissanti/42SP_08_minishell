@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:51:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/04 10:37:12 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:56:35 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,13 +114,14 @@ int	create_files(t_ast *node, t_exec *exec, int option)
 
 	root = node;
 	ok_to_create = 1;
+	(void)exec;
 	while (root || root == node)
 	{
 		if (root->type == TYPE_REDIRECT)
 		{
 			if (option == 0)
 			{
-				ok_to_create = handle_redirects(root, exec);
+				ok_to_create = handle_redirects(root);
 				if ((ok_to_create == 1 || ok_to_create == -1) && (option == 1))
 					return (1);
 			}

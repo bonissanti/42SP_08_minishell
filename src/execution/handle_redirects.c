@@ -6,13 +6,13 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:43:27 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/04 16:46:03 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:54:47 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	handle_redirects(t_ast *node, t_exec *exec)
+int	handle_redirects(t_ast *node)
 {
 	int	ok_to_redirect;
 
@@ -60,21 +60,16 @@ int	get_index_redirect(t_ast *root, t_type type)
 
 int	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 {
-	int	index;
-
-	analyze_if_print(node, 1);
-	index = get_index_redirect(node, TYPE_REDIRECT);
-	if ((index == 0 || index == 1) && (node->print_redir == true))
-		redirect_out(exec, hashtable, node);
-	else if ((index == 2 || (index == 3 && exec->count_redir > 2))
-		&& (node->print_redir == true))
-		redirect_in(exec, hashtable, node);
-	else if (index == 3 && exec->count_redir == 2)
-		double_redirect(exec, hashtable, node);
-	else
-	{
-		node->left = NULL;
-		exec_multi_cmds(exec, hashtable, node->right);
-	}
+	int ok_to_create = create_files(node, exec, 0);
+	if (ok_to_create == 1 || ok_to_create == -1)
+		return (1);
+		
+	simple_redirect(exec, hashtable, node);
 	return (0);
 }
+
+	// else
+	// {
+	// 	node->left = NULL;
+	// 	exec_multi_cmds(exec, hashtable, node->right);
+	// }

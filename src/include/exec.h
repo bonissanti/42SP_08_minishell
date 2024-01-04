@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:11 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 17:44:32 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:55:09 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	init_exec_vector(t_exec *exec);
 t_bool	is_builtin(t_ast *node);
 int		execute_builtin(t_hashtable *hashtable, t_ast *node);
 void	init_redirects(t_exec *exec);
-int		handle_redirects(t_ast *node, t_exec *exec);
+int		handle_redirects(t_ast *node);
 int		create_files(t_ast *node, t_exec *exec, int option);
 
 //############################# REDIRECTIONS #################################//
@@ -32,6 +32,7 @@ int		redirect_append(t_ast *node, char *filename);
 int		get_index_redirect(t_ast *root, t_type type);
 void	redirect_fds(t_ast *node);
 int		analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
+void	simple_redirect(t_exec *exec, t_hashtable *hash, t_ast *node);
 void	redirect_in(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 void	double_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node);
 void	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node);
