@@ -6,11 +6,12 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/04 12:31:43 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:01:05 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+#include <stdio.h>
 
 int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 {

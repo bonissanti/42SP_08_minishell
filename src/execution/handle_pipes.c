@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/04 12:27:25 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:40:40 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	handle_other(t_exec *exec, t_hashtable *hash, t_ast *node,
 static void	last_pipe(t_exec *exec, t_ast *node, int *prev_pipe)
 {
 	int next_pipe[2];
-	if (exec->count_pipes == 0)
+	if (exec->count_pipes == 0 || (exec->error_call == 1 && exec->count_pipes >= 1))
 	{
 		execute_pipes(exec, node, prev_pipe, NULL);
 		if (prev_pipe)
@@ -46,7 +46,6 @@ static void	last_pipe(t_exec *exec, t_ast *node, int *prev_pipe)
 		prev_pipe[0] = next_pipe[0];
 		prev_pipe[1] = next_pipe[1];
 		close(next_pipe[1]);
-		// ft_printf_fd(prev_pipe[0]);
 		execute_pipes(exec, node->right->right, prev_pipe, NULL);
 		if (prev_pipe)
 		{
@@ -65,14 +64,15 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 
 	if (node == NULL)
 		return ;
-
-
 		
+	if (node->right && *node->right->cmds == '>')
+		exec->has_out = true;
 	if (node->type == TYPE_PIPE)
 	{
 		pipe(next_pipe);
 		if (node->left)
 			execute_pipes(exec, node->left, prev_pipe, next_pipe);
+		exec->has_out = false;
 		prev_pipe[0] = next_pipe[0];
 		prev_pipe[1] = next_pipe[1];
 		if (node->right)

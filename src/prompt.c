@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/02 20:05:04 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:22:27 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ void	prompt(t_hashtable *env, t_list *tests)
 		delete_node(g_global.ast);
 		free_lists();
 		restore_fd(exec.old_stdin, exec.old_stdout);
+		close_all_fds();
 	}
 	final_wipeout(env);
 }

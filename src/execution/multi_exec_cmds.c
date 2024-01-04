@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/04 12:56:11 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 16:42:29 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 		exec_forked_cmd(exec, hash, root);
 	if (root->type == TYPE_REDIRECT)
 	{
-		if (handle_redirects(root, exec) == 1 && exec->count_pipes == 1)
+		exec->error_call = handle_redirects(root, exec);
+		if (exec->error_call == 1 && exec->count_pipes == 1)
 		{
 			g_global.cmd_status = 2;
 			if (exec_multi_cmds(exec, hash, root->right) == 0)
@@ -58,7 +59,6 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 		}
 		if (executed)
 			return ;
-		exec->error_call = 1;
 		g_global.cmd_status = analyze_redirect(exec, hash, root);
 	}
 	if (root->type == TYPE_HEREDOC)
@@ -67,13 +67,7 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 	{
 		int ok_to_create = create_files(root, exec, 0);
 		if (ok_to_create == 1 || ok_to_create == -1)
-		{
-			// restore_fd(exec->old_stdin, exec->old_stdout);
 			return ;
-		}
-		// analyze_if_print(root, 3);
-		// ft_fprintf(2, "count in: %d\n", exec->count_in);
-		// ft_fprintf(2, "count out: %d\n", exec->count_out);
 		handle_pipes(hash, exec, root, initial_pipe);
 	}
 	if (root->type == TYPE_LOGICAL)
