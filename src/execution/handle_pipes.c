@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 19:13:42 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 11:12:13 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 			execute_pipes(exec, node->left, prev_pipe, next_pipe);
 		prev_pipe[0] = next_pipe[0];
 		prev_pipe[1] = next_pipe[1];
+		// ft_printf_fd(next_pipe[0]);
 		exec->count_pipes--;
 		if (node->right)
 			handle_pipes(hash, exec, node->right, prev_pipe);

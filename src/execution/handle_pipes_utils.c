@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:01:50 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 19:12:07 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 11:12:35 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ static void	parent_pipe(int *prev_pipe, int *next_pipe)
 		close(prev_pipe[1]);
 	if (next_pipe)
 		close(next_pipe[1]);
+	// if (node->right && exec->count_pipes >= 1)
+	// 	node = find_node(node->right, TYPE_PIPE, exec, "|");
 }
 
 static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
@@ -42,15 +44,14 @@ void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 	redirect_pipes(exec, prev_pipe, next_pipe);
 	if (node->type == TYPE_REDIRECT)
 	{
-		// close(prev_pipe[0]);
-		// close(prev_pipe[1]);
-		t_ast *last_input = find_last_node(node, TYPE_REDIRECT, exec, "<");
-		t_ast *last_output = find_last_node(node, TYPE_REDIRECT, exec, ">");
-		// restore_fd(exec->old_stdin, exec->old_stdout);
-		if (last_output && last_output->out_fd != -1)
-			redirect_fds(last_output);
-		if (last_input && last_input->in_fd != -1)
-			redirect_fds(last_input);
+
+		create_files(node, exec, 1);
+		// if (node->right && node->right->type == TYPE_PIPE)
+		// {
+		// 	dup2(next_pipe[1], STDOUT_FILENO);
+		// 	close(next_pipe[1]);
+		// 	close(next_pipe[0]);
+		// }
 		if (node->left)
 			node = node->left;
 		else

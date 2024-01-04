@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 20:11:35 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/04 10:36:42 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,15 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 	{
 		exec->count_out = 0;
 		exec->count_in = 0;
-		int ok_to_create = create_files(root, exec, 1);
+		int ok_to_create = create_files(root, exec, 0);
 		if (ok_to_create == 1 || ok_to_create == -1)
 		{
 			// restore_fd(exec->old_stdin, exec->old_stdout);
 			return ;
 		}
-		analyze_if_print(root, 3);
-		ft_fprintf(2, "count in: %d\n", exec->count_in);
-		ft_fprintf(2, "count out: %d\n", exec->count_out);
+		// analyze_if_print(root, 3);
+		// ft_fprintf(2, "count in: %d\n", exec->count_in);
+		// ft_fprintf(2, "count out: %d\n", exec->count_out);
 		handle_pipes(hash, exec, root, initial_pipe);
 	}
 	if (root->type == TYPE_LOGICAL)

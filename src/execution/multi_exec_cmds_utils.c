@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 18:28:39 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 11:11:02 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,20 +89,20 @@ void	close_all_fds(void)
 	}
 }
 
-// void	ft_printf_fd(int fd)
-// {
-// 	char	*line;
+void	ft_printf_fd(int fd)
+{
+	char	*line;
 
-// 	line = get_next_line(fd);
-// 	if (!line)
-// 	{
-// 		ft_fprintf(2, "fd didn't have any lines to print.\n");
-// 		return ;
-// 	}
-// 	while (line)
-// 	{
-// 		ft_fprintf(2, "es: %s", line);
-// 		line = get_next_line(fd);
-// 	}
-// 	ft_fprintf(2, "____________________\n");
-// }
+	line = get_next_line(fd);
+	if (!line)
+	{
+		ft_fprintf(2, "fd didn't have any lines to print.\n");
+		return ;
+	}
+	while (line)
+	{
+		ft_fprintf(2, "es: %s", line);
+		line = get_next_line(fd);
+	}
+	ft_fprintf(2, "____________________\n");
+}
