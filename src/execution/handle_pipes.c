@@ -71,7 +71,7 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 	{
 		pipe(next_pipe);
 		if (node->left)
-			execute_pipes(exec, node->right, prev_pipe, next_pipe);
+			execute_pipes(exec, node->left, prev_pipe, next_pipe);
 		exec->has_out = false;
 		prev_pipe[0] = next_pipe[0];
 		prev_pipe[1] = next_pipe[1];

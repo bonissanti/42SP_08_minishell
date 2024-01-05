@@ -39,7 +39,6 @@ static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
 
 void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 {
-	// int	ok_to_create;
 	if (node->type == TYPE_PIPE || node->type == TYPE_COMMAND || exec->has_out)
 		redirect_pipes(exec, prev_pipe, next_pipe);
 	if (node->type == TYPE_REDIRECT && node->to_exec)

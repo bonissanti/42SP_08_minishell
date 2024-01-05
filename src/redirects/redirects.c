@@ -47,7 +47,7 @@ int	redirect_input(t_ast *node, char *filename)
 		}		
 	}
 	node->in_fd = open(filename, O_RDONLY);
-	if (node->in_fd == -1 || !verify_file_permissions(filename))
+	if (!verify_file_permissions(filename) || node->in_fd == -1)
 	{
 		node->to_exec = false;
 		return (1);
@@ -110,16 +110,20 @@ int	redirect_append(t_ast *node, char *filename)
 int	create_files(t_ast *node, t_exec *exec, int option)
 {
 	t_ast	*root;
-	int				ok_to_create;
+	int		ok_to_create;
 
 	root = node;
 	ok_to_create = 1;
-	(void)exec;
+
+
+
 	while (root || root == node)
 	{
+        if (exec->error_call == 1 && exec->count_pipes == 0)
+            return (1);
 		if (root->type == TYPE_REDIRECT)
 		{
-			if (option == 0)
+			if (option == 0 && exec->error_call != 1)
 			{
 				ok_to_create = handle_redirects(root);
 				if ((ok_to_create == 1 || ok_to_create == -1) && (option == 1))
