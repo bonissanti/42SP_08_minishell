@@ -49,7 +49,6 @@ int	redirect_input(t_ast *node, char *filename)
 	node->in_fd = open(filename, O_RDONLY);
 	if (node->in_fd == -1 || !verify_file_permissions(filename))
 	{
-		ft_fprintf(2, "minishell: %s: %s\n", filename, strerror(errno));
 		node->to_exec = false;
 		return (1);
 	}
@@ -102,7 +101,6 @@ int	redirect_append(t_ast *node, char *filename)
 	node->out_fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (!verify_file_permissions(filename))
 	{
-		ft_fprintf(2, "minishell: %s: %s\n", filename, strerror(errno));
 		node->to_exec = false;
 		return (1);
 	}

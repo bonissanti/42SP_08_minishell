@@ -56,22 +56,11 @@ char	*check_expansion(t_hashtable *env, char **line, size_t *len)
 
 static void	redirect_hdoc(t_exec *exec, t_ast *node, char *filename)
 {
-	int	ok_to_create;
-
 	node->in_fd = open(filename, O_RDONLY);
 	dup2(node->in_fd, STDIN_FILENO);
 	close(node->in_fd);
 	if (node->right && node->right->type == TYPE_REDIRECT)
-	{
-		ok_to_create = create_files(node->right, exec, 0);
-		if (ok_to_create == 1 || ok_to_create == -1)
-		{
-			close_all_fds();
-			restore_fd(exec->old_stdin, exec->old_stdout);
-			free(filename);
-			exit(0);
-		}
-	}
+		create_files(node->right, exec, 1);
 }
 
 static void	child_rdir(t_exec *exec, t_ast *node, int *next_pipe, int index)

@@ -60,7 +60,7 @@ char	*build_cmd_path(t_ast *node, char *path);
 void	handle_error(t_ast *node, int result);
 void	analyze_if_print(t_ast *node, int index);
 int		analyze_cmd(t_hashtable *hashtable, t_ast *node);
-void	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable);
+int		analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable);
 char	*generate_filename(int count_hdoc);
 void	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node,
 			char *filename);

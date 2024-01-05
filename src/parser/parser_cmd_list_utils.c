@@ -138,9 +138,7 @@ void	add_cmd_list(t_cmd_list new_list)
 void	free_cmd_list(t_cmd_list *cmd_list)
 {
 	t_cmd_list	*temp;
-	t_bool 		freed;
 
-	freed = false;
 	while (cmd_list)
 	{
 		temp = cmd_list->next;

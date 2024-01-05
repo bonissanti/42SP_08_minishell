@@ -62,7 +62,7 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 		g_global.cmd_status = analyze_redirect(exec, hash, root);
 	}
 	if (root->type == TYPE_HEREDOC)
-		analyze_heredoc(exec, root, hash);
+		g_global.cmd_status = analyze_heredoc(exec, root, hash);
 	if (root->type == TYPE_PIPE)
 	{
 		int ok_to_create = create_files(root, exec, 0);
