@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/05 14:10:52 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/05 18:58:37 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	crop_quote_tkn(char **cmd)
 	i = 1;
 	quote = **cmd;
 	closed = false;
-	while (**cmd)
+	while (**cmd && !closed)
 	{
 		i += process_quote(cmd, quote, &closed);
 		if (!(**cmd))
@@ -191,7 +191,7 @@ char	*crop_tkn(char **cmd, t_hashtable *env, t_bool *is_export)
 		if (is_expander(**cmd))
 			return (append_expanded(cropped, cmd, env, i));
 	}
-	return (ft_substr(cropped, 0, i));
+	return (ft_strtrim(ft_substr(cropped, 0, i), " "));
 }
 
 /**
