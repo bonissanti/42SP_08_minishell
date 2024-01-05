@@ -59,7 +59,7 @@ static void	redirect_hdoc(t_exec *exec, t_ast *node, char *filename)
 	node->in_fd = open(filename, O_RDONLY);
 	dup2(node->in_fd, STDIN_FILENO);
 	close(node->in_fd);
-	if (node->right && node->right->type == TYPE_REDIRECT)
+	if (node->right && node->right->type == TYPE_REDIRECT && exec->error_call == 0)
 		create_files(node->right, exec, 1);
 }
 

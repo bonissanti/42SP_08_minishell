@@ -110,12 +110,8 @@ int	redirect_append(t_ast *node, char *filename)
 int	create_files(t_ast *node, t_exec *exec, int option)
 {
 	t_ast	*root;
-	int		ok_to_create;
 
 	root = node;
-	ok_to_create = 1;
-
-
 
 	while (root || root == node)
 	{
@@ -125,8 +121,8 @@ int	create_files(t_ast *node, t_exec *exec, int option)
 		{
 			if (option == 0 && exec->error_call != 1)
 			{
-				ok_to_create = handle_redirects(root);
-				if ((ok_to_create == 1 || ok_to_create == -1) && (option == 1))
+				exec->error_call = handle_redirects(root);
+				if ((exec->error_call == 1 || exec->error_call == -1) && (option == 1))
 					return (1);
 			}
 			if (option == 1)

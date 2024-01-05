@@ -58,9 +58,6 @@ t_ast	*find_node(t_ast *root, t_type type)
 int	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable)
 {
 	analyze_if_print(node, 0);
-	int ok_to_create = create_files(node, exec, 0);
-	if (ok_to_create == 1 || ok_to_create == -1)
-		return (1);
 	if (node->type == TYPE_HEREDOC)
 		handle_heredoc(hashtable, exec, node);
 	else

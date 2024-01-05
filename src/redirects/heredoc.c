@@ -18,7 +18,7 @@ static void		open_execute(t_hashtable *hash, t_exec *exec, t_ast *node,
 					char *filename);
 static t_bool	verify(t_ast *node, char *line);
 
-void	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
+int	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
 	char	*line;
 	char	*filename;
@@ -39,9 +39,13 @@ void	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 		free(line);
 	}
 	close(node->out_fd);
+	exec->error_call = create_files(node, exec, 0);
+	if (exec->error_call == 1 || exec->error_call == -1)
+		return (1);
 	if (node->print_hdoc && !node->right)
 		open_execute(hash, exec, node, filename);
 	after_hdoc(exec, hash, node, filename);
+	return (0);
 }
 
 static void	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node,
