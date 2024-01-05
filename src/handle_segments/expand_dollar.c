@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:33:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/26 12:34:56 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/05 16:48:52 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	expand_variable(t_lex *quote, t_segment **head, size_t *len)
 		key_len = custom_strcspn(quote->ptr, "'");
 		key = ft_strndup(quote->ptr, key_len);
 		if (*key == '?')
-			add_segments(head, ft_itoa(g_global.cmd_status));
+			add_segments(head, readline_trash_can(ft_itoa(g_global.cmd_status)));
 		else
 		{
 			hash = search(quote->env, key);
