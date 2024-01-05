@@ -11,7 +11,22 @@
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-#include <stdio.h>
+
+/**
+ * Function: exec_simple
+ * -----------------
+ * This is the most used function in the execution. It is similar to the
+ * exec_forked_cmd, but it does not fork, because this happens outside of this
+ * function. It is used to execute the simple commands, like ls, echo, etc.
+ * And always is used after redirecting the fds in child process.
+ * 
+ * @param: exec: The pointer to the exec struct, aux struct for the execution.
+ * @param: hash: The pointer to the hashtable.
+ * @param: root: The pointer to the root node of the ast.
+ * 
+ * @return: Returns an int that indicates the exit status of the last command.
+ *
+ */
 
 int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
@@ -52,13 +67,13 @@ void	analyze_if_print(t_ast *node, int index)
 				node->left = save_node;
 			node->print_hdoc = true;
 		}
-		if (node->type == TYPE_REDIRECT && (index == 1 || index == 3) && (node->right == NULL
-				|| node->right->type != TYPE_REDIRECT))
-		{
-			if (node->left == NULL)
-				node->left = save_node;
-			node->print_redir = true;
-		}
+		// if (node->type == TYPE_REDIRECT && (index == 1 || index == 3) && (node->right == NULL
+		// 		|| node->right->type != TYPE_REDIRECT))
+		// {
+		// 	if (node->left == NULL)
+		// 		node->left = save_node;
+		// 	node->print_redir = true;
+		// }
 		node = node->right;
 	}
 }
@@ -89,20 +104,20 @@ void	close_all_fds(void)
 	}
 }
 
-void	ft_printf_fd(int fd)
-{
-	char	*line;
+// void	ft_printf_fd(int fd)
+// {
+// 	char	*line;
 
-	line = get_next_line(fd);
-	if (!line)
-	{
-		ft_fprintf(2, "fd didn't have any lines to print.\n");
-		return ;
-	}
-	while (line)
-	{
-		ft_fprintf(2, "es: %s", line);
-		line = get_next_line(fd);
-	}
-	ft_fprintf(2, "____________________\n");
-}
+// 	line = get_next_line(fd);
+// 	if (!line)
+// 	{
+// 		ft_fprintf(2, "fd didn't have any lines to print.\n");
+// 		return ;
+// 	}
+// 	while (line)
+// 	{
+// 		ft_fprintf(2, "es: %s", line);
+// 		line = get_next_line(fd);
+// 	}
+// 	ft_fprintf(2, "____________________\n");
+// }

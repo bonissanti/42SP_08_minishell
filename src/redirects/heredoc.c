@@ -16,7 +16,7 @@ static void		after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 					char *filename);
 static void		open_execute(t_hashtable *hash, t_exec *exec, t_ast *node,
 					char *filename);
-static t_bool	verify(t_ast *node, char *line);
+static t_bool	verify_eof(t_ast *node, char *line);
 
 /**
  * Function: handle_heredoc
@@ -55,7 +55,7 @@ int	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 	{
 		len = 0;
 		line = readline("> ");
-		if (!verify(node, line))
+		if (!verify_eof(node, line))
 			break ;
 		line = check_expansion(hash, &line, &len);
 		if (node->print_hdoc && line)
@@ -196,7 +196,23 @@ void	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 	restore_fd(exec->old_stdin, exec->old_stdout);
 }
 
-static t_bool	verify(t_ast *node, char *line)
+/**
+ * Function: verify_eof
+ * -----------------
+ * This function verify_eof if the line read from the stdin is the delimiter of
+ * the heredoc redirection. The first if checks if the line is empty, 
+ * gerated by the ctrl+d. The second if checks if the line is the delimiter.
+ * If the line is empty or the delimiter, the function returns false, and the
+ * redirection is finished.
+ *  
+ * @param: node: The pointer to the node that contains the redirection.
+ * @param: line: The line that is read from the stdin.
+ * 
+ * @return: Returns false if the line is empty or the delimiter, true otherwise.
+ *
+ */
+
+static t_bool	verify_eof(t_ast *node, char *line)
 {
 	if (!line || *line == '\0')
 	{

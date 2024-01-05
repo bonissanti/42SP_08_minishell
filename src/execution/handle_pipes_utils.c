@@ -12,6 +12,21 @@
 
 #include "../include/minishell.h"
 
+/**
+ * Function: parent_pipe
+ * -----------------
+ * Parent process of the execution of a pipe. Basically, it closes the pipes
+ * that are not going to be used in the execution and decrements the number
+ * of pipes that are going to be used.
+ *  
+ * @param: exec: The pointer to the exec struct, aux struct for the execution.
+ * @param: prev_pipe: The pointer to the pipe that is going to be read.
+ * @param: next_pipe: The pointer to the pipe that is going to be written.
+ * 
+ * @return: This is a void function, so it does not return a value.
+ *
+ */
+
 static void	parent_pipe(t_exec *exec, int *prev_pipe, int *next_pipe)
 {
 	if (prev_pipe && !next_pipe)
@@ -20,6 +35,28 @@ static void	parent_pipe(t_exec *exec, int *prev_pipe, int *next_pipe)
 		close(next_pipe[1]);
 	exec->count_pipes--;
 }
+
+/**
+ * Function: redirect_pipes
+ * -----------------
+ * This function is used to redirect the pipes to the stdin and stdout of the
+ * command that is going to be executed. It is used in the child process of
+ * the execution of the pipes. When prev_pipe is not -1, it means that the
+ * command has a previous pipe, so it redirects the stdin to the pipe. When 
+ * next_pipe is not NULL and exec->count_pipes >= 1, it means that the command
+ * has a next pipe, so it redirects the stdout to the pipe until the count of
+ * pipes is 0.
+ * 
+ * @param: exec: The pointer to the exec struct, aux struct for the execution.
+ * @param: prev_pipe: The pointer to the pipe that is going to be read.
+ * @param: next_pipe: The pointer to the pipe that is going to be written.
+ * @var: exec->read_in: The boolean that indicates if the command must
+ * read from the input file instead of the pipe. Here, it is used to avoid
+ * to redirect the stdin to the pipe when the command has a redirection.
+ * 
+ * @return: This is a void function, so it does not return a value.
+ *
+ */
 
 static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
 {
@@ -37,11 +74,27 @@ static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
 	}
 }
 
-void	isolate_node(t_exec *exec, t_ast *node)
-{
-	(void)node;
-	free_for_finish(exec, g_global.hash);
-}
+/**
+ * Function: child_pipe
+ * -----------------
+ * This function is used to redirect the pipes to the stdin and stdout of the
+ * command that is going to be executed. It is used in the child process of
+ * the execution of the pipes. When prev_pipe is not -1, it means that the
+ * command has a previous pipe, so it redirects the stdin to the pipe. When 
+ * next_pipe is not NULL and exec->count_pipes >= 1, it means that the command
+ * has a next pipe, so it redirects the stdout to the pipe until the count of
+ * pipes is 0.
+ * 
+ * @param: exec: The pointer to the exec struct, aux struct for the execution.
+ * @param: prev_pipe: The pointer to the pipe that is going to be read.
+ * @param: next_pipe: The pointer to the pipe that is going to be written.
+ * @var: exec->read_in: The boolean that indicates if the command must
+ * read from the input file instead of the pipe. Here, it is used to avoid
+ * to redirect the stdin to the pipe when the command has a redirection.
+ * 
+ * @return: This is a void function, so it does not return a value.
+ *
+ */
 
 void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 {
@@ -65,6 +118,28 @@ void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 	exit (0);
 }
 
+/**
+ * Function: execute_pipes
+ * -----------------
+ * This function is used to redirect the pipes to the stdin and stdout of the
+ * command that is going to be executed. It is used in the child process of
+ * the execution of the pipes. When prev_pipe is not -1, it means that the
+ * command has a previous pipe, so it redirects the stdin to the pipe. When 
+ * next_pipe is not NULL and exec->count_pipes >= 1, it means that the command
+ * has a next pipe, so it redirects the stdout to the pipe until the count of
+ * pipes is 0.
+ * 
+ * @param: exec: The pointer to the exec struct, aux struct for the execution.
+ * @param: prev_pipe: The pointer to the pipe that is going to be read.
+ * @param: next_pipe: The pointer to the pipe that is going to be written.
+ * @var: exec->read_in: The boolean that indicates if the command must
+ * read from the input file instead of the pipe. Here, it is used to avoid
+ * to redirect the stdin to the pipe when the command has a redirection.
+ * 
+ * @return: This is a void function, so it does not return a value.
+ *
+ */
+
 void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 {
 	node->pid = fork();
@@ -76,19 +151,4 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 	}
 	else
 		parent_pipe(exec, prev_pipe, next_pipe);
-}
-
-t_ast	*get_last_node(t_ast *node, char *cmd)
-{
-	t_ast	*last_node;
-
-	last_node = node;
-	while (node != NULL)
-	{
-		if ((node->type == TYPE_REDIRECT && ft_strcmp(node->cmds, cmd) == 0)
-			&& (!node->right || node->right->type != TYPE_REDIRECT))
-			last_node = node;
-		node = node->right;
-	}
-	return (last_node);
 }

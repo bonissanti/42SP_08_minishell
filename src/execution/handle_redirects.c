@@ -66,9 +66,3 @@ int	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 	simple_redirect(exec, hashtable, node);
 	return (0);
 }
-
-	// else
-	// {
-	// 	node->left = NULL;
-	// 	exec_multi_cmds(exec, hashtable, node->right);
-	// }
