@@ -23,7 +23,7 @@ static void	parent_pipe(t_exec *exec, int *prev_pipe, int *next_pipe)
 
 static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
 {
-	if (*prev_pipe != -1)
+	if (*prev_pipe != -1 && !exec->read_in)
 	{
 		dup2(prev_pipe[0], STDIN_FILENO);
 		close(prev_pipe[0]);
@@ -39,7 +39,7 @@ static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
 
 void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 {
-	if (node->type == TYPE_PIPE || node->type == TYPE_COMMAND || exec->has_out)
+	if (node->type == TYPE_PIPE || node->type == TYPE_COMMAND || exec->has_out || exec->read_in)
 		redirect_pipes(exec, prev_pipe, next_pipe);
 	if (node->type == TYPE_REDIRECT && node->to_exec)
 	{

@@ -112,6 +112,7 @@ typedef struct s_exec
 	int					count_pipes;
 	int					count_redir;
 	int					error_call;
+	t_bool				read_in;
 	t_bool				has_out;
 }						t_exec;
 
