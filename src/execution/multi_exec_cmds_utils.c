@@ -53,6 +53,20 @@ int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 	return (g_global.exit_status);
 }
 
+/**
+ * Function: analyze_if_print
+ * -----------------
+ * This is used by the heredoc to set the print_hdoc to true in the nodes that
+ * have a sequence of heredocs. It is used to print the line of the last heredoc
+ * 
+ * @param: root: The pointer to the root node of the ast.
+ * @param: index: The index of the node that is being analyzed. (DEPRECATED).
+ * @var: save_node: The pointer to the first node of the sequence of heredocs.
+ * 
+ * @return: Returns a void function.
+ *
+ */
+
 void	analyze_if_print(t_ast *node, int index)
 {
 	t_ast	*save_node;
@@ -78,6 +92,19 @@ void	analyze_if_print(t_ast *node, int index)
 	}
 }
 
+/**
+ * Function: redirect_fds
+ * -----------------
+ * This is used for the redirections. It redirects the fds of the node to the
+ * stdin and stdout if they are not -1. In a nutshell, if the node is
+ * different from -1, it means that the node has a redirection.
+ * 
+ * @param: node: The pointer to the root node of the ast.
+ * 
+ * @return: Returns a void function.
+ *
+ */
+
 void	redirect_fds(t_ast *node)
 {
 	if (node->in_fd != -1)
@@ -91,6 +118,18 @@ void	redirect_fds(t_ast *node)
 		close(node->out_fd);
 	}
 }
+
+/**
+ * Function: close_all_fds
+ * -----------------
+ * This function is used to close all the fds that are not used in the execution
+ * of the command, excepts the stdin, stdout and stderr.
+ * 
+ * @param: i: The index of the fd that is going to be closed.
+ * 
+ * @return: Returns a void function.
+ *
+ */
 
 void	close_all_fds(void)
 {
