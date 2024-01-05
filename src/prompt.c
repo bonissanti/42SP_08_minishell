@@ -92,7 +92,7 @@ void	prompt(t_hashtable *env, t_list *tests)
 		init_signals();
 		g_global.to_exec = 0;
 		init_structs(&exec, 0, sizeof(t_exec));
-			g_global.readline_input = readline_trash_can(readline("$ "));
+			g_global.readline_input = readline_trash_can(readline(YELLOW"$ "RESET));
 		// if (isatty(STDIN_FILENO))
 		// else
 		// {

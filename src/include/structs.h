@@ -13,6 +13,9 @@
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
+# define YELLOW "\033[1;93m"
+# define RESET "\033[0m"
+
 # include "../../libft/libft.h"
 # include <dirent.h>
 
