@@ -49,7 +49,6 @@ int	get_index_redirect(t_ast *root, t_type type)
 	{
 		if (ft_strncmp(node->cmds, ">>", 2) == 0)
 			index = 0;
-		// else if (ft_strncmp(node->cmds, ">", 1) == 0)
 		else if (*node->cmds == '>')
 			index = 1;
 		else if (*node->cmds == '<')
@@ -61,7 +60,7 @@ int	get_index_redirect(t_ast *root, t_type type)
 int	analyze_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node)
 {
 	int ok_to_create = create_files(node, exec, 0);
-	if (ok_to_create == 1 || ok_to_create == -1)
+	if ((ok_to_create == 1 || ok_to_create == -1) && exec->count_pipes == 0)
 		return (1);
 		
 	simple_redirect(exec, hashtable, node);

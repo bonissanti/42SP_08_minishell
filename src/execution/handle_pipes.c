@@ -46,9 +46,10 @@ static void	last_pipe(t_exec *exec, t_ast *node, int *prev_pipe)
 		execute_pipes(exec, node, prev_pipe, next_pipe);
 		prev_pipe[0] = next_pipe[0];
 		prev_pipe[1] = next_pipe[1];
-		// close(next_pipe[1]);
 		exec->read_in = false;
-		execute_pipes(exec, node->right->right, prev_pipe, NULL);
+		if (node->right)
+			node = node->right;
+		handle_pipes(g_global.hash, exec, node->right, prev_pipe);
 		if (prev_pipe)
 		{
 			close(prev_pipe[0]);

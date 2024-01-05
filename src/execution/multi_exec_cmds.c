@@ -65,9 +65,9 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 		g_global.cmd_status = analyze_heredoc(exec, root, hash);
 	if (root->type == TYPE_PIPE)
 	{
-		int ok_to_create = create_files(root, exec, 0);
-		if (ok_to_create == 1 || ok_to_create == -1)
-			return ;
+		create_files(root, exec, 0);
+		// if (ok_to_create == 1 || ok_to_create == -1)
+		// 	return ;
 		handle_pipes(hash, exec, root, initial_pipe);
 	}
 	if (root->type == TYPE_LOGICAL)

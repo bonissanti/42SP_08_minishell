@@ -41,7 +41,10 @@ int	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 	close(node->out_fd);
 	exec->error_call = create_files(node, exec, 0);
 	if (exec->error_call == 1 || exec->error_call == -1)
+	{
+		free(filename);
 		return (1);
+	}
 	if (node->print_hdoc && !node->right)
 		open_execute(hash, exec, node, filename);
 	after_hdoc(exec, hash, node, filename);
@@ -81,7 +84,7 @@ static void	after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 		node->left = NULL;
 		exec_multi_cmds(exec, hash, node->right);
 	}
-	else if (node->right && (node->right->type == TYPE_REDIRECT))
+	else if (node->right && node->right->type == TYPE_REDIRECT && node->right->to_exec)
 		next_is_rdir(exec, hash, node, filename);
 	else if (node->right && node->right->type == TYPE_PIPE)
 		next_is_pipe(exec, hash, node, filename);
