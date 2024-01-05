@@ -23,6 +23,7 @@ int		execute_builtin(t_hashtable *hashtable, t_ast *node);
 void	init_redirects(t_exec *exec);
 int		handle_redirects(t_ast *node);
 int		create_files(t_ast *node, t_exec *exec, int option);
+int		pipe_to_ignore(t_ast *node, int *pipe_to_ignore);
 
 //############################# REDIRECTIONS #################################//
 

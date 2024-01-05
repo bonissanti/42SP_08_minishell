@@ -126,6 +126,7 @@ void	insert_ast(t_ast **head, t_ast *new_node, t_exec *exec)
 		exec->count_pipes++;
 	else if (new_node->type == TYPE_HEREDOC)
 		exec->count_hdoc++;
+	exec->error_call = 0;
 }
 
 /**

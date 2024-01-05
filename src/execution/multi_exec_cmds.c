@@ -13,28 +13,29 @@
 
 #include "../include/minishell.h"
 
-static void	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
+static t_bool	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 {
-	t_bool	heredoc_executed;
+	int		pipes;
 	t_ast	*heredoc_node;
 
-	heredoc_executed = false;
+	pipes = 0;
 	if (root == NULL || (root && !root->left && !root->right))
-		return ;
+		return (false);
 	if (root->type == TYPE_REDIRECT && root->right
-		&& root->right->type == TYPE_HEREDOC)
-		return ;
+		&& root->right->type == TYPE_HEREDOC && !root->left)
+		return (false);
+	if (exec->count_hdoc == 0)
+		return (false);
+	pipes = pipe_to_ignore(root, &pipes);
+	exec->count_pipes -= pipes;
 	heredoc_node = find_node(root, TYPE_HEREDOC);
-	if (root->type != TYPE_HEREDOC)
-	{
-		heredoc_node = find_node(root, TYPE_HEREDOC);
-		if (heredoc_node && !heredoc_executed)
-		{
-			analyze_heredoc(exec, heredoc_node, hash);
-			heredoc_executed = true;
-		}
-	}
+	if (heredoc_node == NULL)
+		return (false);
+	else
+		g_global.cmd_status = analyze_heredoc(exec, heredoc_node, hash);
+	return (true);
 }
+
 
 static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 {
@@ -61,13 +62,9 @@ static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 			return ;
 		g_global.cmd_status = analyze_redirect(exec, hash, root);
 	}
-	if (root->type == TYPE_HEREDOC)
-		g_global.cmd_status = analyze_heredoc(exec, root, hash);
 	if (root->type == TYPE_PIPE)
 	{
 		create_files(root, exec, 0);
-		// if (ok_to_create == 1 || ok_to_create == -1)
-		// 	return ;
 		handle_pipes(hash, exec, root, initial_pipe);
 	}
 	if (root->type == TYPE_LOGICAL)
@@ -81,7 +78,12 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 {
 	if (root == NULL)
 		return (0);
-	heredoc_first(exec, hashtable, root);
+	if (heredoc_first(exec, hashtable, root) && root->type == TYPE_PIPE)
+	{
+		wait_for_children(root);
+		close_all_fds();
+		return (0);
+	}
 	handle_cmd(exec, hashtable, root);
 	wait_for_children(root);
 	return (g_global.exit_status);

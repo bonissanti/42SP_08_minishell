@@ -113,6 +113,7 @@ int	create_files(t_ast *node, t_exec *exec, int option)
     int     ok_to_create;
 
 	root = node;
+	ok_to_create = 0;
 	while (root || root == node)
 	{
         if (exec->error_call == 1 && exec->count_pipes == 0)

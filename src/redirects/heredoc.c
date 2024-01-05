@@ -18,6 +18,30 @@ static void		open_execute(t_hashtable *hash, t_exec *exec, t_ast *node,
 					char *filename);
 static t_bool	verify(t_ast *node, char *line);
 
+/**
+ * Function: handle_heredoc
+ * -----------------
+ * This function is the heart of the heredoc redirection. It handles the
+ * redirection of the input to a file, and then executes the commands that
+ * follow the redirection. Besides, it calls the function checks the next
+ * node, if it is a pipe, a redirection or a logical operator.
+ *  
+ * @param: hash: The pointer to the hashtable.
+ * @param: exec: The pointer to the exec struct, aux struct for the execution.
+ * @param: node: The pointer to the node that contains the redirection.
+ * 
+ * @var: line: The line that is read from the stdin.
+ * @var: filename: The name of the file that is created to store the input.
+ * @var: len: The length of the line.
+ * @var: error_call: The error code returned by the function that creates the
+ * file.
+ * @var: print_hdoc: The boolean that indicates if the input should be printed
+ * to the file.
+ * 
+ * @return: Returns 0 if the redirection is successful, 1 if there is an error
+ *
+ */
+
 int	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
 	char	*line;
@@ -51,6 +75,27 @@ int	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 	return (0);
 }
 
+/**
+ * Function: open_execute
+ * -----------------
+ * This function executes the commands that follow the heredoc redirection.
+ * It is called by the function handle_heredoc.
+ *  
+ * @param: hash: The pointer to the hashtable.
+ * @param: exec: The pointer to the exec struct, aux struct for the execution.
+ * @param: node: The pointer to the node that contains the redirection.
+ * @param: filename: The name of the file that is created to store the input.
+ * 
+ * @var: node->in_fd: The file descriptor of the file that stores the input.
+ * @var: close(0): Closes the stdin, genereated by the restore_fd function in
+ * the function exec_simple.
+ * @var: close(1): Closes the stdout, genereated by the restore_fd function in
+ * the function exec_simple.
+ * 
+ * @return: This is a void function, so it does not return a value.
+ *
+ */
+
 static void	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node,
 	char *filename)
 {
@@ -75,6 +120,26 @@ static void	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node,
 		free(filename);
 }
 
+/**
+ * Function: After_hdoc
+ * -----------------
+ * This function executes the next node after the heredoc redirection. It is
+ * called by the function handle_heredoc. It checks if the next node is a
+ * redirection, a pipe or a logical operator.
+ *  
+ * @param: hash: The pointer to the hashtable.
+ * @param: exec: The pointer to the exec struct, aux struct for the execution.
+ * @param: node: The pointer to the node that contains the redirection.
+ * @param: filename: The name of the file that is created to store the input.
+ * 
+ * @var: node->right->to_exec: The boolean that indicates if the next node
+ * should be executed, it is setted to false or true by the function
+ * handle_redirect in create_files.
+ * 
+ * @return: This is a void function, so it does not return a value.
+ *
+ */
+
 static void	after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 		char *filename)
 {
@@ -95,6 +160,26 @@ static void	after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 		simple_logical(exec, hash, node->right, node->num_status);
 	}
 }
+
+/**
+ * Function: After_hdoc
+ * -----------------
+ * This function executes the next node after the heredoc redirection. It is
+ * called by the function handle_heredoc. It checks if the next node is a
+ * redirection, a pipe or a logical operator.
+ *  
+ * @param: hash: The pointer to the hashtable.
+ * @param: exec: The pointer to the exec struct, aux struct for the execution.
+ * @param: node: The pointer to the node that contains the redirection.
+ * @param: filename: The name of the file that is created to store the input.
+ * 
+ * @var: node->right->to_exec: The boolean that indicates if the next node
+ * should be executed, it is setted to false or true by the function
+ * handle_redirect in create_files.
+ * 
+ * @return: This is a void function, so it does not return a value.
+ *
+ */
 
 void	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 		int *next_pipe)

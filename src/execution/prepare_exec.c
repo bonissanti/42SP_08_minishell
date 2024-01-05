@@ -27,33 +27,6 @@ t_ast	*find_node(t_ast *root, t_type type)
 	}
 	return (NULL);
 }
-// t_ast	*find_last_node(t_ast *root, t_type type, t_exec *exec, char *cmds)
-// {
-// 	if (root == NULL)
-// 		return (NULL);
-// 	while (root)
-// 	{
-// 		if (root->type == type && ft_strncmp(root->cmds, cmds,
-// 				ft_strlen(cmds)) == 0 && root->type != TYPE_REDIRECT)
-// 			return (root);
-// 		else if (root->type == type && ft_strncmp(root->cmds, cmds,
-// 				ft_strlen(cmds)) == 0 && (exec->count_in == 0 || exec->count_out == 0))
-// 			return (root);
-// 		else if (root->right && root->type != TYPE_REDIRECT)
-// 			root = root->right;
-// 		else if (root->right && root->type == TYPE_REDIRECT)
-// 		{
-// 			if (ft_strcmp(root->cmds, "<") == 0)
-// 				exec->count_in--;
-// 			else if (ft_strcmp(root->cmds, ">") == 0 || ft_strcmp(root->cmds, ">>") == 0)
-// 				exec->count_out--;
-// 			root = root->right;
-// 		}
-// 		else
-// 			break ;
-// 	}
-// 	return (NULL);
-// }
 
 int	analyze_heredoc(t_exec *exec, t_ast *node, t_hashtable *hashtable)
 {

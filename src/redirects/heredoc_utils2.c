@@ -52,3 +52,17 @@ void	next_is_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
 		parent_hdoc(exec, hash, node, next_pipe);
 	}
 }
+
+int	pipe_to_ignore(t_ast *node, int *pipe_to_ignore)
+{
+	t_ast *temp;
+
+	temp = node;
+	while (temp && temp->type != TYPE_HEREDOC)
+	{
+		if (temp->type == TYPE_PIPE)
+			(*pipe_to_ignore)++;
+		temp = temp->right;
+	}
+	return (*pipe_to_ignore);
+}
