@@ -26,7 +26,7 @@ static void	child_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 		exec_simple(hashtable, exec, node->left);
 	else
 		free_for_finish(exec, hashtable);
-	(close_all_fds(), close(1),	close(0));
+	(close_all_fds(), close(1), close(0));
 	exit(0);
 }
 
@@ -51,7 +51,6 @@ void	simple_redirect(t_exec *exec, t_hashtable *hash, t_ast *node)
 
 	if (exec->count_pipes >= 1)
 		pipe(next_pipe);
-
 	if (node->type == TYPE_REDIRECT)
 	{
 		node->pid = fork();

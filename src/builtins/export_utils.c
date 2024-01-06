@@ -75,8 +75,8 @@ void	env_with_equals(t_hashtable *hashtable, char **args, int i)
 
 void	env_with_value(t_hashtable *hashtable, t_env *env)
 {
-	char		*key;
-	char		*value;
+	char	*key;
+	char	*value;
 
 	key = env->equals_sign[0];
 	value = env->value;
@@ -92,7 +92,8 @@ int	valid_identifier_export(char *str)
 	i = 0;
 	if (str == NULL || str[0] == '\0')
 		return (0);
-	if (ft_isdigit(str[0]) || (!ft_isalpha(str[0]) && str[0] != '#') || str[0] == '=')
+	if (ft_isdigit(str[0]) || (!ft_isalpha(str[0]) && str[0] != '#')
+		|| str[0] == '=')
 		return (0);
 	while (str[++i] != '\0')
 	{

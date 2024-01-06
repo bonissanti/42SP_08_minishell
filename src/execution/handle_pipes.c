@@ -44,6 +44,32 @@ void	handle_other(t_exec *exec, t_hashtable *hash, t_ast *node,
 }
 
 /**
+ * Function: Final_cmd
+ * -----------------
+ * This function is used to handle the other cases of the handle_pipes, as
+ * the logical operators. It calls the function execute_pipes to execute the
+ * command, then it calls the function simple_logical to wait for the children
+ * and execute the next command if the status of the command is 0.
+ *
+ * @param: hash: The pointer to the hashtable.
+ * @param: exec: The pointer to the exec struct, aux struct for the execution.
+ * @param: prev_pipe: The pointer to the pipe that is going to be read.
+ * 
+ * @return: This is a void function, so it does not return a value.
+ *
+ */
+
+static void	final_cmd(t_exec *exec, t_ast *node, int *prev_pipe)
+{
+	execute_pipes(exec, node, prev_pipe, NULL);
+	if (prev_pipe)
+	{
+		close(prev_pipe[0]);
+		close(prev_pipe[1]);
+	}
+}
+
+/**
  * Function: Last_pipe
  * -----------------
  * This function is the final process of handle_pipes. It executes the last
@@ -72,16 +98,11 @@ void	handle_other(t_exec *exec, t_hashtable *hash, t_ast *node,
 
 static void	last_pipe(t_exec *exec, t_ast *node, int *prev_pipe)
 {
-	int next_pipe[2];
-	if (exec->count_pipes == 0 || (exec->error_call == 1 && exec->count_pipes >= 1))
-	{
-		execute_pipes(exec, node, prev_pipe, NULL);
-		if (prev_pipe)
-		{
-			close(prev_pipe[0]);
-			close(prev_pipe[1]);
-		}
-	}
+	int	next_pipe[2];
+
+	if (exec->count_pipes == 0 || (exec->error_call == 1
+			&& exec->count_pipes >= 1))
+		final_cmd(exec, node, prev_pipe);
 	else if (exec->count_pipes >= 1)
 	{
 		pipe(next_pipe);
@@ -90,7 +111,6 @@ static void	last_pipe(t_exec *exec, t_ast *node, int *prev_pipe)
 		execute_pipes(exec, node, prev_pipe, next_pipe);
 		prev_pipe[0] = next_pipe[0];
 		prev_pipe[1] = next_pipe[1];
-		exec->read_in = false;
 		if (node->right)
 			node = node->right;
 		handle_pipes(g_global.hash, exec, node->right, prev_pipe);
@@ -128,7 +148,6 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 
 	if (node == NULL)
 		return ;
-		
 	if (node->right && *node->right->cmds == '>')
 		exec->has_out = true;
 	if (node->type == TYPE_PIPE)
@@ -139,6 +158,7 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 		exec->has_out = false;
 		prev_pipe[0] = next_pipe[0];
 		prev_pipe[1] = next_pipe[1];
+		exec->read_in = false;
 		if (node->right)
 			handle_pipes(hash, exec, node->right, prev_pipe);
 	}

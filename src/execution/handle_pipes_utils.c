@@ -98,7 +98,8 @@ static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
 
 void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 {
-	if (node->type == TYPE_PIPE || node->type == TYPE_COMMAND || exec->has_out || exec->read_in)
+	if (node->type == TYPE_PIPE || node->type == TYPE_COMMAND || exec->has_out
+		|| exec->read_in)
 		redirect_pipes(exec, prev_pipe, next_pipe);
 	if (node->type == TYPE_REDIRECT && node->to_exec)
 	{
@@ -113,9 +114,9 @@ void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 	else
 		free_for_finish(exec, g_global.hash);
 	close_all_fds();
-	close (0);
-	close (1);
-	exit (0);
+	close(0);
+	close(1);
+	exit(0);
 }
 
 /**

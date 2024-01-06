@@ -70,7 +70,7 @@ int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 void	analyze_if_print(t_ast *node, int index)
 {
 	t_ast	*save_node;
-	
+
 	save_node = node->left;
 	while (node != NULL)
 	{
@@ -81,13 +81,6 @@ void	analyze_if_print(t_ast *node, int index)
 				node->left = save_node;
 			node->print_hdoc = true;
 		}
-		// if (node->type == TYPE_REDIRECT && (index == 1 || index == 3) && (node->right == NULL
-		// 		|| node->right->type != TYPE_REDIRECT))
-		// {
-		// 	if (node->left == NULL)
-		// 		node->left = save_node;
-		// 	node->print_redir = true;
-		// }
 		node = node->right;
 	}
 }
@@ -142,6 +135,20 @@ void	close_all_fds(void)
 		i++;
 	}
 }
+
+// t_bool	flow_error_rdir(t_exec *exec, t_hashtable *hash, t_ast *node)
+// {
+// 	t_bool	executed;
+
+// 	executed = false;
+// 	if (exec->error_call == 1 && exec->count_pipes == 1)
+// 		{
+// 			g_global.cmd_status = 2;
+// 			if (exec_multi_cmds(exec, hash, node->right) == 0)
+// 				return ;
+// 			executed = true;
+// 		}
+// }
 
 // void	ft_printf_fd(int fd)
 // {

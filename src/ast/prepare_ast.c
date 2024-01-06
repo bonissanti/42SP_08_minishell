@@ -46,24 +46,24 @@ static void	prepare_redirect_or_heredoc(t_ast *new_node, t_cmd_list *cmd_list)
 	new_node->type = cmd_list->type;
 }
 
-int is_blank_command(const char *cmd)
+int	is_blank_command(const char *cmd)
 {
-	if(*cmd != 32)
+	if (*cmd != 32)
 		return (0);
-	while(*cmd == 32 && *cmd)
+	while (*cmd == 32 && *cmd)
 	{
-		if(*cmd != 32)
+		if (*cmd != 32)
 			return (0);
 		cmd++;
 	}
-	return (1);	
+	return (1);
 }
 
 void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list)
 {
-	if(is_blank_command(cmd_list->args))
+	if (is_blank_command(cmd_list->args))
 		new_node->args = ast_split(cmd_list->args, '\n');
-	else if(ft_strlen(cmd_list->args) > 0)
+	else if (ft_strlen(cmd_list->args) > 0)
 		new_node->args = ast_split(cmd_list->args, ' ');
 	else
 		new_node->args = ast_split(cmd_list->args, '\n');

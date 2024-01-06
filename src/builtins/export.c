@@ -65,8 +65,8 @@ int	env_syntax_check(t_hashtable *hash_table, char *temp, t_env *env)
 	}
 	if (!valid_identifier_export((*env).key))
 	{
-		ft_fprintf(2, "minishell: export: `%s': not a valid identifier\n",
-			(*env).key);
+		ft_fprintf(2, "minishell: export: `%s': not a valid "
+			"identifier\n", (*env).key);
 		if (temp != (*env).equals_sign[1])
 			free(temp);
 		free((*env).equals_sign[0]);
@@ -130,7 +130,7 @@ void	add_env(t_hashtable *hash_table, char **args)
 	i = 0;
 	while (args[++i] != NULL)
 	{
-		if(ft_strlen(args[i]) == 1 && *args[i] == '=')
+		if (ft_strlen(args[i]) == 1 && *args[i] == '=')
 			env.equals_sign = ft_split(args[i], '\n');
 		else
 			env.equals_sign = ft_split(args[i], '=');
@@ -172,8 +172,8 @@ void	ft_export(t_hashtable *hash_table, char **args)
 	else
 	{
 		add_env(hash_table, args);
-		if(g_global.cmd_status == 1)
-			return;
+		if (g_global.cmd_status == 1)
+			return ;
 	}
 	g_global.cmd_status = 0;
 }

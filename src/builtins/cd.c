@@ -34,7 +34,6 @@ void	ft_cd(t_hashtable *hashtable, char **args)
 	cwd = getcwd(NULL, 0);
 	insert(hashtable, "PWD", cwd);
 	free(cwd);
-	// g_global.cmd_status = 0;
 	return ;
 }
 
