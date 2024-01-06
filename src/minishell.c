@@ -17,6 +17,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	t_list *tests = NULL;
+	// ---- leaks da substr presentes em todos os comandos ----
 	// ft_lstadd_back(&tests, ft_lstnew("export"));
 	// ft_lstadd_back(&tests, ft_lstnew("export="));
 	// ft_lstadd_back(&tests, ft_lstnew("export test"));
@@ -178,6 +179,7 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("export otario=fucker"));						//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo $otario"));								//ok
 	// ft_lstadd_back(&tests, ft_lstnew("\"echo | ola\""));								//Não funciona
+	// ft_lstadd_back(&tests, ft_lstnew("\"echo | ola\" | echo fucker"));				//funciona parcialmente
 	// ft_lstadd_back(&tests, ft_lstnew("\'echo | ola\'"));								//Não funciona
 	// ft_lstadd_back(&tests, ft_lstnew("\"ls | wc\""));								//Não funciona
 	// ft_lstadd_back(&tests, ft_lstnew("\'ls | wc\'"));								//Não funciona
