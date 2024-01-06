@@ -188,6 +188,20 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("echo export fucker=\'$USER\'"));				//ok
 	// ft_lstadd_back(&tests, ft_lstnew("ls | wc cat << eof | sort | wc"));				//ok
 	// ft_lstadd_back(&tests, ft_lstnew("ls | wc cat << eof | wc"));					//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo oi | echo ola > file_without_permission | echo fucker"));					//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo oi | echo ola > file_without_permission"));					//ok
+	// ft_lstadd_back(&tests, ft_lstnew("cat < file_without_permission"));					//ok
+	// ft_lstadd_back(&tests, ft_lstnew("cat < file_without_permission | sort | wc"));		//ok
+	// ft_lstadd_back(&tests, ft_lstnew("cat < file_without_permission | wc"));				//ok
+	// ft_lstadd_back(&tests, ft_lstnew("cat << eof > file_without_permission"));			//ok
+	// ft_lstadd_back(&tests, ft_lstnew("cat << eof > file_without_permission"));			//ok
+
+
+
+
+
+
+
 
 
 

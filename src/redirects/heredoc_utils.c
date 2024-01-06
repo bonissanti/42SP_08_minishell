@@ -72,7 +72,7 @@ static void	child_rdir(t_exec *exec, t_ast *node, int *next_pipe, int index)
 		close(next_pipe[1]);
 		close(next_pipe[0]);
 	}
-	if (node->left)
+	if (node->left && exec->error_call != 1)
 		exec_simple(g_global.hash, exec, node->left);
 	else
 		free_for_finish(exec, g_global.hash);
