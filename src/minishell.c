@@ -32,8 +32,7 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("echo 3 'hello world'"));						//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo 4 hello'world'")); 						//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo 5 hello\"\"world")); 						//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 6 - \"\" \"  \" hello")); 				//comeu a letra 'o'
-
+	// ft_lstadd_back(&tests, ft_lstnew("echo 6 - \"\" \"  \" hello")); 				//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo 7 ''")); 									//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo 8 \"$PWD\"")); 							//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo 9 '$PWD'")); 								//ok
@@ -51,8 +50,8 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("echo 21 $?")); 								//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo 22 $?HELLO")); 							//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo 23 $?HE$?LLO$?")); 						//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 24 \"'\"$USER\"'\"")); 					//comeu a ultima aspas
-	// ft_lstadd_back(&tests, ft_lstnew("echo 25 '\"'$USER'\"'")); 						//comeu a ultima aspas
+	// ft_lstadd_back(&tests, ft_lstnew("echo 24 \"'\"$USER\"'\"")); 					//quebrado
+	// ft_lstadd_back(&tests, ft_lstnew("echo 25 '\"'$USER'\"'")); 						//quebrado
 	// ft_lstadd_back(&tests, ft_lstnew("echo \"hi\" | cat | cat | cat | cat | cat | cat | cat")); //ok
 	// ft_lstadd_back(&tests, ft_lstnew("pwd")); 										//ok
 	// ft_lstadd_back(&tests, ft_lstnew("pwd oi")); 									//ok
@@ -143,7 +142,7 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("echo oi > 1 > 2 > 3 > 4"));					//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo oi > 1 < 1 > 2")); 						//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc < not_found > 1"));				//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc > 1 < 1 > 2 < not_found.txt > 3"));	// valgrind e um comportamento inesperado
+	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc > 1 < 1 > 2 < not_found.txt > 3"));	//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc > 1 < > 2"));						//ok
 	// ft_lstadd_back(&tests, ft_lstnew("ls | wc > 1 < > 2"));							//ok
 	// ft_lstadd_back(&tests, ft_lstnew("<")); 											//ok
@@ -160,23 +159,24 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("\'|\'"));										//ok
 	// ft_lstadd_back(&tests, ft_lstnew("< \"Makefile\"")); 							//ok
 	// ft_lstadd_back(&tests, ft_lstnew("| \"Makefile\""));								//ok
-	// ft_lstadd_back(&tests, ft_lstnew("< 'Makefile')); 								//leaks
+	// ft_lstadd_back(&tests, ft_lstnew("< 'Makefile')); 								//ok
 	// ft_lstadd_back(&tests, ft_lstnew("ls | wc cat << EOF"));							//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo oi cat << EOF")); 						//leaks
-	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc")); 								//leaks
+	// ft_lstadd_back(&tests, ft_lstnew("echo oi cat << EOF")); 						//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo oi | wc")); 								//ok
 	// ft_lstadd_back(&tests, ft_lstnew("ls | sort | wc"));								//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo fucker | wc")); 							//leaks
+	// ft_lstadd_back(&tests, ft_lstnew("echo fucker | wc")); 							//ok
 	// ft_lstadd_back(&tests, ft_lstnew("ls | ls | sort | wc"));						//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo fucker | sort | wc")); 					//leaks
-	// ft_lstadd_back(&tests, ft_lstnew("export otario"));	
-	// ft_lstadd_back(&tests, ft_lstnew("export otario=\'"));
-	// ft_lstadd_back(&tests, ft_lstnew("export otario=\""));
-	// ft_lstadd_back(&tests, ft_lstnew("export otario=\"fucker"));
-	// ft_lstadd_back(&tests, ft_lstnew("export otario=\'fucker"));
-	// ft_lstadd_back(&tests, ft_lstnew("export otario="));
-	// ft_lstadd_back(&tests, ft_lstnew("export otario=fucker"));
-	// ft_lstadd_back(&tests, ft_lstnew("echo $otario"));
-	// ft_lstadd_back(&tests, ft_lstnew("export otario=fucker"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo fucker | sort | wc")); 					//ok
+	// ft_lstadd_back(&tests, ft_lstnew("export otario"));								//ok
+	// ft_lstadd_back(&tests, ft_lstnew("export otario=\'"));							//ok
+	// ft_lstadd_back(&tests, ft_lstnew("export otario=\""));							//ok
+	// ft_lstadd_back(&tests, ft_lstnew("export otario=\"fucker"));						//ok
+	// ft_lstadd_back(&tests, ft_lstnew("export otario=\'fucker"));						//ok
+	// ft_lstadd_back(&tests, ft_lstnew("export otario="));								//ok
+	// ft_lstadd_back(&tests, ft_lstnew("export otario"));								//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo $otario"));								//ok
+	// ft_lstadd_back(&tests, ft_lstnew("export otario=fucker"));						//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo $otario"));								//ok
 	// ft_lstadd_back(&tests, ft_lstnew("\"echo | ola\""));								//Não funciona
 	// ft_lstadd_back(&tests, ft_lstnew("\'echo | ola\'"));								//Não funciona
 	// ft_lstadd_back(&tests, ft_lstnew("\"ls | wc\""));								//Não funciona
@@ -184,6 +184,9 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("echo export fucker=$USER"));					//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo export fucker=\"$USER\""));				//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo export fucker=\'$USER\'"));				//ok
+	// ft_lstadd_back(&tests, ft_lstnew("ls | wc cat << eof | sort | wc"));				//ok
+	// ft_lstadd_back(&tests, ft_lstnew("ls | wc cat << eof | wc"));					//ok
+
 
 
 

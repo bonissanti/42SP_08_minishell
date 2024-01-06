@@ -38,7 +38,7 @@ void	expand_variable(t_lex *quote, t_segment **head, size_t *len)
 		else
 		{
 			hash = search(quote->env, key);
-			if (hash)
+			if (hash && hash->value)
 				add_segments(head, hash->value);
 			quote->ptr += key_len - 1;
 		}

@@ -78,6 +78,7 @@ void	expand_all(t_tkn_list *tkn_list, t_hashtable *env, t_bool *is_export)
 	t_tkn_list	*current;
 
 	current = tkn_list;
+	(void)is_export;
 	while (current)
 	{
 		if (current->type == EXPAND || current->type == WILD
@@ -85,7 +86,7 @@ void	expand_all(t_tkn_list *tkn_list, t_hashtable *env, t_bool *is_export)
 		{
 			if ((*current->content == '$' || *current->content == '\\'
 					|| *current->content == '\'' || *current->content == '"'
-					|| current->type == IDENTIFIER) && (!*is_export))
+					|| current->type == IDENTIFIER))
 				analyzing_quotes(env, &current->content);
 			if (*current->content == '~')
 				expand_tilde(env, current->content);

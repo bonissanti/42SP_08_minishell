@@ -167,6 +167,7 @@ char	*crop_tkn(char **cmd, t_hashtable *env, t_bool *is_export)
 
 	cropped = *cmd;
 	closed = false;
+	(void)is_export;
 	ft_memset(&quote, 0, sizeof(quote));
 	i = 0;
 	if (**cmd == '\'' || **cmd == '"')
@@ -186,8 +187,8 @@ char	*crop_tkn(char **cmd, t_hashtable *env, t_bool *is_export)
 			else if (isdelimiter(*cmd) && closed == true)
 				return (ft_substr(cropped, 0, i));
 		}
-		if (ft_strncmp(cropped, "export", 6) == 0)
-			*is_export = true;
+		// if (ft_strncmp(cropped, "export", 6) == 0)
+		// 	*is_export = true;
 		if (is_expander(**cmd))
 			return (append_expanded(cropped, cmd, env, i));
 	}
