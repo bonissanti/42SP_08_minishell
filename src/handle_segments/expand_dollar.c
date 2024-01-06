@@ -34,7 +34,7 @@ void	expand_variable(t_lex *quote, t_segment **head, size_t *len)
 		key_len = custom_strcspn(quote->ptr, "'");
 		key = ft_strndup(quote->ptr, key_len);
 		if (*key == '?')
-			add_segments(head, readline_trash_can(ft_itoa(g_global.cmd_status)));
+			add_segments(head, gb_to_free(ft_itoa(g_global.cmd_status)));
 		else
 		{
 			hash = search(quote->env, key);

@@ -136,19 +136,18 @@ void	close_all_fds(void)
 	}
 }
 
-// t_bool	flow_error_rdir(t_exec *exec, t_hashtable *hash, t_ast *node)
-// {
-// 	t_bool	executed;
-
-// 	executed = false;
-// 	if (exec->error_call == 1 && exec->count_pipes == 1)
-// 		{
-// 			g_global.cmd_status = 2;
-// 			if (exec_multi_cmds(exec, hash, node->right) == 0)
-// 				return ;
-// 			executed = true;
-// 		}
-// }
+t_bool	process_redirect(t_exec *exec, t_hashtable *hash, t_ast *node)
+{
+	exec->error_call = handle_redirects(node);
+	if (exec->error_call == 1 && exec->count_pipes == 1)
+	{
+		g_global.cmd_status = 2;
+		if (exec_multi_cmds(exec, hash, node->right) == 0)
+			return (true);
+	}
+	g_global.cmd_status = analyze_redirect(exec, hash, node);
+	return (false);
+}
 
 // void	ft_printf_fd(int fd)
 // {

@@ -54,7 +54,7 @@ int	cmd_list_size(t_cmd_list *cmd_list)
 t_cmd_list	*new_cmd_list(t_cmd_list node)
 {
 	t_cmd_list	*new_node;
-	
+
 	new_node = (t_cmd_list *)ft_calloc(1, sizeof(t_cmd_list));
 	if (!new_node)
 		return (NULL);
@@ -62,14 +62,14 @@ t_cmd_list	*new_cmd_list(t_cmd_list node)
 	if (node.args)
 		new_node->args = ft_strdup(node.args);
 	else
-		new_node->args = NULL; 
+		new_node->args = NULL;
 	new_node->weight = node.weight;
 	if (node.infile)
-		new_node->infile = readline_trash_can(ft_strdup(node.infile));
+		new_node->infile = gb_to_free(ft_strdup(node.infile));
 	else
 		new_node->infile = NULL;
 	if (node.outfile)
-		new_node->outfile = readline_trash_can(ft_strdup(node.outfile));
+		new_node->outfile = gb_to_free(ft_strdup(node.outfile));
 	else
 		new_node->outfile = NULL;
 	new_node->here_doc = node.here_doc;
@@ -142,7 +142,7 @@ void	free_cmd_list(t_cmd_list *cmd_list)
 	while (cmd_list)
 	{
 		temp = cmd_list->next;
-		if(cmd_list->args)
+		if (cmd_list->args)
 			ft_safe_free((void **)&cmd_list->args);
 		cmd_list->here_doc_fd = 0;
 		ft_safe_free((void **)&cmd_list);

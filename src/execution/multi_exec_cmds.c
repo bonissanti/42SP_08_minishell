@@ -37,7 +37,8 @@ static t_bool	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 	t_ast	*heredoc_node;
 
 	pipes = 0;
-	if (root == NULL || (root->type != TYPE_HEREDOC && !root->left && !root->right))
+	if (root == NULL || (root->type != TYPE_HEREDOC && !root->left
+			&& !root->right))
 		return (false);
 	if (root->type == TYPE_REDIRECT && root->right
 		&& root->right->type == TYPE_HEREDOC && !root->left)
@@ -82,27 +83,15 @@ static t_bool	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 static void	handle_cmd(t_exec *exec, t_hashtable *hash, t_ast *root)
 {
 	int	initial_pipe[2];
-	t_bool executed;
 
 	initial_pipe[0] = -1;
 	initial_pipe[1] = -1;
-	executed = false;
-	
 	if (root->type == TYPE_COMMAND)
 		exec_forked_cmd(exec, hash, root);
 	if (root->type == TYPE_REDIRECT)
 	{
-		exec->error_call = handle_redirects(root);
-		if (exec->error_call == 1 && exec->count_pipes == 1)
-		{
-			g_global.cmd_status = 2;
-			if (exec_multi_cmds(exec, hash, root->right) == 0)
-				return ;
-			executed = true;
-		}
-		if (executed)
+		if (process_redirect(exec, hash, root))
 			return ;
-		g_global.cmd_status = analyze_redirect(exec, hash, root);
 	}
 	if (root->type == TYPE_PIPE)
 	{

@@ -60,9 +60,9 @@ static void	init_global_structs(void)
 // 		g_global.to_exec = 0;
 // 		init_structs(&exec, 0, sizeof(t_exec));
 // 		if (isatty(STDIN_FILENO))
-// 			g_global.readline_input = readline_trash_can((char *)tests->content);
+// 			g_global.readline_input = gb_to_free((char *)tests->content);
 // 		else
-// 			g_global.readline_input = readline_trash_can((char *)tests->content);
+// 			g_global.readline_input = gb_to_free((char *)tests->content);
 // 		if (!prompt_validation(g_global.readline_input, env))
 // 			continue ;
 // 		add_history(g_global.readline_input);
@@ -92,7 +92,7 @@ void	prompt(t_hashtable *env, t_list *tests)
 		init_signals();
 		g_global.to_exec = 0;
 		init_structs(&exec, 0, sizeof(t_exec));
-			g_global.readline_input = readline_trash_can(readline(YELLOW"$ "RESET));
+			g_global.readline_input = gb_to_free(readline(YELLOW"$ "RESET));
 		// if (isatty(STDIN_FILENO))
 		// else
 		// {

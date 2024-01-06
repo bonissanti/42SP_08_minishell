@@ -17,7 +17,7 @@ void	empty_trash_can(void)
 	ft_lstclear(&g_global.readline_input_to_free, ft_delete_content);
 }
 
-char	*readline_trash_can(char *readline_input)
+char	*gb_to_free(char *readline_input)
 {
 	if (!g_global.readline_input_to_free)
 		g_global.readline_input_to_free = ft_lstnew(readline_input);

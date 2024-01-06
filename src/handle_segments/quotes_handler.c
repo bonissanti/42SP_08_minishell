@@ -103,7 +103,7 @@ static inline void	toggle_quote_state(t_lex *quote)
  * quote, it just adds the character to the segment. Note that segments are
  * strings that are between quotes, then after they are added to the linked
  * list, it's important to reset the counter for the next segment, this avoids
- * errors like repeating previous segments or memory garbage.
+ * errors like repeating previous segments or memory gb_to_free.
  *   
  * @param: *quote: The struct that contains all the information about 
  * 			the quotes.

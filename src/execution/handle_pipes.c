@@ -111,6 +111,7 @@ static void	last_pipe(t_exec *exec, t_ast *node, int *prev_pipe)
 		execute_pipes(exec, node, prev_pipe, next_pipe);
 		prev_pipe[0] = next_pipe[0];
 		prev_pipe[1] = next_pipe[1];
+		exec->read_in = false;
 		if (node->right)
 			node = node->right;
 		handle_pipes(g_global.hash, exec, node->right, prev_pipe);
@@ -158,7 +159,6 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 		exec->has_out = false;
 		prev_pipe[0] = next_pipe[0];
 		prev_pipe[1] = next_pipe[1];
-		exec->read_in = false;
 		if (node->right)
 			handle_pipes(hash, exec, node->right, prev_pipe);
 	}

@@ -55,7 +55,7 @@ void	next_is_pipe(t_exec *exec, t_hashtable *hash, t_ast *node,
 
 int	pipe_to_ignore(t_ast *node, int *pipe_to_ignore)
 {
-	t_ast *temp;
+	t_ast	*temp;
 
 	temp = node;
 	while (temp && temp->type != TYPE_HEREDOC)
@@ -65,4 +65,54 @@ int	pipe_to_ignore(t_ast *node, int *pipe_to_ignore)
 		temp = temp->right;
 	}
 	return (*pipe_to_ignore);
+}
+
+/**
+ * Function: verify_eof
+ * -----------------
+ * This function verify_eof if the line read from the stdin is the delimiter of
+ * the heredoc redirection. The first if checks if the line is empty, 
+ * gerated by the ctrl+d. The second if checks if the line is the delimiter.
+ * If the line is empty or the delimiter, the function returns false, and the
+ * redirection is finished.
+ *  
+ * @param: node: The pointer to the node that contains the redirection.
+ * @param: line: The line that is read from the stdin.
+ * 
+ * @return: Returns false if the line is empty or the delimiter, true otherwise.
+ *
+ */
+
+static t_bool	verify_eof(t_ast *node, char *line)
+{
+	if (!line || *line == '\0')
+	{
+		ft_fprintf(2, "minishell: warning: here-document delimited by end-of-"
+			"file (wanted `%s')\n", node->delim);
+		return (false);
+	}
+	if (!ft_strcmp(line, node->delim) || !line)
+	{
+		free(line);
+		return (false);
+	}
+	return (true);
+}
+
+void	read_write_heredoc(t_hashtable *hash, t_ast *node)
+{
+	char	*line;
+	size_t	len;
+
+	len = 0;
+	while (1)
+	{
+		line = readline("> ");
+		if (!verify_eof(node, line))
+			break ;
+		line = check_expansion(hash, &line, &len);
+		if (node->print_hdoc && line)
+			ft_putendl_fd(line, node->out_fd);
+		free(line);
+	}
 }

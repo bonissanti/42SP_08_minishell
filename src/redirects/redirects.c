@@ -12,24 +12,6 @@
 
 #include "../include/minishell.h"
 
-// int	create_temp_file(t_ast *node, char *filename)
-// {
-// 	int		tmp_fd;
-// 	char	*tmp_filename;
-
-// 	(void)node;
-// 	tmp_filename = "/tmp/minishell_tmp_file";
-// 	tmp_fd = open(tmp_filename, O_CREAT | O_TRUNC | O_WRONLY, 0644);
-// 	if (tmp_fd != -1)
-// 	{
-// 		close(tmp_fd);
-// 		ft_fprintf(2, "minishell: %s: %s\n", filename, strerror(errno));
-// 		tmp_fd = open(tmp_filename, O_RDONLY);
-// 		unlink(tmp_filename);
-// 	}	
-// 	return (1);
-// }
-
 int	redirect_input(t_ast *node, char *filename)
 {
 	if (filename == NULL || isdelimiter(filename))
@@ -107,27 +89,38 @@ int	redirect_append(t_ast *node, char *filename)
 	return (0);
 }
 
+static int	handle_options(t_exec *exec, t_ast *node, int option)
+{
+	int		ok_to_create;
+
+	ok_to_create = 0;
+	if (option == 0 && exec->error_call != 1)
+	{
+		ok_to_create = handle_redirects(node);
+		if ((ok_to_create == 1 || ok_to_create == -1) && (option == 1))
+			return (1);
+	}
+	if (option == 1)
+		redirect_fds(node);
+	return (ok_to_create);
+}
+
 int	create_files(t_ast *node, t_exec *exec, int option)
 {
 	t_ast	*root;
-    int     ok_to_create;
+	int		ok_to_create;
 
 	root = node;
 	ok_to_create = 0;
 	while (root || root == node)
 	{
-        if (exec->error_call == 1 && exec->count_pipes == 0)
-            return (1);
+		if (exec->error_call == 1 && exec->count_pipes == 0)
+			return (1);
 		if (root->type == TYPE_REDIRECT)
 		{
-			if (option == 0 && exec->error_call != 1)
-			{
-				ok_to_create = handle_redirects(root);
-				if ((ok_to_create == 1 || ok_to_create == -1) && (option == 1))
-					return (1);
-			}
-			if (option == 1)
-				redirect_fds(root);
+			ok_to_create = handle_options(exec, root, option);
+			if (ok_to_create == 1)
+				return (1);
 		}
 		if (root)
 			root = root->right;

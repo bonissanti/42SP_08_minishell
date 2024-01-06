@@ -86,8 +86,8 @@ int	isdelimiter(char *cmd)
 
 int	is_redirect_op(char *cmd)
 {
-	if (!ft_strncmp(cmd, "<<", 2) || *cmd == '<'
-		|| !ft_strncmp(cmd, ">>", 2) || *cmd == '>')
+	if (!ft_strncmp(cmd, "<<", 2) || *cmd == '<' || !ft_strncmp(cmd, ">>", 2)
+		|| *cmd == '>')
 		return (1);
 	return (0);
 }

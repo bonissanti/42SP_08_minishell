@@ -16,7 +16,6 @@ static void		after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 					char *filename);
 static void		open_execute(t_hashtable *hash, t_exec *exec, t_ast *node,
 					char *filename);
-static t_bool	verify_eof(t_ast *node, char *line);
 
 /**
  * Function: handle_heredoc
@@ -44,24 +43,12 @@ static t_bool	verify_eof(t_ast *node, char *line);
 
 int	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
-	char	*line;
 	char	*filename;
-	size_t	len;
 
 	filename = generate_filename(exec->count_hdoc);
 	node->out_fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	signal(SIGINT, refresh_prompt);
-	while (1)
-	{
-		len = 0;
-		line = readline("> ");
-		if (!verify_eof(node, line))
-			break ;
-		line = check_expansion(hash, &line, &len);
-		if (node->print_hdoc && line)
-			ft_putendl_fd(line, node->out_fd);
-		free(line);
-	}
+	read_write_heredoc(hash, node);
 	close(node->out_fd);
 	exec->error_call = create_files(node, exec, 0);
 	if (exec->error_call == 1 || exec->error_call == -1)
@@ -149,7 +136,8 @@ static void	after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 		node->left = NULL;
 		exec_multi_cmds(exec, hash, node->right);
 	}
-	else if (node->right && node->right->type == TYPE_REDIRECT && node->right->to_exec)
+	else if (node->right && node->right->type == TYPE_REDIRECT
+		&& node->right->to_exec)
 		next_is_rdir(exec, hash, node, filename);
 	else if (node->right && node->right->type == TYPE_PIPE)
 		next_is_pipe(exec, hash, node, filename);
@@ -194,36 +182,4 @@ void	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 		handle_pipes(hash, exec, node->right, next_pipe);
 	}
 	restore_fd(exec->old_stdin, exec->old_stdout);
-}
-
-/**
- * Function: verify_eof
- * -----------------
- * This function verify_eof if the line read from the stdin is the delimiter of
- * the heredoc redirection. The first if checks if the line is empty, 
- * gerated by the ctrl+d. The second if checks if the line is the delimiter.
- * If the line is empty or the delimiter, the function returns false, and the
- * redirection is finished.
- *  
- * @param: node: The pointer to the node that contains the redirection.
- * @param: line: The line that is read from the stdin.
- * 
- * @return: Returns false if the line is empty or the delimiter, true otherwise.
- *
- */
-
-static t_bool	verify_eof(t_ast *node, char *line)
-{
-	if (!line || *line == '\0')
-	{
-		ft_fprintf(2, "minishell: warning: here-document delimited by end-of-"
-			"file (wanted `%s')\n", node->delim);
-		return (false);
-	}
-	if (!ft_strcmp(line, node->delim) || !line)
-	{
-		free(line);
-		return (false);
-	}
-	return (true);
 }
