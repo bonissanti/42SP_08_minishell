@@ -37,7 +37,7 @@ static t_bool	heredoc_first(t_exec *exec, t_hashtable *hash, t_ast *root)
 	t_ast	*heredoc_node;
 
 	pipes = 0;
-	if (root == NULL || (root && !root->left && !root->right))
+	if (root == NULL || (root->type != TYPE_HEREDOC && !root->left && !root->right))
 		return (false);
 	if (root->type == TYPE_REDIRECT && root->right
 		&& root->right->type == TYPE_HEREDOC && !root->left)

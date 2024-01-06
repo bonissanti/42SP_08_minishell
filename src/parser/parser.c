@@ -125,8 +125,8 @@ void	move_to_front(t_cmd_list **head, t_cmd_list *search_node)
 
 	prev = NULL;
 	cur = *head;
-	if ((*head)->next->type != TYPE_FILE
-		&& (*head)->next->next->type != TYPE_COMMAND)
+	if (cur->next->type == TYPE_FILE
+		&& cur->next->next->type != TYPE_COMMAND)
 		return ;
 	while (cur != NULL && cur != search_node)
 	{
