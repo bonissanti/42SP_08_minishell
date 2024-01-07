@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:34:49 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/05 15:31:19 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/07 14:40:02 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ t_lex	*init_lex(t_hashtable *env, char *arg)
 	t_lex	*quote;
 
 	quote = (t_lex *)ft_calloc(1, sizeof(t_lex));
-	quote->ptr = arg;
+	quote->ptr = gb_to_free(arg);
 	quote->segment = (char *)ft_calloc(ft_strlen(arg) + 1, sizeof(char));
 	quote->env = env;
 	init_structs(&quote->state, false, sizeof(t_quote_bool));

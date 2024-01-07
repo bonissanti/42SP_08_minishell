@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   node_creation_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 20:19:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/11 14:43:47 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/07 16:42:48 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	append_expand(t_tkn_list **current)
 			g_global.cmd_list->args = gnl_strjoin(g_global.cmd_list->args,
 					(*current)->content);
 		}
+		g_global.cmd_list->anti_split = false;
 		*current = (*current)->next;
 	}
 }

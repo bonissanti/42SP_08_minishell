@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/26 12:40:01 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/07 13:18:12 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,9 @@ int	is_expander(char x)
 char	*append_expanded(char *cmd, char **exp, t_hashtable *env, int index)
 {
 	char	*to_expand;
+	char	*test = ft_strdup(*exp);
 
-	to_expand = ft_substr(*exp, 0, crop_delimiter_tkn(exp));
+	to_expand = ft_substr(*exp, 0, crop_delimiter_tkn(&test));
 	analyzing_quotes(env, exp);
 	return (gnl_strjoin(ft_substr(cmd, 0, index), to_expand));
 }

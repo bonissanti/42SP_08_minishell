@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:32:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/28 14:22:40 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/07 16:43:39 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	new_cmd_file_node(t_tkn_list **current)
 			.type = TYPE_COMMAND,
 			.args = (*current)->content,
 			.weight = DEFAULT,
+			.anti_split = true,
 		});
 		*current = (*current)->next;
 	}

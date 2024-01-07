@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:57 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/30 18:23:34 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/07 17:06:48 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	handle_quotes(t_hashtable *env, t_segment *head, char **args)
 			|| (*quote->ptr == '\"' && !quote->state.single_open))
 			toggle_quote_state(quote);
 		else if (*quote->ptr == '$' && (quote->ptr[1] == '\''
-				|| quote->ptr[1] == '"'))
+				|| quote->ptr[1] == '"' || quote->ptr[1] == '/'))
 			literal_string(quote, &len);
 		else if (*quote->ptr == '$' && (quote->state.double_open
 				|| (!quote->state.single_open && !quote->state.double_open)))
@@ -180,8 +180,6 @@ void	final_process(t_lex *quote, t_segment **head, char **args, size_t *len)
 	add_segments(head, quote->segment);
 	free(quote->segment);
 	free(quote);
-	if (*args)
-		free(*args);
 	*args = join_segments(*head);
 	free_segments(*head);
 }

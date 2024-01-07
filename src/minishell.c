@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:38:13 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/02 19:55:51 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/07 17:28:39 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,32 +28,37 @@ int	main(int argc, char **argv, char **envp)
 	// ft_lstadd_back(&tests, ft_lstnew("export test=\"456\"")); leak
 	// ft_lstadd_back(&tests, ft_lstnew("export test+="));
 	// ft_lstadd_back(&tests, ft_lstnew("export test-=123"));
-	// ft_lstadd_back(&tests, ft_lstnew("echo 1 hello world")); 						//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 2 \"hello world\"")); 					//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 3 'hello world'"));						//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 4 hello'world'")); 						//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 5 hello\"\"world")); 						//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 6 - \"\" \"  \" hello")); 				//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 7 ''")); 									//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 8 \"$PWD\"")); 							//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 9 '$PWD'")); 								//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 10 \"aspas ->'\"")); 						//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 11 \"aspas -> ' \"")); 					//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 12 'aspas ->\"'")); 						//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 13 'aspas -> \" '")); 					//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 14 \"> >> < * ? [ ] | ; [ ] || && ( ) & # $ \\ <<\"")); //ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 15 '> >> < * ? [ ] | ; [ ] || && ( ) & # $ \\ <<'")); //ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 16 \"exit_code ->$? user ->$USER home -> $HOME\"")); //ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 17 'exit_code ->$? user ->$USER home -> $HOME'")); //ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 18 \"$\"")); 								//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 19 '$'")); 								//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 20 $"));									//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 21 $?")); 								//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 22 $?HELLO")); 							//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 23 $?HE$?LLO$?")); 						//ok
-	// ft_lstadd_back(&tests, ft_lstnew("echo 24 \"'\"$USER\"'\"")); 					//quebrado
-	// ft_lstadd_back(&tests, ft_lstnew("echo 25 '\"'$USER'\"'")); 						//quebrado
+	// ft_lstadd_back(&tests, ft_lstnew("echo hello world")); 						//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo \"hello world\"")); 					//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo 'hello world'"));						//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo hello'world'")); 						//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo hello\"\"world")); 						//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo - \"\" \"  \" hello")); 				//comeu a letra 'o'
+	// ft_lstadd_back(&tests, ft_lstnew("echo ''")); 									//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo \"$PWD\"")); 							//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo '$PWD'")); 								//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo \"aspas ->'\"")); 						//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo \"aspas -> ' \"")); 					//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo 'aspas ->\"'")); 						//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo 'aspas -> \" '")); 					//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo $/")); 					//comeu a ultima aspas
+	// ft_lstadd_back(&tests, ft_lstnew("echo \"'\"$USER\"'\"")); 					//comeu a ultima aspas
+	// ft_lstadd_back(&tests, ft_lstnew("echo '\"'$USER'\"'"));						//comeu a ultima aspas
+	// ft_lstadd_back(&tests, ft_lstnew("\"echo | ola\""));						//comeu a ultima aspas
+	// ft_lstadd_back(&tests, ft_lstnew("echo \"exit_code ->$? user ->$USER home -> $HOME\"")); //ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo 'exit_code ->$? user ->$USER home -> $HOME'")); //ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo \"$\"")); 								//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo '$'")); 								//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo $"));									//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo $?")); 								//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo $?HELLO")); 							//ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo $?HE$?LLO$?")); 						//ok
 	// ft_lstadd_back(&tests, ft_lstnew("echo \"hi\" | cat | cat | cat | cat | cat | cat | cat")); //ok
+	// ft_lstadd_back(&tests, ft_lstnew("echo $USER"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo \"'\">USER\"'\""));
+	// ft_lstadd_back(&tests, ft_lstnew("echo test \"'\">USER1\"'\""));
+	// ft_lstadd_back(&tests, ft_lstnew("echo test \"'\">USER2\"'\" test"));
+	// ft_lstadd_back(&tests, ft_lstnew("echo test \"'\">USER3\"'\" \"test\""));
 	// ft_lstadd_back(&tests, ft_lstnew("pwd")); 										//ok
 	// ft_lstadd_back(&tests, ft_lstnew("pwd oi")); 									//ok
 	// ft_lstadd_back(&tests, ft_lstnew("export hello"));								//ok

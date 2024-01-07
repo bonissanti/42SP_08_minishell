@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/05 13:21:13 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/07 17:14:48 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	init_global_structs(void)
 // 		if (!prompt_validation(g_global.readline_input, env))
 // 			continue ;
 // 		add_history(g_global.readline_input);
-// 		ft_printf("test: %s\n", tests->content);
+// 		// ft_printf("test: %s\n", tests->content);
 // 		tokenizer(env);
 // 		parser(env);
 // 		g_global.ast = init_ast(g_global.cmd_list, &exec);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_list_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 17:12:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/02 18:34:17 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/07 16:57:13 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ t_cmd_list	*new_cmd_list(t_cmd_list node)
 	else
 		new_node->outfile = NULL;
 	new_node->here_doc = node.here_doc;
+	new_node->anti_split = node.anti_split;
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	return (new_node);

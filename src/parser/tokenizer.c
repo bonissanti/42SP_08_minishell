@@ -6,7 +6,7 @@
 /*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/05 18:58:37 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/07 17:29:43 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	crop_quote_tkn(char **cmd)
 	i = 1;
 	quote = **cmd;
 	closed = false;
-	while (**cmd && !closed)
+	while ((**cmd && !closed) || is_expander(**cmd) || (**cmd && closed && **cmd != 32))
 	{
 		i += process_quote(cmd, quote, &closed);
 		if (!(**cmd))
@@ -121,8 +121,6 @@ int	crop_quote_tkn(char **cmd)
 			quote = **cmd;
 			closed = false;
 		}
-		i++;
-		(*cmd)++;
 	}
 	return (i);
 }
@@ -164,6 +162,8 @@ char	*crop_tkn(char **cmd, t_hashtable *env, t_bool *is_export)
 	int		i;
 	char	quote;
 	t_bool	closed;
+	(void)is_export;
+	(void)env;
 
 	cropped = *cmd;
 	closed = false;
@@ -181,18 +181,19 @@ char	*crop_tkn(char **cmd, t_hashtable *env, t_bool *is_export)
 			i++;
 			(*cmd)++;
 			if ((**cmd == '\'' || **cmd == '"'))
+			{
 				quote = **cmd;
+				closed = false;
+			}
 			else if (**cmd == quote)
 				closed = true;
 			else if (isdelimiter(*cmd) && closed == true)
 				return (ft_substr(cropped, 0, i));
 		}
-		// if (ft_strncmp(cropped, "export", 6) == 0)
-		// 	*is_export = true;
-		if (is_expander(**cmd))
-			return (append_expanded(cropped, cmd, env, i));
+		if (ft_strncmp(cropped, "export", 6) == 0)
+			*is_export = true;
 	}
-	return (ft_strtrim(ft_substr(cropped, 0, i), " "));
+	return (ft_strtrim(gb_to_free(ft_substr(cropped, 0, i)), " "));
 }
 
 /**
