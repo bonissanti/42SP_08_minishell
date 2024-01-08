@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_exec2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:01:56 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 16:14:58 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/08 17:33:55 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ int	handle_no_slash(t_hashtable *hash, t_ast *node)
 
 	search_var = search(hash, "PATH");
 	if (search_var == NULL)
+	{
+		ft_fprintf(2, "minishell: %s: command not found\n", node->cmds);
 		return (127);
+	}
 	path = search_var->value;
 	node->path = build_cmd_path(node, path);
 	if (node->path == NULL && !is_builtin(node))
