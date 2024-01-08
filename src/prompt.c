@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/08 15:37:26 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/08 18:17:46 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,6 @@ int	prompt_validation(char *readline_input, t_hashtable *env)
 		return (false);
 }
 
-// Para norma, se precisar economizar linhas
-// static inline void	finish_prompt(t_exec exec)
-// {
-// 	delete_node(g_global.ast);
-// 	free_lists();
-// 	restore_fd(exec.old_stdin, exec.old_stdout);
-// }
-
 static void	init_global_structs(void)
 {
 	g_global.ast = NULL;
@@ -48,56 +40,20 @@ static void	init_global_structs(void)
 	g_global.to_exec = 0;
 }
 
-// void	prompt(t_hashtable *env, t_list *tests)
-// {
-// 	t_exec	exec;
-
-// 	init_global_structs();
-// 	while (g_global.exit_status == -1 && tests)
-// 	{
-// 		usleep(200000);
-// 		init_signals();
-// 		g_global.to_exec = 0;
-// 		init_structs(&exec, 0, sizeof(t_exec));
-// 		if (isatty(STDIN_FILENO))
-// 			g_global.readline_input = gb_to_free((char *)tests->content);
-// 		else
-// 			g_global.readline_input = gb_to_free((char *)tests->content);
-// 		if (!prompt_validation(g_global.readline_input, env))
-// 			continue ;
-// 		add_history(g_global.readline_input);
-// 		// ft_printf("test: %s\n", tests->content);
-// 		tokenizer(env);
-// 		parser(env);
-// 		g_global.ast = init_ast(g_global.cmd_list, &exec);
-// 		backup_fd(&exec.old_stdin, &exec.old_stdout);
-// 		if (g_global.to_exec != 2)
-// 			exec_multi_cmds(&exec, env, g_global.ast);
-// 		delete_node(g_global.ast);
-// 		free_lists();
-// 		restore_fd(exec.old_stdin, exec.old_stdout);
-// 		tests = tests->next;
-// 	}
-// 	final_wipeout(env);
-// }
-
-void	prompt(t_hashtable *env, t_list *tests)
+void	prompt(t_hashtable *env)
 {
 	t_exec	exec;
 
-	(void)tests;
 	init_global_structs();
 	while (g_global.exit_status == -1)
 	{
 		init_signals();
 		g_global.to_exec = 0;
 		init_structs(&exec, 0, sizeof(t_exec));
+		if (isatty(STDIN_FILENO))
 			g_global.readline_input = gb_to_free(readline(YELLOW"$ "RESET));
-		// if (isatty(STDIN_FILENO))
-		// else
-		// {
-		// 	g_global.readline_input = readline("");
-		// }
+		else
+			g_global.readline_input = readline("");
 		if (!prompt_validation(g_global.readline_input, env))
 			continue ;
 		add_history(g_global.readline_input);
@@ -106,8 +62,7 @@ void	prompt(t_hashtable *env, t_list *tests)
 		g_global.ast = init_ast(g_global.cmd_list, &exec);
 		backup_fd(&exec.old_stdin, &exec.old_stdout);
 		exec_multi_cmds(&exec, env, g_global.ast);
-		delete_node(g_global.ast);
-		free_lists();
+		(delete_node(g_global.ast), free_lists());
 		restore_fd(exec.old_stdin, exec.old_stdout);
 		close_all_fds();
 	}

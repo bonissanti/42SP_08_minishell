@@ -6,24 +6,11 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/02 16:50:57 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/08 18:20:48 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-/**
- * Function: command_consistency
- * -----------------
- * The command_consistency function checks if the tkn_list
- * has an operator or a wrong parentesis at the beggining 
- * or at the end of the list.
- * 
- * @param: *tokenized: A pointer to the tokenized list.
- * 
- * @return: int.
- * 
-*/
 
 void	command_consistency(t_tkn_list *tokenized)
 {
@@ -55,20 +42,6 @@ void	command_consistency(t_tkn_list *tokenized)
 	}
 }
 
-/**
- * Function: rewind_list
- * -----------------
- * The rewind_list function checks if the current head
- * is actually the first node of the list, if it is not
- * it iterates through the list until it finds the first
- * node.
- * 
- * @param: **cmd_list: A pointer to the cmd_list
- * 
- * @return: t_cmd_list *.
- * 
-*/
-
 t_cmd_list	*rewind_list(t_cmd_list **cmd_list)
 {
 	if ((*cmd_list)->prev == NULL)
@@ -80,21 +53,6 @@ t_cmd_list	*rewind_list(t_cmd_list **cmd_list)
 	}
 	return (*cmd_list);
 }
-
-/**
- * Function: join_args
- * -----------------
- * The join_args function iterates through the tokenized list
- * and form a brand new cmd_list by joining tokens that are of
- * the type IDENTIFIER, EXPAND or WILD, and filling then with
- * their respective data.
- * 
- * @param: *tkn_list: A pointer to the tokenized list.
- * @var: *current: A pointer to the current node of the list.
- * 
- * @return: void.
- * 
-*/
 
 void	join_args(t_tkn_list *tkn_list)
 {
@@ -140,20 +98,6 @@ void	move_to_front(t_cmd_list **head, t_cmd_list *search_node)
 	search_node->next = *head;
 	*head = search_node;
 }
-
-/**
- * Function: parser
- * -----------------
- * The parser function is the main function of the parser.
- * It calls the command_consistency function to check if the
- * tkn_list is consistent, then it calls the join_args function
- * to form the cmd_list.
- * 
- * @param: *env: A pointer to the env.
- * 
- * @return: void.
- * 
-*/
 
 void	parser(t_hashtable *env)
 {

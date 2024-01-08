@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:39:43 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/25 12:48:58 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/08 18:18:19 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,6 @@
 
 extern t_global	g_global;
 
-void	prompt(t_hashtable *env, t_list *tests);
+void	prompt(t_hashtable *env);
 
 #endif
