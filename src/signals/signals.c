@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 18:45:17 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/08 14:26:53 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/08 14:28:22 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	hd_quit(int signal)
 	g_global.cmd_status = 130;
 	ft_putendl_fd("", 1);
 	close(0);
-	// g_global.hd = false;
 }
 
 void	refresh_prompt(int signal)

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 12:54:06 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/08 14:26:48 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/08 14:40:08 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,10 +103,11 @@ void	read_write_heredoc(t_hashtable *hash, t_ast *node)
 {
 	char	*line;
 	size_t	len;
+	int		bkp_in;
 
 	len = 0;
 	signal(SIGINT, hd_quit);
-	int bkp_in = dup(STDIN_FILENO);
+	bkp_in = dup(STDIN_FILENO);
 	while (1)
 	{
 		line = readline("> ");

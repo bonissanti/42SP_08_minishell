@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/08 14:19:57 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/08 14:40:25 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ int	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 	filename = generate_filename(exec->count_hdoc);
 	node->out_fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	read_write_heredoc(hash, node);
-	// signal(SIGINT, refresh_prompt);
 	close(node->out_fd);
 	exec->error_call = create_files(node, exec, 0);
-	if ((exec->error_call == 1 || exec->error_call == -1) && exec->count_pipes == 0)
+	if ((exec->error_call == 1 || exec->error_call == -1)
+		&& exec->count_pipes == 0)
 	{
 		free(filename);
 		return (1);
