@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 18:45:17 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/02 11:43:01 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/08 14:26:53 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,11 @@ void	init_hd_signals(int pid)
 
 void	hd_quit(int signal)
 {
-	if (signal == SIGINT)
-	{
-		free_lists();
-		destroy_hashtable(g_global.hash);
-		rl_clear_history();
-		exit(130);
-	}
+	(void)signal;
+	g_global.cmd_status = 130;
+	ft_putendl_fd("", 1);
+	close(0);
+	// g_global.hd = false;
 }
 
 void	refresh_prompt(int signal)

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 12:54:06 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 12:54:07 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/08 14:26:48 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,13 @@ int	pipe_to_ignore(t_ast *node, int *pipe_to_ignore)
 
 static t_bool	verify_eof(t_ast *node, char *line)
 {
-	if (!line || *line == '\0')
+	if (!line && g_global.cmd_status != 130)
 	{
 		ft_fprintf(2, "minishell: warning: here-document delimited by end-of-"
 			"file (wanted `%s')\n", node->delim);
 		return (false);
 	}
-	if (!ft_strcmp(line, node->delim) || !line)
+	if (!ft_strcmp(line, node->delim) || g_global.cmd_status == 130)
 	{
 		free(line);
 		return (false);
@@ -105,6 +105,8 @@ void	read_write_heredoc(t_hashtable *hash, t_ast *node)
 	size_t	len;
 
 	len = 0;
+	signal(SIGINT, hd_quit);
+	int bkp_in = dup(STDIN_FILENO);
 	while (1)
 	{
 		line = readline("> ");
@@ -115,4 +117,5 @@ void	read_write_heredoc(t_hashtable *hash, t_ast *node)
 			ft_putendl_fd(line, node->out_fd);
 		free(line);
 	}
+	dup2(bkp_in, STDIN_FILENO);
 }
