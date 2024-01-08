@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/08 14:58:00 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/08 17:04:20 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	handle_other(t_exec *exec, t_hashtable *hash, t_ast *node,
 
 static void	final_cmd(t_exec *exec, t_ast *node, int *prev_pipe)
 {
+	if (node->cmds && *node->cmds == '<')
+		exec->read_in = true;
 	execute_pipes(exec, node, prev_pipe, NULL);
 	if (prev_pipe)
 	{

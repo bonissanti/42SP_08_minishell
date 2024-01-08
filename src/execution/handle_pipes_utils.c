@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:01:50 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/08 14:59:26 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:42:13 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static void	parent_pipe(t_exec *exec, int *prev_pipe, int *next_pipe)
 
 static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
 {
-	if (*prev_pipe != -1 || !exec->read_in)
+	if (*prev_pipe != -1 && !exec->read_in)
 	{
 		dup2(prev_pipe[0], STDIN_FILENO);
 		close(prev_pipe[0]);
@@ -148,7 +148,6 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 	if (node->pid == 0)
 	{
 		child_pipe(exec, node, prev_pipe, next_pipe);
-		close_all_fds();
 	}
 	else
 		parent_pipe(exec, prev_pipe, next_pipe);
