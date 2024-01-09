@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 12:54:06 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/08 19:50:07 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/09 13:39:59 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,33 +67,17 @@ int	pipe_to_ignore(t_ast *node, int *pipe_to_ignore)
 	return (*pipe_to_ignore);
 }
 
-static t_bool	verify_eof(t_ast *node, char *line)
-{
-	if (!line && g_global.cmd_status != 130)
-	{
-		ft_fprintf(2, "minishell: warning: here-document delimited by end-of-"
-			"file (wanted `%s')\n", node->delim);
-		return (false);
-	}
-	if (!ft_strcmp(line, node->delim) || g_global.cmd_status == 130)
-	{
-		free(line);
-		return (false);
-	}
-	return (true);
-}
-
 void	read_write_heredoc(t_hashtable *hash, t_ast *node)
 {
 	char	*line;
 	size_t	len;
 	int		bkp_in;
 
-	len = 0;
 	signal(SIGINT, hd_quit);
 	bkp_in = dup(STDIN_FILENO);
 	while (1)
 	{
+		len = 0;
 		line = readline("> ");
 		if (!verify_eof(node, line))
 			break ;
