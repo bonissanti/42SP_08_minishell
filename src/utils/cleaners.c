@@ -6,11 +6,11 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 09:12:32 by allesson          #+#    #+#             */
-/*   Updated: 2024/01/02 17:16:48 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/09 11:24:55 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./include/minishell.h"
+#include "../include/minishell.h"
 
 void	empty_trash_can(void)
 {
