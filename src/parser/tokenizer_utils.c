@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/08 20:54:20 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/09 08:33:45 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,16 @@ int	is_expander(char x)
 	return (false);
 }
 
-char	*append_expanded(char *cmd, char **exp, t_hashtable *env, int index)
+void	expand_iterator(char **cmd, int *i)
 {
-	char	*to_expand;
-	char	*test;
-
-	test = ft_strdup(*exp);
-	to_expand = ft_substr(*exp, 0, crop_delimiter_tkn(&test));
-	analyzing_quotes(env, exp);
-	return (gnl_strjoin(ft_substr(cmd, 0, index), to_expand));
+	*i = *i + 1;
+	(*cmd)++;
+	while ((**cmd != ' ' && **cmd != '\0' && !isdelimiter(*cmd))
+		|| (**cmd == '$'))
+	{
+		*i = *i + 1;
+		(*cmd)++;
+	}
 }
 
 void	expand_all(t_tkn_list *tkn_list, t_hashtable *env)

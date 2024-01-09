@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/08 20:59:18 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/09 08:38:57 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,7 @@ int	crop_delimiter_tkn(char **cmd)
 
 	i = 0;
 	if (**cmd == '$' || **cmd == '~' || **cmd == '*')
-	{
-		i++;
-		(*cmd)++;
-		while ((**cmd != ' ' && **cmd != '\0' && !isdelimiter(*cmd))
-			|| (**cmd == '$'))
-		{
-			i++;
-			(*cmd)++;
-		}
-	}
+		expand_iterator(cmd, &i);
 	else if (!ft_strncmp(*cmd, "||", 2) || !ft_strncmp(*cmd, "&&", 2)
 		|| !ft_strncmp(*cmd, "<<", 2) || !ft_strncmp(*cmd, ">>", 2))
 	{
@@ -120,9 +111,7 @@ char	*crop_tkn(char **cmd)
 void	tokenizer(t_hashtable *env)
 {
 	char	*actual_cmd;
-	t_bool	is_export;
 
-	is_export = false;
 	actual_cmd = g_global.readline_input;
 	g_global.tkn_list = NULL;
 	while (*actual_cmd)

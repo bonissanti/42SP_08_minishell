@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/08 20:55:58 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/09 08:34:23 by allesson         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,6 @@ void		new_redirect_node(t_tkn_list **current);
 void		new_subshell_node(t_tkn_list **current);
 void		new_operator_node(t_tkn_list **current);
 int			is_expander(char x);
-char		*append_expanded(char *cmd, char **exp, t_hashtable *env,
-				int index);
 int			is_operator(t_tkn_type tkn);
 int			crop_delimiter_tkn(char **cmd);
 int			crop_quote_tkn(char **cmd);
@@ -54,4 +52,6 @@ int			is_redirect_op(char *cmd);
 int			set_head_tail(t_tkn_list *tokenized, t_tkn_list	
 				**head, t_tkn_list	**tail);
 int			process_quote(char **cmd, char quote, t_bool *closed);
+void		expand_iterator(char **cmd, int *i);
+
 #endif
