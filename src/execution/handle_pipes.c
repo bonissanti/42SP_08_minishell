@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/08 17:04:20 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/09 11:56:13 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,16 @@ static void	final_cmd(t_exec *exec, t_ast *node, int *prev_pipe)
 {
 	if (node->cmds && *node->cmds == '<')
 		exec->read_in = true;
+	if (node->cmds && *node->cmds == '>')
+		exec->has_out = true;	
 	execute_pipes(exec, node, prev_pipe, NULL);
 	if (prev_pipe)
 	{
 		close(prev_pipe[0]);
 		close(prev_pipe[1]);
 	}
+	exec->read_in = false;
+	exec->has_out = false;
 }
 
 /**
@@ -151,14 +155,11 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 
 	if (node == NULL)
 		return ;
-	if (node->right && *node->right->cmds == '>')
-		exec->has_out = true;
 	if (node->type == TYPE_PIPE)
 	{
 		pipe(next_pipe);
 		if (node->left)
 			execute_pipes(exec, node->left, prev_pipe, next_pipe);
-		exec->has_out = false;
 		prev_pipe[0] = next_pipe[0];
 		prev_pipe[1] = next_pipe[1];
 		if (node->right)
