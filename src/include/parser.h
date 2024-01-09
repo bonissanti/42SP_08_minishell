@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/08 18:26:26 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/08 20:55:58 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void		join_args(t_tkn_list *tkn_list);
 void		add_cmd_list(t_cmd_list new_list);
 t_cmd_list	*last_cmd_list(t_cmd_list *cmd_list);
 int			tkn_list_size(t_tkn_list *tkn_list);
-char		*cmd_type_string(t_type type);
 char		*tkn_type_converter(t_tkn_type type);
 void		new_cmd_file_node(t_tkn_list **current);
 void		new_redirect_node(t_tkn_list **current);
@@ -52,5 +51,7 @@ void		expand_all(t_tkn_list *tkn_list, t_hashtable *env);
 int			is_redirect(t_tkn_type tkn);
 void		free_lists(void);
 int			is_redirect_op(char *cmd);
-
+int			set_head_tail(t_tkn_list *tokenized, t_tkn_list	
+				**head, t_tkn_list	**tail);
+int			process_quote(char **cmd, char quote, t_bool *closed);
 #endif

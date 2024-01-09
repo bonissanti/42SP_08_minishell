@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 20:21:28 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/08 18:20:48 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/08 20:46:53 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,8 @@ void	command_consistency(t_tkn_list *tokenized)
 	t_tkn_list	*head;
 	t_tkn_list	*tail;
 
-	if (!tokenized)
-	{
-		g_global.to_exec = 2;
+	if (!(set_head_tail(tokenized, &head, &tail)))
 		return ;
-	}
-	head = tokenized;
-	tail = last_tkn_list(tokenized);
 	if (head->type == OR || head->type == AND || head->type == PIPE
 		|| head->type == C_PARENTESIS)
 	{

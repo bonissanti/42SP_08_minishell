@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/08 18:24:14 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/08 20:54:20 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,9 @@ int	is_expander(char x)
 char	*append_expanded(char *cmd, char **exp, t_hashtable *env, int index)
 {
 	char	*to_expand;
-	char	*test = ft_strdup(*exp);
+	char	*test;
 
+	test = ft_strdup(*exp);
 	to_expand = ft_substr(*exp, 0, crop_delimiter_tkn(&test));
 	analyzing_quotes(env, exp);
 	return (gnl_strjoin(ft_substr(cmd, 0, index), to_expand));
@@ -78,4 +79,26 @@ void	handle_token(char *str)
 		add_tkn_list(new_tkn_list(str, WILD));
 	else
 		add_tkn_list(new_tkn_list(str, IDENTIFIER));
+}
+
+int	process_quote(char **cmd, char quote, t_bool *closed)
+{
+	int	i;
+
+	i = 0;
+	if ((**cmd == '<' || **cmd == '>') && closed)
+		return (i);
+	else if (**cmd == '\'' || **cmd == '"' )
+		(*cmd)++;
+	while (**cmd != quote && **cmd)
+	{
+		i++;
+		(*cmd)++;
+	}
+	if (**cmd == quote)
+		*closed = true;
+	i++;
+	if (**cmd)
+		(*cmd)++;
+	return (i);
 }

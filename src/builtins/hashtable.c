@@ -6,23 +6,11 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 11:20:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 18:08:47 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/08 18:44:56 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-/**
- * Function: Create_hashtable
- * -----------------
- * This function will allocate memory for the buckets of the hashtable.
- * For default, buckets will be 101 and must be initialized to 0.
- * 
- * @var: hashtable: Pointer to the hashtable.
- * 
- * @return: Returns the pointer to the hashtable.
- *
- */
 
 t_hashtable	*create_hashtable(void)
 {
@@ -31,26 +19,6 @@ t_hashtable	*create_hashtable(void)
 	hashtable = (t_hashtable *)calloc(1, sizeof(t_hashtable));
 	return (hashtable);
 }
-
-/**
- * Function: Init_hash
- * -----------------
- * This function is used to initialize the hashtable. It will iterate through
- * the environment variables, split them into key and value using the '='
- * character as a delimiter, and then insert them into the hashtable. This
- * function uses a counter to keep track of the number of environment variables,
- * this is used futurely to print the environment variables in alphabetical
- * order.
- *  
- * @param: *hashtable: The pointer to the hashtable.
- * @param: **envp: The environment variables.
- * 
- * @var: i: The counter for the number of environment variables.
- * @var: env: The struct that contains the key and value of the environment
- * 
- * @return: Returns nothing.
- *
- */
 
 void	init_hash(char **envp)
 {
@@ -72,24 +40,6 @@ void	init_hash(char **envp)
 		free_split(env.equals_sign);
 	}
 }
-
-/**
- * Function: Insert
- * -----------------
- * This function is used to add the environment variable to the hashtable.
- * After get index of the bucket, it will allocate memory for the new
- * environment variable and pass the key and value to the new environment.
- *  
- * @param: hashtable: The pointer to the hashtable.
- * @param: key: The environment variable name.
- * @param: value: The environment variable value.
- * 
- * @var: index: The index of the bucket.
- * @var: add_env: The new environment variable to be added.
- * 
- * @return: This is a void function, so it does not return a value.
- *
- */
 
 void	insert(t_hashtable *hashtable, char *key, char *value)
 {
@@ -114,25 +64,6 @@ void	insert(t_hashtable *hashtable, char *key, char *value)
 		add_new_key(hashtable, key_copy, value_copy, index);
 }
 
-/**
- * Function: Search
- * -----------------
- * This function is used to search for an environment variable in the
- * hashtable. After knowing the index of the bucket, it will iterate
- * through the hashtable until it finds the environment variable.
- * If it finds it, it will return the value of the environment variable.
- * If it does not find it, it will return NULL.
- *  
- * @param: hashtable: The pointer to the hashtable.
- * @param: key: The environment variable name.
- * 
- * @var: index: The index of the bucket.
- * @var: search_env: The environment variable to be searched.
- * 
- * @return: Returns pointer to the value of the environment variable.
- *
- */
-
 t_hash	*search(t_hashtable *hashtable, char *key)
 {
 	unsigned int	index;
@@ -148,25 +79,6 @@ t_hash	*search(t_hashtable *hashtable, char *key)
 	}
 	return (NULL);
 }
-
-/**
- * Function: Delete
- * -----------------
- * This function is used to search for an environment variable in the
- * hashtable. After knowing the index of the bucket, it will iterate
- * through the hashtable until it finds the environment variable.
- * If it finds it, it will return the value of the environment variable.
- * If it does not find it, it will return NULL.
- *  
- * @param: hashtable: The pointer to the hashtable.
- * @param: key: The environment variable name.
- * 
- * @var: index: The index of the bucket.
- * @var: search_env: The environment variable to be searched.
- * 
- * @return: Returns pointer to the value of the environment variable.
- *
- */
 
 void	delete_hash(t_hashtable *hashtable, char *key)
 {

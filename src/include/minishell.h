@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:39:43 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/08 18:18:19 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/08 20:05:01 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <errno.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+# include <signal.h>
 # include "./structs.h"
 # include "./segments.h"
 # include "./parser.h"

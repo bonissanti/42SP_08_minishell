@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/08 18:40:49 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/08 20:59:18 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,28 +44,6 @@ int	crop_delimiter_tkn(char **cmd)
 	return (i);
 }
 
-static int	process_quote(char **cmd, char quote, t_bool *closed)
-{
-	int	i;
-
-	i = 0;
-	if ((**cmd == '<' || **cmd == '>') && closed)
-		return (i);
-	else if(**cmd == '\'' || **cmd == '"' )
-		(*cmd)++;
-	while (**cmd != quote && **cmd)
-	{
-		i++;
-		(*cmd)++;
-	}
-	if (**cmd == quote)
-		*closed = true;
-	i++;
-	if (**cmd)
-		(*cmd)++;
-	return (i);
-}
-
 int	crop_quote_tkn(char **cmd)
 {
 	int		i;
@@ -75,7 +53,8 @@ int	crop_quote_tkn(char **cmd)
 	i = 1;
 	quote = **cmd;
 	closed = false;
-	while ((**cmd && !closed) || is_expander(**cmd) || (**cmd && closed && **cmd != 32))
+	while ((**cmd && !closed) || is_expander(**cmd)
+		|| (**cmd && closed && **cmd != 32))
 	{
 		i += process_quote(cmd, quote, &closed);
 		if (!(**cmd))
@@ -91,26 +70,11 @@ int	crop_quote_tkn(char **cmd)
 	return (i);
 }
 
-char	*copy_var_export(char **cmd, t_bool *is_export)
+char	*crop_general_tkn(char **cmd, t_bool *closed, int *i, char *quote)
 {
-	int		i;
 	char	*cropped;
 
 	cropped = *cmd;
-	i = 0;
-	while (**cmd && *is_export && !isdelimiter(*cmd) && **cmd != '$')
-	{
-		i++;
-		(*cmd)++;
-	}
-	return (ft_substr(cropped, 0, i));
-}
-
-char	*crop_general_tkn(char **cmd, t_bool *closed, int *i, char *quote)
-{
-	char *cropped;
-
-	cropped = *cmd; 
 	while (**cmd != ' ' && **cmd != '\0' && !(*closed))
 	{
 		*i = *i + 1;
@@ -146,9 +110,9 @@ char	*crop_tkn(char **cmd)
 		i = crop_delimiter_tkn(cmd);
 	else
 	{
-		general = crop_general_tkn(cmd, &closed, &i, &quote);			
+		general = crop_general_tkn(cmd, &closed, &i, &quote);
 		if (general)
-			return(general);
+			return (general);
 	}
 	return (ft_strtrim(gb_to_free(ft_substr(cropped, 0, i)), " "));
 }

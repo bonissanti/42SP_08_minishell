@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:35:28 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/07 14:48:24 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/08 19:11:37 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list)
 {
 	if (is_blank_command(cmd_list->args))
 		new_node->args = ast_split(cmd_list->args, '\n');
-	// else if (ft_strlen(cmd_list->args) > 0)
 	else if (ft_strlen(cmd_list->args) > 0 && !cmd_list->anti_split)
 		new_node->args = ast_split(cmd_list->args, ' ');
 	else

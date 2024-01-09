@@ -6,33 +6,11 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 16:39:50 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/08 18:29:16 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/08 19:15:54 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-char	*tkn_type_converter(t_tkn_type type)
-{
-	if (type == INFILE)
-		return ("<");
-	else if (type == REDIRECT)
-		return (">");
-	else if (type == HERE_DOC)
-		return ("<<");
-	else if (type == APPEND)
-		return (">>");
-	else if (type == O_PARENTESIS)
-		return ("(");
-	else if (type == C_PARENTESIS)
-		return (")");
-	else if (type == AND)
-		return ("&&");
-	else if (type == OR)
-		return ("||");
-	else
-		return ("|");
-}
 
 void	skip_spaces(char **str)
 {

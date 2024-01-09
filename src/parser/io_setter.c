@@ -6,25 +6,11 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 15:16:57 by aperis-p          #+#    #+#             */
-/*   Updated: 2023/12/14 16:50:14 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/08 18:45:54 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-/**
- * Function: set_command_input
- * 
- * The set_command_input is a subfunction of the set_io function
- * it sets the infile and here_doc_fd fields of the TYPE_COMMAND
- * node in the cmd_list when cmd_list->args is '<' or "<<".
- * 
- * @param: **cmd_list: The command list.
- * @param: *head: The current head at the moment of the function call.
- * 
- * @return: void.
- * 
-*/
 
 void	set_command_input(t_cmd_list **cmd_list, t_cmd_list *head)
 {
@@ -48,20 +34,6 @@ void	set_command_input(t_cmd_list **cmd_list, t_cmd_list *head)
 	}
 }
 
-/**
- * Function: set_command_output
- * 
- * The set_command_output is a subfunction of the set_io function,
- * it sets the outfile field of the TYPE_COMMAND node in the cmd_list
- * when cmd_list->args is '>' or ">>".
- * 
- * @param: **cmd_list: The command list.
- * @param: *head: The current head at the moment of the function call.
- * 
- * @return: void.
- * 
-*/
-
 void	set_command_output(t_cmd_list **cmd_list, t_cmd_list *head)
 {
 	while (*cmd_list && (*cmd_list)->type != TYPE_COMMAND)
@@ -72,18 +44,6 @@ void	set_command_output(t_cmd_list **cmd_list, t_cmd_list *head)
 		head->outfile = head->next->args;
 	}
 }
-
-/**
- * Function: set_io
- * 
- * The set_io function sets the infile, outfile and here_doc_fd fields
- * for each TYPE_COMMAND node that has a redirect in his command block.
- * 
- * @param: **cmd_list: The command list.
- * 
- * @return: void.
- * 
-*/
 
 void	set_io(t_cmd_list **cmd_list)
 {

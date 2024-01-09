@@ -3,30 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_validater.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:29 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/25 12:43:40 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/08 20:19:54 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-/**
- * Function: Analyzing_quotes
- * -----------------
- * This function a pre-process to handle the quotes, it calls the function
- * even_close_quotes to check if the number of quotes is even, if it is not
- * it prints an error message and returns. If everything is ok, it calls the
- * function handle_quotes.
- *  
- * @param: *env: The hashtable that contains all the environment variables.
- * @param: **args: The array of arguments.
- * @var: *head: The head of the linked list that contains all the segments.
- * 
- * @return: Returns nothing.
- *
- */
 
 void	analyzing_quotes(t_hashtable *env, char **args)
 {

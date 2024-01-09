@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/08 18:17:46 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/08 19:10:02 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,7 @@ void	prompt(t_hashtable *env)
 		init_signals();
 		g_global.to_exec = 0;
 		init_structs(&exec, 0, sizeof(t_exec));
-		if (isatty(STDIN_FILENO))
-			g_global.readline_input = gb_to_free(readline(YELLOW"$ "RESET));
-		else
-			g_global.readline_input = readline("");
+		g_global.readline_input = gb_to_free(readline(YELLOW"$ "RESET));
 		if (!prompt_validation(g_global.readline_input, env))
 			continue ;
 		add_history(g_global.readline_input);
