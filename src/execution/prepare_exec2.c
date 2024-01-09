@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:01:56 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/08 17:33:55 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/09 18:59:46 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,31 @@ int	analyze_cmd(t_hashtable *hashtable, t_ast *node)
 	else
 		result = handle_no_slash(hashtable, node);
 	return (0);
+}
+
+char	**hashtable_to_envp(t_hashtable *hashtable)
+{
+	char	**envp;
+	int		i;
+	int		j;
+	t_hash	*curr;
+	char	*temp;
+
+	envp = (char **)malloc((hashtable->num_keys + 1) * sizeof(char *));
+	j = -1;
+	i = 0;
+	while (++j < 101)
+	{
+		curr = hashtable->buckets[j];
+		while (curr != NULL)
+		{
+			temp = ft_strjoin(curr->key, "=");
+			envp[i] = ft_strjoin(temp, curr->value);
+			free(temp);
+			i++;
+			curr = curr->next;
+		}
+	}
+	envp[i] = NULL;
+	return (envp);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/09 12:21:47 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/09 18:44:02 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,26 @@
 
 int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
+	char **envp;
+
+	envp = hashtable_to_envp(hash);	
 	if (analyze_cmd(hash, node) != 0)
 	{
 		free_for_finish(exec, hash);
+		free(envp);
 		return (g_global.cmd_status);
 	}
 	if (is_builtin(node))
 		execute_builtin(hash, node);
 	else
 	{
-		if (node->path == NULL)
+		g_global.cmd_status = execve(node->path, node->args, envp);
+		if (g_global.cmd_status == -1)
 			g_global.cmd_status = 127;
-		else
-		{
-			if (execve(node->path, node->args, NULL) == -1)
-				g_global.cmd_status = 2;
-		}
 		free_for_finish(exec, hash);
 		exit(g_global.cmd_status);
 	}
+	free(envp);
 	free_for_finish(exec, hash);
 	return (g_global.exit_status);
 }

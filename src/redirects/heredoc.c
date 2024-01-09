@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/09 13:39:40 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/09 13:49:34 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,6 @@ static void		after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 					char *filename);
 static void		open_execute(t_hashtable *hash, t_exec *exec, t_ast *node,
 					char *filename);
-
-static t_bool	verify_eof(t_ast *node, char *line)
-{
-	if (!line && g_global.cmd_status != 130)
-	{
-		ft_fprintf(2, "minishell: warning: here-document delimited by end-of-"
-			"file (wanted `%s')\n", node->delim);
-		return (false);
-	}
-	if (!ft_strcmp(line, node->delim) || g_global.cmd_status == 130)
-	{
-		free(line);
-		return (false);
-	}
-	return (true);
-}
 
 int	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
