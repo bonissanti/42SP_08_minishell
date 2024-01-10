@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/22 20:39:43 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/10 15:35:44 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:59:03 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@
 # include "./builtins.h"
 # include "./signals.h"
 # include "./cleaners.h"
-
-extern t_global	g_global;
 
 void	prompt(t_hashtable *env);
 t_shell	*get_shell(void);

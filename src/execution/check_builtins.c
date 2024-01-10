@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:00:37 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 19:16:17 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:51:48 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	execute_builtin(t_shell *shell, t_ast *node)
 		return (ft_exit(shell, node->args));
 	else
 		return (1);
-	return (g_global.exit_status);
+	return (shell->exit_status);
 }
 
 t_bool	is_builtin(t_ast *node)

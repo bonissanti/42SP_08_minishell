@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_tkn_list_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 18:22:03 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/08 19:13:45 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:44:10 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,15 @@ t_tkn_list	*last_tkn_list(t_tkn_list *tkn_list)
 	return (tkn_list);
 }
 
-void	add_tkn_list(t_tkn_list *new_list)
+void	add_tkn_list(t_tkn_list *new_list, t_shell *shell)
 {
 	t_tkn_list	*last;
 
-	if (!tkn_list_size(g_global.tkn_list))
-		g_global.tkn_list = new_list;
+	if (!tkn_list_size(shell->tkn_list))
+		shell->tkn_list = new_list;
 	else
 	{
-		last = last_tkn_list(g_global.tkn_list);
+		last = last_tkn_list(shell->tkn_list);
 		last->next = new_list;
 		last->next->prev = last;
 	}

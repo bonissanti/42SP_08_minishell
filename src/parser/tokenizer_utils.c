@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/10 19:24:39 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:46:16 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,32 +54,32 @@ void	expand_all(t_shell *shell, t_hashtable *env)
 	}
 }
 
-void	handle_token(char *str)
+void	handle_token(char *str, t_shell *shell)
 {
 	if (*str == '(')
-		add_tkn_list(new_tkn_list(str, O_PARENTESIS));
+		add_tkn_list(new_tkn_list(str, O_PARENTESIS), shell);
 	else if (*str == ')')
-		add_tkn_list(new_tkn_list(str, C_PARENTESIS));
+		add_tkn_list(new_tkn_list(str, C_PARENTESIS), shell);
 	else if (!ft_strncmp(str, ">>", 2))
-		add_tkn_list(new_tkn_list(str, APPEND));
+		add_tkn_list(new_tkn_list(str, APPEND), shell);
 	else if (*str == '>')
-		add_tkn_list(new_tkn_list(str, REDIRECT));
+		add_tkn_list(new_tkn_list(str, REDIRECT), shell);
 	else if (!ft_strncmp(str, "<<", 2))
-		add_tkn_list(new_tkn_list(str, HERE_DOC));
+		add_tkn_list(new_tkn_list(str, HERE_DOC), shell);
 	else if (*str == '<')
-		add_tkn_list(new_tkn_list(str, INFILE));
+		add_tkn_list(new_tkn_list(str, INFILE), shell);
 	else if (!ft_strncmp(str, "||", 2))
-		add_tkn_list(new_tkn_list(str, OR));
+		add_tkn_list(new_tkn_list(str, OR), shell);
 	else if (*str == '|')
-		add_tkn_list(new_tkn_list(str, PIPE));
+		add_tkn_list(new_tkn_list(str, PIPE), shell);
 	else if (!ft_strncmp(str, "&&", 2))
-		add_tkn_list(new_tkn_list(str, AND));
+		add_tkn_list(new_tkn_list(str, AND), shell);
 	else if (*str == '$')
-		add_tkn_list(new_tkn_list(str, EXPAND));
+		add_tkn_list(new_tkn_list(str, EXPAND), shell);
 	else if (*str == '*' || *str == '~')
-		add_tkn_list(new_tkn_list(str, WILD));
+		add_tkn_list(new_tkn_list(str, WILD), shell);
 	else
-		add_tkn_list(new_tkn_list(str, IDENTIFIER));
+		add_tkn_list(new_tkn_list(str, IDENTIFIER), shell);
 }
 
 int	process_quote(char **cmd, char quote, t_bool *closed)

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 12:54:06 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 19:26:12 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:56:43 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,15 @@ int	pipe_to_ignore(t_ast *node, int *pipe_to_ignore)
 	return (*pipe_to_ignore);
 }
 
-static t_bool	verify_eof(t_ast *node, char *line)
+static t_bool	verify_eof(t_ast *node, t_shell *shell, char *line)
 {
-	if (!line && g_global.cmd_status != 130)
+	if (!line && shell->cmd_status != 130)
 	{
 		ft_fprintf(2, "minishell: warning: here-document delimited by end-of-"
 			"file (wanted `%s')\n", node->delim);
 		return (false);
 	}
-	if (!ft_strcmp(line, node->delim) || g_global.cmd_status == 130)
+	if (!ft_strcmp(line, node->delim) || shell->cmd_status == 130)
 	{
 		free(line);
 		return (false);
@@ -95,7 +95,7 @@ void	read_write_heredoc(t_shell *shell, t_ast *node)
 	{
 		len = 0;
 		line = readline("> ");
-		if (!verify_eof(node, line))
+		if (!verify_eof(node, shell, line))
 			break ;
 		line = check_expansion(shell, &line, &len);
 		if (node->print_hdoc && line)

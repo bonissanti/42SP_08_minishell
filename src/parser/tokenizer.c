@@ -6,13 +6,11 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/10 18:37:27 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:52:22 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-t_global	g_global;
 
 int	crop_delimiter_tkn(char **cmd)
 {
@@ -120,7 +118,7 @@ void	tokenizer(t_hashtable *env, t_shell *shell)
 			skip_spaces(&actual_cmd);
 		if (!(*actual_cmd))
 			return ;
-		handle_token(crop_tkn(&actual_cmd, shell));
+		handle_token(crop_tkn(&actual_cmd, shell), shell);
 	}
 	expand_all(shell, env);
 }

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/10 18:38:36 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:44:23 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void		tokenizer(t_hashtable *env, t_shell *shell);
 void		skip_spaces(char **str);
 int			isdelimiter(char *cmd);
 t_tkn_list	*new_tkn_list(char *content, t_tkn_type type);
-void		handle_token(char *str);
+void		handle_token(char *str, t_shell *shell);
 t_tkn_list	*last_tkn_list(t_tkn_list *tkn_list);
-void		add_tkn_list(t_tkn_list *new_list);
+void		add_tkn_list(t_tkn_list *new_list, t_shell *shell);
 void		parser(t_hashtable *env, t_shell *shell);
 void		command_consistency(t_tkn_list *tokenized, t_shell *shell);
 void		join_args(t_tkn_list *tkn_list, t_shell *shell);

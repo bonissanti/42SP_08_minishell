@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:01:00 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 19:28:06 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:53:26 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ static void	redirect_hdoc(t_exec *exec, t_ast *node, char *filename)
 
 static void	child_rdir(t_exec *exec, t_ast *node, int *next_pipe, int index)
 {
+	t_shell *shell;
+
+	shell = get_shell();
 	if (index == 2 && exec->count_pipes >= 1)
 	{
 		dup2(next_pipe[1], STDOUT_FILENO);
@@ -73,9 +76,9 @@ static void	child_rdir(t_exec *exec, t_ast *node, int *next_pipe, int index)
 		close(next_pipe[0]);
 	}
 	if (node->left && exec->error_call != 1)
-		exec_simple(g_global.hash, exec, node->left);
+		exec_simple(shell->hash, exec, node->left);
 	else
-		free_for_finish(exec, g_global.hash);
+		free_for_finish(exec, shell->hash);
 	close_all_fds();
 }
 

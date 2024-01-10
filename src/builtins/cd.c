@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:32:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 19:11:11 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:51:38 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_cd(t_shell *shell, char **args)
 	if (argc > 2)
 	{
 		ft_putstr_fd("cd: too many arguments\n", 2);
-		g_global.cmd_status = 1;
+		shell->cmd_status = 1;
 		return ;
 	}
 	oldpwd = search(shell->hash, "PWD")->value;

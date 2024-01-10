@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 19:15:23 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/08 20:47:08 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:52:05 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	set_head_tail(t_tkn_list *tokenized, t_tkn_list	**head, t_tkn_list	**tail)
 {
 	if (!tokenized)
 	{
-		g_global.to_exec = 2;
+		get_shell()->to_exec = 2;
 		return (0);
 	}
 	*head = tokenized;
