@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaners.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 09:12:32 by allesson          #+#    #+#             */
-/*   Updated: 2024/01/09 11:24:55 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:31:48 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ void	empty_trash_can(void)
 	ft_lstclear(&g_global.readline_input_to_free, ft_delete_content);
 }
 
-char	*gb_to_free(char *readline_input)
-{
-	if (!g_global.readline_input_to_free)
-		g_global.readline_input_to_free = ft_lstnew(readline_input);
+char	*gb_to_free(char *readline_input, t_shell *shell)
+{	
+	if (!shell->readline_input_to_free)
+		shell->readline_input_to_free = ft_lstnew(readline_input);
 	else
-		ft_lstadd_back(&g_global.readline_input_to_free,
+		ft_lstadd_back(&shell->readline_input_to_free,
 			ft_lstnew(readline_input));
 	return (readline_input);
 }
@@ -50,7 +50,7 @@ void	final_wipeout(t_hashtable *env)
 
 void	free_for_finish(t_exec *exec, t_hashtable *env)
 {
-	delete_node(g_global.ast);
+	delete_node(get_shell()->ast);
 	destroy_hashtable(env);
 	free_lists();
 	empty_trash_can();

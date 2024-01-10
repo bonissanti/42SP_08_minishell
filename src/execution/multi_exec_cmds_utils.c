@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 12:11:26 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:17:06 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,28 @@
 int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
 	char **envp;
+	t_shell *shell;
 
+	shell = get_shell();
 	envp = hashtable_to_envp(hash);	
 	if (analyze_cmd(hash, node) != 0)
 	{
 		free_for_finish(exec, hash);
 		free_envp(envp);
-		return (g_global.cmd_status);
+		return (shell->cmd_status);
 	}
 	if (is_builtin(node))
-		execute_builtin(hash, node);
+		execute_builtin(shell, node);
 	else
 	{
-		g_global.cmd_status = execve(node->path, node->args, envp);
-		if (g_global.cmd_status == -1)
-			g_global.cmd_status = 127;
-		// free_for_finish(exec, hash);
-		// (close(0), close(1));
-		exit(g_global.cmd_status);
+		shell->cmd_status = execve(node->path, node->args, envp);
+		if (shell->cmd_status == -1)
+			shell->cmd_status = 127;
+		exit(shell->cmd_status);
 	}
 	free_envp(envp);
 	free_for_finish(exec, hash);
-	return (g_global.exit_status);
+	return (shell->cmd_status);
 }
 
 void	analyze_if_print(t_ast *node, int index)
@@ -83,15 +83,16 @@ void	close_all_fds(void)
 	}
 }
 
-t_bool	process_redirect(t_exec *exec, t_hashtable *hash, t_ast *node)
+t_bool	process_redirect(t_exec *exec, t_shell *shell, t_ast *node)
 {
 	exec->error_call = handle_redirects(node);
 	if (exec->error_call == 1 && exec->count_pipes == 1)
 	{
-		g_global.cmd_status = 2;
-		if (exec_multi_cmds(exec, hash, node->right) == 0)
+		shell->cmd_status = 2;
+		if (exec_multi_cmds(exec, node->right, shell) == 0)
 			return (true);
 	}
-	g_global.cmd_status = analyze_redirect(exec, hash, node);
+	shell->cmd_status = analyze_redirect(exec, shell, node);
 	return (false);
 }
+

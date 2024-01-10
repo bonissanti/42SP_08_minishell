@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:17:33 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 12:24:18 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 17:56:51 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static void	parent_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 	}
 }
 
-void	simple_redirect(t_exec *exec, t_hashtable *hash, t_ast *node)
+void	simple_redirect(t_exec *exec, t_shell *shell, t_ast *node)
 {
 	int	next_pipe[2];
 
@@ -55,14 +55,14 @@ void	simple_redirect(t_exec *exec, t_hashtable *hash, t_ast *node)
 		node->pid = fork();
 		exec_signals(node->pid);
 		if (node->pid == 0)
-			child_redirect(exec, hash, node, next_pipe);
+			child_redirect(exec, shell->hash, node, next_pipe);
 		else
-			parent_redirect(exec, hash, node, next_pipe);
+			parent_redirect(exec, shell->hash, node, next_pipe);
 	}
 	if (node->right && node->right->type == TYPE_LOGICAL)
 	{
 		waitpid(node->pid, &node->num_status, 0);
-		simple_logical(exec, hash, node->right, node->num_status);
+		simple_logical(exec, shell, node->right, node->num_status);
 	}
 	close_all_fds();
 }

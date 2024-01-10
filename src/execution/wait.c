@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:02:01 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/09 18:20:16 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 17:38:58 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	child_status(int status)
 	return (0);
 }
 
-int	wait_for_children(t_ast *node)
+int	wait_for_children(t_ast *node, t_shell *shell)
 {
 	int		status;
 	pid_t	pid;
@@ -44,9 +44,9 @@ int	wait_for_children(t_ast *node)
 	while (pid > 0)
 	{
 		if (WIFEXITED(status))
-			g_global.cmd_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status) && g_global.cmd_status == 0)
-			g_global.cmd_status = WTERMSIG(status);
+			shell->cmd_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status) && shell->cmd_status == 0)
+			shell->cmd_status = WTERMSIG(status);
 		pid = waitpid(-1, &status, WUNTRACED);
 	}
 	close_all_fds();

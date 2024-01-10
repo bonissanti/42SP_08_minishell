@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 12:54:06 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 14:13:40 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:26:12 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ static t_bool	verify_eof(t_ast *node, char *line)
 	return (true);
 }
 
-void	read_write_heredoc(t_hashtable *hash, t_ast *node)
+void	read_write_heredoc(t_shell *shell, t_ast *node)
 {
 	char	*line;
 	size_t	len;
@@ -97,13 +97,12 @@ void	read_write_heredoc(t_hashtable *hash, t_ast *node)
 		line = readline("> ");
 		if (!verify_eof(node, line))
 			break ;
-		line = check_expansion(hash, &line, &len);
+		line = check_expansion(shell, &line, &len);
 		if (node->print_hdoc && line)
 			ft_putendl_fd(line, node->out_fd);
 		free(line);
 	}
-	if (g_global.cmd_status == 130)
+	if (shell->cmd_status == 130)
 		dup2(bkp_in, STDIN_FILENO);
 	close(bkp_in);
 }
-

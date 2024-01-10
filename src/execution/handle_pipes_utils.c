@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:01:50 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/09 12:20:55 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/10 17:46:12 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,9 @@ static void	redirect_pipes(t_exec *exec, int *prev_pipe, int *next_pipe)
 
 void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 {
+	t_shell	*shell;
+
+	shell = get_shell();
 	if (node->type == TYPE_PIPE || node->type == TYPE_COMMAND || exec->has_out
 		|| exec->read_in)
 		redirect_pipes(exec, prev_pipe, next_pipe);
@@ -50,15 +53,13 @@ void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 		if (node->left && node->to_exec)
 			node = node->left;
 		else
-			free_for_finish(exec, g_global.hash);
+			free_for_finish(exec, shell->hash);
 	}
 	if (node && node->to_exec)
-		exec_simple(g_global.hash, exec, node);
+		exec_simple(shell->hash, exec, node);	
 	else
-		free_for_finish(exec, g_global.hash);
-	close_all_fds();
-	close(0);
-	close(1);
+		free_for_finish(exec, shell->hash);
+	(close_all_fds(), close(0), close(1));
 	exit(0);
 }
 
@@ -67,9 +68,7 @@ void	execute_pipes(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 	node->pid = fork();
 	exec_signals(node->pid);
 	if (node->pid == 0)
-	{
 		child_pipe(exec, node, prev_pipe, next_pipe);
-	}
 	else
 		parent_pipe(exec, prev_pipe, next_pipe);
 }

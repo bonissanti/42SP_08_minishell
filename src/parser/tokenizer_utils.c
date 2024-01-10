@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/09 08:33:45 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:24:39 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ void	expand_iterator(char **cmd, int *i)
 	}
 }
 
-void	expand_all(t_tkn_list *tkn_list, t_hashtable *env)
+void	expand_all(t_shell *shell, t_hashtable *env)
 {
 	t_tkn_list	*current;
 
-	current = tkn_list;
+	current = shell->tkn_list;
 	while (current)
 	{
 		if (current->type == EXPAND || current->type == WILD
@@ -44,7 +44,7 @@ void	expand_all(t_tkn_list *tkn_list, t_hashtable *env)
 			if ((*current->content == '$' || *current->content == '\\'
 					|| *current->content == '\'' || *current->content == '"'
 					|| current->type == IDENTIFIER))
-				analyzing_quotes(env, &current->content);
+				analyzing_quotes(env, shell, &current->content);
 			if (*current->content == '~')
 				expand_tilde(env, current->content);
 			else if (*current->content == '*')

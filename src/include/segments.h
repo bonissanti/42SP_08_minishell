@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:34:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 12:58:03 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:20:16 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@ void			free_segments(t_segment *head);
 
 //############################### QUOTES ###################################
 
-t_lex			*init_lex(t_hashtable *env, char *arg);
+t_lex			*init_lex(t_hashtable *env, char *arg, t_shell *shell);
 t_quote_bool	init_quote_bool(void);
 size_t			even_close_quotes(char *str);
-void			analyzing_quotes(t_hashtable *env, char **args);
-void			handle_quotes(t_hashtable *env, t_segment *head, char **args);
+void			analyzing_quotes(t_hashtable *env, t_shell *shell, char **args);
+void			handle_quotes(t_hashtable *env, t_segment *head, t_shell *shell, char **args);
 void			final_process(t_lex *quote, t_segment **head, char **args,
 					size_t *len);
 
 //############################### DOLLAR ###################################
 
-void			expand_variable(t_lex *quote, t_segment **head, size_t *len);
+void			expand_variable(t_lex *quote, t_segment **head, t_shell *shell, size_t *len);
 t_expand		init_expand_dollar(void);
 
 //############################### TILDE ###################################

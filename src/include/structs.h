@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 12:38:43 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 15:24:10 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -235,5 +235,19 @@ typedef struct s_global
 	t_ast				*ast;
 
 }						t_global;
+
+typedef struct s_shell
+{
+	char				*readline_input;
+	t_list				*readline_input_to_free;
+	t_tkn_list			*tkn_list;
+	t_cmd_list			*cmd_list;
+	int					exit_status;
+	int					to_exec;
+	int					cmd_status;
+	t_hashtable			*hash;
+	t_ast				*ast;
+
+}						t_shell;
 
 #endif

@@ -15,7 +15,6 @@
 
 # include "./minishell.h"
 
-// Hash table size is recommended to be a prime number
 # define HASHSIZE 101
 
 //############################### Hashtable ###################################
@@ -37,7 +36,7 @@ void			add_new_key(t_hashtable *hash, char *key_copy, char *value_copy,
 					size_t index);
 char			**copy_all_keys(t_hashtable *hash_table);
 char			*handle_elements(t_hashtable *hash_table, char *arg);
-void			init_hash(char **envp);
+void			init_hash(t_shell *shell, char **envp);
 char 			**hashtable_to_envp(t_hashtable *hash);
 
 #endif

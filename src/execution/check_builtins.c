@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check_builtins.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:00:37 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 19:24:57 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:16:17 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	execute_builtin(t_hashtable *hashtable, t_ast *node)
+int	execute_builtin(t_shell *shell, t_ast *node)
 {
 	char	*cmds;
 
@@ -21,19 +21,19 @@ int	execute_builtin(t_hashtable *hashtable, t_ast *node)
 	else
 		cmds = node->cmds;
 	if (ft_strcmp(cmds, "echo") == 0)
-		ft_echo(hashtable, node->args + 1);
+		ft_echo(shell, node->args + 1);
 	else if (ft_strcmp(cmds, "cd") == 0)
-		ft_cd(hashtable, node->args);
+		ft_cd(shell, node->args);
 	else if (ft_strcmp(cmds, "pwd") == 0)
-		ft_pwd(hashtable, node->args);
+		ft_pwd(shell, node->args);
 	else if (ft_strcmp(cmds, "export") == 0)
-		ft_export(hashtable, node->args);
+		ft_export(shell, node->args);
 	else if (ft_strcmp(cmds, "unset") == 0)
-		ft_unset(hashtable, node->args);
+		ft_unset(shell, node->args);
 	else if (ft_strcmp(cmds, "env") == 0)
-		ft_env(hashtable, node->args);
+		ft_env(shell, node->args);
 	else if (ft_strcmp(cmds, "exit") == 0)
-		return (ft_exit(node->args));
+		return (ft_exit(shell, node->args));
 	else
 		return (1);
 	return (g_global.exit_status);

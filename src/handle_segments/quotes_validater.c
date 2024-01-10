@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_validater.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:29 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/08 20:19:54 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:17:49 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	analyzing_quotes(t_hashtable *env, char **args)
+void	analyzing_quotes(t_hashtable *env, t_shell *shell, char **args)
 {
 	t_segment	*head;
 
@@ -23,7 +23,7 @@ void	analyzing_quotes(t_hashtable *env, char **args)
 		g_global.to_exec = 2;
 		return ;
 	}
-	handle_quotes(env, head, args);
+	handle_quotes(env, head, shell, args);
 }
 
 size_t	even_close_quotes(char *str)

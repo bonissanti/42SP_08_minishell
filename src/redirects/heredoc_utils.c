@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:01:00 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 15:33:04 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:28:06 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ char	*generate_filename(int count_hdoc)
 	return (filename);
 }
 
-char	*check_expansion(t_hashtable *env, char **line, size_t *len)
+char	*check_expansion(t_shell *shell, char **line, size_t *len)
 {
 	t_lex		*quote;
 	t_segment	*head;
 	char		*expanded;
 
-	quote = init_lex(env, *line);
+	quote = init_lex(shell->hash, *line, shell);
 	head = NULL;
 	expanded = NULL;
 	if (!quote->ptr)
@@ -39,7 +39,7 @@ char	*check_expansion(t_hashtable *env, char **line, size_t *len)
 	while (*quote->ptr)
 	{
 		if (*quote->ptr == '$')
-			expand_variable(quote, &head, len);
+			expand_variable(quote, &head, shell, len);
 		else
 		{
 			quote->segment[*len] = *quote->ptr;

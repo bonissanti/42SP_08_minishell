@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hashtable.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/11 11:20:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/08 18:44:56 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:12:39 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,23 @@ t_hashtable	*create_hashtable(void)
 	return (hashtable);
 }
 
-void	init_hash(char **envp)
+void	init_hash(t_shell *shell, char **envp)
 {
 	int		i;
 	t_env	env;
 
 	i = -1;
-	g_global.hash = create_hashtable();
-	g_global.hash->num_keys = 0;
-	g_global.hash->home = NULL;
+	shell->hash = create_hashtable();
+	shell->hash->num_keys = 0;
+	shell->hash->home = NULL;
 	while (envp[++i] != NULL)
 	{
 		env.equals_sign = ft_split(envp[i], '=');
 		env.key = env.equals_sign[0];
 		env.value = env.equals_sign[1];
-		insert(g_global.hash, env.key, env.value);
+		insert(shell->hash, env.key, env.value);
 		if (ft_strcmp(env.key, "HOME") == 0)
-			g_global.hash->home = search(g_global.hash, env.key);
+			shell->hash->home = search(shell->hash, env.key);
 		free_split(env.equals_sign);
 	}
 }

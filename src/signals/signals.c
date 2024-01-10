@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 18:45:17 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/08 14:28:22 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 17:16:55 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	init_hd_signals(int pid)
 void	hd_quit(int signal)
 {
 	(void)signal;
-	g_global.cmd_status = 130;
+	get_shell()->cmd_status = 130;
 	ft_putendl_fd("", 1);
 	close(0);
 }

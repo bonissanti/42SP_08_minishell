@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:57 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/08 20:19:32 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:18:56 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ static void		literal_string(t_lex *quote, size_t *len);
 void			final_process(t_lex *quote, t_segment **head, char **args,
 					size_t *len);
 
-void	handle_quotes(t_hashtable *env, t_segment *head, char **args)
+void	handle_quotes(t_hashtable *env, t_segment *head, t_shell *shell, char **args)
 {
 	t_lex	*quote;
 	size_t	len;
 
 	len = 0;
-	quote = init_lex(env, *args);
+	quote = init_lex(env, *args, shell);
 	quote->state.space_dollar = check_dollar_space(*args);
 	while (*(quote->ptr))
 	{
@@ -37,7 +37,7 @@ void	handle_quotes(t_hashtable *env, t_segment *head, char **args)
 			literal_string(quote, &len);
 		else if (*quote->ptr == '$' && (quote->state.double_open
 				|| (!quote->state.single_open && !quote->state.double_open)))
-			expand_variable(quote, &head, &len);
+			expand_variable(quote, &head, shell, &len);
 		else if (quote->state.single_open || quote->state.double_open)
 			char_between_quotes(quote, &head, &len);
 		else

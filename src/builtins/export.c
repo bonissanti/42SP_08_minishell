@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/08 20:30:57 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:14:14 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,18 +32,18 @@ void	print_all_env(t_hashtable *hash_table)
 	free(keys);
 }
 
-int	env_syntax_check(t_hashtable *hash_table, char *temp, t_env *env)
+int	env_syntax_check(t_shell *shell, char *temp, t_env *env)
 {
 	if (temp && !even_close_quotes((*env).equals_sign[1]))
 	{
-		g_global.cmd_status = 1;
+		shell->cmd_status = 1;
 		ft_fprintf(2, "minishell: syntax error: unexpected end of file\n");
 		free_split((*env).equals_sign);
 		return (0);
 	}
 	if ((*env).equals_sign[1])
 	{
-		analyzing_quotes(hash_table, &temp);
+		analyzing_quotes(shell->hash, shell, &temp);
 		(*env).value = temp;
 	}
 	if (!valid_identifier_export((*env).key))
@@ -54,7 +54,7 @@ int	env_syntax_check(t_hashtable *hash_table, char *temp, t_env *env)
 			free(temp);
 		free((*env).equals_sign[0]);
 		free((*env).equals_sign);
-		g_global.cmd_status = 1;
+		shell->cmd_status = 1;
 		return (2);
 	}
 	return (1);
@@ -63,15 +63,17 @@ int	env_syntax_check(t_hashtable *hash_table, char *temp, t_env *env)
 void	env_handler(t_env *env, char **args, int i, char *temp)
 {
 	t_hash	*hash;
+	t_shell	*shell;
 
 	(void)temp;
-	hash = search(g_global.hash, (*env).key);
+	shell = get_shell();
+	hash = search(shell->hash, (*env).key);
 	if (args[1][ft_strlen(args[i]) - 1] == '=')
-		env_with_equals(g_global.hash, args, i);
+		env_with_equals(shell->hash, args, i);
 	else if ((*env).equals_sign[1] != NULL)
-		env_with_value(g_global.hash, env);
+		env_with_value(shell->hash, env);
 	else if (hash == NULL)
-		insert(g_global.hash, (*env).key, NULL);
+		insert(shell->hash, (*env).key, NULL);
 	if (temp != (*env).equals_sign[1])
 		free(temp);
 	if ((*env).value)
@@ -83,7 +85,7 @@ void	env_handler(t_env *env, char **args, int i, char *temp)
 	free((*env).equals_sign);
 }
 
-void	add_env(t_hashtable *hash_table, char **args)
+void	add_env(t_shell *shell, char **args)
 {
 	int		i;
 	t_env	env;
@@ -100,7 +102,7 @@ void	add_env(t_hashtable *hash_table, char **args)
 			env.equals_sign = ft_split(args[i], '=');
 		env.key = env.equals_sign[0];
 		temp = env.equals_sign[1];
-		syntax_status = env_syntax_check(hash_table, temp, &env);
+		syntax_status = env_syntax_check(shell, temp, &env);
 		if (!syntax_status)
 			return ;
 		else if (syntax_status == 2)
@@ -109,15 +111,15 @@ void	add_env(t_hashtable *hash_table, char **args)
 	}
 }
 
-void	ft_export(t_hashtable *hash_table, char **args)
+void	ft_export(t_shell *shell, char **args)
 {
 	if (args[1] == NULL || *args[1] == '#')
-		print_all_env(hash_table);
+		print_all_env(shell->hash);
 	else
 	{
-		add_env(hash_table, args);
-		if (g_global.cmd_status == 1)
+		add_env(shell, args);
+		if (shell->cmd_status == 1)
 			return ;
 	}
-	g_global.cmd_status = 0;
+	shell->cmd_status = 0;
 }

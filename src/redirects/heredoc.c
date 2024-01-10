@@ -6,24 +6,24 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/09 13:49:34 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:05:35 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void		after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
+static void		after_hdoc(t_exec *exec, t_shell *shell, t_ast *node,
 					char *filename);
 static void		open_execute(t_hashtable *hash, t_exec *exec, t_ast *node,
 					char *filename);
 
-int	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
+int	handle_heredoc(t_shell *shell, t_exec *exec, t_ast *node)
 {
 	char	*filename;
 
 	filename = generate_filename(exec->count_hdoc);
 	node->out_fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
-	read_write_heredoc(hash, node);
+	read_write_heredoc(shell, node);
 	close(node->out_fd);
 	exec->error_call = create_files(node, exec, 0);
 	if ((exec->error_call == 1 || exec->error_call == -1)
@@ -33,8 +33,8 @@ int	handle_heredoc(t_hashtable *hash, t_exec *exec, t_ast *node)
 		return (1);
 	}
 	if (node->print_hdoc && !node->right)
-		open_execute(hash, exec, node, filename);
-	after_hdoc(exec, hash, node, filename);
+		open_execute(shell->hash, exec, node, filename);
+	after_hdoc(exec, shell, node, filename);
 	return (0);
 }
 
@@ -52,34 +52,32 @@ static void	open_execute(t_hashtable *hash, t_exec *exec, t_ast *node,
 			exec_simple(hash, exec, node->left);
 		else
 			free_for_finish(exec, hash);
-		close_all_fds();
 		free(filename);
-		close(0);
-		close(1);
+		(close_all_fds(), close(0), close(1));
 		exit(0);
 	}
 	else
 		free(filename);
 }
 
-static void	after_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
+static void	after_hdoc(t_exec *exec, t_shell *shell, t_ast *node,
 		char *filename)
 {
 	if (node->right && node->right->type == TYPE_HEREDOC)
 	{
 		free(filename);
 		node->left = NULL;
-		exec_multi_cmds(exec, hash, node->right);
+		exec_multi_cmds(exec, node->right, shell);
 	}
 	else if (node->right && node->right->type == TYPE_REDIRECT)
-		next_is_rdir(exec, hash, node, filename);
+		next_is_rdir(exec, shell->hash, node, filename);
 	else if (node->right && node->right->type == TYPE_PIPE)
-		next_is_pipe(exec, hash, node, filename);
+		next_is_pipe(exec, shell->hash, node, filename);
 	if (node->right && node->right->type == TYPE_LOGICAL)
 	{
-		open_execute(hash, exec, node, filename);
+		open_execute(shell->hash, exec, node, filename);
 		waitpid(node->pid, &node->num_status, 0);
-		simple_logical(exec, hash, node->right, node->num_status);
+		simple_logical(exec, shell, node->right, node->num_status);
 	}
 }
 

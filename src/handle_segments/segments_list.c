@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   segments_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:34:49 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/07 14:40:02 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:20:48 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_lex	*init_lex(t_hashtable *env, char *arg)
+t_lex	*init_lex(t_hashtable *env, char *arg, t_shell *shell)
 {
 	t_lex	*quote;
 
 	quote = (t_lex *)ft_calloc(1, sizeof(t_lex));
-	quote->ptr = gb_to_free(arg);
+	quote->ptr = gb_to_free(arg, shell);
 	quote->segment = (char *)ft_calloc(ft_strlen(arg) + 1, sizeof(char));
 	quote->env = env;
 	init_structs(&quote->state, false, sizeof(t_quote_bool));

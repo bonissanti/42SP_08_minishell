@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:56:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 13:07:05 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:15:49 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,18 @@
 
 //############################### Builtins ####################################
 
-void	ft_export(t_hashtable *hashtable, char **args);
-void	ft_echo(t_hashtable *hashtable, char **args);
-int		ft_exit(char **args);
-void	ft_cd(t_hashtable *hashtable, char **args);
-void	ft_pwd(t_hashtable *hashtable, char **args);
-void	ft_unset(t_hashtable *hashtable, char **args);
-void	ft_env(t_hashtable *hashtable, char **args);
+void	ft_export(t_shell *shell, char **args);
+void	ft_echo(t_shell *shell, char **args);
+int		ft_exit(t_shell *shell, char **args);
+void	ft_cd(t_shell *shell, char **args);
+void	ft_pwd(t_shell *shell, char **args);
+void	ft_unset(t_shell *shell, char **args);
+void	ft_env(t_shell *shell, char **args);
 
 //############################### Utils ########################################
 
 void	print_all_env(t_hashtable *hash_table);
-void	add_env(t_hashtable *hash_table, char **args);
+void	add_env(t_shell *shell, char **args);
 void	env_with_equals(t_hashtable *hashtable, char **args, int i);
 void	env_with_value(t_hashtable *hashtable, t_env *env);
 int		valid_identifier_export(char *str);

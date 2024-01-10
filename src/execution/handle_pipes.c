@@ -3,27 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/09 12:19:58 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/10 17:53:55 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	handle_other(t_exec *exec, t_hashtable *hash, t_ast *node,
-		int *prev_pipe)
+void	handle_other(t_exec *exec, t_ast *node, int *prev_pipe)
 {
+	t_shell	*shell;
+
+	shell = get_shell();
 	if (node->type == TYPE_LOGICAL)
 	{
 		execute_pipes(exec, node->left, prev_pipe, NULL);
-		simple_logical(exec, hash, node, node->left->num_status);
+		simple_logical(exec, shell, node, node->left->num_status);
 	}
 	else
 	{
 		restore_fd(exec->old_stdin, exec->old_stdout);
-		exec_multi_cmds(exec, hash, node);
+		exec_multi_cmds(exec, node, shell);
 	}
 }
 
@@ -92,6 +94,6 @@ void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 		last_pipe(exec, node, prev_pipe);
 	else if (node->type != TYPE_PIPE && node->type != TYPE_REDIRECT
 		&& node->type != TYPE_HEREDOC)
-		handle_other(exec, hash, node, prev_pipe);
+		handle_other(exec, node, prev_pipe);
 	close_all_fds();
 }

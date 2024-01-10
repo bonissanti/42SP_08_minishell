@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 12:53:13 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/15 19:55:25 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:15:06 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_bool	is_valid_identifier(char *arg)
 	return (true);
 }
 
-void	ft_unset(t_hashtable *hash_table, char **args)
+void	ft_unset(t_shell *shell, char **args)
 {
 	int	i;
 
@@ -39,11 +39,11 @@ void	ft_unset(t_hashtable *hash_table, char **args)
 		while (args[++i] != NULL)
 		{
 			if (is_valid_identifier(args[i]))
-				delete_hash(hash_table, args[i]);
+				delete_hash(shell->hash, args[i]);
 			else
 				ft_fprintf(2, "minishell: unset: `%s': not a \
 					valid identifier\n", args[i]);
 		}
 	}
-	g_global.cmd_status = 0;
+	shell->cmd_status = 0;
 }

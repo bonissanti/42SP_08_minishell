@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/10 14:02:49 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:33:54 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 int	prompt_validation(char *readline_input, t_hashtable *env)
 {
-	if (ft_strcmp(g_global.readline_input, "exit") == 0
-		|| !g_global.readline_input)
+	t_shell	*shell;
+
+	shell = get_shell();
+	if (ft_strcmp(shell->readline_input, "exit") == 0
+		|| !shell->readline_input)
 	{
 		ft_putstr_fd("exit\n", 1);
 		free_lists();
@@ -28,38 +31,40 @@ int	prompt_validation(char *readline_input, t_hashtable *env)
 		return (false);
 }
 
-static void	init_global_structs(void)
+static void	init_shell(t_shell *set)
 {
-	g_global.ast = NULL;
-	g_global.cmd_list = NULL;
-	g_global.cmd_status = 0;
-	g_global.exit_status = -1;
-	g_global.readline_input = NULL;
-	g_global.readline_input_to_free = NULL;
-	g_global.tkn_list = NULL;
-	g_global.to_exec = 0;
+	set->ast = NULL;
+	set->cmd_list = NULL;
+	set->cmd_status = 0;
+	set->exit_status = -1;
+	set->readline_input = NULL;
+	set->readline_input_to_free = NULL;
+	set->tkn_list = NULL;
+	set->to_exec = 0;
 }
 
 void	prompt(t_hashtable *env)
 {
 	t_exec	exec;
+	t_shell	*shell;
 
-	init_global_structs();
-	while (g_global.exit_status == -1)
+	shell = get_shell();
+	init_shell(shell);	
+	while (shell->exit_status == -1)
 	{
 		init_signals();
-		g_global.to_exec = 0;
+		shell->to_exec = 0;
 		init_structs(&exec, 0, sizeof(t_exec));
-		g_global.readline_input = gb_to_free(readline(YELLOW"$ "RESET));
-		if (!prompt_validation(g_global.readline_input, env))
+		shell->readline_input = gb_to_free(readline(YELLOW"$ "RESET), shell);
+		if (!prompt_validation(shell->readline_input, env))
 			continue ;
-		add_history(g_global.readline_input);
-		tokenizer(env);
-		parser(env);
-		g_global.ast = init_ast(g_global.cmd_list, &exec);
+		add_history(shell->readline_input);
+		tokenizer(env, shell);
+		parser(env, shell);
+		shell->ast = init_ast(shell->cmd_list, &exec);
 		backup_fd(&exec.old_stdin, &exec.old_stdout);
-		exec_multi_cmds(&exec, env, g_global.ast);
-		(delete_node(g_global.ast), free_lists());
+		exec_multi_cmds(&exec, shell->ast, shell);
+		(delete_node(shell->ast), free_lists());
 		restore_fd(exec.old_stdin, exec.old_stdout);
 		close_all_fds();
 	}

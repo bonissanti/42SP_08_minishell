@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:32:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/04 14:34:13 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:11:11 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-static void	handle_cd(t_hashtable *hashtable, char **args, int argc);
+static void	handle_cd(t_shell *shell, char **args, int argc);
 
-void	ft_cd(t_hashtable *hashtable, char **args)
+void	ft_cd(t_shell *shell, char **args)
 {
 	char	*oldpwd;
 	char	*cwd;
@@ -27,30 +27,30 @@ void	ft_cd(t_hashtable *hashtable, char **args)
 		g_global.cmd_status = 1;
 		return ;
 	}
-	oldpwd = search(hashtable, "PWD")->value;
-	insert(hashtable, "OLDPWD", oldpwd);
+	oldpwd = search(shell->hash, "PWD")->value;
+	insert(shell->hash, "OLDPWD", oldpwd);
 	if (argc == 1 || argc == 2)
-		handle_cd(hashtable, args, argc);
+		handle_cd(shell, args, argc);
 	cwd = getcwd(NULL, 0);
-	insert(hashtable, "PWD", cwd);
+	insert(shell->hash, "PWD", cwd);
 	free(cwd);
 	return ;
 }
 
-static void	handle_cd(t_hashtable *hashtable, char **args, int argc)
+static void	handle_cd(t_shell *shell, char **args, int argc)
 {
 	if (argc == 1)
 	{
-		if (hashtable->home == NULL)
+		if (shell->hash->home == NULL)
 		{
 			ft_fprintf(2, "cd: HOME not set\n");
-			g_global.cmd_status = 1;
+			shell->cmd_status = 1;
 			return ;
 		}
-		if (chdir(hashtable->home->value) == -1)
+		if (chdir(shell->hash->home->value) == -1)
 		{
 			ft_fprintf(2, "cd: %s\n", strerror(errno));
-			g_global.cmd_status = 1;
+			shell->cmd_status = 1;
 			return ;
 		}
 	}
@@ -59,7 +59,7 @@ static void	handle_cd(t_hashtable *hashtable, char **args, int argc)
 		if (chdir(args[1]) == -1)
 		{
 			ft_fprintf(2, "cd: %s: %s\n", args[1], strerror(errno));
-			g_global.cmd_status = 1;
+			shell->cmd_status = 1;
 			return ;
 		}
 	}

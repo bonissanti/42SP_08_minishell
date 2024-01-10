@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_list_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 17:12:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/08 19:13:35 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/10 19:23:28 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	cmd_list_size(t_cmd_list *cmd_list)
 	return (total);
 }
 
-t_cmd_list	*new_cmd_list(t_cmd_list node)
+t_cmd_list	*new_cmd_list(t_shell *shell, t_cmd_list node)
 {
 	t_cmd_list	*new_node;
 
@@ -41,11 +41,11 @@ t_cmd_list	*new_cmd_list(t_cmd_list node)
 		new_node->args = NULL;
 	new_node->weight = node.weight;
 	if (node.infile)
-		new_node->infile = gb_to_free(ft_strdup(node.infile));
+		new_node->infile = gb_to_free(ft_strdup(node.infile), shell);
 	else
 		new_node->infile = NULL;
 	if (node.outfile)
-		new_node->outfile = gb_to_free(ft_strdup(node.outfile));
+		new_node->outfile = gb_to_free(ft_strdup(node.outfile), shell);
 	else
 		new_node->outfile = NULL;
 	new_node->here_doc = node.here_doc;
@@ -62,16 +62,16 @@ t_cmd_list	*last_cmd_list(t_cmd_list *cmd_list)
 	return (cmd_list);
 }
 
-void	add_cmd_list(t_cmd_list new_list)
+void	add_cmd_list(t_shell *shell, t_cmd_list new_list)
 {
 	t_cmd_list	*last;
 
-	if (!cmd_list_size(g_global.cmd_list))
-		g_global.cmd_list = new_cmd_list(new_list);
+	if (!cmd_list_size(shell->cmd_list))
+		shell->cmd_list = new_cmd_list(shell, new_list);
 	else
 	{
-		last = last_cmd_list(g_global.cmd_list);
-		last->next = new_cmd_list(new_list);
+		last = last_cmd_list(shell->cmd_list);
+		last->next = new_cmd_list(shell, new_list);
 		last->next->prev = last;
 	}
 }

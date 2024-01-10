@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/09 08:38:57 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/10 18:37:27 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ char	*crop_general_tkn(char **cmd, t_bool *closed, int *i, char *quote)
 	return (NULL);
 }
 
-char	*crop_tkn(char **cmd)
+char	*crop_tkn(char **cmd, t_shell *shell)
 {
 	char	*cropped;
 	int		i;
@@ -105,22 +105,22 @@ char	*crop_tkn(char **cmd)
 		if (general)
 			return (general);
 	}
-	return (ft_strtrim(gb_to_free(ft_substr(cropped, 0, i)), " "));
+	return (ft_strtrim(gb_to_free(ft_substr(cropped, 0, i), shell), " "));
 }
 
-void	tokenizer(t_hashtable *env)
+void	tokenizer(t_hashtable *env, t_shell *shell)
 {
 	char	*actual_cmd;
 
-	actual_cmd = g_global.readline_input;
-	g_global.tkn_list = NULL;
+	actual_cmd = shell->readline_input;
+	shell->tkn_list = NULL;
 	while (*actual_cmd)
 	{
 		if (ft_isspace(*actual_cmd))
 			skip_spaces(&actual_cmd);
 		if (!(*actual_cmd))
 			return ;
-		handle_token(crop_tkn(&actual_cmd));
+		handle_token(crop_tkn(&actual_cmd, shell));
 	}
-	expand_all(g_global.tkn_list, env);
+	expand_all(shell, env);
 }
