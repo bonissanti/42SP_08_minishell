@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 12:38:43 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/09 20:15:44 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-#define YELLOW "\x1B[1;93m"
-#define RESET "\x1B[0m"
+# define YELLOW "\033[1;93m"
+# define RESET "\033[0m"
 
 # include "../../libft/libft.h"
 # include <dirent.h>
@@ -175,19 +175,6 @@ typedef struct s_segments
 	char				*str;
 	struct s_segments	*next;
 }						t_segment;
-
-/**
- * Data structure: t_files
- * -----------------
- * Is a linked list used to store the files that are found by the wildcard
- * expansion. Basically in file have the name of the file and the next pointer
- * points to the next file. In function 'handle_wildcard' the files are added
- * to the linked list and checked if files and patterns match.
- * 
- * @param: *file: The name of the file.
- * @param: *next: The pointer to the next file.
- * 
- */
 
 typedef struct s_file
 {

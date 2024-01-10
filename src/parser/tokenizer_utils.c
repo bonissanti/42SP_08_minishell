@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: allesson <allesson@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/09 08:33:45 by allesson         ###   ########.fr       */
+/*   Updated: 2024/01/10 15:56:43 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,12 @@ void	expand_all(t_tkn_list *tkn_list, t_hashtable *env)
 	while (current)
 	{
 		if (current->type == EXPAND || current->type == WILD
-			|| current->type == IDENTIFIER)
-		{
-			if ((*current->content == '$' || *current->content == '\\'
-					|| *current->content == '\'' || *current->content == '"'
-					|| current->type == IDENTIFIER))
+			|| (current->type == IDENTIFIER))
+		{			
+			if ((*current->content == '$' || *current->content == '\\' 
+				|| *current->content == '\'' || *current->content == '"' 
+				|| current->type == IDENTIFIER) 
+				&& (current->prev && ft_strcmp(current->prev->content, "export")))
 				analyzing_quotes(env, &current->content);
 			if (*current->content == '~')
 				expand_tilde(env, current->content);

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:17:33 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 12:24:18 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/04 17:08:44 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ static void	parent_redirect(t_exec *exec, t_hashtable *hashtable, t_ast *node,
 {
 	if (exec->count_pipes >= 1)
 		close(next_pipe[1]);
+	restore_fd(exec->old_stdin, exec->old_stdout);
 	if (node->right)
 		node = node->right;
 	if (exec->count_pipes >= 1)

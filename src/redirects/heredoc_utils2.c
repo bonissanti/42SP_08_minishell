@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 12:54:06 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 14:13:40 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/09 13:39:05 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,5 @@ void	read_write_heredoc(t_hashtable *hash, t_ast *node)
 			ft_putendl_fd(line, node->out_fd);
 		free(line);
 	}
-	if (g_global.cmd_status == 130)
-		dup2(bkp_in, STDIN_FILENO);
-	close(bkp_in);
+	dup2(bkp_in, STDIN_FILENO);
 }
-

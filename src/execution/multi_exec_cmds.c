@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 12:00:39 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/09 12:22:44 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,37 +78,32 @@ int	exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root)
 
 int	exec_forked_cmd(t_exec *exec, t_hashtable *hash, t_ast *node)
 {
-	char **envp;
-
-	envp = hashtable_to_envp(hash);
 	if (is_builtin(node))
 	{
 		execute_builtin(hash, node);
-		free_envp(envp);
 		return (g_global.exit_status);
 	}
 	if (analyze_cmd(hash, node) != 0)
-	{
-		free_envp(envp);
 		return (g_global.cmd_status);
-	}
 	else
-		g_global.cmd_status = forking(exec, hash, node, envp);
-	free_envp(envp);
+		g_global.cmd_status = forking(exec, hash, node);
 	return (g_global.exit_status);
 }
 
-int	forking(t_exec *exec, t_hashtable *hash, t_ast *node, char **envp)
+int	forking(t_exec *exec, t_hashtable *hash, t_ast *node)
 {
 	node->pid = fork();
 	if (node->type == TYPE_COMMAND)
 	{
 		if (node->pid == 0)
 		{
-			g_global.cmd_status = execve(node->path, node->args, envp);
-			if (g_global.cmd_status == -1)
+			if (node->path == NULL)
 				g_global.cmd_status = 127;
-			free_envp(envp);
+			else
+			{
+				if (execve(node->path, node->args, NULL) == -1)
+					g_global.cmd_status = 2;
+			}
 			free_for_finish(exec, hash);
 			exit(g_global.cmd_status);
 		}

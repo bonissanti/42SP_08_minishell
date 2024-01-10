@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:11 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 11:39:31 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/09 20:33:56 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 void	redirect_out(t_exec *exec, t_hashtable *hash, t_ast *node);
 int		exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node);
 int		exec_multi_cmds(t_exec *exec, t_hashtable *hashtable, t_ast *root);
-int		forking(t_exec *exec, t_hashtable *hash, t_ast *node, char **envp);
+int		forking(t_exec *exec, t_hashtable *hash, t_ast *node);
 int		exec_forked_cmd(t_exec *exec, t_hashtable *hash, t_ast *node);
 int		wait_for_children(t_ast *node);
 void	close_all_fds(void);
@@ -83,6 +83,5 @@ void	close_all_fds(void);
 //############################# UTILS ########################################//
 
 void	free_for_finish(t_exec *exec, t_hashtable *env);
-void	free_envp(char **envp);
 
 #endif
