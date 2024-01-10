@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:52:18 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/09 19:02:01 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:47:50 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,19 @@ void	safe_free(void **ptr)
 		free(*ptr);
 		*ptr = NULL;
 	}
+}
+
+void	free_envp(char **envp)
+{
+	int	i;
+
+	i = 0;
+	if (envp == NULL)
+		return ;
+	while (envp[i])
+	{
+		free(envp[i]);
+		i++;
+	}
+	free(envp);
 }

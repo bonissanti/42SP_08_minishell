@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:11 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/09 18:52:09 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 11:39:31 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,6 @@ void	close_all_fds(void);
 //############################# UTILS ########################################//
 
 void	free_for_finish(t_exec *exec, t_hashtable *env);
+void	free_envp(char **envp);
 
 #endif

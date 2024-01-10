@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 12:54:06 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/09 13:50:07 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 13:57:12 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,6 @@ void	read_write_heredoc(t_hashtable *hash, t_ast *node)
 		free(line);
 	}
 	dup2(bkp_in, STDIN_FILENO);
+	close(bkp_in);
 }
 

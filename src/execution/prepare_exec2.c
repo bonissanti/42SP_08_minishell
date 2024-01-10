@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:01:56 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/09 18:59:46 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 12:03:31 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,13 @@ int	analyze_cmd(t_hashtable *hashtable, t_ast *node)
 
 	if (is_empty_cmd(node->cmds))
 		return (0);
+	result = 0;
 	result = verify_cmd_permissions(node->cmds);
 	if (ft_strchr(node->cmds, '/') != NULL)
 		result = handle_slash(node, result);
 	else
 		result = handle_no_slash(hashtable, node);
-	return (0);
+	return (result);
 }
 
 char	**hashtable_to_envp(t_hashtable *hashtable)

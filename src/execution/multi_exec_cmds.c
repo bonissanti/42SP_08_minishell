@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/09 18:48:42 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/10 12:00:39 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,17 @@ int	exec_forked_cmd(t_exec *exec, t_hashtable *hash, t_ast *node)
 	if (is_builtin(node))
 	{
 		execute_builtin(hash, node);
+		free_envp(envp);
 		return (g_global.exit_status);
 	}
 	if (analyze_cmd(hash, node) != 0)
 	{
-		free(envp);	
+		free_envp(envp);
 		return (g_global.cmd_status);
 	}
-	g_global.cmd_status = forking(exec, hash, node, envp);
-	free(envp);
+	else
+		g_global.cmd_status = forking(exec, hash, node, envp);
+	free_envp(envp);
 	return (g_global.exit_status);
 }
 
@@ -106,7 +108,7 @@ int	forking(t_exec *exec, t_hashtable *hash, t_ast *node, char **envp)
 			g_global.cmd_status = execve(node->path, node->args, envp);
 			if (g_global.cmd_status == -1)
 				g_global.cmd_status = 127;
-			free(envp);
+			free_envp(envp);
 			free_for_finish(exec, hash);
 			exit(g_global.cmd_status);
 		}
