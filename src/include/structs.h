@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 11:06:40 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:41:32 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,20 +221,6 @@ typedef struct s_lex
 }						t_lex;
 
 //############################### Global ###################################
-
-typedef struct s_global
-{
-	char				*readline_input;
-	t_list				*readline_input_to_free;
-	t_tkn_list			*tkn_list;
-	t_cmd_list			*cmd_list;
-	int					exit_status;
-	int					to_exec;
-	int					cmd_status;
-	t_hashtable			*hash;
-	t_ast				*ast;
-
-}						t_global;
 
 typedef struct s_shell
 {
