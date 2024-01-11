@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:55 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/08 20:04:14 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/11 15:48:00 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ void	refresh_prompt(int signal);
 void	exec_signals(int pid);
 void	sigpipe_handler(int signal);
 void	handle_sigpipe(int sig);
+void	handle_sigquit(int signal);
 
 #endif

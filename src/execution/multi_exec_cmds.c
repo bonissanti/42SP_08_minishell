@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 11:05:07 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 16:02:40 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ int	exec_multi_cmds(t_exec *exec, t_ast *root, t_shell *shell)
 	{
 		wait_for_children(root, shell);
 		close_all_fds();
-		return (0);
+		shell->exit_status = shell->cmd_status;
+		return (shell->exit_status);
 	}
 	handle_cmd(exec, shell, root);
 	wait_for_children(root, shell);
@@ -101,6 +102,7 @@ int	exec_forked_cmd(t_exec *exec, t_shell *shell, t_ast *node)
 int	forking(t_exec *exec, t_shell *shell, t_ast *node, char **envp)
 {
 	node->pid = fork();
+	exec_signals(node->pid);
 	if (node->type == TYPE_COMMAND)
 	{
 		if (node->pid == 0)

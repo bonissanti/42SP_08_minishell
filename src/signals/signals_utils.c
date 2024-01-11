@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 11:25:18 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/02 13:01:06 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 15:49:18 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,4 +28,10 @@ void	ctrl_c_handler(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+}
+
+void	handle_sigquit(int signal)
+{
+	if (signal == SIGQUIT)
+		ft_putstr_fd("", 1);
 }

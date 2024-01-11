@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 18:01:14 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 16:14:32 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	analyze_heredoc(t_exec *exec, t_ast *node, t_shell *shell)
 		handle_heredoc(shell, exec, node);
 	else
 		exec_multi_cmds(exec, node->right, shell);
-	return (0);
+	return (shell->cmd_status);
 }
 
 void	handle_error(t_ast *node, int result)

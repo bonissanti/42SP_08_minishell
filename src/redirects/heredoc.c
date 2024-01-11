@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 18:05:35 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 16:14:04 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ int	handle_heredoc(t_shell *shell, t_exec *exec, t_ast *node)
 	node->out_fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	read_write_heredoc(shell, node);
 	close(node->out_fd);
+	if (shell->cmd_status == 130)
+	{
+		free(filename);
+		return (shell->cmd_status);
+	}
 	exec->error_call = create_files(node, exec, 0);
 	if ((exec->error_call == 1 || exec->error_call == -1)
 		&& exec->count_pipes == 0)
@@ -32,7 +37,7 @@ int	handle_heredoc(t_shell *shell, t_exec *exec, t_ast *node)
 		free(filename);
 		return (1);
 	}
-	if (node->print_hdoc && !node->right)
+	if (node->print_hdoc && !node->right && shell->cmd_status != 130)
 		open_execute(shell->hash, exec, node, filename);
 	after_hdoc(exec, shell, node, filename);
 	return (0);

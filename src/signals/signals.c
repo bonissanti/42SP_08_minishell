@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/14 18:45:17 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/10 17:16:55 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 15:48:48 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,6 @@ void	exec_signals(int pid)
 		signal(SIGINT, SIG_DFL);
 	else
 		signal(SIGINT, refresh_prompt);
-	signal(SIGQUIT, SIG_IGN);
+	signal(SIGQUIT, handle_sigquit);
 	signal(SIGPIPE, handle_sigpipe);
 }
