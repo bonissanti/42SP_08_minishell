@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/10 19:52:22 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 12:06:03 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,12 @@ int	crop_quote_tkn(char **cmd)
 char	*crop_general_tkn(char **cmd, t_bool *closed, int *i, char *quote)
 {
 	char	*cropped;
+	t_bool	past_quote;
 
 	cropped = *cmd;
-	while (**cmd != ' ' && **cmd != '\0' && !(*closed))
+	past_quote = false;
+	while ((**cmd != ' ' && **cmd != '\0' && !(*closed))
+		|| ((past_quote && **cmd != '\0' && !(*closed))))
 	{
 		*i = *i + 1;
 		(*cmd)++;
@@ -72,9 +75,13 @@ char	*crop_general_tkn(char **cmd, t_bool *closed, int *i, char *quote)
 		{
 			*quote = **cmd;
 			*closed = false;
+			past_quote = true;
 		}
 		else if (**cmd == *quote)
+		{
 			*closed = true;
+			past_quote = false;
+		}
 		else if (isdelimiter(*cmd) && *closed == true)
 			return (ft_substr(cropped, 0, *i));
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 11:06:40 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 12:03:59 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,19 +176,6 @@ typedef struct s_segments
 	struct s_segments	*next;
 }						t_segment;
 
-/**
- * Data structure: t_files
- * -----------------
- * Is a linked list used to store the files that are found by the wildcard
- * expansion. Basically in file have the name of the file and the next pointer
- * points to the next file. In function 'handle_wildcard' the files are added
- * to the linked list and checked if files and patterns match.
- * 
- * @param: *file: The name of the file.
- * @param: *next: The pointer to the next file.
- * 
- */
-
 typedef struct s_file
 {
 	char				*token;
@@ -219,22 +206,6 @@ typedef struct s_lex
 	t_quote_bool		state;
 	t_expand			dollar;
 }						t_lex;
-
-//############################### Global ###################################
-
-typedef struct s_global
-{
-	char				*readline_input;
-	t_list				*readline_input_to_free;
-	t_tkn_list			*tkn_list;
-	t_cmd_list			*cmd_list;
-	int					exit_status;
-	int					to_exec;
-	int					cmd_status;
-	t_hashtable			*hash;
-	t_ast				*ast;
-
-}						t_global;
 
 typedef struct s_shell
 {

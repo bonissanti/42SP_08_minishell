@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:20:18 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/03 19:52:48 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/10 21:36:10 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,11 @@ void	env_with_equals(t_hashtable *hashtable, char **args, int i)
 	char	*value;
 
 	equals_sign = ft_split(args[i], '=');
-	key = equals_sign[0];
+	if (equals_sign[0][ft_strlen(equals_sign[0]) - 1] == '+')
+		key = gb_to_free(ft_substr(equals_sign[0], 0,
+					ft_strlen(equals_sign[0]) - 1));
+	else
+		key = equals_sign[0];
 	value = "";
 	insert(hashtable, key, value);
 	free_split(equals_sign);
@@ -97,7 +101,7 @@ int	valid_identifier_export(char *str)
 		return (0);
 	while (str[++i] != '\0')
 	{
-		if (!ft_isalnum(str[i]) && str[i] != '_')
+		if (!ft_isalnum(str[i]) && str[i] != '_' && str[i] != '+')
 			return (0);
 	}
 	return (1);

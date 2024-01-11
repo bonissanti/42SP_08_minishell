@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds_utils.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 11:03:59 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:56:25 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 			shell->cmd_status = 127;
 		exit(shell->cmd_status);
 	}
-	free_envp(envp);
 	free_for_finish(exec, hash);
 	return (shell->cmd_status);
 }
