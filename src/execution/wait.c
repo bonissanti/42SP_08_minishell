@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:02:01 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 11:58:33 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/11 12:53:47 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,9 @@ int	child_status(int status)
 int	wait_for_children(t_ast *node, t_shell *shell)
 {
 	int		status;
-	int		error;
 	pid_t	pid;
 
 	status = 0;
-	error = 0;
 	if (node == NULL)
 		return (0);
 	pid = waitpid(-1, &status, WUNTRACED);

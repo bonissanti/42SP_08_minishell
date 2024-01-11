@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 13:20:18 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 21:36:10 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/11 12:14:38 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	**copy_all_keys(t_hashtable *hash_table)
 	return (keys);
 }
 
-void	env_with_equals(t_hashtable *hashtable, char **args, int i)
+void	env_with_equals(t_shell *shell, char **args, int i)
 {
 	char	**equals_sign;
 	char	*key;
@@ -69,11 +69,11 @@ void	env_with_equals(t_hashtable *hashtable, char **args, int i)
 	equals_sign = ft_split(args[i], '=');
 	if (equals_sign[0][ft_strlen(equals_sign[0]) - 1] == '+')
 		key = gb_to_free(ft_substr(equals_sign[0], 0,
-					ft_strlen(equals_sign[0]) - 1));
+					ft_strlen(equals_sign[0]) - 1), shell);
 	else
 		key = equals_sign[0];
 	value = "";
-	insert(hashtable, key, value);
+	insert(shell->hash, key, value);
 	free_split(equals_sign);
 }
 

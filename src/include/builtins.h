@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/21 12:56:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 19:15:49 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 12:15:33 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_env(t_shell *shell, char **args);
 
 void	print_all_env(t_hashtable *hash_table);
 void	add_env(t_shell *shell, char **args);
-void	env_with_equals(t_hashtable *hashtable, char **args, int i);
+void	env_with_equals(t_shell *shell, char **args, int i);
 void	env_with_value(t_hashtable *hashtable, t_env *env);
 int		valid_identifier_export(char *str);
 int		ft_count_args(char **args);
