@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:01:00 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 19:53:26 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:01:08 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*check_expansion(t_shell *shell, char **line, size_t *len)
 	while (*quote->ptr)
 	{
 		if (*quote->ptr == '$')
-			expand_variable(quote, &head, shell, len);
+			expand_var(quote, &head, shell, len);
 		else
 		{
 			quote->segment[*len] = *quote->ptr;
@@ -66,7 +66,7 @@ static void	redirect_hdoc(t_exec *exec, t_ast *node, char *filename)
 
 static void	child_rdir(t_exec *exec, t_ast *node, int *next_pipe, int index)
 {
-	t_shell *shell;
+	t_shell	*shell;
 
 	shell = get_shell();
 	if (index == 2 && exec->count_pipes >= 1)

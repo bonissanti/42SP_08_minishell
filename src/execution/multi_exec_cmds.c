@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 18:46:15 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:05:07 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	exec_multi_cmds(t_exec *exec, t_ast *root, t_shell *shell)
 
 int	exec_forked_cmd(t_exec *exec, t_shell *shell, t_ast *node)
 {
-	char **envp;
+	char	**envp;
 
 	envp = hashtable_to_envp(shell->hash);
 	if (is_builtin(node))

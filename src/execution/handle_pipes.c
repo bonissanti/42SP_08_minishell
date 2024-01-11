@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 19:52:12 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:04:10 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	final_cmd(t_exec *exec, t_ast *node, int *prev_pipe)
 static void	last_pipe(t_exec *exec, t_ast *node, int *prev_pipe)
 {
 	int	next_pipe[2];
-	
+
 	if (exec->count_pipes == 0 || (exec->error_call == 1
 			&& exec->count_pipes >= 1))
 		final_cmd(exec, node, prev_pipe);

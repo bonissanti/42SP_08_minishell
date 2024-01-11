@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:57 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 19:18:56 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:02:37 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void		literal_string(t_lex *quote, size_t *len);
 void			final_process(t_lex *quote, t_segment **head, char **args,
 					size_t *len);
 
-void	handle_quotes(t_hashtable *env, t_segment *head, t_shell *shell, char **args)
+void	quotes(t_hashtable *env, t_segment *head, t_shell *shell, char **args)
 {
 	t_lex	*quote;
 	size_t	len;
@@ -37,7 +37,7 @@ void	handle_quotes(t_hashtable *env, t_segment *head, t_shell *shell, char **arg
 			literal_string(quote, &len);
 		else if (*quote->ptr == '$' && (quote->state.double_open
 				|| (!quote->state.single_open && !quote->state.double_open)))
-			expand_variable(quote, &head, shell, &len);
+			expand_var(quote, &head, shell, &len);
 		else if (quote->state.single_open || quote->state.double_open)
 			char_between_quotes(quote, &head, &len);
 		else

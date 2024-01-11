@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 09:12:32 by allesson          #+#    #+#             */
-/*   Updated: 2024/01/10 19:55:11 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:03:09 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*gb_to_free(char *readline_input, t_shell *shell)
 
 void	free_lists(void)
 {
-	t_shell *shell;
+	t_shell	*shell;
 
 	shell = get_shell();
 	if (shell->cmd_list)

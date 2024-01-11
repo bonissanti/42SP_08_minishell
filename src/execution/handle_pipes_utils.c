@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:01:50 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 17:46:12 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:05:15 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	child_pipe(t_exec *exec, t_ast *node, int *prev_pipe, int *next_pipe)
 			free_for_finish(exec, shell->hash);
 	}
 	if (node && node->to_exec)
-		exec_simple(shell->hash, exec, node);	
+		exec_simple(shell->hash, exec, node);
 	else
 		free_for_finish(exec, shell->hash);
 	(close_all_fds(), close(0), close(1));

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/10 18:33:54 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:05:28 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	prompt(t_hashtable *env)
 	t_shell	*shell;
 
 	shell = get_shell();
-	init_shell(shell);	
+	init_shell(shell);
 	while (shell->exit_status == -1)
 	{
 		init_signals();

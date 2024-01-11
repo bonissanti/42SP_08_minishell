@@ -6,15 +6,15 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 15:24:10 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:06:40 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef STRUCTS_H
 # define STRUCTS_H
 
-#define YELLOW "\x1B[1;93m"
-#define RESET "\x1B[0m"
+# define YELLOW "\x1B[1;93m"
+# define RESET "\x1B[0m"
 
 # include "../../libft/libft.h"
 # include <dirent.h>

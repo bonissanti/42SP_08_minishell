@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:46:31 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 19:57:55 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:00:00 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_bool	verify_file_permissions(const char *file)
 {
-	t_shell *shell;
+	t_shell	*shell;
 
 	shell = get_shell();
 	if (access(file, F_OK) != 0)

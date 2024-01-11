@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 19:17:06 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:03:59 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 
 int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 {
-	char **envp;
-	t_shell *shell;
+	char	**envp;
+	t_shell	*shell;
 
 	shell = get_shell();
-	envp = hashtable_to_envp(hash);	
+	envp = hashtable_to_envp(hash);
 	if (analyze_cmd(hash, node) != 0)
 	{
 		free_for_finish(exec, hash);
@@ -95,4 +95,3 @@ t_bool	process_redirect(t_exec *exec, t_shell *shell, t_ast *node)
 	shell->cmd_status = analyze_redirect(exec, shell, node);
 	return (false);
 }
-

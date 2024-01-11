@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:29 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 19:49:57 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 11:02:37 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	analyzing_quotes(t_hashtable *env, t_shell *shell, char **args)
 		shell->to_exec = 2;
 		return ;
 	}
-	handle_quotes(env, head, shell, args);
+	quotes(env, head, shell, args);
 }
 
 size_t	even_close_quotes(char *str)

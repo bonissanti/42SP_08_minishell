@@ -37,6 +37,6 @@ void			add_new_key(t_hashtable *hash, char *key_copy, char *value_copy,
 char			**copy_all_keys(t_hashtable *hash_table);
 char			*handle_elements(t_hashtable *hash_table, char *arg);
 void			init_hash(t_shell *shell, char **envp);
-char 			**hashtable_to_envp(t_hashtable *hash);
+char			**hashtable_to_envp(t_hashtable *hash);
 
 #endif
