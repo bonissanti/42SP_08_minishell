@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/10 16:04:43 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/10 21:34:17 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ char	*crop_general_tkn(char **cmd, t_bool *closed, int *i, char *quote)
 
 	cropped = *cmd;
 	past_quote = false;
-	while ((**cmd != ' ' && **cmd != '\0' && !(*closed)) 
+	while ((**cmd != ' ' && **cmd != '\0' && !(*closed))
 		|| ((past_quote && **cmd != '\0' && !(*closed))))
 	{
 		*i = *i + 1;
