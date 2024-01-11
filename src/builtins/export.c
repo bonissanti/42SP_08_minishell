@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 19:14:14 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 12:15:42 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	env_handler(t_env *env, char **args, int i, char *temp)
 	shell = get_shell();
 	hash = search(shell->hash, (*env).key);
 	if (args[1][ft_strlen(args[i]) - 1] == '=')
-		env_with_equals(shell->hash, args, i);
+		env_with_equals(shell, args, i);
 	else if ((*env).equals_sign[1] != NULL)
 		env_with_value(shell->hash, env);
 	else if (hash == NULL)

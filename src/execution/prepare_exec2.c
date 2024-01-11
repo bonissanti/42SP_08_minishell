@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_exec2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:01:56 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 12:03:31 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/11 13:55:05 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,11 @@ char	**hashtable_to_envp(t_hashtable *hashtable)
 		while (curr != NULL)
 		{
 			temp = ft_strjoin(curr->key, "=");
-			envp[i] = ft_strjoin(temp, curr->value);
+			if (curr->value)
+				envp[i++] = ft_strjoin(temp, curr->value);
+			else
+				envp[i++] = ft_strdup("");
 			free(temp);
-			i++;
 			curr = curr->next;
 		}
 	}
