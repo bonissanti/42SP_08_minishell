@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/11 12:05:08 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/12 14:35:33 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ void	expand_all(t_shell *shell, t_hashtable *env)
 		{			
 			if ((*current->content == '$' || *current->content == '\\'
 					|| *current->content == '\'' || *current->content == '"'
-					|| current->type == IDENTIFIER)
-				&& (current->prev
-					&& ft_strcmp(current->prev->content, "export")))
+					|| current->type == IDENTIFIER))
+				// && (current->prev && (current->prev->type == IDENTIFIER
+				// 	|| current->prev->type == REDIRECT)))
 				analyzing_quotes(env, shell, &current->content);
 			if (*current->content == '~')
 				expand_tilde(env, current->content);

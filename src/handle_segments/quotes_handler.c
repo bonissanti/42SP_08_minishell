@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:57 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 11:59:12 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/12 18:33:51 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,14 @@ static void	literal_string(t_lex *quote, size_t *len)
 
 void	final_process(t_lex *quote, t_segment **head, char **args, size_t *len)
 {
+	t_shell	*shell;
+
+	shell = get_shell();
 	quote->segment[*len] = '\0';
 	add_segments(head, quote->segment);
 	free(quote->segment);
 	free(quote);
-	*args = join_segments(*head);
+	*args = gb_to_free(join_segments(*head), shell);
+	// *args = join_segments(*head);
 	free_segments(*head);
 }

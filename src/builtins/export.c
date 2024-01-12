@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 12:15:42 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/11 19:10:17 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,19 +62,21 @@ int	env_syntax_check(t_shell *shell, char *temp, t_env *env)
 
 void	env_handler(t_env *env, char **args, int i, char *temp)
 {
-	t_hash	*hash;
-	t_shell	*shell;
+	t_hash		*hash;
+	t_shell		*shell;
+	static int	j;
 
 	(void)temp;
 	shell = get_shell();
 	hash = search(shell->hash, (*env).key);
-	if (args[1][ft_strlen(args[i]) - 1] == '=')
+	j = 1;
+	if (args[j][ft_strlen(args[j]) - 1] == '=')
 		env_with_equals(shell, args, i);
-	else if ((*env).equals_sign[1] != NULL)
+	else if ((*env).equals_sign[j] != NULL)
 		env_with_value(shell->hash, env);
 	else if (hash == NULL)
 		insert(shell->hash, (*env).key, NULL);
-	if (temp != (*env).equals_sign[1])
+	if (temp != (*env).equals_sign[j])
 		free(temp);
 	if ((*env).value)
 	{
@@ -83,6 +85,7 @@ void	env_handler(t_env *env, char **args, int i, char *temp)
 	}
 	free((*env).equals_sign[0]);
 	free((*env).equals_sign);
+	i++;
 }
 
 void	add_env(t_shell *shell, char **args)

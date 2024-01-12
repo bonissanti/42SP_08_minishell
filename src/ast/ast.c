@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/08 19:11:06 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/12 18:33:32 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,10 @@ void	delete_node(t_ast *head)
 		delete_node(head->right);
 		if (head)
 			free_split(head->args);
+		// if (head->infile)
+		// 	free(head->infile);
+		// if (head->outfile)
+		// 	free(head->outfile);
 		safe_free((void **)&head->path);
 		free(head);
 	}

@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:35:28 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/08 19:11:37 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/12 18:31:23 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,22 @@ static void	prepare_subshell(t_ast *new_node, t_cmd_list *cmd_list)
 
 static void	prepare_redirect_or_heredoc(t_ast *new_node, t_cmd_list *cmd_list)
 {
+	t_shell	*shell;
+	
+	shell = get_shell();
 	new_node->cmds = new_node->args[0];
 	if (cmd_list->type == TYPE_REDIRECT)
 	{
 		new_node->infile = cmd_list->infile;
+		analyzing_quotes(shell->hash, shell, &new_node->infile);
 		new_node->outfile = cmd_list->outfile;
+		analyzing_quotes(shell->hash, shell, &new_node->outfile);
 	}
 	else if (cmd_list->type == TYPE_HEREDOC)
+	{
 		new_node->delim = cmd_list->next->args;
+		analyzing_quotes(shell->hash, shell, &new_node->delim);
+	}
 	new_node->weight = cmd_list->weight;
 	new_node->type = cmd_list->type;
 }
@@ -61,12 +69,25 @@ int	is_blank_command(const char *cmd)
 
 void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list)
 {
+	t_shell	*shell;
+	int i;
+
+	i = -1;
+	shell = get_shell();
 	if (is_blank_command(cmd_list->args))
 		new_node->args = ast_split(cmd_list->args, '\n');
-	else if (ft_strlen(cmd_list->args) > 0 && !cmd_list->anti_split)
+	// else if (ft_strlen(cmd_list->args) > 0 && !cmd_list->anti_split)
+	// 	new_node->args = ast_split(cmd_list->args, ' ');
+	else if (ft_strlen(cmd_list->args) > 0)
 		new_node->args = ast_split(cmd_list->args, ' ');
 	else
 		new_node->args = ast_split(cmd_list->args, '\n');
+	while(new_node->args[++i])
+	{
+		analyzing_quotes(shell->hash, shell, &new_node->args[i]);
+		if (shell->to_exec == 2)
+			return ;
+	}
 	if (cmd_list->type == TYPE_COMMAND)
 		prepare_command(new_node, cmd_list);
 	else if (cmd_list->type == TYPE_SUBSHELL)
