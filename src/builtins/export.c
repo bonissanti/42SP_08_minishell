@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 19:10:17 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/12 22:35:11 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ void	env_handler(t_env *env, char **args, int i, char *temp)
 		(*env).value = NULL;
 	}
 	free((*env).equals_sign[0]);
+	free((*env).equals_sign[1]);
 	free((*env).equals_sign);
 	i++;
 }

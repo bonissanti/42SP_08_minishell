@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/12 14:42:40 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/12 23:03:13 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,19 +63,16 @@ char	*crop_general_tkn(char **cmd, t_bool *closed, int *i, char *quote)
 {
 	char	*cropped;
 	t_bool	past_quote;
-	(void)quote;
 
 	cropped = *cmd;
 	past_quote = false;
 	while ((**cmd != ' ' && **cmd != '\0' && !(*closed)))
-		// || ((past_quote && **cmd != '\0' && !(*closed))))
 	{
 		*i = *i + 1;
 		(*cmd)++;
 		if (**cmd && **cmd == *quote)
 		{
 			*closed = true;
-			// past_quote = false;
 			*i = *i + 1;
 			(*cmd)++;
 		}
@@ -85,8 +82,6 @@ char	*crop_general_tkn(char **cmd, t_bool *closed, int *i, char *quote)
 			*closed = false;
 			past_quote = true;
 		}
-		// if (**cmd && (**cmd == '\'' || **cmd == '"'))
-		// 	*i = *i + crop_quote_tkn(cmd);
 		else if (isdelimiter(*cmd) && *closed == true)
 			return (ft_substr(cropped, 0, *i));
 	}
@@ -118,11 +113,9 @@ char	*crop_tkn(char **cmd, t_shell *shell)
 	return (ft_strtrim(gb_to_free(ft_substr(cropped, 0, i), shell), " "));
 }
 
-void	tokenizer(t_hashtable *env, t_shell *shell)
+void	tokenizer(t_shell *shell)
 {
 	char	*actual_cmd;
-
-	(void)env;
 
 	actual_cmd = shell->readline_input;
 	shell->tkn_list = NULL;
@@ -134,5 +127,4 @@ void	tokenizer(t_hashtable *env, t_shell *shell)
 			return ;
 		handle_token(crop_tkn(&actual_cmd, shell), shell);
 	}
-	// expand_all(shell, env);
 }

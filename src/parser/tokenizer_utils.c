@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/12 14:35:33 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/12 22:59:15 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,6 @@ void	expand_iterator(char **cmd, int *i)
 	{
 		*i = *i + 1;
 		(*cmd)++;
-	}
-}
-
-void	expand_all(t_shell *shell, t_hashtable *env)
-{
-	t_tkn_list	*current;
-
-	current = shell->tkn_list;
-	while (current)
-	{
-		if (current->type == EXPAND || current->type == WILD
-			|| (current->type == IDENTIFIER))
-		{			
-			if ((*current->content == '$' || *current->content == '\\'
-					|| *current->content == '\'' || *current->content == '"'
-					|| current->type == IDENTIFIER))
-				// && (current->prev && (current->prev->type == IDENTIFIER
-				// 	|| current->prev->type == REDIRECT)))
-				analyzing_quotes(env, shell, &current->content);
-			if (*current->content == '~')
-				expand_tilde(env, current->content);
-			else if (*current->content == '*')
-				handle_wildcard(&current->content);
-		}
-		current = current->next;
 	}
 }
 

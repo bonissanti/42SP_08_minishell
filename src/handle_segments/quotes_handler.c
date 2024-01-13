@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:57 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/12 18:33:51 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/12 23:08:10 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	quotes(t_hashtable *env, t_segment *head, t_shell *shell, char **args)
 	size_t	len;
 
 	len = 0;
-	quote = init_lex(env, *args, shell);
+	quote = init_lex(env, *args);
 	quote->state.space_dollar = check_dollar_space(*args);
 	while (*(quote->ptr))
 	{
@@ -92,7 +92,6 @@ void	final_process(t_lex *quote, t_segment **head, char **args, size_t *len)
 	add_segments(head, quote->segment);
 	free(quote->segment);
 	free(quote);
-	*args = gb_to_free(join_segments(*head), shell);
-	// *args = join_segments(*head);
+	*args = join_segments(*head);
 	free_segments(*head);
 }

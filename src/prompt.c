@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/12 19:04:54 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/12 23:01:59 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	prompt(t_hashtable *env)
 		if (!prompt_validation(shell->readline_input, env))
 			continue ;
 		add_history(shell->readline_input);
-		tokenizer(env, shell);
+		tokenizer(shell);
 		parser(env, shell);
 		shell->ast = init_ast(shell->cmd_list, &exec);
 		backup_fd(&exec.old_stdin, &exec.old_stdout);

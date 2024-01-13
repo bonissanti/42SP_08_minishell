@@ -6,18 +6,18 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:34:49 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 11:59:40 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/12 23:08:03 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_lex	*init_lex(t_hashtable *env, char *arg, t_shell *shell)
+t_lex	*init_lex(t_hashtable *env, char *arg)
 {
 	t_lex	*quote;
 
 	quote = (t_lex *)ft_calloc(1, sizeof(t_lex));
-	quote->ptr = gb_to_free(arg, shell);
+	quote->ptr = arg;
 	quote->segment = (char *)ft_calloc(ft_strlen(arg) + 1, sizeof(char));
 	quote->env = env;
 	init_structs(&quote->state, false, sizeof(t_quote_bool));

@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/11 12:03:11 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/12 23:02:08 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "./minishell.h"
 
-void		tokenizer(t_hashtable *env, t_shell *shell);
+void		tokenizer(t_shell *shell);
 void		skip_spaces(char **str);
 int			isdelimiter(char *cmd);
 t_tkn_list	*new_tkn_list(char *content, t_tkn_type type);
@@ -45,7 +45,6 @@ void		set_command_output(t_cmd_list **cmd_list, t_cmd_list *head);
 void		set_command_input(t_cmd_list **cmd_list, t_cmd_list *head);
 t_cmd_list	*find_command(t_cmd_list *cmd_list);
 void		append_expand(t_shell *shell, t_tkn_list **current);
-void		expand_all(t_shell *shell, t_hashtable *env);
 int			is_redirect(t_tkn_type tkn);
 void		free_lists(void);
 int			is_redirect_op(char *cmd);

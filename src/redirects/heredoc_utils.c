@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:01:00 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 17:41:32 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/12 23:08:27 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*check_expansion(t_shell *shell, char **line, size_t *len)
 	t_segment	*head;
 	char		*expanded;
 
-	quote = init_lex(shell->hash, *line, shell);
+	quote = init_lex(shell->hash, *line);
 	head = NULL;
 	expanded = NULL;
 	if (!quote->ptr)

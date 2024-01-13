@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   segments.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:34:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 11:06:22 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/12 23:08:19 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void			free_segments(t_segment *head);
 
 //############################### QUOTES ###################################
 
-t_lex			*init_lex(t_hashtable *env, char *arg, t_shell *shell);
+t_lex			*init_lex(t_hashtable *env, char *arg);
 t_quote_bool	init_quote_bool(void);
 size_t			even_close_quotes(char *str);
 void			analyzing_quotes(t_hashtable *env, t_shell *shell, char **args);

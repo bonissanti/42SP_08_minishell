@@ -32,11 +32,11 @@
                     "text": "set solib-search-path /usr/lib/x86_64-linux-gnu/valgrind",
                     "ignoreFailures": true
                 },
-                {
-                    "description": "Start Valgrind",
-                    "text": "target remote | /usr/bin/vgdb --pid=17284",
-                    "ignoreFailures": true
-                },
+                // {
+                //     "description": "Start Valgrind",
+                //     "text": "target remote | /usr/bin/vgdb --pid=17284",
+                //     "ignoreFailures": true
+                // },
 				{
 					"description": "Set follow-fork-mode to child",
 					"text": "set follow-fork-mode child",

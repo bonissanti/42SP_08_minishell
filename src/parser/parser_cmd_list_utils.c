@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/08 17:12:41 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/12 18:30:28 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/12 23:04:29 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	cmd_list_size(t_cmd_list *cmd_list)
 
 t_cmd_list	*new_cmd_list(t_shell *shell, t_cmd_list node)
 {
-	(void)shell;
 	t_cmd_list	*new_node;
 
 	new_node = (t_cmd_list *)ft_calloc(1, sizeof(t_cmd_list));
