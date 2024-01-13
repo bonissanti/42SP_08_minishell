@@ -91,6 +91,7 @@ void	read_write_heredoc(t_shell *shell, t_ast *node)
 
 	signal(SIGINT, hd_quit);
 	bkp_in = dup(STDIN_FILENO);
+	shell->cmd_status = 0;
 	while (1)
 	{
 		len = 0;

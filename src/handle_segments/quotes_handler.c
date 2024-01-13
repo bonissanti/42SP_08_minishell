@@ -85,9 +85,6 @@ static void	literal_string(t_lex *quote, size_t *len)
 
 void	final_process(t_lex *quote, t_segment **head, char **args, size_t *len)
 {
-	t_shell	*shell;
-
-	shell = get_shell();
 	quote->segment[*len] = '\0';
 	add_segments(head, quote->segment);
 	free(quote->segment);

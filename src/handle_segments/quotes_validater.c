@@ -23,6 +23,8 @@ void	analyzing_quotes(t_hashtable *env, t_shell *shell, char **args)
 		shell->to_exec = 2;
 		return ;
 	}
+	if (shell->count_args > 1 && *args[0] == '*')
+		handle_wildcard(args);
 	quotes(env, head, shell, args);
 }
 

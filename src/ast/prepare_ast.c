@@ -83,6 +83,7 @@ void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list)
 		new_node->args = ast_split(cmd_list->args, ' ');
 	else
 		new_node->args = ast_split(cmd_list->args, '\n');
+	shell->count_args = ft_count_args(new_node->args);
 	while (new_node->args[++i])
 	{
 		analyzing_quotes(shell->hash, shell, &new_node->args[i]);

@@ -62,10 +62,10 @@ int	crop_quote_tkn(char **cmd)
 char	*crop_general_tkn(char **cmd, t_bool *closed, int *i, char *quote)
 {
 	char	*cropped;
-	t_bool	past_quote;
+	// t_bool	past_quote;
 
 	cropped = *cmd;
-	past_quote = false;
+	// past_quote = false;
 	while ((**cmd != ' ' && **cmd != '\0' && !(*closed)))
 	{
 		*i = *i + 1;
@@ -80,7 +80,7 @@ char	*crop_general_tkn(char **cmd, t_bool *closed, int *i, char *quote)
 		{
 			*quote = **cmd;
 			*closed = false;
-			past_quote = true;
+			// past_quote = true;
 		}
 		else if (isdelimiter(*cmd) && *closed == true)
 			return (ft_substr(cropped, 0, *i));

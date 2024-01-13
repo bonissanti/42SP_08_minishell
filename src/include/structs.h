@@ -216,6 +216,7 @@ typedef struct s_shell
 	int					exit_status;
 	int					to_exec;
 	int					cmd_status;
+	int					count_args;
 	t_hashtable			*hash;
 	t_ast				*ast;
 
