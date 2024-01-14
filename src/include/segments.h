@@ -63,7 +63,8 @@ char			*ft_strcat(char *dest, const char *src);
 
 void			handle_wildcard(char **args, t_shell *shell);
 char			*ft_strtok(char *str, const char *delim);
-void			finish_wildcard(t_segment *head, t_file *file, char **args, t_shell *shell);
+void			finish_wildcard(t_segment *head, t_file *file, char **args,
+					t_shell *shell);
 char			*generate_results(t_segment *segments, t_shell *shell);
 
 //############################### SIGNALS ####################################

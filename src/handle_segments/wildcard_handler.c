@@ -16,7 +16,7 @@ static void		get_dir_and_token(t_file *file, char *pattern, t_shell *shell);
 static t_bool	wildcard_match(char *file, char *pattern);
 
 inline void	finish_wildcard(t_segment *head, t_file *file, char **args,
-	t_shell *shell)
+		t_shell *shell)
 {
 	if (!head)
 	{
