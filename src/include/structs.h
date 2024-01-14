@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 12:03:59 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/13 18:05:55 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,5 +221,11 @@ typedef struct s_shell
 	t_ast				*ast;
 
 }						t_shell;
+
+typedef struct s_crop_token
+{
+	t_bool single_quote;
+	t_bool double_quote;
+}	t_crop_token;
 
 #endif

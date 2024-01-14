@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/12 22:59:15 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/13 18:06:43 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,24 +59,3 @@ void	handle_token(char *str, t_shell *shell)
 		add_tkn_list(new_tkn_list(str, IDENTIFIER), shell);
 }
 
-int	process_quote(char **cmd, char quote, t_bool *closed)
-{
-	int	i;
-
-	i = 0;
-	if ((**cmd == '<' || **cmd == '>') && closed)
-		return (i);
-	else if (**cmd == '\'' || **cmd == '"' )
-		(*cmd)++;
-	while (**cmd != quote && **cmd)
-	{
-		i++;
-		(*cmd)++;
-	}
-	if (**cmd == quote)
-		*closed = true;
-	i++;
-	if (**cmd)
-		(*cmd)++;
-	return (i);
-}

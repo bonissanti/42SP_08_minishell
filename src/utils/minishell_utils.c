@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:52:18 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/11 13:54:34 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/13 20:59:29 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,32 @@ int	ft_count_args(char **args)
 	return (count);
 }
 
+int gb_present(char *str, t_shell *shell)
+{
+	t_list *temp;
+	t_list *current;
+
+	current = shell->readline_input_to_free;
+	while (current)
+	{
+		temp = current->next;
+		if (!ft_memcmp(str, current->content, ft_strlen(str)))
+			return(0);
+		current = temp;
+	}
+	return(1);
+}
+
 void	free_split(char **split)
 {
 	int	i;
+	t_shell *shell;
 
 	i = 0;
+	shell = get_shell();
 	while (split[i] != NULL)
 	{
+		// if (split[i] != NULL && !gb_present(split[i], shell))
 		if (split[i] != NULL)
 		{
 			free(split[i]);

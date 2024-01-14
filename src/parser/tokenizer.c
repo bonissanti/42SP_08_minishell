@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/12 23:03:13 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/14 00:48:34 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,57 +33,45 @@ int	crop_delimiter_tkn(char **cmd)
 	return (i);
 }
 
-int	crop_quote_tkn(char **cmd)
+void	toggle_quote(char cmd, t_crop_token *quote)
 {
-	int		i;
-	char	quote;
-	t_bool	closed;
-
-	i = 1;
-	quote = **cmd;
-	closed = false;
-	while ((**cmd && !closed) || is_expander(**cmd)
-		|| (**cmd && closed && **cmd != 32))
-	{
-		i += process_quote(cmd, quote, &closed);
-		if (!(**cmd))
-			return (i);
-		else if ((**cmd == '<' || **cmd == '>') && closed)
-			return (i);
-		else if (**cmd == '\'' || **cmd == '"')
-		{
-			quote = **cmd;
-			closed = false;
-		}
-	}
-	return (i);
+	if (cmd == '\'' && !quote->double_quote)
+		quote->single_quote = !quote->single_quote;
+	else if (cmd == '\"' && !quote->single_quote)
+		quote->double_quote = !quote->double_quote;
 }
 
-char	*crop_general_tkn(char **cmd, t_bool *closed, int *i, char *quote)
+char	*crop_general_tkn(char **cmd, int *i, t_crop_token *quote)
 {
 	char	*cropped;
-	// t_bool	past_quote;
 
 	cropped = *cmd;
-	// past_quote = false;
-	while ((**cmd != ' ' && **cmd != '\0' && !(*closed)))
+	while (**cmd != '\0')
 	{
-		*i = *i + 1;
-		(*cmd)++;
-		if (**cmd && **cmd == *quote)
+		if ((**cmd == '\'' && !quote->double_quote)
+			|| (**cmd == '\"' && !quote->single_quote))
 		{
-			*closed = true;
+			toggle_quote(**cmd, quote);
+			if (((!quote->double_quote && **cmd == '\"')
+				|| (!quote->single_quote && **cmd == '\'')))
+			{
+				*i = *i + 1;
+				(*cmd)++;
+				if(**cmd != '$' || **cmd == 32)
+					return (ft_substr(cropped, 0, *i));
+			}
+		}
+		if (isdelimiter(*cmd) && **cmd != '$' && !quote->double_quote
+			&& !quote->single_quote)
+			return (ft_substr(cropped, 0, *i));
+		else if (**cmd == 32 && !quote->double_quote && !quote->single_quote)
+			return (ft_substr(cropped, 0, *i));
+		else if ((quote->double_quote || quote->single_quote)
+			|| (!quote->double_quote || !quote->single_quote))
+		{
 			*i = *i + 1;
 			(*cmd)++;
 		}
-		else if (**cmd && (**cmd == '\'' || **cmd == '"'))
-		{
-			*quote = **cmd;
-			*closed = false;
-			// past_quote = true;
-		}
-		else if (isdelimiter(*cmd) && *closed == true)
-			return (ft_substr(cropped, 0, *i));
 	}
 	return (NULL);
 }
@@ -92,21 +80,17 @@ char	*crop_tkn(char **cmd, t_shell *shell)
 {
 	char	*cropped;
 	int		i;
-	char	quote;
-	t_bool	closed;
+	t_crop_token	quote;
 	char	*general;
 
 	cropped = *cmd;
-	closed = false;
 	ft_memset(&quote, 0, sizeof(quote));
 	i = 0;
-	if (**cmd == '\'' || **cmd == '"')
-		i = crop_quote_tkn(cmd);
-	else if (isdelimiter(*cmd))
+	if (isdelimiter(*cmd))
 		i = crop_delimiter_tkn(cmd);
 	else
 	{
-		general = crop_general_tkn(cmd, &closed, &i, &quote);
+		general = crop_general_tkn(cmd, &i, &quote);
 		if (general)
 			return (general);
 	}

@@ -25,7 +25,7 @@ MAND_SRCS 	= ast/ast_split.c ast/ast.c ast/prepare_ast.c \
 			execution/find_path.c execution/handle_logical.c execution/handle_pipes.c execution/handle_pipes_utils.c \
 			execution/handle_redirects.c execution/multi_exec_cmds_utils.c execution/simple_redirect.c execution/prepare_exec2.c \
 			execution/multi_exec_cmds.c execution/prepare_exec.c handle_segments/expand_dollar.c \
-			handle_segments/quotes_error.c handle_segments/quotes_handler.c handle_segments/quotes_validater.c \
+			handle_segments/quotes_error.c handle_segments/quotes_handler.c handle_segments/quotes_validator.c \
 			handle_segments/segments_list.c handle_segments/segments_utils.c handle_segments/tilde_handler.c \
 			handle_segments/wildcard_handler.c handle_segments/wildcard_utils.c parser/io_setter.c \
 			parser/node_creation_utils.c parser/node_creation.c parser/parser_cmd_list_utils.c \

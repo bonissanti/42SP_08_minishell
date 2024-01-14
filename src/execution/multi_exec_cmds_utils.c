@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 13:53:39 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/13 23:24:09 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 
 	shell = get_shell();
 	envp = hashtable_to_envp(hash);
-	if (analyze_cmd(hash, node) != 0)
+	if (analyze_cmd(hash, node, shell) != 0)
 	{
 		free_for_finish(exec, hash);
 		free_envp(envp);

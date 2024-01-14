@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 09:12:32 by allesson          #+#    #+#             */
-/*   Updated: 2024/01/12 20:23:27 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/13 23:46:01 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,18 @@ void	empty_trash_can(void)
 	t_shell	*shell;
 
 	shell = get_shell();
-	ft_lstclear(&shell->readline_input_to_free, ft_delete_content);
+	if(shell->readline_input_to_free)
+		ft_lstclear(&shell->readline_input_to_free, ft_delete_content);
 }
 
-char	*gb_to_free(char *readline_input, t_shell *shell)
+char	*gb_to_free(void *readline_input, t_shell *shell)
 {	
 	if (!shell->readline_input_to_free)
 		shell->readline_input_to_free = ft_lstnew(readline_input);
 	else
 		ft_lstadd_back(&shell->readline_input_to_free,
 			ft_lstnew(readline_input));
-	return (readline_input);
+	return ((char *)readline_input);
 }
 
 void	free_lists(void)
@@ -61,4 +62,23 @@ void	free_for_finish(t_exec *exec, t_hashtable *env)
 	free_lists();
 	empty_trash_can();
 	restore_fd(exec->old_stdin, exec->old_stdout);
+}
+
+char **matrix_to_free(char **matrix)
+{
+	int	i;
+	t_shell *shell;
+
+	i = 0;
+	shell = get_shell();
+	while (matrix[i])
+	{
+		if (matrix[i])
+			// ft_printf("matrix[%d]: %s\n", i, matrix[i]);
+			gb_to_free(matrix[i], shell);
+		i++;
+	}
+	if (matrix)
+		gb_to_free(matrix, shell);
+	return (matrix);
 }

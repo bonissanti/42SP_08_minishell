@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/12 23:01:59 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/13 18:51:50 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	prompt_validation(char *readline_input, t_hashtable *env)
 		exit(0);
 	}
 	if (!ft_strchr(shell->readline_input, 32)
+		&& ft_strlen(shell->readline_input)
 		&& readline_input[ft_strlen(shell->readline_input) - 1] == '=')
 		return (false);
 	else if (ft_strlen(readline_input) != 0)

@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:01:56 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 13:55:05 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/13 18:30:36 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_bool	is_empty_cmd(char *cmd)
 {
-	if (cmd == NULL)
+	if (cmd == NULL || !ft_strncmp(cmd, "''", 2) || !ft_strncmp(cmd, """", 2))
 	{
 		ft_fprintf(2, "Command '' not found, but can be installed with:\n");
 		ft_fprintf(2, "\n");
@@ -65,18 +65,23 @@ int	handle_no_slash(t_hashtable *hash, t_ast *node)
 	return (0);
 }
 
-int	analyze_cmd(t_hashtable *hashtable, t_ast *node)
+int	analyze_cmd(t_hashtable *hashtable, t_ast *node, t_shell *shell)
 {
 	int	result;
+	
 
 	if (is_empty_cmd(node->cmds))
-		return (0);
+	{
+		shell->cmd_status = 127;
+		return (127);
+	}
 	result = 0;
 	result = verify_cmd_permissions(node->cmds);
 	if (ft_strchr(node->cmds, '/') != NULL)
 		result = handle_slash(node, result);
 	else
 		result = handle_no_slash(hashtable, node);
+	shell->cmd_status = result;
 	return (result);
 }
 

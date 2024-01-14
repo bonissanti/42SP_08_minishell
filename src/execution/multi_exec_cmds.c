@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/12 19:05:08 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/13 23:24:22 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	exec_forked_cmd(t_exec *exec, t_shell *shell, t_ast *node)
 		free_envp(envp);
 		return (shell->exit_status);
 	}
-	if (analyze_cmd(shell->hash, node) != 0)
+	if (analyze_cmd(shell->hash, node, shell) != 0)
 	{
 		free_envp(envp);
 		return (shell->cmd_status);

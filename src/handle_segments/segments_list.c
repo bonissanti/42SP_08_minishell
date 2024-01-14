@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:34:49 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/12 23:08:03 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/13 22:04:04 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,17 @@ char	*join_segments(t_segment *head)
 	char		*str;
 	char		*ptr;
 	int			len;
+	t_shell		*shell;
 
 	len = 0;
 	current = head;
+	shell = get_shell();
 	while (current)
 	{
 		len += ft_strlen(current->str);
 		current = current->next;
 	}
-	str = (char *)ft_calloc(len + 1, sizeof(char));
+	str = gb_to_free((char *)ft_calloc(len + 1, sizeof(char)), shell);
 	ptr = str;
 	current = head;
 	while (current)

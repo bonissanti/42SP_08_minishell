@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:11 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 12:00:47 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/13 18:31:26 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	restore_fd(int reset_stdin, int reset_stdout);
 char	*build_cmd_path(t_ast *node, char *path);
 void	handle_error(t_ast *node, int result);
 void	analyze_if_print(t_ast *node, int index);
-int		analyze_cmd(t_hashtable *hashtable, t_ast *node);
+int		analyze_cmd(t_hashtable *hashtable, t_ast *node, t_shell *shell);
 int		analyze_heredoc(t_exec *exec, t_ast *node, t_shell *shell);
 char	*generate_filename(int count_hdoc);
 void	next_is_rdir(t_exec *exec, t_hashtable *hash, t_ast *node,

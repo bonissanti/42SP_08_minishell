@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/12 23:02:08 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/13 18:07:04 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void		new_operator_node(t_shell *shell, t_tkn_list **current);
 int			is_expander(char x);
 int			is_operator(t_tkn_type tkn);
 int			crop_delimiter_tkn(char **cmd);
-int			crop_quote_tkn(char **cmd);
 void		free_tkn_list(t_tkn_list *tkn_list);
 void		free_cmd_list(t_cmd_list *cmd_list);
 t_cmd_list	*rewind_list(t_cmd_list **cmd_list);
@@ -50,7 +49,6 @@ void		free_lists(void);
 int			is_redirect_op(char *cmd);
 int			set_head_tail(t_tkn_list *tokenized, t_tkn_list	
 				**head, t_tkn_list	**tail);
-int			process_quote(char **cmd, char quote, t_bool *closed);
 void		expand_iterator(char **cmd, int *i);
 
 #endif

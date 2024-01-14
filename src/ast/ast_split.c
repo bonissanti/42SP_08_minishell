@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:47:48 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/12 23:05:21 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/14 00:12:45 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,9 @@ char	**ast_split(char *s, char c)
 	{
 		if (!is_delimiter(s, c, false))
 		{
-			*temp = gb_to_free(
-					(char *)ft_calloc((ft_btw(s, c) + 1), sizeof(char)), shell);
+			// *temp = gb_to_free(
+			// 		(char *)ft_calloc((ft_btw(s, c) + 1), sizeof(char)), shell);
+			*temp = ft_calloc((ft_btw(s, c) + 1), sizeof(char));
 			if (*temp == NULL)
 				return (NULL);
 			ft_strlcpy(*temp++, s, ft_btw(s, c) + 1);
