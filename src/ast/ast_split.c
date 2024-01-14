@@ -96,9 +96,7 @@ char	**ast_split(char *s, char c)
 {
 	char	**result;
 	char	**temp;
-	t_shell	*shell;
 
-	shell = get_shell();
 	result = (char **)ft_calloc(ft_del_count(s, c) + 1, sizeof(char *));
 	if (result == NULL)
 		return (NULL);

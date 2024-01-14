@@ -51,3 +51,14 @@ char	*ft_strtok(char *str, const char *delim)
 		return (NULL);
 	return (token);
 }
+
+char	*ft_strcat(char *dest, const char *src)
+{
+	char	*str;
+
+	str = dest + ft_strlen(dest);
+	while (*src)
+		*str++ = *src++;
+	*str = '\0';
+	return ((char *)dest);
+}

@@ -46,10 +46,8 @@ int gb_present(char *str, t_shell *shell)
 void	free_split(char **split)
 {
 	int	i;
-	t_shell *shell;
 
 	i = 0;
-	shell = get_shell();
 	while (split[i] != NULL)
 	{
 		// if (split[i] != NULL && !gb_present(split[i], shell))

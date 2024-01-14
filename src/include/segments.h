@@ -57,13 +57,14 @@ size_t			custom_strcspn(const char *str, char *delim1);
 t_bool			is_whitespace(char c);
 size_t			ft_strcspn(const char *str, char *delim1);
 void			free_expansion(t_lex *quote, t_segment *head);
+char			*ft_strcat(char *dest, const char *src);
 
 //############################### WILDCARD ###################################
 
-void			handle_wildcard(char **args);
+void			handle_wildcard(char **args, t_shell *shell);
 char			*ft_strtok(char *str, const char *delim);
-void			finish_wildcard(t_segment *head, t_file *file, char **args);
-char			*generate_results(t_segment *segments);
+void			finish_wildcard(t_segment *head, t_file *file, char **args, t_shell *shell);
+char			*generate_results(t_segment *segments, t_shell *shell);
 
 //############################### SIGNALS ####################################
 

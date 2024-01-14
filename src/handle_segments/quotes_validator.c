@@ -24,7 +24,7 @@ void	analyzing_quotes(t_hashtable *env, t_shell *shell, char **args)
 		return ;
 	}
 	if (shell->count_args > 1 && *args[0] == '*')
-		handle_wildcard(args);
+		handle_wildcard(args, shell);
 	quotes(env, head, shell, args);
 }
 

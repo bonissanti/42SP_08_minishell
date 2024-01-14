@@ -12,21 +12,25 @@
 
 #include "../include/minishell.h"
 
-static void		get_dir_and_token(t_file *file, char *pattern);
+static void		get_dir_and_token(t_file *file, char *pattern, t_shell *shell);
 static t_bool	wildcard_match(char *file, char *pattern);
 
-inline void	finish_wildcard(t_segment *head, t_file *file, char **args)
+inline void	finish_wildcard(t_segment *head, t_file *file, char **args,
+	t_shell *shell)
 {
 	if (!head)
+	{
+		closedir(file->dir);
+		safe_free((void **)&file);
 		return ;
-	*args = generate_results(head);
+	}
+	*args = generate_results(head, shell);
 	free_segments(head);
-	safe_free((void **)&file->directory);
 	closedir(file->dir);
 	safe_free((void **)&file);
 }
 
-char	*generate_results(t_segment *segments)
+char	*generate_results(t_segment *segments, t_shell *shell)
 {
 	char	*result;
 
@@ -38,14 +42,14 @@ char	*generate_results(t_segment *segments)
 		else
 		{
 			result = gnl_strjoin(result, " ");
-			result = gnl_strjoin(result, segments->str);
+			result = gb_to_free(gnl_strjoin(result, segments->str), shell);
 		}
 		segments = segments->next;
 	}
 	return (result);
 }
 
-void	handle_wildcard(char **args)
+void	handle_wildcard(char **args, t_shell *shell)
 {
 	t_file		*file;
 	t_segment	*head;
@@ -53,7 +57,7 @@ void	handle_wildcard(char **args)
 	head = NULL;
 	file = ft_calloc(1, sizeof(t_file));
 	init_structs(file, 0, sizeof(t_file));
-	get_dir_and_token(file, *args);
+	get_dir_and_token(file, *args, shell);
 	file->dir = opendir(file->directory);
 	if (!file->dir)
 	{
@@ -70,10 +74,10 @@ void	handle_wildcard(char **args)
 			add_segments(&head, file->entry->d_name);
 		file->entry = readdir(file->dir);
 	}
-	finish_wildcard(head, file, args);
+	finish_wildcard(head, file, args, shell);
 }
 
-static void	get_dir_and_token(t_file *file, char *pattern)
+static void	get_dir_and_token(t_file *file, char *pattern, t_shell *shell)
 {
 	char	*temp_token;
 	char	temp_dir[1000];
@@ -85,14 +89,14 @@ static void	get_dir_and_token(t_file *file, char *pattern)
 		temp_dir[0] = '.';
 	while (temp_token)
 	{
-		strcat(temp_dir, temp_token);
+		ft_strcat(temp_dir, temp_token);
 		if (temp_token && !ft_strchr(temp_token, '*'))
-			strcat(temp_dir, "/");
+			ft_strcat(temp_dir, "/");
 		file->token = temp_token;
 		temp_token = ft_strtok(NULL, "/");
 	}
 	len = ft_strcspn(temp_dir, "*");
-	file->directory = ft_strndup(temp_dir, len);
+	file->directory = gb_to_free(ft_strndup(temp_dir, len), shell);
 }
 
 static t_bool	wildcard_match(char *file, char *pattern)
