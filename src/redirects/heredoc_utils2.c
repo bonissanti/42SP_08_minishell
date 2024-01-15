@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 12:54:06 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 12:06:56 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 13:14:25 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ void	read_write_heredoc(t_shell *shell, t_ast *node)
 		line = check_expansion(shell, &line, &len);
 		if (node->print_hdoc && line)
 			ft_putendl_fd(line, node->out_fd);
-		free(line);
 	}
 	if (shell->cmd_status == 130)
 		dup2(bkp_in, STDIN_FILENO);
