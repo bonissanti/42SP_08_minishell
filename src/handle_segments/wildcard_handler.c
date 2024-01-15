@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_handler.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:51:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/08 20:20:32 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:41:04 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 static void		get_dir_and_token(t_file *file, char *pattern, t_shell *shell);
 static t_bool	wildcard_match(char *file, char *pattern);
 
-inline void	finish_wildcard(t_segment *head, t_file *file, char **args,
-		t_shell *shell)
+inline void	finish_wildcard(t_segment *head, t_file *file, char **args)
 {
 	if (!head)
 	{
@@ -24,26 +23,28 @@ inline void	finish_wildcard(t_segment *head, t_file *file, char **args,
 		safe_free((void **)&file);
 		return ;
 	}
-	*args = generate_results(head, shell);
+	*args = generate_results(head);
 	free_segments(head);
 	closedir(file->dir);
 	safe_free((void **)&file);
 }
 
-char	*generate_results(t_segment *segments, t_shell *shell)
+char	*generate_results(t_segment *segments)
 {
-	char	*result;
+	static char	result[4096];
+	int			pos;
 
-	result = NULL;
+	pos = 0;
+	result[0] = '\0';
 	while (segments)
 	{
-		if (!ft_strlen(result))
-			result = gnl_strjoin(result, segments->str);
-		else
+		if (pos != 0)
 		{
-			result = gnl_strjoin(result, " ");
-			result = gb_to_free(gnl_strjoin(result, segments->str), shell);
+			ft_strncat(result, " ", 4096 - pos - 1);
+			pos += 1;
 		}
+		ft_strncat(result, segments->str, 4096 - pos - 1);
+		pos += ft_strlen(segments->str);
 		segments = segments->next;
 	}
 	return (result);
@@ -74,7 +75,7 @@ void	handle_wildcard(char **args, t_shell *shell)
 			add_segments(&head, file->entry->d_name);
 		file->entry = readdir(file->dir);
 	}
-	finish_wildcard(head, file, args, shell);
+	finish_wildcard(head, file, args);
 }
 
 static void	get_dir_and_token(t_file *file, char *pattern, t_shell *shell)

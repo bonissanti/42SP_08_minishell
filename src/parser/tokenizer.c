@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/14 00:48:34 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:53:47 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,6 @@ int	crop_delimiter_tkn(char **cmd)
 	return (i);
 }
 
-void	toggle_quote(char cmd, t_crop_token *quote)
-{
-	if (cmd == '\'' && !quote->double_quote)
-		quote->single_quote = !quote->single_quote;
-	else if (cmd == '\"' && !quote->single_quote)
-		quote->double_quote = !quote->double_quote;
-}
-
 char	*crop_general_tkn(char **cmd, int *i, t_crop_token *quote)
 {
 	char	*cropped;
@@ -48,16 +40,16 @@ char	*crop_general_tkn(char **cmd, int *i, t_crop_token *quote)
 	cropped = *cmd;
 	while (**cmd != '\0')
 	{
-		if ((**cmd == '\'' && !quote->double_quote)
-			|| (**cmd == '\"' && !quote->single_quote))
+		if ((**cmd == '\'' && !quote->double_quote) || (**cmd == '\"'
+				&& !quote->single_quote))
 		{
 			toggle_quote(**cmd, quote);
 			if (((!quote->double_quote && **cmd == '\"')
-				|| (!quote->single_quote && **cmd == '\'')))
+					|| (!quote->single_quote && **cmd == '\'')))
 			{
 				*i = *i + 1;
 				(*cmd)++;
-				if(**cmd != '$' || **cmd == 32)
+				if (**cmd != '$' || **cmd == 32)
 					return (ft_substr(cropped, 0, *i));
 			}
 		}
@@ -78,10 +70,10 @@ char	*crop_general_tkn(char **cmd, int *i, t_crop_token *quote)
 
 char	*crop_tkn(char **cmd, t_shell *shell)
 {
-	char	*cropped;
-	int		i;
+	char			*cropped;
+	int				i;
 	t_crop_token	quote;
-	char	*general;
+	char			*general;
 
 	cropped = *cmd;
 	ft_memset(&quote, 0, sizeof(quote));

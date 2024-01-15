@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/13 18:06:43 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:48:49 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,3 +59,10 @@ void	handle_token(char *str, t_shell *shell)
 		add_tkn_list(new_tkn_list(str, IDENTIFIER), shell);
 }
 
+void	toggle_quote(char cmd, t_crop_token *quote)
+{
+	if (cmd == '\'' && !quote->double_quote)
+		quote->single_quote = !quote->single_quote;
+	else if (cmd == '\"' && !quote->single_quote)
+		quote->double_quote = !quote->double_quote;
+}

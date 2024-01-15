@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/24 20:50:27 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/13 18:51:50 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:12:59 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ void	prompt(t_hashtable *env)
 		tokenizer(shell);
 		parser(env, shell);
 		shell->ast = init_ast(shell->cmd_list, &exec);
-		backup_fd(&exec.old_stdin, &exec.old_stdout);
+		backup_fd(&exec.old_stdin, &exec.old_stdout, shell);
 		if (shell->to_exec != 2)
 			exec_multi_cmds(&exec, shell->ast, shell);
 		(delete_node(shell->ast), free_lists());
-		restore_fd(exec.old_stdin, exec.old_stdout);
+		restore_fd(exec.old_stdin, exec.old_stdout, shell);
 		close_all_fds();
 	}
 	final_wipeout(env);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:26 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/13 18:05:55 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:35:48 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,8 +224,8 @@ typedef struct s_shell
 
 typedef struct s_crop_token
 {
-	t_bool single_quote;
-	t_bool double_quote;
-}	t_crop_token;
+	t_bool	single_quote;
+	t_bool	double_quote;
+}						t_crop_token;
 
 #endif

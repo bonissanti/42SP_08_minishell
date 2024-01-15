@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:02:11 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/13 18:07:04 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:49:19 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ int			is_redirect_op(char *cmd);
 int			set_head_tail(t_tkn_list *tokenized, t_tkn_list	
 				**head, t_tkn_list	**tail);
 void		expand_iterator(char **cmd, int *i);
+void		toggle_quote(char cmd, t_crop_token *quote);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 16:52:18 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/13 20:59:29 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:42:55 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,20 @@ void	init_structs(void *structs, int type, size_t struct_size)
 	ft_memset(structs, type, struct_size);
 }
 
-int	ft_count_args(char **args)
+int	gb_present(char *str, t_shell *shell)
 {
-	int	count;
-
-	count = 0;
-	while (args[count] != NULL)
-		count++;
-	return (count);
-}
-
-int gb_present(char *str, t_shell *shell)
-{
-	t_list *temp;
-	t_list *current;
+	t_list	*temp;
+	t_list	*current;
 
 	current = shell->readline_input_to_free;
 	while (current)
 	{
 		temp = current->next;
 		if (!ft_memcmp(str, current->content, ft_strlen(str)))
-			return(0);
+			return (0);
 		current = temp;
 	}
-	return(1);
+	return (1);
 }
 
 void	free_split(char **split)
@@ -50,7 +40,6 @@ void	free_split(char **split)
 	i = 0;
 	while (split[i] != NULL)
 	{
-		// if (split[i] != NULL && !gb_present(split[i], shell))
 		if (split[i] != NULL)
 		{
 			free(split[i]);

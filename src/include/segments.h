@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   segments.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:34:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/12 23:08:19 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:27:55 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ t_bool			is_whitespace(char c);
 size_t			ft_strcspn(const char *str, char *delim1);
 void			free_expansion(t_lex *quote, t_segment *head);
 char			*ft_strcat(char *dest, const char *src);
+char			*ft_strncat(char *dest, const char *src, size_t n);
 
 //############################### WILDCARD ###################################
 
 void			handle_wildcard(char **args, t_shell *shell);
 char			*ft_strtok(char *str, const char *delim);
-void			finish_wildcard(t_segment *head, t_file *file, char **args,
-					t_shell *shell);
-char			*generate_results(t_segment *segments, t_shell *shell);
+void			finish_wildcard(t_segment *head, t_file *file, char **args);
+char			*generate_results(t_segment *segments);
 
 //############################### SIGNALS ####################################
 

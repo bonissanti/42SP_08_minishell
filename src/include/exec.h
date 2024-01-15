@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:11 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/13 18:31:26 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:12:42 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ void	simple_logical(t_exec *exec, t_shell *shell, t_ast *node, int status);
 
 //############################# PREPARE_EXEC #################################//
 
-void	backup_fd(int *old_stdin, int *old_stdout);
-void	restore_fd(int reset_stdin, int reset_stdout);
+void	backup_fd(int *old_stdin, int *old_stdout, t_shell *shell);
+void	restore_fd(int reset_stdin, int reset_stdout, t_shell *shell);
 char	*build_cmd_path(t_ast *node, char *path);
 void	handle_error(t_ast *node, int result);
 void	analyze_if_print(t_ast *node, int index);

@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:50:15 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 17:09:47 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:14:57 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,9 @@ static void	after_hdoc(t_exec *exec, t_shell *shell, t_ast *node,
 void	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 		int *next_pipe)
 {
+	t_shell	*shell;
+
+	shell = get_shell();
 	if (exec->count_pipes >= 1)
 		close(next_pipe[1]);
 	if (node->right && exec->count_pipes >= 1)
@@ -98,5 +101,5 @@ void	parent_hdoc(t_exec *exec, t_hashtable *hash, t_ast *node,
 		exec->count_pipes--;
 		handle_pipes(hash, exec, node->right, next_pipe);
 	}
-	restore_fd(exec->old_stdin, exec->old_stdout);
+	restore_fd(exec->old_stdin, exec->old_stdout, shell);
 }

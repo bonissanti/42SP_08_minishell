@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 17:09:42 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:42:40 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,16 @@ void	handle_error(t_ast *node, int result)
 		ft_fprintf(2, "minishell: %s: %s\n", node->cmds, strerror(errno));
 	}
 	return ;
+}
+
+void	free_for_finish(t_exec *exec, t_hashtable *env)
+{
+	t_shell	*shell;
+
+	shell = get_shell();
+	delete_node(get_shell()->ast);
+	destroy_hashtable(env);
+	free_lists();
+	empty_trash_can();
+	restore_fd(exec->old_stdin, exec->old_stdout, shell);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:50:54 by brunrodr          #+#    #+#             */
-/*   Updated: 2023/12/11 14:43:47 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:40:44 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,17 @@ char	*ft_strcat(char *dest, const char *src)
 
 	str = dest + ft_strlen(dest);
 	while (*src)
+		*str++ = *src++;
+	*str = '\0';
+	return ((char *)dest);
+}
+
+char	*ft_strncat(char *dest, const char *src, size_t n)
+{
+	char	*str;
+
+	str = dest + ft_strlen(dest);
+	while (*src && n--)
 		*str++ = *src++;
 	*str = '\0';
 	return ((char *)dest);

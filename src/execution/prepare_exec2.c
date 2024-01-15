@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_exec2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:01:56 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/13 18:30:36 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:37:27 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int	handle_no_slash(t_hashtable *hash, t_ast *node)
 int	analyze_cmd(t_hashtable *hashtable, t_ast *node, t_shell *shell)
 {
 	int	result;
-	
 
 	if (is_empty_cmd(node->cmds))
 	{

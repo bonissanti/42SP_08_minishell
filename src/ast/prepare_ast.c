@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:35:28 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/14 00:35:25 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:41:24 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,16 +42,13 @@ static void	prepare_redirect_or_heredoc(t_ast *new_node, t_cmd_list *cmd_list)
 	{
 		new_node->infile = cmd_list->infile;
 		analyzing_quotes(shell->hash, shell, &new_node->infile);
-		// gb_to_free(new_node->infile, shell);
 		new_node->outfile = cmd_list->outfile;
 		analyzing_quotes(shell->hash, shell, &new_node->outfile);
-		// gb_to_free(new_node->outfile, shell);
 	}
 	else if (cmd_list->type == TYPE_HEREDOC)
 	{
 		new_node->delim = cmd_list->next->args;
 		analyzing_quotes(shell->hash, shell, &new_node->delim);
-		// gb_to_free(new_node->delim, shell);
 	}
 	new_node->weight = cmd_list->weight;
 	new_node->type = cmd_list->type;
@@ -86,8 +83,7 @@ void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list)
 	shell->count_args = ft_count_args(new_node->args);
 	while (new_node->args[++i])
 	{
-		// gb_to_free(new_node->args[i], shell);
-		analyzing_quotes(shell->hash, shell,  &new_node->args[i]);
+		analyzing_quotes(shell->hash, shell, &new_node->args[i]);
 		if (shell->to_exec == 2)
 			return ;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/13 23:24:22 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:13:06 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	handle_cmd(t_exec *exec, t_shell *shell, t_ast *root)
 	if (root->type == TYPE_LOGICAL)
 	{
 		handle_logical(exec, shell, root);
-		restore_fd(exec->old_stdin, exec->old_stdout);
+		restore_fd(exec->old_stdin, exec->old_stdout, shell);
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quotes_validator.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 15:32:29 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/13 23:27:11 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:21:53 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	analyzing_quotes(t_hashtable *env, t_shell *shell, char **args)
 	{
 		ft_fprintf(2, "minishell: syntax error: unexpected EOF\n");
 		shell->to_exec = 2;
+		shell->cmd_status = 2;
 		return ;
 	}
 	if (shell->count_args > 1 && *args[0] == '*')

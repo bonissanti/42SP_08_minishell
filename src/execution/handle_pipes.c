@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/11 13:53:34 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 11:14:02 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	handle_other(t_exec *exec, t_ast *node, int *prev_pipe)
 	}
 	else
 	{
-		restore_fd(exec->old_stdin, exec->old_stdout);
+		restore_fd(exec->old_stdin, exec->old_stdout, shell);
 		exec_multi_cmds(exec, node, shell);
 	}
 }
