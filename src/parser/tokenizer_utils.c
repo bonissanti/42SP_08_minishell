@@ -6,7 +6,7 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/15 21:54:44 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/15 11:48:49 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/15 12:28:17 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,4 +65,25 @@ void	toggle_quote(char cmd, t_crop_token *quote)
 		quote->single_quote = !quote->single_quote;
 	else if (cmd == '\"' && !quote->single_quote)
 		quote->double_quote = !quote->double_quote;
+}
+
+int	crop_delimiter_tkn(char **cmd)
+{
+	int	i;
+
+	i = 0;
+	if (**cmd == '$' || **cmd == '~' || **cmd == '*')
+		expand_iterator(cmd, &i);
+	else if (!ft_strncmp(*cmd, "||", 2) || !ft_strncmp(*cmd, "&&", 2)
+		|| !ft_strncmp(*cmd, "<<", 2) || !ft_strncmp(*cmd, ">>", 2))
+	{
+		i = 2;
+		(*cmd) += 2;
+	}
+	else
+	{
+		i++;
+		(*cmd)++;
+	}
+	return (i);
 }

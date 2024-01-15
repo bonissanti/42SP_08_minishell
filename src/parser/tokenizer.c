@@ -6,36 +6,37 @@
 /*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/26 21:04:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/15 11:53:47 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/15 12:29:09 by brunrodr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	crop_delimiter_tkn(char **cmd)
+static void	write_token(char **cmd, int *i, t_crop_token *quote)
 {
-	int	i;
-
-	i = 0;
-	if (**cmd == '$' || **cmd == '~' || **cmd == '*')
-		expand_iterator(cmd, &i);
-	else if (!ft_strncmp(*cmd, "||", 2) || !ft_strncmp(*cmd, "&&", 2)
-		|| !ft_strncmp(*cmd, "<<", 2) || !ft_strncmp(*cmd, ">>", 2))
+	if ((quote->double_quote || quote->single_quote) || (!quote->double_quote
+			|| !quote->single_quote))
 	{
-		i = 2;
-		(*cmd) += 2;
-	}
-	else
-	{
-		i++;
+		*i = *i + 1;
 		(*cmd)++;
 	}
-	return (i);
+}
+
+static char	*result_token(char **cmd, int *i, char *cropped,
+		t_crop_token *quote)
+{
+	if (isdelimiter(*cmd) && **cmd != '$' && !quote->double_quote
+		&& !quote->single_quote)
+		return (ft_substr(cropped, 0, *i));
+	else if (**cmd == 32 && !quote->double_quote && !quote->single_quote)
+		return (ft_substr(cropped, 0, *i));
+	return (NULL);
 }
 
 char	*crop_general_tkn(char **cmd, int *i, t_crop_token *quote)
 {
 	char	*cropped;
+	char	*result;
 
 	cropped = *cmd;
 	while (**cmd != '\0')
@@ -53,17 +54,10 @@ char	*crop_general_tkn(char **cmd, int *i, t_crop_token *quote)
 					return (ft_substr(cropped, 0, *i));
 			}
 		}
-		if (isdelimiter(*cmd) && **cmd != '$' && !quote->double_quote
-			&& !quote->single_quote)
-			return (ft_substr(cropped, 0, *i));
-		else if (**cmd == 32 && !quote->double_quote && !quote->single_quote)
-			return (ft_substr(cropped, 0, *i));
-		else if ((quote->double_quote || quote->single_quote)
-			|| (!quote->double_quote || !quote->single_quote))
-		{
-			*i = *i + 1;
-			(*cmd)++;
-		}
+		result = result_token(cmd, i, cropped, quote);
+		if (result)
+			return (result);
+		write_token(cmd, i, quote);
 	}
 	return (NULL);
 }
