@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 17:35:32 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/13 23:24:09 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 13:50:02 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	exec_simple(t_hashtable *hash, t_exec *exec, t_ast *node)
 	return (shell->cmd_status);
 }
 
-void	analyze_if_print(t_ast *node, int index)
+void	analyze_if_print(t_ast *node, int index, t_exec *exec)
 {
 	t_ast	*save_node;
 
@@ -49,8 +49,14 @@ void	analyze_if_print(t_ast *node, int index)
 		if (node->type == TYPE_HEREDOC && index == 0 && (node->right == NULL
 				|| node->right->type != TYPE_HEREDOC))
 		{
-			if (node->left == NULL)
+			if (node->left == NULL && exec->count_hdoc!= 1)
 				node->left = save_node;
+			else if (!node->left && node->right 
+				&& !node->right->right && exec->count_hdoc == 1)
+			{
+				node->left = node->right;
+				node->right = NULL;
+			}
 			node->print_hdoc = true;
 		}
 		node = node->right;

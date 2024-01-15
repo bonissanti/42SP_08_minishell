@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:32:11 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/15 11:12:42 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/15 13:41:22 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	backup_fd(int *old_stdin, int *old_stdout, t_shell *shell);
 void	restore_fd(int reset_stdin, int reset_stdout, t_shell *shell);
 char	*build_cmd_path(t_ast *node, char *path);
 void	handle_error(t_ast *node, int result);
-void	analyze_if_print(t_ast *node, int index);
+void	analyze_if_print(t_ast *node, int index, t_exec *exec);
 int		analyze_cmd(t_hashtable *hashtable, t_ast *node, t_shell *shell);
 int		analyze_heredoc(t_exec *exec, t_ast *node, t_shell *shell);
 char	*generate_filename(int count_hdoc);

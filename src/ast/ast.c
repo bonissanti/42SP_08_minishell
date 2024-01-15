@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/15 11:00:05 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/15 13:45:51 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	delete_node(t_ast *head)
 		delete_node(head->left);
 		delete_node(head->right);
 		safe_free((void **)&head->path);
-		free(head);
+		if (head)
+			free(head);
 	}
 }

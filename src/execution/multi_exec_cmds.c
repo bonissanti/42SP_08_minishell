@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multi_exec_cmds.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/01 18:02:10 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/15 11:13:06 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/15 13:30:16 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ int	exec_multi_cmds(t_exec *exec, t_ast *root, t_shell *shell)
 	{
 		wait_for_children(root, shell);
 		close_all_fds();
-		shell->exit_status = shell->cmd_status;
 		return (shell->exit_status);
 	}
 	handle_cmd(exec, shell, root);

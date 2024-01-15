@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 12:07:07 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/15 11:42:40 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/15 13:40:56 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_ast	*find_node(t_ast *root, t_type type)
 
 int	analyze_heredoc(t_exec *exec, t_ast *node, t_shell *shell)
 {
-	analyze_if_print(node, 0);
+	analyze_if_print(node, 0, exec);
 	if (node->type == TYPE_HEREDOC)
 		handle_heredoc(shell, exec, node);
 	else
