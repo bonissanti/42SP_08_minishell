@@ -6,11 +6,27 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 10:40:43 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/15 20:39:29 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/16 20:39:14 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+/**
+ * Function: init_ast
+ * -----------------
+ * Init_ast is responsible to create and insert a brand new ast node to the
+ * ast list.
+ *  
+ * @param: cmd_list: The pointer to the list that will be populated by the function.
+ * @param: exec: The pointer to the main struct of the execution flow.
+ * 
+ * @var: ast: The new node to be created.
+ * @var: head: The current head of cmd_list.
+ * 
+ * @return: Returns a pointer to the new node.
+ *
+ */
 
 t_ast	*init_ast(t_cmd_list *cmd_list, t_exec *exec)
 {
