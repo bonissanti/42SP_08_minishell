@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 19:15:23 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/10 19:52:05 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/15 20:58:50 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+/**
+ * Function: tkn_type_converter
+ * -----------------
+ * The tkn_type_converter function converts a t_tkn_type enum
+ * into a string corresponding to the tkn_type.
+ * 
+ * @param: type: The t_tkn_type enum.
+ * 
+ * @return: char *.
+ * 
+*/
 
 char	*tkn_type_converter(t_tkn_type type)
 {

@@ -3,14 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   handle_pipes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/07 18:40:02 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/15 11:14:02 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/15 20:47:30 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+/**
+ * Function: Handle_other
+ * -----------------
+ * This function is used to handle the other cases of the handle_pipes, as
+ * the logical operators. It calls the function execute_pipes to execute the
+ * command, then it calls the function simple_logical to wait for the children
+ * and execute the next command if the status of the command is 0.
+ *
+ * @param: hash: The pointer to the hashtable.
+ * @param: exec: The pointer to the exec struct, aux struct for the execution.
+ * @param: prev_pipe: The pointer to the pipe that is going to be read.
+ * 
+ * @return: This is a void function, so it does not return a value.
+ *
+ */
 
 void	handle_other(t_exec *exec, t_ast *node, int *prev_pipe)
 {
@@ -29,6 +45,22 @@ void	handle_other(t_exec *exec, t_ast *node, int *prev_pipe)
 	}
 }
 
+/**
+ * Function: Final_cmd
+ * -----------------
+ * This function is used to handle the other cases of the handle_pipes, as
+ * the logical operators. It calls the function execute_pipes to execute the
+ * command, then it calls the function simple_logical to wait for the children
+ * and execute the next command if the status of the command is 0.
+ *
+ * @param: hash: The pointer to the hashtable.
+ * @param: exec: The pointer to the exec struct, aux struct for the execution.
+ * @param: prev_pipe: The pointer to the pipe that is going to be read.
+ * 
+ * @return: This is a void function, so it does not return a value.
+ *
+ */
+
 static void	final_cmd(t_exec *exec, t_ast *node, int *prev_pipe)
 {
 	if (node->cmds && *node->cmds == '<')
@@ -44,6 +76,32 @@ static void	final_cmd(t_exec *exec, t_ast *node, int *prev_pipe)
 	exec->read_in = false;
 	exec->has_out = false;
 }
+/**
+ * Function: Last_pipe
+ * -----------------
+ * This function is the final process of handle_pipes. It executes the last
+ * command of the pipe, and closes the pipe. It could works in the 2 ways.
+ * The first if is for the case of a final command in the multiples pipes or
+ * for the last command after a redirection/heredoc. The second if is for the
+ * The case of redirection/heredoc in the middle of the pipes. This if is
+ * for to garantee that the command is executed and, if has multiples pipes,
+ * could follow the flow of the pipes.
+ *  
+ * @param: exec: The pointer to the exec struct, aux struct for the execution.
+ * @param: node: The pointer to the node that contains the redirection.
+ * @param: prev_pipe: The pointer to the pipe that is going to be read.
+ * 
+ * @var: exec->error_call: The boolean that indicates if the command has an
+ * error. It is setted to false or true by the function handle_redirect in
+ * create_files.
+ * @var: exec->count_pipes: The number of pipes that the command has.
+ * @var: exec->read_in: The boolean that indicates if the command must
+ * read from the input file instead of the pipe. This flag is exclusive
+ * for this function, thinking for the case of pipes + redirect + pipe/multiple
+ * 
+ * @return: This is a void function, so it does not return a value.
+ *
+ */
 
 static void	last_pipe(t_exec *exec, t_ast *node, int *prev_pipe)
 {
@@ -68,6 +126,25 @@ static void	last_pipe(t_exec *exec, t_ast *node, int *prev_pipe)
 			(close(prev_pipe[0]), close(prev_pipe[1]));
 	}
 }
+
+/**
+ * Function: handle_pipes
+ * -----------------
+ * This function is the heart of the pipes. It handles the pipes, basically.
+ * It calls the node->left to execute the first command, then it passes the
+ * content of the pipe (next_pipe) to the int prev_pipe, so that the next
+ * command can read from it. The logical of handle_pipes is recursive and
+ * recycling the pipes. In some cases, the next node could be a redirection,
+ * a pipe or a logical operator, so it calls the functions handle_redirect.
+ *  
+ * @param: hash: The pointer to the hashtable.
+ * @param: exec: The pointer to the exec struct, aux struct for the execution.
+ * @param: node: The pointer to the node that contains the redirection.
+ * @param: prev_pipe: The pointer to the pipe that is going to be read.
+ * 
+ * @return: This is a void function, so it does not return a value.
+ *
+ */
 
 void	handle_pipes(t_hashtable *hash, t_exec *exec, t_ast *node,
 		int *prev_pipe)

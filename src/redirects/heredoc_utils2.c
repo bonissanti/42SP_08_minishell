@@ -6,7 +6,7 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 12:54:06 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/15 13:25:19 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 21:01:50 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,22 @@ int	pipe_to_ignore(t_ast *node, int *pipe_to_ignore)
 	}
 	return (*pipe_to_ignore);
 }
+
+/**
+ * Function: verify_eof
+ * -----------------
+ * This function verify_eof if the line read from the stdin is the delimiter of
+ * the heredoc redirection. The first if checks if the line is empty, 
+ * gerated by the ctrl+d. The second if checks if the line is the delimiter.
+ * If the line is empty or the delimiter, the function returns false, and the
+ * redirection is finished.
+ *  
+ * @param: node: The pointer to the node that contains the redirection.
+ * @param: line: The line that is read from the stdin.
+ * 
+ * @return: Returns false if the line is empty or the delimiter, true otherwise.
+ *
+ */
 
 static t_bool	verify_eof(t_ast *node, t_shell *shell, char *line)
 {

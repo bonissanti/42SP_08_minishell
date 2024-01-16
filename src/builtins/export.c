@@ -6,11 +6,28 @@
 /*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/23 18:24:59 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/14 00:13:04 by aperis-p         ###   ########.fr       */
+/*   Updated: 2024/01/15 20:41:27 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+/**
+ * Function: Print_all_env
+ * -----------------
+ * This function is used to print all the environment variables in alphabetical
+ * order. First we copy all the keys into an array, then we sort the array
+ * using bubble sort, and then we iterate through the array and print the
+ * environment variables.
+ *  
+ * @param: *hash_table: The pointer to the hashtable.
+ * 
+ * @var: i: The counter for the number of environment variables.
+ * @var: **keys: The array that contains all the keys.
+ * 
+ * @return: Returns nothing.
+ *
+ */
 
 void	print_all_env(t_hashtable *hash_table)
 {
@@ -89,6 +106,25 @@ void	env_handler(t_env *env, char **args, int i, char *temp)
 	i++;
 }
 
+/**
+ * Function: add_env
+ * -----------------
+ * This function is used to add environment variables to the hashtable. First
+ * we iterate through the arguments, then we split the arguments into key and
+ * value using the '=' character as a delimiter. If the argument contains
+ * a '=', we insert the key and value into the hashtable. If the argument
+ * does not contain a '=', we search for the key in the hashtable, and if
+ * 
+ *  
+ * @param: *hash_table: The pointer to the hashtable.
+ * 
+ * @var: i: The counter for the number of environment variables.
+ * @var: **keys: The array that contains all the keys.
+ * 
+ * @return: Returns nothing.
+ *
+ */
+
 void	add_env(t_shell *shell, char **args)
 {
 	int		i;
@@ -114,6 +150,25 @@ void	add_env(t_shell *shell, char **args)
 		env_handler(&env, args, i, temp);
 	}
 }
+/**
+ * Function: Export
+ * -----------------
+ * This function is currently divided into two parts. At the start,
+ * the function checks if there are any arguments. If there are no
+ * arguments, the function prints (almost) all the environment variables.
+ * If there are arguments, the function will iterate through the arguments
+ * and add them to the hashtable.
+ * 
+ * @param: hash_table: The pointer to the hashtable.
+ * @param: args: The arguments passed to the function.
+ * 
+ * @var: hash: The pointer to the hash node.
+ * @var: name: The name of the environment variable.
+ * @var: value: The value of the environment variable.
+ * 
+ * @return: Returns 1 if the function was successful.
+ *
+ */
 
 void	ft_export(t_shell *shell, char **args)
 {

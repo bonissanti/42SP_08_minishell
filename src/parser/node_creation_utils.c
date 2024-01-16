@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   node_creation_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 20:19:14 by aperis-p          #+#    #+#             */
-/*   Updated: 2024/01/10 17:01:27 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/15 20:54:48 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+/**
+ * Function: find_command
+ * -----------------
+ * This function searchs for the command that is behind
+ * a delimiter operator such as |, && or ||, accordingly with
+ * the cmd_list head at the given time.
+ * 
+ * @param: *cmd_list: The head of the command list.
+ * @var: *current_command: The pointer to the command that will be returned.
+ * 
+ * @return: t_cmd_list *.
+ * 
+ */
 
 t_cmd_list	*find_command(t_cmd_list *cmd_list)
 {
@@ -27,6 +41,18 @@ t_cmd_list	*find_command(t_cmd_list *cmd_list)
 	}
 	return (current_command);
 }
+/**
+ * Function: append_expand
+ * -----------------
+ * This function appends the content of the current token
+ * to a found command in the cmd_list if it is of type IDENTIFIER,
+ * EXPAND or WILD.
+ * 
+ * @param: **current: The current token.
+ * 
+ * @return: void.
+ * 
+*/
 
 void	append_expand(t_shell *shell, t_tkn_list **current)
 {

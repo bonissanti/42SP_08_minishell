@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wildcard_handler.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/14 16:51:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/15 11:41:04 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/15 20:52:59 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,21 @@
 
 static void		get_dir_and_token(t_file *file, char *pattern, t_shell *shell);
 static t_bool	wildcard_match(char *file, char *pattern);
+
+/**
+ * Function: finish_wildcard
+ * -----------------
+ * This is a function that finishes the wildcard expansion. It will print
+ * the files that match with the token. Then it will free the linked list
+ * and the structure.
+ *   
+ * @param: *head: The head of the linked list.
+ * @param: *file: The structure that contains the directory, token, etc.
+ * @var: *tmp: The temporary pointer to the linked list.
+ * 
+ * @return: void
+ * 
+ */
 
 inline void	finish_wildcard(t_segment *head, t_file *file, char **args)
 {
@@ -28,6 +43,22 @@ inline void	finish_wildcard(t_segment *head, t_file *file, char **args)
 	closedir(file->dir);
 	safe_free((void **)&file);
 }
+
+/**
+ * Function: generate_results
+ * -----------------
+ * This function generates a char *string concatenating every segment 
+ * of the linked list and returns it to the tokenizer be able to set
+ * the expanded content of '*' to it's content field, and calls the
+ * finish_wild function in order to free the segments list.
+ * 
+ * @param: *segments: The head of the linked list.
+ * @param: *file: The structure that contains the directory, token, etc.
+ * @var: *result: The string that will be returned.
+ * 
+ * @return: char *.
+ * 
+*/
 
 char	*generate_results(t_segment *segments)
 {
@@ -49,6 +80,28 @@ char	*generate_results(t_segment *segments)
 	}
 	return (result);
 }
+
+/**
+ * Function: handle_wildcard
+ * -----------------
+ * This function handles the wildcard expansion. For expand wildcard
+ * we need to know the directory and the token. The directory is the
+ * path to the file and the token is the combination of the file name
+ * and the wildcard *. This function will open the directory and read
+ * the files inside it, after that it will check if the files and the
+ * token match. If they match, the file will be added to the linked list.
+ * 
+ * @param: *pattern: The pattern that contains the wildcard.
+ * @var: *file: The structure that contains the directory, token, etc.
+ * @var: *head: The head of the linked list.
+ * @var: opendir: The directory stream, used to open the directory.
+ * @var: readdir: The directory entry, used to read the files at the directory.
+ * @var: stat: The structure that contains the file information.
+ * @var: closedir: The function that closes the directory stream.
+ * 
+ * @return: void
+ * 
+ */
 
 void	handle_wildcard(char **args, t_shell *shell)
 {
@@ -78,6 +131,33 @@ void	handle_wildcard(char **args, t_shell *shell)
 	finish_wildcard(head, file, args);
 }
 
+/**
+ * Function: get_dir_and_token
+ * -----------------
+ * This function is used to separate the directory and the token. The	
+ * directory needs to start with '/' (in case of relative/absolute path)
+ * or '.' (current directory). Besides that, directory can't contain
+ * wildcard for the correct work of the function 'opendir'. Now, the
+ * token is the combination of the file name and the wildcard *. For
+ * handle the directory and the token, we use the function 'strtok'.
+ * This will separate the path having as delimiter the '/' character.
+ * Then temp_token will have mini paths that will be concatenated with
+ * the directory. When ft_strchr finds the wildcard, the loop will stop
+ * and the file->token will be the last temp_token (with the wildcard).
+ * Then we use ft_strcspn to get the length of the directory (without the
+ * wildcard) and copy it to file->directory. 
+ *   
+ * @param: *file: The structure that contains the directory, token, etc.
+ * @param: *pattern: The pattern that contains the wildcard.
+ * @var: *temp_token: The temporary token that will storage the mini paths.
+ * @var: temp_dir: The temporary directory that will be concatenated with
+ * the directory.
+ * @var: len: The length of the directory.
+ * 
+ * @return: void
+ * 
+ */
+
 static void	get_dir_and_token(t_file *file, char *pattern, t_shell *shell)
 {
 	char	*temp_token;
@@ -99,6 +179,22 @@ static void	get_dir_and_token(t_file *file, char *pattern, t_shell *shell)
 	len = ft_strcspn(temp_dir, "*");
 	file->directory = gb_to_free(ft_strndup(temp_dir, len), shell);
 }
+
+/**
+ * Function: wildcard_match
+ * -----------------
+ * This is a recursive function that checks if the files and the token
+ * match. The function will iterate through the file until it finds the
+ * wildcard. When it finds the wildcard, it will check if the file and
+ * the token match, character by character. If they match, the function
+ * will return true. If they don't match, the function will return false. 
+ *   
+ * @param: *file: The name of the file.
+ * @param: *pattern: The pattern that contains the wildcard.
+ * 
+ * @return: true or false
+ * 
+ */
 
 static t_bool	wildcard_match(char *file, char *pattern)
 {
