@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   prepare_ast.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 12:35:28 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/15 11:41:24 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/17 15:24:01 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+/**
+ * Function: prepare_command
+ * -----------------
+ * This function is used to prepare a command node for our AST.
+ *  
+ * @param: **new_node: The node that will be prepared to carry a
+ * command type data.
+ * @param: *cmd_list: The cmd_list node that has all data needed to
+ * create the new AST node.
+ * 
+ * @return: Returns nothing.
+ *
+ */
 
 static void	prepare_command(t_ast *new_node, t_cmd_list *cmd_list)
 {
@@ -24,6 +38,20 @@ static void	prepare_command(t_ast *new_node, t_cmd_list *cmd_list)
 	new_node->type = cmd_list->type;
 }
 
+/**
+ * Function: prepare_subshell
+ * -----------------
+ * This function is used to prepare a subshell node for our AST.
+ *  
+ * @param: **new_node: The node that will be prepared to carry a
+ * command type data.
+ * @param: *cmd_list: The cmd_list node that has all data needed to
+ * create the new AST node.
+ * 
+ * @return: Returns nothing.
+ *
+ */
+
 static void	prepare_subshell(t_ast *new_node, t_cmd_list *cmd_list)
 {
 	new_node->cmds = new_node->args[0];
@@ -31,6 +59,20 @@ static void	prepare_subshell(t_ast *new_node, t_cmd_list *cmd_list)
 	new_node->weight = cmd_list->weight;
 	new_node->type = cmd_list->type;
 }
+
+/**
+ * Function: prepare_redirect_or_heredoc
+ * -----------------
+ * This function is used to prepare a redirect or heredoc node for our AST.
+ *  
+ * @param: **new_node: The node that will be prepared to carry a
+ * command type data.
+ * @param: *cmd_list: The cmd_list node that has all data needed to
+ * create the new AST node.
+ * 
+ * @return: Returns nothing.
+ *
+ */
 
 static void	prepare_redirect_or_heredoc(t_ast *new_node, t_cmd_list *cmd_list)
 {
@@ -54,6 +96,19 @@ static void	prepare_redirect_or_heredoc(t_ast *new_node, t_cmd_list *cmd_list)
 	new_node->type = cmd_list->type;
 }
 
+/**
+ * Function: is_blank_command
+ * -----------------
+ * This function is used to assist the prepare_ast function to check
+ * if the command passed is a sequence of e blank spaces.
+ *  
+ * @param: *cmd: The command to be analyzed.
+ * 
+ * @return: Returns 1 if the function gets to the last char whithout
+ * find any char different of blank space "ascii 32", 0 otherwise.
+ *
+ */
+
 int	is_blank_command(const char *cmd)
 {
 	if (*cmd != 32)
@@ -66,6 +121,24 @@ int	is_blank_command(const char *cmd)
 	}
 	return (1);
 }
+
+/**
+ * Function: prepare_ast
+ * -----------------
+ * This function is used to manage the creation of AST nodes.
+ *  
+ * @param: *new_node: The node created by the create_node function
+ * to be prepared as one of the node types.
+ * @param: *cmd_list: The cmd_list node that has all data needed to
+ * create the new AST node.
+ * 
+ * @var: *shell: The static variable that is holding all the data that
+ * is being shared between the functions.
+ * @var: i: The iterator for this function.
+ * 
+ * @return: Returns nothing.
+ *
+ */
 
 void	prepare_ast(t_ast *new_node, t_cmd_list *cmd_list)
 {

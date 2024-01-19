@@ -3,14 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/02 13:02:36 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 18:49:43 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/17 21:02:45 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
+
+/**
+ * Function: handle_number
+ * -----------------
+ * Our builtin implementation of the original env function.
+ *  
+ * @param: *shell: The static variable that is holding all the data that
+ * is being shared between the functions.
+ * @param: **args: A 2d array containing the command name and its arguments.
+ * 
+ * @var: num: Will hold the converted number from the string. 
+ * 
+ * @return: Returns nothing.
+ *
+ */
 
 static void	handle_number(t_shell *shell, char **args)
 {
@@ -35,6 +50,21 @@ static void	handle_number(t_shell *shell, char **args)
 			shell->exit_status = num;
 	}
 }
+
+/**
+ * Function: ft_exit
+ * -----------------
+ * Our builtin implementation of the original exit function.
+ *  
+ * @param: *shell: The static variable that is holding all the data that
+ * is being shared between the functions.
+ * @param: **args: A 2d array containing the command name and its arguments.
+ * 
+ * @var: argc: Will hold the amount of arguments that the 2d array **args has. 
+ * 
+ * @return: Returns the exit status accordingly with the arguments.
+ *
+ */
 
 int	ft_exit(t_shell *shell, char **args)
 {

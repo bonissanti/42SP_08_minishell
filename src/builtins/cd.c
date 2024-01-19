@@ -3,16 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: brunrodr <brunrodr@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aperis-p <aperis-p@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 18:32:04 by brunrodr          #+#    #+#             */
-/*   Updated: 2024/01/10 19:51:38 by brunrodr         ###   ########.fr       */
+/*   Updated: 2024/01/17 17:37:15 by aperis-p         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 static void	handle_cd(t_shell *shell, char **args, int argc);
+
+/**
+ * Function: ft_cd
+ * -----------------
+ * This function is used to change the current working directory.
+ *  
+ * @param: *shell: The static variable that is holding all the data that
+ * is being shared between the functions.
+ * @param: **args: A 2d array containing the command name and its arguments.
+ * 
+ * @var: *oldpwd: A pointer to a string that will hold the old working directory.
+ * @var: *cwd: A pointer to a string that will hold the current working directory.
+ * @var: argc: An integer that holds the number of arguments.
+ * 
+ * @return: Returns nothing.
+ *
+ */
 
 void	ft_cd(t_shell *shell, char **args)
 {
@@ -36,6 +53,21 @@ void	ft_cd(t_shell *shell, char **args)
 	free(cwd);
 	return ;
 }
+
+/**
+ * Function: handle_cd
+ * -----------------
+ * This is a helper function of ft_cd, it is called to handle with errors
+ * that happened due the info from **args 2d array.
+ *  
+ * @param: *shell: The static variable that is holding all the data that
+ * is being shared between the functions.
+ * @param: **args: A 2d array containing the command name and its arguments.
+ * @param: argc: An integer that holds the number of arguments.
+ * 
+ * @return: Returns nothing.
+ *
+ */
 
 static void	handle_cd(t_shell *shell, char **args, int argc)
 {
